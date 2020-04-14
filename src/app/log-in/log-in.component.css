@@ -1,0 +1,82 @@
+div {
+  margin-left: 30%;
+  margin-right: 30%;
+  margin-top: 10%;
+  height: auto;
+  border: 2px solid #31708E;
+  background-color: #fff;
+}
+
+span.header-text {
+  margin-left: 40%;
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 29px;
+  color: #31708E;
+}
+
+span.text {
+  margin-left: 1%;
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 17px;
+  color: #000000;
+}
+
+input {
+  width: 90%;
+  height: 30px;
+  margin-left: 1%;
+  background: #ECF0F1;
+  border: 1px solid #687864;
+}
+
+button {
+  margin-left: 1%;
+  height: 40px;
+  width: 15%;
+  background: #8FC1E3;
+  box-shadow: 0px 4px 1px rgba(0, 0, 0, 0.25);
+}
+
+span.link {
+  margin-left: 2%;
+  margin-top: auto;
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 17px;
+  text-decoration-line: underline;
+  color: #5085A5;
+}
+
+#new-acc-text {
+  margin-right: 42%;
+}
+
+#sign-up-link {
+  position: absolute;
+  margin-top: auto;
+  margin-left: -15%;
+}
+
+@media (max-width: 1000px) {
+  div {
+    margin-left: 20%;
+    margin-right: 20%;
+  }
+  #sign-up-link {
+    margin-left: -20%;
+  }
+}
+
+@media (max-width: 800px) {
+  button {
+    width: 20%;
+  }
+}
