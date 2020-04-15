@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router }  from '@angular/router';
+import {AuthenticationService} from '../_services/authentication.service';
 
 @Component({
   selector: 'app-log-in',
@@ -7,7 +8,7 @@ import { Router }  from '@angular/router';
   styleUrls: ['./log-in.component.css']
 })
 export class LogInComponent {
-  constructor(private _router: Router){}
+  constructor(private _router: Router, private authenticationService: AuthenticationService){}
 
   email: string = "";
   password: string = "";
@@ -22,6 +23,10 @@ export class LogInComponent {
       return;
     }
     /*Code for comunication with back-end*/
+    this.authenticationService.loginUser(this.email, this.password)
+      .subscribe(
+        // TODO smth
+      );
   }
 
   goHomePage(): void {

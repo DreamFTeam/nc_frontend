@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router }  from '@angular/router';
+import {AuthenticationService} from '../_services/authentication.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -8,7 +9,7 @@ import { Router }  from '@angular/router';
 })
 
 export class SignUpComponent {
-  constructor(private _router: Router){}
+  constructor(private _router: Router, private authenticationService: AuthenticationService){}
 
   username: string;
   email: string;
@@ -37,6 +38,10 @@ export class SignUpComponent {
       return;
     }
     /*Code for comunication with back-end*/
+    this.authenticationService.signupUser(this.username, this.email, this.password)
+      .subscribe(
+        // TODO smth
+    );
   }
 
   goHomePage(): void {

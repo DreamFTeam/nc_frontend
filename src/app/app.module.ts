@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule }   from '@angular/forms';
-import { FormGroup, FormControl } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
@@ -12,6 +11,8 @@ import { LogInComponent } from './log-in/log-in.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {AuthenticationService} from './_services/authentication.service';
+import { HttpClientModule} from '@angular/common/http';
 
 const appRoutes: Routes =[
     { path: '', component: LandingPageComponent },
@@ -26,7 +27,7 @@ const appRoutes: Routes =[
     RecoverPasswordComponent,
     LogInComponent,
     SignUpComponent,
-    LandingPageComponent
+    LandingPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -34,9 +35,10 @@ const appRoutes: Routes =[
     FormsModule,
     RouterModule.forRoot(appRoutes),
     ReactiveFormsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [AuthenticationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

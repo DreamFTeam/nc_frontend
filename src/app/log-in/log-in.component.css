@@ -101,7 +101,7 @@ span.link {
   }
 }
 
-@madia (max-width: 600px) {
+@media (max-width: 600px) {
   .close-btn {
     margin-left: 53%;
   }
