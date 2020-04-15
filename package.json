@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "preinstall": "npm install -g angular-cli",
-    "postinstall": "ng build — aot — prod",
+    "postinstall": "ng build --aot --prod",
     "e2e": "ng e2e"
   },
   "engines": { "node": "10.13.0", "npm": "6.4.1" },
