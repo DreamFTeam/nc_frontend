@@ -1,10 +1,20 @@
 div.main {
-  display: table;
-  padding: 100px;
+  position: relative;
+  border-radius: 8px;
+  top:20px;
+  margin-left: 20%;
+  margin-right: 20%;
+  background-color:#F7F9FB;
+  height: auto;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 div.part {
   display: table-cell;
+}
+
+div.alert-danger {
+  width: 50%;
 }
 
 #left {
@@ -24,6 +34,18 @@ span.header-text {
   font-size: 24px;
   line-height: 29px;
   color: #31708E;
+}
+
+img {
+  width: 20px;
+  height: 20px;
+}
+
+button.close-btn {
+  margin-left: 93%;
+  margin-top: 2px;;
+  border: 0px;
+  background: rgba(255, 255, 255, 0);
 }
 
 span.text {
@@ -64,7 +86,7 @@ input {
   margin-left: 5%;
 }
 
-button {
+button.btn-primary {
   width: 15%;
   height: 30px;
   background: #8FC1E3;
@@ -81,7 +103,7 @@ span.join-header {
 }
 
 @media (max-width: 1200px) {
-  button {
+  .btn-primary {
     width: 25%;
   }
 }
@@ -102,19 +124,19 @@ span.join-header {
     span.header-text {
       left: 40%;
     }
-    button {
+    .btn-primary {
       width: 15%;
     }
 }
 
 @media (max-width: 800px) {
-  button {
+  .btn-primary {
     width: 25%;
   }
 }
 
 @media (max-width: 600px) {
-  button {
+  .btn-primary {
     width: 30%;
   }
 }

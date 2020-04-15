@@ -1,10 +1,12 @@
 div {
+  position: relative;
+  border-radius: 8px;
+  top:20px;
   margin-left: 30%;
   margin-right: 30%;
-  margin-top: 10%;
+  background-color:#F7F9FB;
   height: auto;
-  border: 2px solid #31708E;
-  background-color: #fff;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 span.header-text {
@@ -35,7 +37,19 @@ input {
   border: 1px solid #687864;
 }
 
-button {
+img {
+  width: 20px;
+  height: 20px;
+}
+
+button.close-btn {
+  margin-left: 93%;
+  margin-top: 2px;;
+  border: 0px;
+  background: rgba(255, 255, 255, 0);
+}
+
+button.btn-primary {
   margin-left: 1%;
   height: 40px;
   width: 15%;
@@ -73,10 +87,22 @@ span.link {
   #sign-up-link {
     margin-left: -20%;
   }
+  .close-btn {
+    margin-left: 83%;
+  }
 }
 
 @media (max-width: 800px) {
-  button {
+  .btn-primary {
     width: 20%;
+  }
+  .close-btn {
+    margin-left: 63%;
+  }
+}
+
+@madia (max-width: 600px) {
+  .close-btn {
+    margin-left: 53%;
   }
 }

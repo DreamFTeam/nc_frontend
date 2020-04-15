@@ -1,10 +1,11 @@
 <div>
+  <button class="close-btn" type="button" name="button" (click)="goHomePage()"><img src="../assets/img/close-button.jpg"></button>
   <span class="header-text">Log In</span><br>
-  <span class="text">Email</span><br>
+  <span class="text">Email or username</span><br>
   <input type="email" name="email" size=30px [(ngModel)]="email"/><br>
   <span class="text">Password</span><br>
   <input type="password" name="password" size=30px [(ngModel)]="password"/><br><br>
-  <span class="link">Forgot your password?</span><br><br>
+  <span class="link"><a href="./forgot-pass">Forgot your password?</a></span><br><br>
   <button type="button" class="btn btn-primary" (click)="logIn()"><span class="text">Log In</span></button><br><br>
-  <span class="text" id="new-acc-text">Don't have an account?</span><span class="link" id="sign-up-link">Sign up here</span><br>
+  <span class="text" id="new-acc-text">Don't have an account?</span><span class="link" id="sign-up-link"><a href="./sign-up">Sign up here</a></span><br>
 </div>
