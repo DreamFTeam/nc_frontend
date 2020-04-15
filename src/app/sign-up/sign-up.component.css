@@ -1,0 +1,120 @@
+div.main {
+  display: table;
+  padding: 100px;
+}
+
+div.part {
+  display: table-cell;
+}
+
+#left {
+  width: 50%;
+}
+
+#right {
+  padding-left: 50px;
+}
+
+span.header-text {
+  position: absolute;
+  left: 65%;
+  font-family: Libre Franklin;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 29px;
+  color: #31708E;
+}
+
+span.text {
+  margin-left: 1%;
+  font-family: Libre Franklin;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 17px;
+  color: #000000;
+}
+
+span.link {
+  position: absolute;
+  margin-left: 0%;
+  margin-top: auto;
+  font-family: Libre Franklin;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 17px;
+  text-decoration-line: underline;
+  color: #5085A5;
+}
+
+input {
+  width: 70%;
+  height: 30px;
+  background: #ECF0F1;
+  border: 1px solid #687864;
+}
+
+#have-acc-text {
+    margin-right: 23%;
+}
+
+#text-button {
+  margin-left: 5%;
+}
+
+button {
+  width: 15%;
+  height: 30px;
+  background: #8FC1E3;
+  box-shadow: 0px 4px 1px rgba(0, 0, 0, 0.25);
+}
+
+#log-in-link {
+  margin-left: -2%
+}
+
+span.join-header {
+  position: absolute;
+  left: 17%;
+}
+
+@media (max-width: 1200px) {
+  button {
+    width: 25%;
+  }
+}
+
+@media (max-width: 1000px) {
+    div.part {
+      display: block;
+    }
+    #left {
+      width: 100%;
+    }
+    #right {
+      padding-left: 5px;
+    }
+    span.join-header {
+      left: 40%;
+    }
+    span.header-text {
+      left: 40%;
+    }
+    button {
+      width: 15%;
+    }
+}
+
+@media (max-width: 800px) {
+  button {
+    width: 25%;
+  }
+}
+
+@media (max-width: 600px) {
+  button {
+    width: 30%;
+  }
+}
