@@ -8,10 +8,13 @@
     "test": "ng test",
     "lint": "ng lint",
     "preinstall": "npm install -g angular-cli",
-    "postinstall": "ng build --aot --prod",
+    "heroku-prebuild": "echo This runs before Heroku installs your dependencies.",
+    "heroku-postbuild": "npm install --prefix ./client",
     "e2e": "ng e2e"
   },
-  "engines": { "node": "10.13.0", "npm": "6.4.1" },
+  "engines": {
+    "node": "10.13.0"
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "~9.0.6",
@@ -24,7 +27,9 @@
     "@angular/router": "~9.0.6",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
-    "zone.js": "~0.10.2"
+    "zone.js": "~0.10.2",
+    "body-parser": "^1.13.3",
+    "express": "^4.13.3"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.900.6",
