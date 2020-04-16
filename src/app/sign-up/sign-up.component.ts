@@ -39,8 +39,8 @@ export class SignUpComponent {
     }
     /*Code for comunication with back-end*/
     this.authenticationService.signupUser(this.username, this.email, this.password)
-      .subscribe(
-        // TODO smth
+      .subscribe(n =>
+        alert(n.username + ' is registered!')
     );
   }
 
