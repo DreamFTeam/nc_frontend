@@ -24,9 +24,9 @@ export class LogInComponent {
     }
     /*Code for comunication with back-end*/
     this.authenticationService.loginUser(this.email, this.password)
-      .subscribe(
-        // TODO smth
-      );
+      .subscribe(n =>
+        alert(n.username + ' logged in!')
+    );
   }
 
   goHomePage(): void {
