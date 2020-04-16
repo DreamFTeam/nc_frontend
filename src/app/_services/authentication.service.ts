@@ -29,12 +29,12 @@ export class AuthenticationService {
   }
 
   /* POST: login user */
-  loginUser(login: string, password: string): Observable<User> {
+  loginUser(username: string, password: string): Observable<User> {
     const userInfo = {
-      username: login,
+      username,
       password
     };
-    return this.http.post<User>(this.usersUrl + 'login', this.httpOptions).pipe(
+    return this.http.post<User>(this.usersUrl + 'login', JSON.stringify(userInfo),this.httpOptions).pipe(
       map(data => {
         const token: User = data;
         localStorage.setItem('userData', JSON.stringify(token));
@@ -52,7 +52,7 @@ export class AuthenticationService {
       password,
       email
     };
-    return this.http.post<User>(this.usersUrl + 'registration', JSON.stringify(userInfo), this.httpOptions).pipe(
+    return this.http.post<User>(this.usersUrl + 'register', JSON.stringify(userInfo), this.httpOptions).pipe(
       catchError(this.handleError<User>('signupUser'))
     );
   }
