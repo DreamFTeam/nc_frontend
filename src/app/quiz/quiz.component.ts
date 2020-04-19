@@ -17,11 +17,11 @@ export class QuizComponent implements OnInit {
   }
 
   public add() {
-    alert('add ');
+    alert('add');
   }
 
   public publish() {
-    alert('publish ');
+    alert('publish');
   }
 
 }

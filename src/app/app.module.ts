@@ -15,6 +15,10 @@ import {AuthenticationService} from './_services/authentication.service';
 import { HttpClientModule} from '@angular/common/http';
 import { QuizComponent } from './quiz/quiz.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { TrueFalseComponent } from './true-false/true-false.component';
+import { SeqOptionsComponent } from './seq-options/seq-options.component';
+import { OneOfFourComponent } from './one-of-four/one-of-four.component';
+import { OpenAnswerComponent } from './open-answer/open-answer.component';
 
 const appRoutes: Routes =[
     { path: '', component: LandingPageComponent },
@@ -33,6 +37,10 @@ const appRoutes: Routes =[
     LandingPageComponent,
     QuizComponent,
     NavbarComponent,
+    TrueFalseComponent,
+    SeqOptionsComponent,
+    OneOfFourComponent,
+    OpenAnswerComponent,
   ],
   imports: [
     BrowserModule,

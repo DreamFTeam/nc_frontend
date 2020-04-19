@@ -1,0 +1,17 @@
+<div>
+    <span class="id">{{id}}.</span> 
+    <input class="title" type="text"  [(ngModel)]="title">
+    <select>
+     <option value="1">Select option</option>
+     <option selected="selected" value="2">True\False</option>
+     <option value="3">Type answer</option>
+     <option value="4">Select sequence</option>
+   </select>
+ </div>
+ <div class="answer">
+     <span>Right answer: </span>
+     <select [(ngModel)]="rightAnswer">
+        <option value="0">False</option>
+        <option value="1">True</option>
+      </select>
+ </div>

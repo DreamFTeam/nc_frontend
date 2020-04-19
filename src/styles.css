@@ -13,3 +13,16 @@ a {
 a:active {
     color: #5085A5;
 }
+
+.id{
+    color: rgba(0, 0, 0, 0.63);
+    font-size: 20px;
+    line-height: 24px;
+  }
+
+  .title{
+    width: 100%; 
+    max-width: 79.2%;
+    margin-left: 10px;
+    margin-right: 10px;
+  }

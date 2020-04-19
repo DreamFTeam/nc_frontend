@@ -32,7 +32,12 @@
 </div>
 <div id="questions" class="div-cont">
     <h1 class="title" >Questions</h1>
-    <div id="questionContainer"></div>
+    <div id="questionContainer">
+        <app-one-of-four></app-one-of-four>
+        <app-true-false></app-true-false>
+        <app-open-answer></app-open-answer>
+        <app-seq-options></app-seq-options>
+    </div>
     <div id="buttons">
         <div class="button b1 font-base" style="float: left;" (click)="add()">Add question</div>
         <div class="button b2 font-base"style="float: right;" (click)="publish()">Publish quiz</div>

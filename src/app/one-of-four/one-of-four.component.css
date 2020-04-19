@@ -1,0 +1,13 @@
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    padding: 5px;
+  }
+  .grid-item {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 2vw;
+    line-height: 16px;
+    text-align: center;
+    padding: 10px;
+  }

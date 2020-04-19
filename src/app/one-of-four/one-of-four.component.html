@@ -1,0 +1,24 @@
+<div>
+   <span class="id">{{id}}.</span> 
+   <input class="title" type="text"  [(ngModel)]="title">
+   <select value="1">
+    <option value="1">Select option</option>
+    <option value="2">True\False</option>
+    <option value="3">Type answer</option>
+    <option value="4">Select sequence</option>
+  </select>
+</div>
+<div class="grid-container">
+    <div class="grid-item">Answer:</div>
+    <div class="grid-item"><input style="width: 100%;" id="title" type="text"  [(ngModel)]="answers[0]"></div>
+    <div class="grid-item"><input type="checkbox" [(ngModel)]="rightAnswers[0]"></div>
+    <div class="grid-item">Answer:</div>
+    <div class="grid-item"><input style="width: 100%;" id="title" type="text"  [(ngModel)]="answers[1]"></div>
+    <div class="grid-item"><input type="checkbox" [(ngModel)]="rightAnswers[1]"></div>
+    <div class="grid-item">Answer:</div>
+    <div class="grid-item"><input style="width: 100%;" id="title" type="text"  [(ngModel)]="answers[2]"></div>
+    <div class="grid-item"><input type="checkbox" [(ngModel)]="rightAnswers[2]"></div>
+    <div class="grid-item">Answer:</div>
+    <div class="grid-item"><input style="width: 100%;" id="title" type="text"  [(ngModel)]="answers[3]"></div>
+    <div class="grid-item"><input type="checkbox" [(ngModel)]="rightAnswers[3]"></div>
+  </div>
