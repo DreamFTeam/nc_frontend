@@ -13,12 +13,15 @@ import { LandingPageComponent } from './landing-page/landing-page.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {AuthenticationService} from './_services/authentication.service';
 import { HttpClientModule} from '@angular/common/http';
+import { QuizComponent } from './quiz/quiz.component';
+import { NavbarComponent } from './navbar/navbar.component';
 
 const appRoutes: Routes =[
     { path: '', component: LandingPageComponent },
     { path: 'log-in', component: LogInComponent },
     { path: 'sign-up', component: SignUpComponent },
-    { path: 'forgot-pass', component: RecoverPasswordComponent }
+    { path: 'forgot-pass', component: RecoverPasswordComponent },
+    { path: 'quiz', component: QuizComponent}
 ];
 
 @NgModule({
@@ -28,6 +31,8 @@ const appRoutes: Routes =[
     LogInComponent,
     SignUpComponent,
     LandingPageComponent,
+    QuizComponent,
+    NavbarComponent,
   ],
   imports: [
     BrowserModule,
