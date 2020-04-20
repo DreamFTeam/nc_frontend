@@ -1,6 +1,6 @@
-<div class="main">
-  <button class="close-btn" type="button" name="button" (click)="goHomePage()"><img src="../assets/img/close-button.jpg"></button>
-<div class="part" id="left">
+<div class="row-cols-2">
+  <button class="close-btn" type="button" name="button" (click)="activeModal.dismiss('Cross click')" ><img src="../assets/img/close-button.jpg"></button>
+<div class="part col ml-2" id="left">
   <span class="join-header"><b>Join QUIZNET</b></span><br>
   <span> Hello, welcome to our community of like-minded people!<br><br>
         Here you’ll have a chance to try out available quizzes, create a few yourself, and, of course, get rewarded for your achievements.<br><br>
@@ -8,11 +8,11 @@
         Enjoy!</span>
 </div>
 
-<div class="part" id="right">
+<div class="part col" id="right">
   <span class="header-text">Sign Up</span><br><br>
   <div>
     <span class="text">Username</span><br>
-    <input type="text" name="username" size=30px [(ngModel)]="username" pattern="^[A-Za-z0-9_-]{3,20}$" #nameref="ngModel"/><br>
+    <input type="text" name="username" size=30px [(ngModel)]="username" pattern="[a-zA-Z]+" #nameref="ngModel"/><br>
     <div *ngIf="nameref.errors &&(nameref.touched || nameref.dirty)" class ="alert alert-danger">
       <div [hidden]="!nameref.errors?.pattern">Invalid username!</div>
     </div>
@@ -21,13 +21,11 @@
     <div *ngIf="emailref.errors &&(emailref.touched || emailref.dirty)" class ="alert alert-danger">
       <div [hidden]="!emailref.errors?.pattern">Invalid email!</div>
     </div>
-
     <span class="text">Password</span><br>
     <input type="password" name="password" size=30px [(ngModel)]="password"/><br>
     <span class="text">Confirm password</span><br>
     <input type="password" name="confirm-password" size=30px [(ngModel)]="confirmPassword"/><br><br>
-    <button type="button" class="btn btn-primary" (click)="signUp()"><span class="text" id="text-button">Sign Up</span></button><br>
+    <button type="button" class="btn btn-primary btn-lg" (click)="signUp()"><span class="text">Sign Up</span></button><br>
   </div><br>
-  <span class="text" id="have-acc-text">Already have an account?</span><span class="link" id="log-in-link"><a href="./log-in">Log in here</a></span>
 </div>
 </div>

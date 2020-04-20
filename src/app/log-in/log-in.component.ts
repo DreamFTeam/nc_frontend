@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
-import { Router }  from '@angular/router';
+import {Component} from '@angular/core';
+import {Router} from '@angular/router';
 import {AuthenticationService} from '../_services/authentication.service';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-log-in',
@@ -8,28 +9,28 @@ import {AuthenticationService} from '../_services/authentication.service';
   styleUrls: ['./log-in.component.css']
 })
 export class LogInComponent {
-  constructor(private _router: Router, private authenticationService: AuthenticationService){}
+  constructor(private _router: Router,
+              private authenticationService: AuthenticationService,
+              public activeModal: NgbActiveModal ) {
+  }
 
-  email: string = "";
-  password: string = "";
+  email = '';
+  password = '';
+
 
   logIn() {
-    if (this.email == "" || this.email == null) {
-      alert("Enter the email or username!");
+    if (this.email == '' || this.email == null) {
+      alert('Enter the email or username!');
       return;
     }
-    if (this.password == "" || this.password == null) {
-      alert("Enter the password!");
+    if (this.password == '' || this.password == null) {
+      alert('Enter the password!');
       return;
     }
     /*Code for comunication with back-end*/
-    this.authenticationService.loginUser(this.email, this.password)
-      .subscribe(
-        // TODO smth
+    this.authenticationService.loginUser(this.email, this.password).pipe()
+      .subscribe(n =>
+        alert(n.username + ' logged in!')
       );
-  }
-
-  goHomePage(): void {
-    this._router.navigate(['/']);
   }
 }
