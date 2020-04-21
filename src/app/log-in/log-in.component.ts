@@ -1,7 +1,7 @@
-import {Component} from '@angular/core';
-import {Router} from '@angular/router';
-import {AuthenticationService} from '../_services/authentication.service';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthenticationService } from '../_services/authentication.service';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-log-in',
@@ -10,8 +10,8 @@ import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 })
 export class LogInComponent {
   constructor(private _router: Router,
-              private authenticationService: AuthenticationService,
-              public activeModal: NgbActiveModal ) {
+    private authenticationService: AuthenticationService,
+    public activeModal: NgbActiveModal) {
   }
 
   email = '';
@@ -19,18 +19,21 @@ export class LogInComponent {
 
 
   logIn() {
-    if (this.email == '' || this.email == null) {
+    if (this.email === '' || this.email == null) {
       alert('Enter the email or username!');
       return;
     }
-    if (this.password == '' || this.password == null) {
+    if (this.password === '' || this.password == null) {
       alert('Enter the password!');
       return;
     }
+
     /*Code for comunication with back-end*/
     this.authenticationService.loginUser(this.email, this.password).pipe()
-      .subscribe(n =>
-        alert(n.username + ' logged in!')
+      .subscribe(n => {
+        this.activeModal.dismiss('Cross click');
+        window.location.reload();
+      }
       );
   }
 }

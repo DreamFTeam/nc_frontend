@@ -1,7 +1,7 @@
-import {Component} from '@angular/core';
-import {Router} from '@angular/router';
-import {AuthenticationService} from '../_services/authentication.service';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthenticationService } from '../_services/authentication.service';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-sign-up',
@@ -11,8 +11,8 @@ import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
 export class SignUpComponent {
   constructor(private _router: Router,
-              private authenticationService: AuthenticationService,
-              public activeModal: NgbActiveModal) {
+    private authenticationService: AuthenticationService,
+    public activeModal: NgbActiveModal) {
   }
 
   username: string;
@@ -43,8 +43,11 @@ export class SignUpComponent {
     }
     /*Code for comunication with back-end*/
     this.authenticationService.signupUser(this.username, this.email, this.password)
-      .subscribe(
-        // TODO smth
+      .subscribe(n => {
+        this.activeModal.dismiss('Cross click');
+        alert('Check your email');
+      }
+
       );
   }
 

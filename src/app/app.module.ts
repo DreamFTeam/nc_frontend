@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import {Routes, RouterModule} from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -11,18 +11,22 @@ import { LogInComponent } from './log-in/log-in.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {AuthenticationService} from './_services/authentication.service';
-import { HttpClientModule} from '@angular/common/http';
+import { AuthenticationService } from './_services/authentication.service';
+import { HttpClientModule } from '@angular/common/http';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CurrentProfileComponent } from './current-profile/current-profile.component';
+import { UsersComponent } from './users/users.component';
 
 const appRoutes: Routes = [
-    { path: '', component: LandingPageComponent },
-    { path: 'log-in', component: LogInComponent },
-    { path: 'sign-up', component: SignUpComponent },
-    { path: 'forgot-pass', component: RecoverPasswordComponent }
-];
+  { path: '', component: LandingPageComponent },
+  { path: 'log-in', component: LogInComponent },
+  { path: 'sign-up', component: SignUpComponent },
+  { path: 'forgot-pass', component: RecoverPasswordComponent },
+  { path: 'profile', component: CurrentProfileComponent },
+  { path: 'users', component: UsersComponent },
 
+];
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,8 +34,9 @@ const appRoutes: Routes = [
     LogInComponent,
     SignUpComponent,
     LandingPageComponent,
-    NavBarComponent
-  ],
+    NavBarComponent,
+    CurrentProfileComponent,
+    UsersComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

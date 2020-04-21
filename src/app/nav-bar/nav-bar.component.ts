@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {LogInComponent} from '../log-in/log-in.component';
-import {SignUpComponent} from '../sign-up/sign-up.component';
+import { Component, OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { LogInComponent } from '../log-in/log-in.component';
+import { SignUpComponent } from '../sign-up/sign-up.component';
 
 @Component({
   selector: 'app-nav-bar',
@@ -9,11 +9,13 @@ import {SignUpComponent} from '../sign-up/sign-up.component';
   styleUrls: ['./nav-bar.component.css']
 })
 export class NavBarComponent implements OnInit {
+  public signedIn;
 
   constructor(private modalService: NgbModal) {
   }
 
   ngOnInit(): void {
+    this.signedIn = (localStorage.getItem('userData') == null) ? false : true;
   }
 
 

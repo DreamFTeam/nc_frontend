@@ -1,9 +1,9 @@
-import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
-import {User} from '../_models/user';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {catchError, map} from 'rxjs/operators';
-import {environment} from '../../environments/environment';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
+import { User } from '../_models/user';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { catchError, map } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
 
 @Injectable({
@@ -12,10 +12,11 @@ import {environment} from '../../environments/environment';
 export class AuthenticationService {
   private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
-  usersUrl = `${environment.apiUrl}users/`;
+  usersUrl = `${environment.apiUrl}`;
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'
+
     })
   };
 
@@ -35,7 +36,8 @@ export class AuthenticationService {
       email: login,
       password
     };
-    return this.http.post<User>(this.usersUrl + 'login', JSON.stringify(userInfo), this.httpOptions).pipe(
+
+    return this.http.post<User>(this.usersUrl + 'log-in', JSON.stringify(userInfo), this.httpOptions).pipe(
       map(data => {
         const token: User = data;
         localStorage.setItem('userData', JSON.stringify(token));
@@ -53,13 +55,13 @@ export class AuthenticationService {
       password,
       email
     };
-    return this.http.post<User>(this.usersUrl + 'register', JSON.stringify(userInfo), this.httpOptions).pipe(
+    return this.http.post<User>(this.usersUrl + 'sign-up', JSON.stringify(userInfo), this.httpOptions).pipe(
       catchError(this.handleError<User>('signupUser'))
     );
   }
 
   /* POST: recover password */
-  recoverPassword( email: string): void {
+  recoverPassword(email: string): void {
     const userInfo = {
       email
     };

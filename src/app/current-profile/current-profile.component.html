@@ -1,0 +1,18 @@
+<div class="content" role="main">
+    <div id="profile" *ngIf="profile">
+      <div id="picture" >
+        <img id="image">
+      <div id="online" *ngIf="profile.online==true;" >
+    </div>
+      </div>
+      <div id="info">
+      <h3><b>{{profile.username}}</b></h3>
+      <h3 *ngIf="profile.online==true; else lastseen" style="color:#31708E;"> online </h3>
+      <ng-template #lastseen> <h3 style="color:#31708E;"> Last seen on {{profile.lastSeen}} </h3> </ng-template>
+      <h3 *ngIf="profile.aboutMe">{{profile.aboutMe}}
+        </h3>
+      </div>
+    </div>
+    <div id="quizlist"> <span style="display: block;"></span>
+  </div>
+  </div>
