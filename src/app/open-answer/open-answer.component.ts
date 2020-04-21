@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { OpenAnswer } from '../_models/question/openanswer';
 
 @Component({
   selector: 'app-open-answer',
@@ -6,17 +7,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./open-answer.component.css']
 })
 export class OpenAnswerComponent implements OnInit {
-  id: number = 1;
-  title: string;
-  answer: string;
+  @Input() question: OpenAnswer;
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  onChange(deviceValue) {
-    console.log(deviceValue);
-    alert(this.title)
-  }
 }

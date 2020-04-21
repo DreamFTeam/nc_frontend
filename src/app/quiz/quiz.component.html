@@ -32,11 +32,33 @@
 </div>
 <div id="questions" class="div-cont">
     <h1 class="title" >Questions</h1>
-    <div id="questionContainer">
-        <app-one-of-four></app-one-of-four>
-        <app-true-false></app-true-false>
-        <app-open-answer></app-open-answer>
-        <app-seq-options></app-seq-options>
+    <div id="questionContainer" *ngFor="let question of questions">
+         <input class="title" type="text"  [(ngModel)]="question.title">
+
+         <select (change)="onChange($event.target.value, question.id)">
+             <option *ngIf="isOneToFour(question); else elseBlock" selected="selected" value="1">Select option</option>
+             <ng-template #elseBlock>
+                 <option value="1">Select option</option>
+             </ng-template>
+             <option *ngIf="isTrueFalse(question); else elseBlock1" selected="selected" value="2">True\False</option>
+             <ng-template #elseBlock1>
+                <option value="2">True\False</option>
+             </ng-template>
+             <option *ngIf="isOpenAnswer(question); else elseBlock2" selected="selected" value="3">Type answer</option>
+             <ng-template #elseBlock2>
+                <option value="3">Type answer</option>
+             </ng-template>
+             <option *ngIf="isSequenceAnswer(question); else elseBlock3" selected="selected" value="4">Select sequence</option>
+             <ng-template #elseBlock3>
+                <option value="4">Select sequence</option>
+             </ng-template>
+         </select>
+         <h1>{{question.id}}</h1>
+
+         <app-one-of-four *ngIf="isOneToFour(question)" [question]="question"></app-one-of-four>
+         <app-true-false *ngIf="isTrueFalse(question)" [question]="question"></app-true-false>
+         <app-open-answer *ngIf="isOpenAnswer(question)" [question]="question"></app-open-answer>
+         <app-seq-options *ngIf="isSequenceAnswer(question)" [question]="question"></app-seq-options> 
     </div>
     <div id="buttons">
         <div class="button b1 font-base" style="float: left;" (click)="add()">Add question</div>

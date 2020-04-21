@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { OneToFour } from '../_models/question/onetofour';
 
 @Component({
   selector: 'app-one-of-four',
@@ -6,12 +7,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./one-of-four.component.css']
 })
 export class OneOfFourComponent implements OnInit {
-  id: number = 1;
-  title: string;
-  answers: string[] = [];
-  rightAnswers: boolean[] = [];
+  @Input() question: OneToFour;
 
-  constructor() { }
+
+  constructor() {
+  }
 
   ngOnInit(): void {
   }

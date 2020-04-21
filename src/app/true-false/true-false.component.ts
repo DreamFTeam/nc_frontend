@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { TrueFalse } from '../_models/question/truefalse';
 
 @Component({
   selector: 'app-true-false',
@@ -6,13 +7,21 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./true-false.component.css']
 })
 export class TrueFalseComponent implements OnInit {
-  id: number = 1;
-  title: string;
-  rightAnswer: number = 0;
+  @Input() question: TrueFalse;
 
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  onChange(deviceValue) {
+    
+    if(deviceValue === 0){
+      this.question.rightAnswer=false;
+    }else{
+      this.question.rightAnswer=true;
+    }
+    console.log(this.question.rightAnswer)
   }
 
 }

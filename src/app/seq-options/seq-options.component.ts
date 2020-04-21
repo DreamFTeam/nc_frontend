@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { SequenceAnswer } from '../_models/question/sequenceanswer';
 
 @Component({
   selector: 'app-seq-options',
@@ -6,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./seq-options.component.css']
 })
 export class SeqOptionsComponent implements OnInit {
+  @Input() question: SequenceAnswer;
 
   constructor() { }
 
