@@ -9,22 +9,23 @@
             <div class="right">
                 <div class="block">
                     <div>
-                        <span class="label font-base">Name:</span>
-                        <input id="name" type="text"  [(ngModel)]="name">
+                        <span class="label font-base">Title:</span>
+                        <input type="text"  [(ngModel)]="quiz.title">
                     </div>
                     
-                    <div>
+                    <!-- <div>
                         <span class="label font-base">Category:</span>
-                        <input id="category" type="text"  [(ngModel)]="category">
+                        <input type="text"  [(ngModel)]="quiz">
                     </div>
                     
                     <div>
                         <span class="label font-base">Tags:</span>
-                        <input id="tags" type="text"  [(ngModel)]="tags">
-                    </div>
+                        <input type="text"  [(ngModel)]="tags">
+                    </div> -->
+
                     <div>
                         <span class="label font-base">Language:</span>
-                        <select [(ngModel)]="quizLanguage">
+                        <select [(ngModel)]="quiz.quizLanguage">
                             <option selected="selected" value="eng">English</option>
                             <option value="ukr">Ukrainian</option>
                         </select>
@@ -32,19 +33,18 @@
 
                     
                     <div class="label font-base">Description:</div>
-                    <textarea id="description"  name="description"></textarea>
+                    <textarea id="description"  name="description"  [(ngModel)]="quiz.description"></textarea>
                 </div>
             </div>
         </div>
 
         <div id="buttons">
             <div class="button b1 font-base" style="float: left;" (click)="createQuiz()" >Create quiz</div>
-            <div class="button b2 font-base" style="float: left;" >Publish quiz</div>
+            <div class="button b2 font-base" style="float: left;" (click)="publish()">Publish quiz</div>
         </div>
         
 </div>
-
-<div id="questions" class="div-cont">
+<!-- <div id="questions" class="div-cont">
     <h1 class="title" >Questions</h1>
     <div id="questionContainer" *ngFor="let question of questions; let i = index">
         <div style="margin-top: 35px;">
@@ -81,7 +81,7 @@
         <div *ngIf="canIAddMore()" class="button b1 font-base" style="float: left;" (click)="add()">Add question</div>
         <div class="button b2 font-base"style="float: right;" (click)="publish()">Publish quiz</div>
     </div>
-</div>
+</div> -->
 </div>
 
 

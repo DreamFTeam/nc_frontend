@@ -14,26 +14,38 @@ import { QuizService } from '../_services/quiz.service';
 })
 export class QuizComponent implements OnInit {
   counter: number = 0;
-  name: string;
-  category: string;
-  tags: string;
-  description: string;
-  image: string;
-  quizLanguage: string = "eng";
-  quiz: Quiz;
+  quiz: Quiz = {
+    id: "",
+    title: "",
+    category: ["3b338765-c75d-40e2-9ab0-789738acd07a"],
+    tags: ["c03a2080-d447-4bde-be2e-6f22c6ebee63"],
+    description: "",
+    imageReference: "",
+    creationDate: new Date(),
+    creatorId: "",
+    activated: false,
+    validated: false,
+    quizLanguage: "eng",
+    adminCommentary: "",
+    rating: 0,
+    published: false,
+
+  };
   questions: Question[] = [];
 
   constructor(private quizService: QuizService) { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   public createQuiz(){
+    //TODO: validation
+
+    console.log(this.quiz);
     this.quizService.createQuiz(this.quiz);
   }
 
   public add() {
-      this.questions.push(new OneToFour( this.counter++,"",[],[]));
+      //this.questions.push(new OneToFour( this.counter++,"",[],[]));
   }
 
   public publish() {
@@ -46,19 +58,19 @@ export class QuizComponent implements OnInit {
 
     switch(deviceValue) { 
       case "1": { 
-        this.questions.splice(id,1,new OneToFour(id,"",[],[]));
+       // this.questions.splice(id,1,new OneToFour(id,"",[],[]));
          break; 
       } 
       case "2": { 
-        this.questions.splice(id,1,new TrueFalse(id,"",false));
+      //  this.questions.splice(id,1,new TrueFalse(id,"",false));
          break; 
       } 
       case "3": {
-        this.questions.splice(id,1,new OpenAnswer(id,"","")); 
+      //  this.questions.splice(id,1,new OpenAnswer(id,"","")); 
          break; 
       } 
       case "4": { 
-        this.questions.splice(id,1,new SequenceAnswer(id,"",[]));
+       // this.questions.splice(id,1,new SequenceAnswer(id,"",[]));
         break; 
      } 
    }

@@ -31,18 +31,18 @@ export class QuizService {
   
 
   createQuiz(quiz: Quiz){
-    // const quizInfo = {
-    //   title: quiz.title,
-    //   creatorId: this.currentUserSubject.value.id,
-    //   language: quiz.quizLanguage,
-    //   description: quiz.description,
-    //   imageRef: quiz.imageReference,
-    //   tagList: quiz.tags,
-    //   categoryList: quiz.category
-    // };
-    // return this.http.post<Quiz>(this.url + 'create', JSON.stringify(quizInfo), this.httpOptions).pipe(
-    //   catchError(this.handleError<Quiz>('quizcreate'))
-    // );
+    const quizInfo = {
+      title: quiz.title,
+      creatorId: "0a1e57ac-cf6c-49fe-893a-7770183310be",
+      language: quiz.quizLanguage,
+      description: quiz.description,
+      imageRef: quiz.imageReference,
+      tagList: quiz.tags,
+      categoryList: quiz.category
+    };
+    return this.http.post<Quiz>(this.url + 'create', JSON.stringify(quizInfo), this.httpOptions).pipe(
+      catchError(this.handleError<Quiz>('quizcreate'))
+    );
   }
 
   editQuiz(quiz: Quiz){
