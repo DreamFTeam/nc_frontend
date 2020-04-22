@@ -1,5 +1,23 @@
 <div class="content" role="main">
-    <input type="text" name="username" size=40px pattern="[a-zA-Z]+" />
-    <div id="users"> <span style="display: block;"></span>
+  <div id=search>
+   <input type="text" name="username" [(ngModel)]="username"   #nameref="ngModel" size=40px pattern="[a-zA-Z]+" />
+    <button type="button" class="btn btn-primary" (click)="Search()"></button>
   </div>
+    <div id="users" *ngIf="this.searchResults;">
+    Found  {{searchResults.length}} users
+      <div class="user" *ngFor="let user of this.searchResults">
+        <div id="pic">
+        <div id="picture" >
+          <img id="image">
+        <div id="online" *ngIf="user.online==true;"></div>
+      </div>
+      <div class="info">
+      <a   routerLink="/profile/{{user.username}}">{{user.username}}</a>
+        <h3 *ngIf="user.online==true; else lastseen" style="color:#31708E; font-size: smaller;"> online </h3>
+        <ng-template #lastseen> <h3 style="color:#31708E; font-size: smaller;">
+          Last seen on {{user.lastTimeOnline |  date:'medium'}} </h3> </ng-template>
+      </div>
+      </div>
+  </div>
+</div>
 </div>

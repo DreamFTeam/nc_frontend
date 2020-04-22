@@ -12,18 +12,22 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthenticationService } from './_services/authentication.service';
+import {GetProfileService} from './_services/get-profile.service'
 import { HttpClientModule } from '@angular/common/http';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { CurrentProfileComponent } from './current-profile/current-profile.component';
+import { ProfileComponent } from './profile/profile.component';
 import { UsersComponent } from './users/users.component';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
 
 const appRoutes: Routes = [
   { path: '', component: LandingPageComponent },
   { path: 'log-in', component: LogInComponent },
   { path: 'sign-up', component: SignUpComponent },
   { path: 'forgot-pass', component: RecoverPasswordComponent },
-  { path: 'profile', component: CurrentProfileComponent },
+  { path: 'profile/:username', component: ProfileComponent },
+  { path: 'profile', component: ProfileComponent },
+  { path: 'editprofile', component: EditProfileComponent},
   { path: 'users', component: UsersComponent },
 
 ];
@@ -35,8 +39,9 @@ const appRoutes: Routes = [
     SignUpComponent,
     LandingPageComponent,
     NavBarComponent,
-    CurrentProfileComponent,
-    UsersComponent],
+    ProfileComponent,
+    UsersComponent,
+    EditProfileComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
