@@ -14,4 +14,24 @@ export class SeqOptionsComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  addAnswer(){
+    this.question.rightAnswers.push("");
+  }
+
+  removeAnswer(i){
+    this.question.rightAnswers.splice(i,1);
+  }
+
+  isLimitReached(){
+    return this.question.rightAnswers.length!=8;
+  }
+
+  isRemovable(){
+    return this.question.rightAnswers.length>3;
+  }
+
+  trackByFn(index: any, item: any) {
+    return index;
+   } 
+
 }

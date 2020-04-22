@@ -1,1 +1,14 @@
-<p>seq-options works!</p>
+<div *ngFor="let answer of question.rightAnswers; let i = index; trackBy: trackByFn" class="grid-container">
+    <div class="grid-item">
+        {{ (i+1) }}
+    </div>
+    <div class="grid-item">
+      <input style="width: 100%;"  [(ngModel)]="question.rightAnswers[i]">
+    </div>
+    <div class="grid-item">
+        <button *ngIf="isRemovable()" class="remb" (click)="removeAnswer(i)">
+          <img src="../assets/img/close-button.png">
+        </button>
+      </div>
+  </div>
+  <button *ngIf="isLimitReached()" class="addb" (click)="addAnswer()"><img src="../assets/img/plus.png"></button>

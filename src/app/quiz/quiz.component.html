@@ -88,7 +88,6 @@
         <div style="margin-top: 35px;">
         <button class="removeb" (click)="removeQuestion()"><img src="../assets/img/close-button.png"></button>
         <input class="title" type="text"  [(ngModel)]="question.title">
-        
          <select (change)="onChange($event.target.value)">
              <option *ngIf="isOneToFour(question); else elseBlock" selected="selected" value="1">Select option</option>
              <ng-template #elseBlock>
@@ -107,8 +106,9 @@
                 <option value="4">Select sequence</option>
              </ng-template>
          </select>
-         <h1>Points:</h1>
-         <input  type="text"  [(ngModel)]="question.points">
+         <div style="margin-top: 5px;"><h3>Content:</h3></div>
+        <textarea class="title" [(ngModel)]="question.content"></textarea>
+         
 
          <app-one-of-four *ngIf="isOneToFour(question)" [question]="question"></app-one-of-four>
          <app-true-false *ngIf="isTrueFalse(question)" [question]="question"></app-true-false>
@@ -117,6 +117,8 @@
          
         </div>
     </div>
+    <h1>Points:</h1>
+         <input  type="text"  [(ngModel)]="question.points">
     <button (click)="uploadImage()">Upload image</button>
     <div id="buttons">
         <div class="button b1 font-base" style="float: left;" (click)="saveQuestion()">Save question</div>

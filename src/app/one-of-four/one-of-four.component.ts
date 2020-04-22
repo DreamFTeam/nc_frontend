@@ -8,7 +8,6 @@ import { OneToFour } from '../_models/question/onetofour';
 })
 export class OneOfFourComponent implements OnInit {
   @Input() question: OneToFour;
-  @Input() trueAnswers: boolean[] =[false,false];
 
   constructor() {
   }

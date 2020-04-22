@@ -8,6 +8,7 @@ import { SequenceAnswer } from '../_models/question/sequenceanswer';
 import { QuizService } from '../_services/quiz.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
+import { QuestionService } from '../_services/question.service';
 
 @Component({
   selector: 'app-quiz',
@@ -36,7 +37,8 @@ export class QuizComponent implements OnInit {
   questions: Question[];
   question: Question = new OneToFour("","","","",0,this.quiz.id,1,["",""],[false,false]);
 
-  constructor(private quizService: QuizService, private activateRoute: ActivatedRoute, private router: Router) { 
+  constructor(private quizService: QuizService, private questionService: QuestionService,
+     private activateRoute: ActivatedRoute, private router: Router) { 
     this.activateRoute.paramMap.pipe(
       switchMap(params => params.getAll('id')))
      .subscribe(data => 
@@ -52,15 +54,13 @@ export class QuizComponent implements OnInit {
   //Save(create) quiz button
   createQuiz(){
     //TODO: validation
-    let error;
-    let answer;
-    console.log(this.quiz);
     this.quizService.createQuiz(this.quiz).subscribe(ans =>this.mapCreatedQuiz(ans),err => this.getCreatedErr(err));
   }
 
 
   //Get id of created quiz
   mapCreatedQuiz(ans){
+    alert("Quiz created!");
     this.quiz.id = ans.id;
     console.log(this.quiz);
     this.router.navigate(['/quiz/'+this.quiz.id]);
@@ -79,9 +79,16 @@ export class QuizComponent implements OnInit {
     
   }
 
+  mapCreatedQuestion(ans){
+    alert("Question created!");
+    this.question.id = ans.id;
+    console.log(this.question);
+    this.questions.push(Object.assign({}, this.question));
+  }
+
   //Created quiz error
   getCreatedErr(err){
-    alert("Quiz cannot be created: "+err.error.message);
+    alert("Quiz could not be created: "+err.error.message);
   }
 
   //Cannot get quiz or id is empty
@@ -89,8 +96,47 @@ export class QuizComponent implements OnInit {
     this.lockedButtons=false;
   }
 
+  getCreatedQuestionErr(err){
+    console.log(err);
+    alert("Question could not be created: "+err.error.message);
+  }
+
+  //Saving question
   saveQuestion() {
-      
+    if(this.question.points !== 0){
+      if(this.question.title !== "" || this.question.content !== ""){
+        if(this.question instanceof OneToFour){
+          if(!this.question.answers.includes("") && this.question.rightAnswers.includes(true)){
+            this.questionService.firstType(this.question, this.quiz.id).subscribe(ans => this.mapCreatedQuestion(ans),
+            err => this.getCreatedQuestionErr(err));
+          }else{
+            alert("No right question or one of questions is empty");
+          }
+        }
+
+        if(this.question instanceof TrueFalse){
+          this.questionService.secondType(this.question, this.quiz.id).subscribe(ans => this.mapCreatedQuestion(ans),
+            err => this.getCreatedQuestionErr(err));
+        }
+
+        if(this.question instanceof OpenAnswer){
+          this.questionService.thirdType(this.question, this.quiz.id).subscribe(ans => this.mapCreatedQuestion(ans),
+            err => this.getCreatedQuestionErr(err));
+        }
+
+        if(this.question instanceof SequenceAnswer){
+          console.log(this.question);
+          this.questionService.fourthType(this.question, this.quiz.id).subscribe(ans => this.mapCreatedQuestion(ans),
+            err => this.getCreatedQuestionErr(err));
+        }
+
+      }else{
+        alert("Title or content is empty");
+      }  
+    }else{
+      alert("Points have value of 0");
+    }
+    
   }
 
   public publish() {
@@ -99,6 +145,7 @@ export class QuizComponent implements OnInit {
     }
   }
 
+  //Changed question type
   onChange(deviceValue) {
     console.log(deviceValue);
     
@@ -109,7 +156,7 @@ export class QuizComponent implements OnInit {
          break; 
       } 
       case "2": { 
-         this.question = new TrueFalse("","","","",0,this.quiz.id,1,"False","True");
+         this.question = new TrueFalse("","","","",0,this.quiz.id,1,"true","false");
          break; 
       } 
       case "3": {
@@ -134,9 +181,9 @@ export class QuizComponent implements OnInit {
     this.quiz.imageReference="image";
   }
 
-  isOneToFour(val) { return  val instanceof OneToFour; }
-  isTrueFalse(val) { return  val instanceof TrueFalse; }
-  isOpenAnswer(val) { return  val instanceof OpenAnswer; }
+  isOneToFour(val) { return val instanceof OneToFour; }
+  isTrueFalse(val) { return val instanceof TrueFalse; }
+  isOpenAnswer(val) { return val instanceof OpenAnswer; }
   isSequenceAnswer(val) { return  val instanceof SequenceAnswer; }
   isQuizCreated(){ return this.quiz.id !== ""; }
   isButtonLocked(){

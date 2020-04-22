@@ -97,36 +97,4 @@ export class QuizService {
   // }
   
 
-  firstType(question: OneToFour, quizId: string){
-    // const quizInfo = {
-    //   title: question.title,
-    //   quizId: quizId,
-    //   content: question.content, //TODO: CONTENT
-    //   points: question.points,  //TODO: POINTS
-    //   typeId: 1,
-    //   newImageRef: quiz.imageReference,
-    //   typeId: quiz.tags,
-    //   otherOptions: quiz.category
-    // };
-    // return this.http.post<Quiz>(this.url + 'create', JSON.stringify(quizInfo), this.httpOptions).pipe(
-    //   catchError(this.handleError<Quiz>('quizedit'))
-    // );
-  }
-
-
-
-
-
-
-
-
-
-  private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-
-      console.error(error); // log to console instead
-
-      return of(result as T);
-    };
-  }
 }
