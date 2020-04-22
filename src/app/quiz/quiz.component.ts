@@ -33,7 +33,7 @@ export class QuizComponent implements OnInit {
   }
 
   public add() {
-      this.questions.push(new OneToFour( this.counter++,"",[],[]));
+  //    this.questions.push(new OneToFour( this.counter++,"",[],[]));
   }
 
   public publish() {
@@ -46,19 +46,19 @@ export class QuizComponent implements OnInit {
 
     switch(deviceValue) { 
       case "1": { 
-        this.questions.splice(id,1,new OneToFour(id,"",[],[]));
+    //    this.questions.splice(id,1,new OneToFour(id,"",[],[]));
          break; 
       } 
       case "2": { 
-        this.questions.splice(id,1,new TrueFalse(id,"",false));
+    //    this.questions.splice(id,1,new TrueFalse(id,"",false));
          break; 
       } 
       case "3": {
-        this.questions.splice(id,1,new OpenAnswer(id,"","")); 
+    //    this.questions.splice(id,1,new OpenAnswer(id,"","")); 
          break; 
       } 
       case "4": { 
-        this.questions.splice(id,1,new SequenceAnswer(id,"",[]));
+    //    this.questions.splice(id,1,new SequenceAnswer(id,"",[]));
         break; 
      } 
    }
