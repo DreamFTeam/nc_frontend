@@ -2,13 +2,28 @@ import {Question} from './question';
 
 export class SequenceAnswer implements Question{
  
-    id: number;
+    id: string;
     title: string;
-    answers: string[] = [];
-    constructor(id: number, title: string, answers: string[]) {
-        this.id = id;
-        this.title = title;
-        this.answers = answers;
+    content: string;
+    image: string;
+    points: number;
+    quizId: string;
+    typeId: number;
+
+    rightAnswers: string[] = [];
+
+    constructor(id: string, title: string, content: string,
+         image: string, points: number, quizId: string, 
+         typeId: number, rightAnswers: string[]) {
+            this.id = id;
+            this.title = title;
+            this.content = content;
+            this.image = image;
+            this.points = points;
+            this.quizId = quizId;
+            this.typeId = typeId;
+        
+            this.rightAnswers = rightAnswers;
     }
     
 }

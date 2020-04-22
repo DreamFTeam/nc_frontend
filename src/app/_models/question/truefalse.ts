@@ -2,12 +2,29 @@ import {Question} from './question';
 
 export class TrueFalse implements Question{
  
-    id: number;
+    id: string;
     title: string;
-    rightAnswer: boolean;
-    constructor(id: number, title: string, rightAnswer: boolean) {
-        this.id = id;
-        this.title = title;
-        this.rightAnswer = rightAnswer;
+    content: string;
+    image: string;
+    points: number;
+    quizId: string;
+    typeId: number;
+
+    answer: string ;
+    rightAnswer: string;
+    
+    constructor(id: string, title: string, content: string,
+         image: string, points: number, quizId: string, typeId: number,
+         answer: string, rightAnswer: string) {
+            this.id = id;
+            this.title = title;
+            this.content = content;
+            this.image = image;
+            this.points = points;
+            this.quizId = quizId;
+            this.typeId = typeId;
+        
+            this.answer = answer;
+            this.rightAnswer = rightAnswer;
     }
 }

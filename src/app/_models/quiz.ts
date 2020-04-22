@@ -1,6 +1,8 @@
 export interface Quiz {
     id: string;
     title: string;
+    category: string[];
+    tags: string[];
     description: string;
     imageReference: string;
     creationDate: Date;
@@ -10,4 +12,5 @@ export interface Quiz {
     quizLanguage: string;
     adminCommentary: string;
     rating: number;
+    published: boolean;
   }

@@ -1,0 +1,42 @@
+###
+
+POST http://localhost:8081/api/log-in
+Content-Type: application/json
+
+{
+  "username":"first",
+  "password":"12345"
+}
+
+
+###
+
+POST http://localhost:8081/api/sign-up
+Content-Type: application/json
+
+{
+  "username":"first",
+  "password":"12345",
+  "email":"prtu1ily@notua.com"
+}
+
+
+###
+
+GET http://localhost:8080/login/abcde12345
+Content-Type: application/json
+
+###
+
+POST http://localhost:8081/api/quiz/create
+Content-Type: application/json
+
+{
+  "title":"QQQ6",
+  "creatorId":"0a1e57ac-cf6c-49fe-893a-7770183310be",
+  "language":"ru",
+  "description":"QQQ",
+  "imageRef":"url:SSQQQQ",
+  "tagList": [],
+  "categoryList":[]
+}

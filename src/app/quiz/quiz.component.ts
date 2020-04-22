@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { Quiz } from '../_models/quiz';
 import { Question } from '../_models/question/question';
 import { OneToFour } from '../_models/question/onetofour';
 import { TrueFalse } from '../_models/question/truefalse';
 import { OpenAnswer } from '../_models/question/openanswer';
 import { SequenceAnswer } from '../_models/question/sequenceanswer';
+import { QuizService } from '../_services/quiz.service';
 
 @Component({
   selector: 'app-quiz',
@@ -16,15 +18,22 @@ export class QuizComponent implements OnInit {
   category: string;
   tags: string;
   description: string;
+  image: string;
+  quizLanguage: string = "eng";
+  quiz: Quiz;
   questions: Question[] = [];
 
-  constructor() { }
+  constructor(private quizService: QuizService) { }
 
   ngOnInit(): void {
   }
 
+  public createQuiz(){
+    this.quizService.createQuiz(this.quiz);
+  }
+
   public add() {
-    this.questions.push(new OneToFour( this.counter++,"",[],[]));
+      this.questions.push(new OneToFour( this.counter++,"",[],[]));
   }
 
   public publish() {
@@ -55,9 +64,23 @@ export class QuizComponent implements OnInit {
    }
   }
 
+  removeQuestion(id){
+    this.questions.splice(id,1);
+  }
+
+  uploadImage(id){
+    this.questions[id].image="image";
+    console.log(this.questions[id]);
+  }
+
+  quizImage(){
+    this.quiz.imageReference="image";
+  }
+
   isOneToFour(val) { return  val instanceof OneToFour; }
   isTrueFalse(val) { return  val instanceof TrueFalse; }
   isOpenAnswer(val) { return  val instanceof OpenAnswer; }
   isSequenceAnswer(val) { return  val instanceof SequenceAnswer; }
+  canIAddMore(){ return this.counter < 20; }
 
 }

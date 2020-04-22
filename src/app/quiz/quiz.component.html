@@ -2,40 +2,56 @@
 <div class="content" role="main">
     <div id="create-main" class="div-cont">
         <h1 class="title font-base" >Create quiz</h1>
-        <div class="inline" style="padding: 10%;">
-            <form action="" method="post">
-                <input type="submit" value="Upload Image" name="submit">
-            </form>
+        <div>
+            <div class="left">
+                    <button>Upload image</button>
+            </div>
+            <div class="right">
+                <div class="block">
+                    <div>
+                        <span class="label font-base">Name:</span>
+                        <input id="name" type="text"  [(ngModel)]="name">
+                    </div>
+                    
+                    <div>
+                        <span class="label font-base">Category:</span>
+                        <input id="category" type="text"  [(ngModel)]="category">
+                    </div>
+                    
+                    <div>
+                        <span class="label font-base">Tags:</span>
+                        <input id="tags" type="text"  [(ngModel)]="tags">
+                    </div>
+                    <div>
+                        <span class="label font-base">Language:</span>
+                        <select [(ngModel)]="quizLanguage">
+                            <option selected="selected" value="eng">English</option>
+                            <option value="ukr">Ukrainian</option>
+                        </select>
+                    </div>
 
-        </div>
-        <div class="inline">
-            <div class="block">
-                <div>
-                    <span class="label font-base">Name:</span>
-                    <input id="name" type="text"  [(ngModel)]="name">
+                    
+                    <div class="label font-base">Description:</div>
+                    <textarea id="description"  name="description"></textarea>
                 </div>
-                
-                <div>
-                    <span class="label font-base">Category:</span>
-                    <input id="category" type="text"  [(ngModel)]="category">
-                </div>
-                
-                <div>
-                    <span class="label font-base">Tags:</span>
-                    <input id="tags" type="text"  [(ngModel)]="tags">
-                </div>
-                
-                <div class="label font-base">Description:</div>
-                <textarea id="description"  name="description"></textarea>
             </div>
         </div>
+
+        <div id="buttons">
+            <div class="button b1 font-base" style="float: left;" (click)="createQuiz()" >Create quiz</div>
+            <div class="button b2 font-base" style="float: left;" >Publish quiz</div>
+        </div>
+        
 </div>
+
 <div id="questions" class="div-cont">
     <h1 class="title" >Questions</h1>
-    <div id="questionContainer" *ngFor="let question of questions">
-         <input class="title" type="text"  [(ngModel)]="question.title">
+    <div id="questionContainer" *ngFor="let question of questions; let i = index">
+        <div style="margin-top: 35px;">
+        <button class="removeb" (click)="removeQuestion(i)"><img src="../assets/img/close-button.png"></button>
+        <input class="title" type="text"  [(ngModel)]="question.title">
 
-         <select (change)="onChange($event.target.value, question.id)">
+         <select (change)="onChange($event.target.value, i)">
              <option *ngIf="isOneToFour(question); else elseBlock" selected="selected" value="1">Select option</option>
              <ng-template #elseBlock>
                  <option value="1">Select option</option>
@@ -53,15 +69,16 @@
                 <option value="4">Select sequence</option>
              </ng-template>
          </select>
-         <h1>{{question.id}}</h1>
 
          <app-one-of-four *ngIf="isOneToFour(question)" [question]="question"></app-one-of-four>
          <app-true-false *ngIf="isTrueFalse(question)" [question]="question"></app-true-false>
          <app-open-answer *ngIf="isOpenAnswer(question)" [question]="question"></app-open-answer>
          <app-seq-options *ngIf="isSequenceAnswer(question)" [question]="question"></app-seq-options> 
+         <button (click)="uploadImage(i)">Upload image</button>
+        </div>
     </div>
     <div id="buttons">
-        <div class="button b1 font-base" style="float: left;" (click)="add()">Add question</div>
+        <div *ngIf="canIAddMore()" class="button b1 font-base" style="float: left;" (click)="add()">Add question</div>
         <div class="button b2 font-base"style="float: right;" (click)="publish()">Publish quiz</div>
     </div>
 </div>
