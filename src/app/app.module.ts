@@ -19,6 +19,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ProfileComponent } from './profile/profile.component';
 import { UsersComponent } from './users/users.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import { PrivilegedProfileComponent } from './privileged-profile/privileged-profile.component';
+import { CreatePrivilegedComponent } from './create-privileged/create-privileged.component';
 
 const appRoutes: Routes = [
   { path: '', component: LandingPageComponent },
@@ -29,6 +31,7 @@ const appRoutes: Routes = [
   { path: 'profile', component: ProfileComponent },
   { path: 'editprofile', component: EditProfileComponent},
   { path: 'users', component: UsersComponent },
+  {path: 'privileged/main', component:PrivilegedProfileComponent }
 
 ];
 @NgModule({
@@ -41,7 +44,9 @@ const appRoutes: Routes = [
     NavBarComponent,
     ProfileComponent,
     UsersComponent,
-    EditProfileComponent],
+    EditProfileComponent,
+    PrivilegedProfileComponent,
+    CreatePrivilegedComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

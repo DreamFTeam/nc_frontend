@@ -1,4 +1,4 @@
-<div class="toolbar" role="banner" *ngIf="!signedIn; else loggedin">
+<div class="toolbar" role="banner" *ngIf="signedIn== false" >
   <div id="innertoolbar">
     <span><a class="toolbaritm" href="./" style="left: 1%;">MAIN PAGE</a> </span>
     <span><a class="toolbaritm" href="./">QUIZZES</a> </span>
@@ -10,12 +10,11 @@
   </div>
 </div>
 
-<ng-template #loggedin>
+<ng-container *ngIf="signedIn && !privileged" >
   <div class="toolbar" role="banner">
     <div id="innertoolbar">
       <span><a class="toolbaritm" href="./profile" style="left: 1%;">PROFILE</a> </span>
       <span><a class="toolbaritm" href="./">QUIZZES</a> </span>
-      <span><a class="toolbaritm" href="./">CHATS</a> </span>
       <span><a class="toolbaritm" href="./users">USERS</a> </span>
       <span id="searchquiz" style="margin-left: 0;">
         <form><input type="text"> </form>
@@ -23,7 +22,23 @@
       <span><a class="toolbaritm right" href="./">LOG OUT</a></span>
     </div>
   </div>
-</ng-template>
+</ng-container>
+
+
+<ng-container *ngIf="signedIn == true  && privileged == true">
+  <div class="toolbar" role="banner">
+    <div id="innertoolbar">
+      <span><a class="toolbaritm" href="./privileged/main">MAIN</a> </span>
+      <span><a class="toolbaritm" href="./profile" style="left: 1%;">PROFILE</a> </span>
+      <span><a class="toolbaritm" href="./">QUIZZES</a> </span>
+      <span><a class="toolbaritm" href="./users">USERS</a> </span>
+      <span id="searchquiz" style="margin-left: 0;">
+        <form><input type="text"> </form>
+      </span>
+      <span><a class="toolbaritm right" href="./">LOG OUT</a></span>
+    </div>
+  </div>
+</ng-container>
 
 <!--<ng-template #register>-->
 <!--<app-sign-up></app-sign-up>-->

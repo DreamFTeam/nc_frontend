@@ -7,6 +7,7 @@
 
     </div>
     <a *ngIf="owner" class="btn btn-users" (click)="edit()">Edit profile</a>
+
   </div>
       </div>
       <div id="info">
@@ -15,9 +16,12 @@
       <ng-template #lastseen > <h3 style="color:#31708E;" *ngIf="profile?.lastTimeOnline"> Last seen on {{profile?.lastTimeOnline  |  date:'medium'}} </h3> </ng-template>
       <h3 *ngIf="profile?.aboutMe">{{profile?.aboutMe}}
         </h3>
+        <a *ngIf="owner && privileged && profile.activated" class="btn btn-users" id="bt" (click)="deactivate(false)">Deactivate </a>
       </div>
 
     </div>
   <div id="quizlist">{{profile?.username}}'s quizzes <span style="display: block;"></span>
   </div>
   </div>
+
+  

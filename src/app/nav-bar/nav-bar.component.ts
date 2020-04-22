@@ -10,12 +10,14 @@ import { SignUpComponent } from '../sign-up/sign-up.component';
 })
 export class NavBarComponent implements OnInit {
   public signedIn;
-
+  public privileged;
   constructor(private modalService: NgbModal) {
   }
 
   ngOnInit(): void {
     this.signedIn = (localStorage.getItem('userData') == null) ? false : true;
+    this.privileged = (this.signedIn && 
+      JSON.parse(localStorage.getItem('userData')).role !== 'ROLE_USER') ? true : false;
   }
 
 

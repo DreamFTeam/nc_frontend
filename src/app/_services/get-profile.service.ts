@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
+import { Observable, of,  } from 'rxjs';
 import { Profile } from '../_models/profile';
 import { catchError } from 'rxjs/operators';
 
@@ -27,7 +27,6 @@ export class GetProfileService {
 
   public static getCurrentProfile(): string {
     return JSON.parse(localStorage.getItem('userData')).username;
-
   }
 
 
