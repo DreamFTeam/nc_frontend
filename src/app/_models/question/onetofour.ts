@@ -11,11 +11,11 @@ export class OneToFour implements Question{
     typeId: number;
 
     answers: string[] = [];
-    rightAnswers: string[] = [];
+    rightAnswers: boolean[] = [];
     
     constructor(id: string, title: string, content: string,
          image: string, points: number, quizId: string, typeId: number,
-         answers: string[], rightAnswers: string[]) {
+         answers: string[], rightAnswers: boolean[]) {
             this.id = id;
             this.title = title;
             this.content = content;

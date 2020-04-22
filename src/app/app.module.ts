@@ -26,6 +26,7 @@ const appRoutes: Routes =[
     { path: 'log-in', component: LogInComponent },
     { path: 'sign-up', component: SignUpComponent },
     { path: 'forgot-pass', component: RecoverPasswordComponent },
+    { path: 'quiz/:id', component: QuizComponent},
     { path: 'quiz', component: QuizComponent}
 ];
 
@@ -51,7 +52,8 @@ const appRoutes: Routes =[
     RouterModule.forRoot(appRoutes),
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule   
   ],
   providers: [AuthenticationService],
   bootstrap: [AppComponent]

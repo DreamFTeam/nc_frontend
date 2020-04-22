@@ -6,6 +6,8 @@ import { TrueFalse } from '../_models/question/truefalse';
 import { OpenAnswer } from '../_models/question/openanswer';
 import { SequenceAnswer } from '../_models/question/sequenceanswer';
 import { QuizService } from '../_services/quiz.service';
+import { Router, ActivatedRoute } from '@angular/router';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-quiz',
@@ -13,7 +15,7 @@ import { QuizService } from '../_services/quiz.service';
   styleUrls: ['./quiz.component.css']
 })
 export class QuizComponent implements OnInit {
-  counter: number = 0;
+  lockedButtons: boolean = true;
   quiz: Quiz = {
     id: "",
     title: "",
@@ -31,58 +33,101 @@ export class QuizComponent implements OnInit {
     published: false,
 
   };
-  questions: Question[] = [];
+  questions: Question[];
+  question: Question = new OneToFour("","","","",0,this.quiz.id,1,["",""],[false,false]);
 
-  constructor(private quizService: QuizService) { }
-
-  ngOnInit(): void {}
-
-  public createQuiz(){
-    //TODO: validation
-
-    console.log(this.quiz);
-    this.quizService.createQuiz(this.quiz);
+  constructor(private quizService: QuizService, private activateRoute: ActivatedRoute, private router: Router) { 
+    this.activateRoute.paramMap.pipe(
+      switchMap(params => params.getAll('id')))
+     .subscribe(data => 
+      this.quizService.getQuiz(data).subscribe(ans => this.mapGettedQuiz(ans),
+       err => this.getEditQuizErr(err))); 
   }
 
-  public add() {
-      //this.questions.push(new OneToFour( this.counter++,"",[],[]));
+  ngOnInit(): void {
+    
+  }
+
+
+  //Save(create) quiz button
+  createQuiz(){
+    //TODO: validation
+    let error;
+    let answer;
+    console.log(this.quiz);
+    this.quizService.createQuiz(this.quiz).subscribe(ans =>this.mapCreatedQuiz(ans),err => this.getCreatedErr(err));
+  }
+
+
+  //Get id of created quiz
+  mapCreatedQuiz(ans){
+    this.quiz.id = ans.id;
+    console.log(this.quiz);
+    this.router.navigate(['/quiz/'+this.quiz.id]);
+  }
+
+
+  //Gettig quiz by id in url
+  mapGettedQuiz(answer){
+    this.quiz.id=answer.id;
+    this.quiz.title=answer.title;
+    this.quiz.description=answer.description;
+    this.quiz.imageReference=answer.imageRef;
+    this.quiz.quizLanguage=answer.language;
+    //TODO: map tags and categs
+    this.lockedButtons=false;
+    
+  }
+
+  //Created quiz error
+  getCreatedErr(err){
+    alert("Quiz cannot be created: "+err.error.message);
+  }
+
+  //Cannot get quiz or id is empty
+  getEditQuizErr(err){
+    this.lockedButtons=false;
+  }
+
+  saveQuestion() {
+      
   }
 
   public publish() {
-    alert('publish');
+    if(this.questions.length > 0) {
+      //TODO: publish with service
+    }
   }
 
-  onChange(deviceValue, id) {
+  onChange(deviceValue) {
     console.log(deviceValue);
     
 
     switch(deviceValue) { 
       case "1": { 
-       // this.questions.splice(id,1,new OneToFour(id,"",[],[]));
+         this.question = new OneToFour("","","","",0,this.quiz.id,1,["",""],[]);
          break; 
       } 
       case "2": { 
-      //  this.questions.splice(id,1,new TrueFalse(id,"",false));
+         this.question = new TrueFalse("","","","",0,this.quiz.id,1,"False","True");
          break; 
       } 
       case "3": {
-      //  this.questions.splice(id,1,new OpenAnswer(id,"","")); 
+         this.question = new OpenAnswer("","","","",0,this.quiz.id,1,"");
          break; 
       } 
-      case "4": { 
-       // this.questions.splice(id,1,new SequenceAnswer(id,"",[]));
+      case "4": {     
+        this.question = new SequenceAnswer("","","","",0,this.quiz.id,1,["","",""]);
         break; 
      } 
    }
   }
 
-  removeQuestion(id){
-    this.questions.splice(id,1);
+  removeQuestion(){
   }
 
-  uploadImage(id){
-    this.questions[id].image="image";
-    console.log(this.questions[id]);
+  uploadImage(){
+    this.question.image="image";
   }
 
   quizImage(){
@@ -93,6 +138,9 @@ export class QuizComponent implements OnInit {
   isTrueFalse(val) { return  val instanceof TrueFalse; }
   isOpenAnswer(val) { return  val instanceof OpenAnswer; }
   isSequenceAnswer(val) { return  val instanceof SequenceAnswer; }
-  canIAddMore(){ return this.counter < 20; }
+  isQuizCreated(){ return this.quiz.id !== ""; }
+  isButtonLocked(){
+    return !this.isQuizCreated() && this.lockedButtons;
+  }
 
 }

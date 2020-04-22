@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import { Quiz } from '../_models/quiz';
 import { User } from '../_models/user';
 import { OneToFour } from '../_models/question/onetofour';
@@ -12,7 +12,7 @@ import { OneToFour } from '../_models/question/onetofour';
 export class QuizService {
   private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
-  url = `https://qznetbc.herokuapp.com/api/quiz/`;
+  url = `http://localhost:8081/api/quiz/`;
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'
@@ -30,7 +30,7 @@ export class QuizService {
   }
   
 
-  createQuiz(quiz: Quiz){
+  createQuiz(quiz: Quiz) : Observable<Quiz> {
     const quizInfo = {
       title: quiz.title,
       creatorId: "0a1e57ac-cf6c-49fe-893a-7770183310be",
@@ -40,9 +40,15 @@ export class QuizService {
       tagList: quiz.tags,
       categoryList: quiz.category
     };
-    return this.http.post<Quiz>(this.url + 'create', JSON.stringify(quizInfo), this.httpOptions).pipe(
-      catchError(this.handleError<Quiz>('quizcreate'))
-    );
+
+    return this.http.post<Quiz>(this.url + 'create', JSON.stringify(quizInfo), this.httpOptions)
+  }
+
+  getQuiz(quizId: string) : Observable<Quiz> {
+
+    let params = new HttpParams().set('quizId', quizId).set('userId', "0a1e57ac-cf6c-49fe-893a-7770183310be");
+
+    return this.http.get<Quiz>(this.url + 'get', {params: params});
   }
 
   editQuiz(quiz: Quiz){

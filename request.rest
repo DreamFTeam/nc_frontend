@@ -37,6 +37,18 @@ Content-Type: application/json
   "language":"ru",
   "description":"QQQ",
   "imageRef":"url:SSQQQQ",
-  "tagList": [],
-  "categoryList":[]
+  "tagList": ["c03a2080-d447-4bde-be2e-6f22c6ebee63"],
+  "categoryList":["3b338765-c75d-40e2-9ab0-789738acd07a"],
+  "published": false
 }
+
+###
+
+GET http://localhost:8081/api/quiz/get?userId=0a1e57ac-cf6c-49fe-893a-7770183310be&quizId=2884f95f-ce2c-45a1-ac31-395ea33511ca
+Content-Type: application/json
+
+{
+  "userId":"0a1e57ac-cf6c-49fe-893a-7770183310be",
+  "quizId":"2884f95f-ce2c-45a1-ac31-395ea33511ca"
+}
+

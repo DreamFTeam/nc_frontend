@@ -1,14 +1,12 @@
-<div class="grid-container">
-    <div class="grid-item">Answer:</div>
-    <div class="grid-item"><input style="width: 100%;" id="title" type="text"  [(ngModel)]="question.answers[0]"></div>
-    <div class="grid-item"><input type="checkbox" [(ngModel)]="question.rightAnswers[0]"></div>
-    <div class="grid-item">Answer:</div>
-    <div class="grid-item"><input style="width: 100%;" id="title" type="text"  [(ngModel)]="question.answers[1]"></div>
-    <div class="grid-item"><input type="checkbox" [(ngModel)]="question.rightAnswers[1]"></div>
-    <div class="grid-item">Answer:</div>
-    <div class="grid-item"><input style="width: 100%;" id="title" type="text"  [(ngModel)]="question.answers[2]"></div>
-    <div class="grid-item"><input type="checkbox" [(ngModel)]="question.rightAnswers[2]"></div>
-    <div class="grid-item">Answer:</div>
-    <div class="grid-item"><input style="width: 100%;" id="title" type="text"  [(ngModel)]="question.answers[3]"></div>
-    <div class="grid-item"><input type="checkbox" [(ngModel)]="question.rightAnswers[3]"></div>
+<div *ngFor="let answer of question.answers; let i = index; trackBy: trackByFn" class="grid-container">
+  <div class="grid-item">
+    <button *ngIf="isRemovable()" class="remb" (click)="removeAnswer(i)">
+      <img src="../assets/img/close-button.png">
+    </button>
   </div>
+  <div class="grid-item">
+    <input style="width: 100%;"  [(ngModel)]="question.answers[i]">
+  </div>
+  <div class="grid-item"><input type="checkbox" [(ngModel)]="question.rightAnswers[i]"></div>
+</div>
+<button *ngIf="isLimitReached()" class="addb" (click)="addAnswer()"><img src="../assets/img/plus.png"></button>
