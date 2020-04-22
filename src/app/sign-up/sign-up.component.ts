@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {AuthenticationService} from '../_services/authentication.service';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
@@ -9,9 +9,12 @@ import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./sign-up.component.css']
 })
 
-export class SignUpComponent {
-  constructor(private _router: Router,
-              private authenticationService: AuthenticationService,
+export class SignUpComponent implements OnInit {
+
+  isSent: boolean;
+  loading: boolean;
+
+  constructor(private authenticationService: AuthenticationService,
               public activeModal: NgbActiveModal) {
   }
 
@@ -19,7 +22,7 @@ export class SignUpComponent {
   email: string;
   password: string;
   confirmPassword: string;
-
+  message: string;
   signUp() {
     if (this.username == '' || this.username == null) {
       alert('Enter the username!');
@@ -43,9 +46,23 @@ export class SignUpComponent {
     }
     /*Code for comunication with back-end*/
     this.authenticationService.signupUser(this.username, this.email, this.password)
-      .subscribe(
-        // TODO smth
+      .subscribe(n => {
+          if (n) {
+            this.isSent = true;
+          }
+        },
+        err => {
+          this.message = err.error.message;
+          this.loading = false;
+        }
       );
+    this.loading = true;
+
+  }
+
+  ngOnInit(): void {
+    this.isSent = false;
+    this.loading = false;
   }
 
 

@@ -1,5 +1,8 @@
-<div class="row-cols-2">
-  <button class="close-btn" type="button" name="button" (click)="activeModal.dismiss('Cross click')" ><img src="../assets/img/close-button.jpg"></button>
+<div class="row-cols-2" *ngIf="!isSent">
+  <button class="close-btn"
+          type="button"
+          name="button"
+          (click)="activeModal.dismiss('Cross click')"><img src="../assets/img/close-button.jpg"></button>
 <div class="part col ml-2" id="left">
   <span class="join-header"><b>Join QUIZNET</b></span><br>
   <span> Hello, welcome to our community of like-minded people!<br><br>
@@ -13,19 +16,38 @@
   <div>
     <span class="text">Username</span><br>
     <input type="text" name="username" size=30px [(ngModel)]="username" pattern="[a-zA-Z]+" #nameref="ngModel"/><br>
-    <div *ngIf="nameref.errors &&(nameref.touched || nameref.dirty)" class ="alert alert-danger">
+    <div *ngIf="nameref.errors &&(nameref.touched || nameref.dirty)" class="alert alert-danger">
       <div [hidden]="!nameref.errors?.pattern">Invalid username!</div>
     </div>
     <span class="text">Email</span><br>
-    <input type="email" name="email" id="email" size=30px [(ngModel)]="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" #emailref="ngModel"/><br>
-    <div *ngIf="emailref.errors &&(emailref.touched || emailref.dirty)" class ="alert alert-danger">
+    <input type="email"
+           name="email"
+           id="email"
+           size=30px
+           [(ngModel)]="email"
+           pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+           #emailref="ngModel"/><br>
+    <div *ngIf="emailref.errors &&(emailref.touched || emailref.dirty)" class="alert alert-danger">
       <div [hidden]="!emailref.errors?.pattern">Invalid email!</div>
     </div>
     <span class="text">Password</span><br>
     <input type="password" name="password" size=30px [(ngModel)]="password"/><br>
     <span class="text">Confirm password</span><br>
     <input type="password" name="confirm-password" size=30px [(ngModel)]="confirmPassword"/><br><br>
-    <button type="button" class="btn btn-primary btn-lg" (click)="signUp()"><span class="text">Sign Up</span></button><br>
+    <button type="button" [disabled]="loading" class="btn btn-primary btn-lg" (click)="signUp()">
+      <span class="text">Sign Up</span>
+      <span *ngIf="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+      <span *ngIf="loading" class="sr-only">Loading...</span>
+    </button><br>
+  <p class="m-3 alert-danger">{{message}}</p>
   </div><br>
 </div>
+</div>
+
+<div *ngIf="isSent">
+  <button class="close-btn"
+          type="button"
+          name="button"
+          (click)="activeModal.dismiss('Cross click')"><img src="../assets/img/close-button.jpg"></button>
+  <p class="m-3">Check your email!</p>
 </div>

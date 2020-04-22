@@ -12,10 +12,11 @@ import {environment} from '../../environments/environment';
 export class AuthenticationService {
   private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
-  usersUrl = `${environment.apiUrl}users/`;
+  usersUrl = `${environment.apiUrl}`;
   httpOptions = {
     headers: new HttpHeaders({
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      observe : 'response'
     })
   };
 
@@ -35,14 +36,13 @@ export class AuthenticationService {
       email: login,
       password
     };
-    return this.http.post<User>(this.usersUrl + 'login', JSON.stringify(userInfo), this.httpOptions).pipe(
+    return this.http.post<User>(this.usersUrl + 'log-in', JSON.stringify(userInfo), this.httpOptions).pipe(
       map(data => {
         const token: User = data;
         localStorage.setItem('userData', JSON.stringify(token));
         this.currentUserSubject.next(token);
         return token;
-      }),
-      catchError(this.handleError<User>('loginUser'))
+      })
     );
   }
 
@@ -53,20 +53,26 @@ export class AuthenticationService {
       password,
       email
     };
-    return this.http.post<User>(this.usersUrl + 'register', JSON.stringify(userInfo), this.httpOptions).pipe(
-      catchError(this.handleError<User>('signupUser'))
-    );
+    return this.http.post<User>(this.usersUrl + 'sign-up', JSON.stringify(userInfo), this.httpOptions);
   }
 
   /* POST: recover password */
-  recoverPassword( email: string): void {
+  recoverPassword( email: string): Observable<any> {
     const userInfo = {
       email
     };
-    throwError('Backend is not ready'); // DELETE WHEN THE backend recover password WILL BE IMPLEMENTED
-    this.http.post<User>(this.usersUrl + 'recoverpass', JSON.stringify(userInfo), this.httpOptions).pipe(
+    return this.http.post<User>(this.usersUrl + 'recovery/send', JSON.stringify(userInfo), this.httpOptions).pipe(
       catchError(this.handleError<User>('recoverPassword'))
     );
+  }
+
+  /* POST: change password */
+  changePassword(recoverUrl: string, password: string): Observable<any> {
+    const userInfo = {
+      recoverUrl,
+      password
+    };
+    return this.http.post(this.usersUrl + 'recovery/changePassword', JSON.stringify(userInfo), this.httpOptions);
   }
 
 
@@ -91,5 +97,9 @@ export class AuthenticationService {
 
       return of(result as T);
     };
+  }
+
+  private extractData(res: Response) {
+    return res || { };
   }
 }

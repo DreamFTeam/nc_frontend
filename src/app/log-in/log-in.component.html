@@ -5,6 +5,11 @@
   <input type="email" name="email" size=30px [(ngModel)]="email"/><br>
   <span class="text">Password</span><br>
   <input type="password" name="password" size=30px [(ngModel)]="password"/><br><br>
-  <span class="link"><a href="./forgot-pass">Forgot your password?</a></span><br><br>
-  <button type="button" class="btn btn-primary" (click)="logIn()"><span class="text">Log In</span></button><br><br>
+  <span class="link"><a (click)="openRecover()">Forgot your password?</a></span><br><br>
+  <button type="button" [disabled]="loading" class="btn btn-primary" (click)="logIn()">
+    <span class="text">Log In</span>
+    <span *ngIf="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+    <span *ngIf="loading" class="sr-only">Loading...</span>
+  </button><br><br>
+  <p class="m-3 alert-danger">{{message}}</p>
 </div>
