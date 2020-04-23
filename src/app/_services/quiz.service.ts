@@ -12,7 +12,7 @@ import { OneToFour } from '../_models/question/onetofour';
 export class QuizService {
   private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
-  url = `https://qznetbc.herokuapp.com/api/quiz/`;
+  url = `http://localhost:8081/api/quiz/`;
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'

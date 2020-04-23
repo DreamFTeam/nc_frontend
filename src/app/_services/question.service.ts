@@ -14,7 +14,7 @@ import { SequenceAnswer } from '../_models/question/sequenceanswer';
 export class QuestionService {
   private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
-  url = `https://qznetbc.herokuapp.com/api/quiz/`;
+  url = `http://localhost:8081/api/quiz/`;
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'
