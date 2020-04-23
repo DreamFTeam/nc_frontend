@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { QuizPreview } from '../_models/quiz-preview';
+import { QUIZZES } from './fakequiz';
 
 @Component({
   selector: 'app-quiz-list',
@@ -7,9 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class QuizListComponent implements OnInit {
 
+  quizList: QuizPreview[] = QUIZZES;
+
   constructor() { }
 
   ngOnInit(): void {
+
   }
 
 }
