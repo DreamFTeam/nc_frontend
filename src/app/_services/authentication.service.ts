@@ -1,9 +1,9 @@
-import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
-import {User} from '../_models/user';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {catchError, map} from 'rxjs/operators';
-import {environment} from '../../environments/environment';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
+import { User } from '../_models/user';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { catchError, map } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
 
 @Injectable({

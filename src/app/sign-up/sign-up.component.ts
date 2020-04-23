@@ -15,7 +15,7 @@ export class SignUpComponent implements OnInit {
   loading: boolean;
 
   constructor(private authenticationService: AuthenticationService,
-              public activeModal: NgbActiveModal) {
+              public activeModal: NgbActiveModal, private _router: Router) {
   }
 
   username: string;

@@ -23,6 +23,11 @@ import { OneOfFourComponent } from './one-of-four/one-of-four.component';
 import { OpenAnswerComponent } from './open-answer/open-answer.component';
 import { EditQuestionComponent } from './edit-question/edit-question.component';
 import { ViewQuizComponent } from './view-quiz/view-quiz.component';
+import { ProfileComponent } from './profile/profile.component';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import { UsersComponent } from './users/users.component';
+import { PrivilegedProfileComponent } from './privileged-profile/privileged-profile.component';
+import { CreatePrivilegedComponent } from './create-privileged/create-privileged.component';
 
 const appRoutes: Routes =[
     {path: '', component: LandingPageComponent},
@@ -30,10 +35,16 @@ const appRoutes: Routes =[
     { path: 'quizedit/:id', component: QuizComponent},
     { path: 'quizcreate', component: QuizComponent},
     { path: 'viewquiz/:id', component: ViewQuizComponent},
+    { path: 'profile/:username', component: ProfileComponent },
+    { path: 'profile', component: ProfileComponent },
+    { path: 'editprofile', component: EditProfileComponent},
+    { path: 'users', component: UsersComponent },
+    {path: 'privileged/main', component:PrivilegedProfileComponent },
     {path: '**', redirectTo: ''},
 
 ];
 
+];
 @NgModule({
   declarations: [
     AppComponent,
@@ -50,8 +61,12 @@ const appRoutes: Routes =[
     EditQuestionComponent,
     ViewQuizComponent,
     NavBarComponent,
-    ChangePasswordComponent
-  ],
+    ChangePasswordComponent,
+    ProfileComponent,
+    UsersComponent,
+    EditProfileComponent,
+    PrivilegedProfileComponent,
+    CreatePrivilegedComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

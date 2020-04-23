@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 import {Component} from '@angular/core';
 import {AuthenticationService} from '../_services/authentication.service';
 import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {RecoverPasswordComponent} from '../recover-password/recover-password.component';
+=======
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthenticationService } from '../_services/authentication.service';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+>>>>>>> b9ecbac7eba0e24ee35883cdd4ac65a1ce99ef31
 
 @Component({
   selector: 'app-log-in',
@@ -9,9 +16,15 @@ import {RecoverPasswordComponent} from '../recover-password/recover-password.com
   styleUrls: ['./log-in.component.css']
 })
 export class LogInComponent {
+<<<<<<< HEAD
   constructor(private authenticationService: AuthenticationService,
               public activeModal: NgbActiveModal,
               private modalService: NgbModal) {
+=======
+  constructor(private _router: Router,
+    private authenticationService: AuthenticationService,
+    public activeModal: NgbActiveModal) {
+>>>>>>> b9ecbac7eba0e24ee35883cdd4ac65a1ce99ef31
   }
 
   email = '';
@@ -21,14 +34,15 @@ export class LogInComponent {
 
 
   logIn() {
-    if (this.email == '' || this.email == null) {
+    if (this.email === '' || this.email == null) {
       alert('Enter the email or username!');
       return;
     }
-    if (this.password == '' || this.password == null) {
+    if (this.password === '' || this.password == null) {
       alert('Enter the password!');
       return;
     }
+
     /*Code for comunication with back-end*/
     this.authenticationService.loginUser(this.email, this.password)
       .subscribe(n => {
@@ -52,5 +66,11 @@ export class LogInComponent {
   openRecover() {
     this.activeModal.dismiss();
     const modalRef = this.modalService.open(RecoverPasswordComponent);
+    this.authenticationService.loginUser(this.email, this.password).pipe()
+      .subscribe(n => {
+        this.activeModal.dismiss('Cross click');
+        window.location.reload();
+      }
+      );
   }
 }
