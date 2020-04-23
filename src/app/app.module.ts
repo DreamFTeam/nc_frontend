@@ -20,6 +20,7 @@ import { SeqOptionsComponent } from './seq-options/seq-options.component';
 import { OneOfFourComponent } from './one-of-four/one-of-four.component';
 import { OpenAnswerComponent } from './open-answer/open-answer.component';
 import { EditQuestionComponent } from './edit-question/edit-question.component';
+import { ViewQuizComponent } from './view-quiz/view-quiz.component';
 
 const appRoutes: Routes =[
     { path: '', component: LandingPageComponent },
@@ -27,7 +28,8 @@ const appRoutes: Routes =[
     { path: 'sign-up', component: SignUpComponent },
     { path: 'forgot-pass', component: RecoverPasswordComponent },
     { path: 'quiz/:id', component: QuizComponent},
-    { path: 'quiz', component: QuizComponent}
+    { path: 'quiz', component: QuizComponent},
+    { path: 'viewquiz/:id', component: ViewQuizComponent}
 ];
 
 @NgModule({
@@ -44,6 +46,7 @@ const appRoutes: Routes =[
     OneOfFourComponent,
     OpenAnswerComponent,
     EditQuestionComponent,
+    ViewQuizComponent,
   ],
   imports: [
     BrowserModule,

@@ -37,10 +37,19 @@
                 </div>
             </div>
         </div>
+        
+        
 
         <div id="buttons">
             <div *ngIf="isButtonLocked() == false" class="button b1 font-base" style="float: left;" (click)="createQuiz()" >Save quiz</div>
             <div class="button b2 font-base" style="float: left;" (click)="publish()">Publish quiz</div>
+        </div>
+
+        <div style="float: none">
+            <div *ngFor="let question of questions; let i = index">
+                <button (click)="showAnswer(i)">{{i}}</button>
+            </div>
+            <button (click)="addNewQuestion()">+</button>
         </div>
         
 </div>

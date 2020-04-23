@@ -12,7 +12,7 @@ import { OneToFour } from '../_models/question/onetofour';
 export class QuizService {
   private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
-  url = `http://localhost:8081/api/quiz/`;
+  url = `https://qznetbc.herokuapp.com/api/quiz/`;
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'
@@ -27,6 +27,23 @@ export class QuizService {
 
   public currentUserValue(): User {
     return this.currentUserSubject.value;
+  }
+
+  saveQuiz(quiz: Quiz) : Observable<Quiz>{
+    const quizInfo = {
+      title: quiz.title,
+      quizId: quiz.id,
+      creatorId: "0a1e57ac-cf6c-49fe-893a-7770183310be",
+      newTitle: quiz.title,
+      newLanguage: quiz.quizLanguage,
+      newDescription: quiz.description,
+      newImageRef: quiz.imageReference,
+      newTagList: quiz.tags,
+      newCategoryList: quiz.category
+    };
+
+    console.log(quizInfo);
+    return this.http.post<Quiz>(this.url + 'edit', JSON.stringify(quizInfo), this.httpOptions)
   }
   
 
@@ -78,23 +95,6 @@ export class QuizService {
     // );
   }
 
-
-  // 1st type quest:
-  // {
-  //   "quizId":"8",
-  //   "title":"title",
-  //   "content":"cnt",
-  //   "points":"100",
-  //   "typeId": "1",
-  //   "rightOptions": [
-  //     "answ0",
-  //     "answ1"
-  //   ],
-  //   "otherOptions": [
-  //     "answ2",
-  //     "answ3"
-  //   ]
-  // }
   
 
 }

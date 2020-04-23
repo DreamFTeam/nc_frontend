@@ -16,7 +16,7 @@ import { QuestionService } from '../_services/question.service';
   styleUrls: ['./quiz.component.css']
 })
 export class QuizComponent implements OnInit {
-  lockedButtons: boolean = true;
+  lockedButtons: boolean = false;  //TODO: logic
   quiz: Quiz = {
     id: "",
     title: "",
@@ -34,16 +34,15 @@ export class QuizComponent implements OnInit {
     published: false,
 
   };
-  questions: Question[];
+  questions: Question[] = [];
   question: Question = new OneToFour("","","","",0,this.quiz.id,1,["",""],[false,false]);
 
   constructor(private quizService: QuizService, private questionService: QuestionService,
      private activateRoute: ActivatedRoute, private router: Router) { 
     this.activateRoute.paramMap.pipe(
       switchMap(params => params.getAll('id')))
-     .subscribe(data => 
-      this.quizService.getQuiz(data).subscribe(ans => this.mapGettedQuiz(ans),
-       err => this.getEditQuizErr(err))); 
+     .subscribe(data => this.getAllQuiz(data)); 
+    
   }
 
   ngOnInit(): void {
@@ -51,10 +50,22 @@ export class QuizComponent implements OnInit {
   }
 
 
+  getAllQuiz(data){
+    this.questionService.getAllQuestions(data)
+    .subscribe(ans =>this.mapGettedQuestions(ans),err => this.getQuestionsErr(err));
+    this.quizService.getQuiz(data).subscribe(ans => this.mapGettedQuiz(ans),
+       err => this.getEditQuizErr(err))
+  }
+
   //Save(create) quiz button
   createQuiz(){
     //TODO: validation
-    this.quizService.createQuiz(this.quiz).subscribe(ans =>this.mapCreatedQuiz(ans),err => this.getCreatedErr(err));
+    if(this.quiz.id === ""){
+      this.quizService.createQuiz(this.quiz).subscribe(ans =>this.mapCreatedQuiz(ans),err => this.getCreatedErr(err));
+    }else{
+      this.quizService.saveQuiz(this.quiz).subscribe(ans =>console.log(ans),err => console.log(err));
+    }
+    
   }
 
 
@@ -77,13 +88,68 @@ export class QuizComponent implements OnInit {
     //TODO: map tags and categs
     this.lockedButtons=false;
     
+    
   }
 
+  //GET questions of quiz
   mapCreatedQuestion(ans){
     alert("Question created!");
     this.question.id = ans.id;
     console.log(this.question);
     this.questions.push(Object.assign({}, this.question));
+  }
+
+
+
+
+  //Getting questions of quiz
+  mapGettedQuestions(ans){
+    for (let question of ans){
+      console.log(question)
+      if(question.typeId === 1){
+        let rightAnswers: boolean[] = [];
+        for (let i = 0; i < question.otherOptions.length; i++) {
+          rightAnswers.push(false);
+        }
+        for (let i = 0; i < question.rightOptions.length; i++) {
+          rightAnswers.push(true);
+        }
+
+        this.questions.push(new OneToFour(question.id,question.title,question.content,
+          question.image, question.points,question.quizId,question.typeId,
+          question.otherOptions.concat(question.rightOptions),rightAnswers));
+      }
+      if(question.typeId === 2){
+        let otherOption: string;
+        if(question.rightOptions[0]){
+          otherOption = "false";
+        }else{
+          otherOption = "true";
+        }
+
+        this.questions.push(new TrueFalse(question.id,question.title,question.content,
+          question.image, question.points,question.quizId,question.typeId,
+          otherOption,question.rightOptions[0]));
+      }
+      if(question.typeId === 3){
+        this.questions.push(new OpenAnswer(question.id,question.title,question.content,
+          question.image, question.points,question.quizId,question.typeId,
+          question.rightOptions[0]));
+      }
+      if(question.typeId === 4){
+        console.log(question.typeId);
+        this.questions.push(new SequenceAnswer(question.id,question.title,question.content,
+          question.image, question.points,question.quizId,question.typeId,
+          question.rightOptions));
+      }
+    }
+    console.log(this.questions);
+  }
+
+  mapEditedQuestion(ans){
+    alert("Question edited!");
+    this.question.id = ans.id;
+    console.log(this.question);
   }
 
   //Created quiz error
@@ -101,33 +167,60 @@ export class QuizComponent implements OnInit {
     alert("Question could not be created: "+err.error.message);
   }
 
+  getQuestionsErr(err){
+    console.log(err);
+    alert("Questions could not be retrieved: "+err.error.message);
+  }
+
   //Saving question
   saveQuestion() {
     if(this.question.points !== 0){
       if(this.question.title !== "" || this.question.content !== ""){
         if(this.question instanceof OneToFour){
           if(!this.question.answers.includes("") && this.question.rightAnswers.includes(true)){
-            this.questionService.firstType(this.question, this.quiz.id).subscribe(ans => this.mapCreatedQuestion(ans),
+            if(this.question.id === ""){
+              this.questionService.firstType(this.question, this.quiz.id, true).subscribe(ans => this.mapCreatedQuestion(ans),
             err => this.getCreatedQuestionErr(err));
+            }else{
+              this.questionService.firstType(this.question, this.quiz.id, false).subscribe(ans => this.mapEditedQuestion(ans),
+            err => this.getCreatedQuestionErr(err));
+            }
+            
+
           }else{
             alert("No right question or one of questions is empty");
           }
         }
 
         if(this.question instanceof TrueFalse){
-          this.questionService.secondType(this.question, this.quiz.id).subscribe(ans => this.mapCreatedQuestion(ans),
-            err => this.getCreatedQuestionErr(err));
+          if(this.question.id === ""){
+            this.questionService.secondType(this.question, this.quiz.id, true).subscribe(ans => this.mapCreatedQuestion(ans),
+              err => this.getCreatedQuestionErr(err));
+          }else{
+            this.questionService.secondType(this.question, this.quiz.id, false).subscribe(ans => this.mapEditedQuestion(ans),
+              err => this.getCreatedQuestionErr(err));
+          }
         }
 
         if(this.question instanceof OpenAnswer){
-          this.questionService.thirdType(this.question, this.quiz.id).subscribe(ans => this.mapCreatedQuestion(ans),
-            err => this.getCreatedQuestionErr(err));
+          if(this.question.id === ""){
+            this.questionService.thirdType(this.question, this.quiz.id, true).subscribe(ans => this.mapCreatedQuestion(ans),
+              err => this.getCreatedQuestionErr(err));
+          }else{
+            this.questionService.thirdType(this.question, this.quiz.id, false).subscribe(ans => this.mapEditedQuestion(ans),
+              err => this.getCreatedQuestionErr(err));
+          }
         }
 
         if(this.question instanceof SequenceAnswer){
           console.log(this.question);
-          this.questionService.fourthType(this.question, this.quiz.id).subscribe(ans => this.mapCreatedQuestion(ans),
+          if(this.question.id === ""){
+            this.questionService.fourthType(this.question, this.quiz.id, true).subscribe(ans => this.mapCreatedQuestion(ans),
+              err => this.getCreatedQuestionErr(err));
+          }else{
+            this.questionService.fourthType(this.question, this.quiz.id, false).subscribe(ans => this.mapEditedQuestion(ans),
             err => this.getCreatedQuestionErr(err));
+          }
         }
 
       }else{
@@ -137,6 +230,14 @@ export class QuizComponent implements OnInit {
       alert("Points have value of 0");
     }
     
+  }
+
+  addNewQuestion(){
+    this.question = new OneToFour("","","","",0,this.quiz.id,1,["",""],[false,false]);
+  }
+
+  showAnswer(i){
+    this.question = this.questions[i];
   }
 
   public publish() {

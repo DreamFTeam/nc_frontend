@@ -1,6 +1,6 @@
 ###
 
-POST https://qznetbc.herokuapp.com/api/log-in
+POST http://localhost:8081/api/log-in
 Content-Type: application/json
 
 {

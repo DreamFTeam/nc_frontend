@@ -1,0 +1,27 @@
+
+<div class="content" role="main">
+    <div id="create-main" class="div-cont">
+        <div>
+            <div class="left">
+                    <img src="../assets/img/quiz.jpg">
+            </div>
+            <div class="right">
+                <div class="block">
+
+                    <p>Title: {{quiz.title}}</p>              
+                    <p>Created: {{quiz.creationDate}}</p>
+                    <p>Author: {{quiz.creatorId}}</p>
+                    <p>Tags: {{quiz.tags}}</p>
+                    <p>Categories: {{quiz.category}}</p>
+
+                    <p>Description: {{quiz.description}}</p>
+                </div>
+            </div>
+        </div>
+        
+        
+
+        <div id="buttons">
+            <div class="button b1 font-base" style="float: left;" (click)="markAsFavorite()" >Mark as favorite</div>
+        </div>
+</div>

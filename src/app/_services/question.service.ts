@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import { User } from '../_models/user';
 import { OneToFour } from '../_models/question/onetofour';
 import { Question } from '../_models/question/question';
@@ -14,7 +14,7 @@ import { SequenceAnswer } from '../_models/question/sequenceanswer';
 export class QuestionService {
   private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
-  url = `http://localhost:8081/api/quiz/`;
+  url = `https://qznetbc.herokuapp.com/api/quiz/`;
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'
@@ -31,9 +31,19 @@ export class QuestionService {
     return this.currentUserSubject.value;
   }
 
-  firstType(question: OneToFour, quizId: string){
+
+  getAllQuestions(quizId: string){
+    let params = new HttpParams().set('quizId', quizId);
+
+    return this.http.get<Question[]>(this.url + 'getquestionlist', {params: params});
+  }
+
+
+
+  firstType(question: OneToFour, quizId: string, createEdit: boolean){
     const ans = this.firstTypeRightAnswers(question.answers,question.rightAnswers);
     const quizInfo = {
+      id: question.id,
       title: question.title,
       quizId: quizId,
       content: question.content, 
@@ -43,12 +53,19 @@ export class QuestionService {
       otherOptions: ans.answers
     };
     console.log(quizInfo);
-    return this.http.post<Question>(this.url + 'create/question', JSON.stringify(quizInfo), this.httpOptions);
+    if(createEdit){
+      return this.http.post<Question>(this.url + 'create/question', JSON.stringify(quizInfo), this.httpOptions);
+    }else{
+      console.log("edit");
+      return this.http.post<Question>(this.url + 'edit/question', JSON.stringify(quizInfo), this.httpOptions);
+    }
+    
   }
 
 
-  secondType(question: TrueFalse, quizId: string){
+  secondType(question: TrueFalse, quizId: string, createEdit: boolean){
     const quizInfo = {
+      id: question.id,
       title: question.title,
       quizId: quizId,
       content: question.content, 
@@ -58,11 +75,16 @@ export class QuestionService {
       otherOptions: [question.answer]
     };
     console.log(quizInfo);
-    return this.http.post<Question>(this.url + 'create/question', JSON.stringify(quizInfo), this.httpOptions);
+    if(createEdit){
+      return this.http.post<Question>(this.url + 'create/question', JSON.stringify(quizInfo), this.httpOptions);
+    }else{
+      return this.http.post<Question>(this.url + 'edit/question', JSON.stringify(quizInfo), this.httpOptions);
+    }
   }
 
-  thirdType(question: OpenAnswer, quizId: string){
+  thirdType(question: OpenAnswer, quizId: string, createEdit: boolean){
     const quizInfo = {
+      id: question.id,
       title: question.title,
       quizId: quizId,
       content: question.content, 
@@ -72,11 +94,16 @@ export class QuestionService {
       otherOptions: []
     };
     console.log(quizInfo);
-    return this.http.post<Question>(this.url + 'create/question', JSON.stringify(quizInfo), this.httpOptions);
+    if(createEdit){
+      return this.http.post<Question>(this.url + 'create/question', JSON.stringify(quizInfo), this.httpOptions);
+    }else{
+      return this.http.post<Question>(this.url + 'edit/question', JSON.stringify(quizInfo), this.httpOptions);
+    }
   }
 
-  fourthType(question: SequenceAnswer, quizId: string){
+  fourthType(question: SequenceAnswer, quizId: string, createEdit: boolean){
     const quizInfo = {
+      id: question.id,
       title: question.title,
       quizId: quizId,
       content: question.content, 
@@ -86,10 +113,12 @@ export class QuestionService {
       otherOptions: []
     };
     console.log(quizInfo);
-    return this.http.post<Question>(this.url + 'create/question', JSON.stringify(quizInfo), this.httpOptions);
+    if(createEdit){
+      return this.http.post<Question>(this.url + 'create/question', JSON.stringify(quizInfo), this.httpOptions);
+    }else{
+      return this.http.post<Question>(this.url + 'edit/question', JSON.stringify(quizInfo), this.httpOptions);
+    }
   }
-
-
 
   firstTypeRightAnswers(answers: string[], rAnswers: boolean[]){
     let rightAnswers: string[] = [];
