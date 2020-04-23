@@ -2,7 +2,8 @@ import { Component, OnInit, Output } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { GetProfileService } from '../_services/get-profile.service';
 import { PrivilegedService } from '../_services/privileged.service';
-
+import { AuthenticationService } from '../_services/authentication.service';
+import { Quiz } from '../_models/quiz'
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -15,11 +16,14 @@ export class ProfileComponent implements OnInit {
   private username;
   ready: boolean
   owner;
+  quizzes: Quiz[];
 
   constructor(private _router: Router,
     private route: ActivatedRoute,
-    private getProfileService: GetProfileService, 
-    private privilegedService:PrivilegedService) {
+    private getProfileService: GetProfileService,
+    private privilegedService: PrivilegedService,
+    private authenticationService: AuthenticationService,
+  ) {
     this.role = JSON.parse(localStorage.getItem('userData')).role
   }
 
@@ -35,7 +39,11 @@ export class ProfileComponent implements OnInit {
       result => {
         this.profile = result;
         this.setRights();
-        this.ready = true;
+        if (this.profile.role === 'ROLE_USER') {
+          this.getQuizzes();
+        } else {
+          this.ready = true;
+        }
       },
       error => {
         console.error(error.error);
@@ -67,8 +75,8 @@ export class ProfileComponent implements OnInit {
     this._router.navigate(['/editprofile'], { state: { data: this.profile.username } });
   }
 
-  deactivate(bool : boolean){
-    this.privilegedService.deactivate(this.profile.id, bool).subscribe(  result => {
+  deactivate(bool: boolean) {
+    this.privilegedService.deactivate(this.profile.id, bool).subscribe(result => {
       alert('User`s activation status changed');
       window.location.reload();
 
@@ -80,4 +88,22 @@ export class ProfileComponent implements OnInit {
   }
 
 
+  getQuizzes() {
+
+    this.getProfileService.getProfileQuiz(this.profile.id).subscribe(
+      result => {
+        this.quizzes = result;
+        this.ready = true;
+      },
+      error => {
+        console.error(error.error);
+      })
+  }
+
+
+  goToQuiz(id: string) {
+    this._router.navigate(['/quiz/' + id]);
+  }
 }
+
+

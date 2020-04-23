@@ -79,3 +79,41 @@
     display: flex;
     float: left;
   }
+
+  #quizimage {
+    top:20px;
+    left:20px;
+    background: url("../../assets/img/quiz.jpg");
+    border-radius: 8px;
+    width:10vw;
+    height:20vh;
+    background-size: 100%;
+    position: relative;
+    float: left;
+    margin-right: 1vw;
+  }
+
+
+  .quizinfo {
+    top:20px;
+    left:20px;
+    margin:20px;
+    position: relative;
+    font-size: smaller;
+    font-weight: normal;
+  }
+  
+
+  .quizblocks{
+    left:5%;
+  }
+
+  .indquiz{
+    top:20px;
+    min-height:max-content;
+    margin-bottom: 20px;
+  }
+
+  .quizblocks {
+    min-height:max-content;
+  }

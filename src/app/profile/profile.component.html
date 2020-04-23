@@ -20,7 +20,20 @@
       </div>
 
     </div>
-  <div id="quizlist">{{profile?.username}}'s quizzes <span style="display: block;"></span>
+  <div id="quizlist" *ngIf="profile?.role=='ROLE_USER'">{{profile?.username}}'s quizzes <span style="display: block;"></span>
+
+    <div class="quizblocks" *ngFor="let quiz of quizzes">
+      <div class="indquiz">
+        <img id="quizimage">
+        <div class="quizinfo">
+        <a (click)="goToQuiz(quiz.id)" style="text-decoration: underline; user-select: none;"><b>{{quiz.title}}</b></a> <br>
+      Description: {{quiz.description}}<br>
+      Date: {{quiz.creationDate}}<br>
+      Rating: {{quiz.rating}}
+    </div>
+  </div>
+    </div>
+    <div *ngIf="ready && (quizzes == undefined || !quizzes.length)" style="font-size: smaller; color: #31708E;" > No quizzes </div>
   </div>
   </div>
 

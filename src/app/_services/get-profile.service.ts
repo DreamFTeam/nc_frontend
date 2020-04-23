@@ -4,7 +4,7 @@ import { environment } from '../../environments/environment';
 import { Observable, of,  } from 'rxjs';
 import { Profile } from '../_models/profile';
 import { catchError } from 'rxjs/operators';
-
+import {Quiz} from '../_models/quiz'
 
 @Injectable({
   providedIn: 'root'
@@ -52,6 +52,13 @@ export class GetProfileService {
       return this.http.post<Profile>(this.profilesUrl + 'edit/' + field, JSON.stringify(obj)
         , this.httpOptions).pipe(catchError(this.handleError<any>('EditProfile')));
     }
+  }
+
+  
+  public getProfileQuiz(userId: string): Observable<Quiz[]> {
+         return this.http.get<Quiz[]>(`${environment.apiUrl}quiz/` + 'getuserquizlist',
+        { headers: this.httpOptions.headers, params: {userId } }).pipe();
+
   }
 
   private handleError<T>(operation = 'operation', result?: T) {
