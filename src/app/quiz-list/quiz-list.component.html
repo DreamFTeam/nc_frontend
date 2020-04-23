@@ -1,16 +1,15 @@
 <div class="content" role="main">
     <div id="search" class="mainstyle">Search</div>
-    <div id="quizlist" class="grid mainstyle">
-        <div *ngFor="let item of quizList | paginate: { itemsPerPage: pageSize, 
-                                                        currentPage: page, 
-                                                        totalItems: totalSize }" class="quizprev">
-            <img id="pic" src="../../assets/img/quiz.jpg">
-            <!-- [src]="item.image_ref">-->
-            <p>{{item.title}}</p>
-        </div>
-        <pagination-controls class="pagination" (pageChange)="page = $event"></pagination-controls>
 
-        <!--        <div *ngFor="let quiz of quizList" class="quizprev">
+    <div id="quizlist" class="grid mainstyle">
+        <div *ngFor="let item of quizList | paginate: config" class="quizprev">
+            <a routerLink="/viewquiz/{{item.id}}">
+                <img id="pic" src="../../assets/img/quiz.jpg">
+                <!-- [src]="item.image_ref"    (pageChange) = "page = $event">-->
+                <p>{{item.title}}</p>
+            </a>
         </div>
---></div>
+    </div>
+    <pagination-controls class="pagination" (pageChange)="pageChanged($event)"></pagination-controls>
+
 </div>

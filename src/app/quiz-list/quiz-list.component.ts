@@ -11,7 +11,7 @@ const PAGE_SIZE: number = 16;
   styleUrls: ['./quiz-list.component.css']
 })
 export class QuizListComponent implements OnInit {
-  
+  config:any;
   page: number;
   pageSize: number;
   totalSize: number;
@@ -27,17 +27,28 @@ export class QuizListComponent implements OnInit {
   ngOnInit(): void {
     this.page = 1;
     this.getTotalSize();
-    this.getQuizzes();
+    this.getQuizzes(this.page);
+    this.config = {
+        itemsPerPage: PAGE_SIZE,
+        currentPage: 1,
+        totalItems: 32
+    }
+  
   }
 
-  getQuizzes(): void{
-    this.quizListService.getQuizzesByPage(this.page)
+  getQuizzes(p): void{
+    this.quizListService.getQuizzesByPage(p)
       .subscribe(list => this.quizList = list);
   }
 
   getTotalSize(): void{
     this.quizListService.getTotalSize()
       .subscribe(size => this.totalSize = size);
+  }
+
+  pageChanged(event){
+      this.config.currentPage = event;
+      this.getQuizzes(event);
   }
 
 }

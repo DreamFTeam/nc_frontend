@@ -67,7 +67,7 @@
 .content {
     padding-top: 60px;
     width: 100%;
-    min-height: 70em;
+    min-height: 150em;
 }
 
 .pagination .ngx-pagination .current {
