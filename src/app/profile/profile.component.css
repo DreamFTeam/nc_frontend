@@ -74,10 +74,6 @@
   }
 
   #bt {
-    top:14.5vh;
-    height: 8vh;
-    display: flex;
-    float: left;
   }
 
   #quizimage {
@@ -116,4 +112,42 @@
 
   .quizblocks {
     min-height:max-content;
+  }
+
+  #pr {
+    padding:10px;
+    font-size: 20px;
+    font-weight: bold;
+    position: relative;
+    border-radius: 8px;
+    left:20%;
+    width:60%;
+    top:40px;
+    background-color:#F7F9FB;
+    height: 20vh;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  }
+
+  #bt {
+    display: grid;
+    top:0;
+    float:left;
+  }
+
+  #btupgr {
+    display: grid;
+    top:0;
+    left:20px;
+    width: fit-content;
+    position: relative;
+    float:left;
+
+  }
+
+  #btdowngr {
+    display: grid;
+    top:0;
+    left:20px;
+    width: fit-content;
+
   }

@@ -16,9 +16,13 @@
       <ng-template #lastseen > <h3 style="color:#31708E;" *ngIf="profile?.lastTimeOnline"> Last seen on {{profile?.lastTimeOnline  |  date:'medium'}} </h3> </ng-template>
       <h3 *ngIf="profile?.aboutMe">{{profile?.aboutMe}}
         </h3>
-        <a *ngIf="owner && privileged && profile.activated" class="btn btn-users" id="bt" (click)="deactivate(false)">Deactivate </a>
       </div>
+    </div>
 
+    <div id="pr" *ngIf="owner && privileged && profile.activated &&  role!= this.profile.role" > 
+      <a id="bt" class="btn btn-users"  (click)="deactivate(false)">Deactivate </a>
+      <a id="btupgr"  *ngIf="this.profile.role!='ROLE_ADMIN'" class="btn btn-users"  (click)="editAdmin(true)">Upgrade to Admin </a>
+      <a id="btdowngr" *ngIf="this.profile.role!='ROLE_MODERATOR'" class="btn btn-users"  (click)="editAdmin(false)">Downgrade to Moderator </a>
     </div>
   <div id="quizlist" *ngIf="profile?.role=='ROLE_USER'">{{profile?.username}}'s quizzes <span style="display: block;"></span>
 

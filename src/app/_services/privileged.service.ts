@@ -49,5 +49,17 @@ export class PrivilegedService {
   }
 
 
+
+  public edit(id: string, higher: boolean): Observable<any> {
+    const userInfo = {
+      id,
+      role: higher ? 'ROLE_ADMIN' : 'ROLE_MODERATOR'
+    };
+    return this.http.post<User>(this.url + '/edit/' + 'role', JSON.stringify(userInfo), this.httpOptions).pipe(
+      catchError(err => {
+        return throwError(err);
+    }))
+  }
+
 }
 

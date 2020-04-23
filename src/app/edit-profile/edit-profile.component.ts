@@ -42,7 +42,7 @@ export class EditProfileComponent implements OnInit {
 
 
   saveProfile() {
-    if (this.newAboutMe !== undefined && this.newAboutMe !== this.profile.aboutMe) {
+  if ((this.profile.role == 'ROLE_USER' || this.profile.role == 'ROLE_SUPERADMIN') && this.newAboutMe !== undefined && this.newAboutMe !== this.profile.aboutMe) {
       this.getProfileService.editProfile('aboutMe', this.newAboutMe).subscribe(
         result => {
           this._router.navigate(['/profile']);

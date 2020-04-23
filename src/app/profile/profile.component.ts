@@ -75,6 +75,18 @@ export class ProfileComponent implements OnInit {
     this._router.navigate(['/editprofile'], { state: { data: this.profile.username } });
   }
 
+  editAdmin(higher: boolean) {
+    this.privilegedService.edit(this.profile.id, higher).subscribe(result => {
+      alert('Privileges have been changed');
+      window.location.reload();
+
+    },
+      error => {
+        console.log(error)
+        alert('An error occured, try again');
+      });
+  }
+
   deactivate(bool: boolean) {
     this.privilegedService.deactivate(this.profile.id, bool).subscribe(result => {
       alert('User`s activation status changed');
