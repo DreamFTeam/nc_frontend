@@ -1,5 +1,5 @@
 export interface QuizPreview {
-    id: string;
+    quiz_id: string;
     title: string;
-    imageReference: string;
+    image_ref: string;
 }

@@ -21,6 +21,8 @@ import { OneOfFourComponent } from './one-of-four/one-of-four.component';
 import { OpenAnswerComponent } from './open-answer/open-answer.component';
 import { EditQuestionComponent } from './edit-question/edit-question.component';
 import { QuizListComponent } from './quiz-list/quiz-list.component';
+import { QuizListService } from './_services/quiz-list.service';
+import {NgxPaginationModule} from 'ngx-pagination';
 
 const appRoutes: Routes =[
     { path: '', component: LandingPageComponent },
@@ -54,9 +56,10 @@ const appRoutes: Routes =[
     RouterModule.forRoot(appRoutes),
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    HttpClientModule
+    HttpClientModule,
+    NgxPaginationModule
   ],
-  providers: [AuthenticationService],
+  providers: [AuthenticationService, QuizListService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

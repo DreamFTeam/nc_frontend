@@ -69,3 +69,9 @@
     width: 100%;
     min-height: 70em;
 }
+
+.pagination .ngx-pagination .current {
+    background-color: red;
+    align-self: center;
+    width: 10em;
+}
