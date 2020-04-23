@@ -20,7 +20,6 @@ export class QuizListComponent implements OnInit {
   quizList: QuizPreview[];
 
   constructor( private quizListService: QuizListService) { 
-    // this.totalSize = this.quizList.length;
     this.pageSize = PAGE_SIZE;
   }
 
@@ -36,7 +35,7 @@ export class QuizListComponent implements OnInit {
   
   }
 
-  getQuizzes(p): void{
+  getQuizzes(p:number): void{
     this.quizListService.getQuizzesByPage(p)
       .subscribe(list => this.quizList = list);
   }

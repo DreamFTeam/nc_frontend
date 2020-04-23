@@ -22,7 +22,6 @@ export class QuizListService {
   constructor(private http: HttpClient) { }
 
   getQuizzesByPage(pageToSend: number): Observable<QuizPreview[]> {
-    //return of(QUIZZES); - fake
     return this.http.
       get<QuizPreview[]>(this.baseUrl + this.quizListUrl + pageToSend, this.httpOptions).pipe(
         catchError(this.handleError<QuizPreview[]>('getQuizzesByPage', []))
