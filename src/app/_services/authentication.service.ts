@@ -12,7 +12,7 @@ import {environment} from '../../environments/environment';
 export class AuthenticationService {
   private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
-  usersUrl = `https://qznetbc.herokuapp.com/api/users/`;
+  usersUrl = `https://qznetbc.herokuapp.com/api/`;
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',

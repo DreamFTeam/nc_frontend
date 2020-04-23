@@ -12,24 +12,25 @@ import { SequenceAnswer } from '../_models/question/sequenceanswer';
   providedIn: 'root'
 })
 export class QuestionService {
-  private currentUserSubject: BehaviorSubject<User>;
-  public currentUser: Observable<User>;
-  url = `http://localhost:8081/api/quiz/`;
+  url = `https://qznetbc.herokuapp.com/api/quiz/`;
   httpOptions = {
     headers: new HttpHeaders({
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     })
   };
+  user: User;
 
   constructor(private http: HttpClient) {
-    this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('userToken')));
-    this.currentUser = this.currentUserSubject.asObservable();
+    this.user = JSON.parse(localStorage.getItem('userData'));
+    this.httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.user.token
+      })
+    };
     
   }
 
-  public currentUserValue(): User {
-    return this.currentUserSubject.value;
-  }
 
 
   getAllQuestions(quizId: string){
@@ -132,6 +133,17 @@ export class QuestionService {
     }
 
     return {answers: answ, rightAnswers: rightAnswers};
+  }
+
+  deleteQuestion(id: string){
+    const options = {
+      headers: this.httpOptions.headers,
+      body: {
+        id: id
+      },
+    };
+    
+      return this.http.delete<Question>(this.url + 'delete/question',options);
   }
 
   

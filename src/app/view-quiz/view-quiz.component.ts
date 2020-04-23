@@ -59,6 +59,8 @@ export class ViewQuizComponent implements OnInit {
   }
 
   markAsFavorite(){
+    this.quizService.markAsFavorite(this.quiz.id).subscribe(ans => alert("Marked as favorite"),
+       err => console.log(err))
   }
 
 

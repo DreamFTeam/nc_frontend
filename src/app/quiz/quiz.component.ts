@@ -85,8 +85,11 @@ export class QuizComponent implements OnInit {
     this.quiz.description=answer.description;
     this.quiz.imageReference=answer.imageRef;
     this.quiz.quizLanguage=answer.language;
+    this.quiz.published = answer.published;
     //TODO: map tags and categs
     this.lockedButtons=false;
+    console.log(answer);
+    console.log(this.quiz);
     
     
   }
@@ -105,7 +108,6 @@ export class QuizComponent implements OnInit {
   //Getting questions of quiz
   mapGettedQuestions(ans){
     for (let question of ans){
-      console.log(question)
       if(question.typeId === 1){
         let rightAnswers: boolean[] = [];
         for (let i = 0; i < question.otherOptions.length; i++) {
@@ -242,7 +244,9 @@ export class QuizComponent implements OnInit {
 
   public publish() {
     if(this.questions.length > 0) {
-      //TODO: publish with service
+      this.quizService.publishQuiz(this.quiz.id).subscribe(ans =>console.log(ans),err => console.log(err));
+    }else{
+      alert("Quiz could not be witout questions")
     }
   }
 
@@ -271,7 +275,50 @@ export class QuizComponent implements OnInit {
    }
   }
 
+  //Removing questin or clear input
   removeQuestion(){
+    if(this.question.id === ""){
+      this.clearInputs();
+      alert("Inputs cleared");
+    }else{
+      this.questionService.deleteQuestion(this.question.id)
+      .subscribe(ans =>this.removeQuestionSuccess(ans),err => this.removeQuestionErr(err));
+      
+    }
+  }
+
+  removeQuestionSuccess(ans){
+    console.log(ans);
+    const index = this.questions.findIndex(question => question.id === this.question.id); 
+      this.questions.splice(index, 1); 
+      alert("Question removed");
+  }
+
+  removeQuestionErr(err){
+    console.log(err);
+    alert("Could not delete this question");
+  }
+
+
+  private clearInputs(){
+    switch(this.question.typeId){
+      case 1: { 
+        this.question = new OneToFour("","","","",0,this.quiz.id,1,["",""],[]);
+        break; 
+     } 
+     case 2: { 
+        this.question = new TrueFalse("","","","",0,this.quiz.id,1,"true","false");
+        break; 
+     } 
+     case 3: {
+        this.question = new OpenAnswer("","","","",0,this.quiz.id,1,"");
+        break; 
+     } 
+     case 4: {     
+       this.question = new SequenceAnswer("","","","",0,this.quiz.id,1,["","",""]);
+       break; 
+    } 
+    }
   }
 
   uploadImage(){

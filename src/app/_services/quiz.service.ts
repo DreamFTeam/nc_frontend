@@ -1,39 +1,36 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
-import {catchError, map} from 'rxjs/operators';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import { Quiz } from '../_models/quiz';
 import { User } from '../_models/user';
-import { OneToFour } from '../_models/question/onetofour';
+import * as jwt_decode from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
 })
 export class QuizService {
-  private currentUserSubject: BehaviorSubject<User>;
-  public currentUser: Observable<User>;
-  url = `http://localhost:8081/api/quiz/`;
-  httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json'
-    })
-  };
+  url = `https://qznetbc.herokuapp.com/api/quiz/`;
+  httpOptions = {};
+  user: User;
 
   constructor(private http: HttpClient) {
-    this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('userToken')));
-    this.currentUser = this.currentUserSubject.asObservable();
-    
+    this.user = JSON.parse(localStorage.getItem('userData'));
+    this.httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.user.token
+      })
+    };
   }
 
-  public currentUserValue(): User {
-    return this.currentUserSubject.value;
-  }
 
   saveQuiz(quiz: Quiz) : Observable<Quiz>{
+
+
     const quizInfo = {
       title: quiz.title,
       quizId: quiz.id,
-      creatorId: "0a1e57ac-cf6c-49fe-893a-7770183310be",
+      creatorId: jwt_decode(this.user.token).id,
       newTitle: quiz.title,
       newLanguage: quiz.quizLanguage,
       newDescription: quiz.description,
@@ -50,7 +47,7 @@ export class QuizService {
   createQuiz(quiz: Quiz) : Observable<Quiz> {
     const quizInfo = {
       title: quiz.title,
-      creatorId: "0a1e57ac-cf6c-49fe-893a-7770183310be",
+      creatorId: jwt_decode(this.user.token).id,
       language: quiz.quizLanguage,
       description: quiz.description,
       imageRef: quiz.imageReference,
@@ -63,36 +60,27 @@ export class QuizService {
 
   getQuiz(quizId: string) : Observable<Quiz> {
 
-    let params = new HttpParams().set('quizId', quizId).set('userId', "0a1e57ac-cf6c-49fe-893a-7770183310be");
+    let params = new HttpParams().set('quizId', quizId).set('userId', jwt_decode(this.user.token).id);
 
     return this.http.get<Quiz>(this.url + 'get', {params: params});
   }
 
-  editQuiz(quiz: Quiz){
-    // const quizInfo = {
-    //   newTitle: quiz.title,
-    //   quizId: quiz.id,
-    //   creatorId: this.currentUserSubject.value.id,
-    //   newLanguage: quiz.quizLanguage,
-    //   newDescription: quiz.description,
-    //   newImageRef: quiz.imageReference,
-    //   newTagList: quiz.tags,
-    //   newCategoryList: quiz.category
-    // };
-    // return this.http.post<Quiz>(this.url + 'edit', JSON.stringify(quizInfo), this.httpOptions).pipe(
-    //   catchError(this.handleError<Quiz>('quizedit'))
-    // );
+
+  markAsFavorite(id: string){
+    const favoriteInfo = {
+      quizId: id,
+      userId: jwt_decode(this.user.token).id,
+    };
+    return this.http.post<Quiz>(this.url + 'markasfavourite', JSON.stringify(favoriteInfo), this.httpOptions);
   }
 
 
-  markAsFavorite(id: string){
-    // const favoriteInfo = {
-    //   quizId: id,
-    //   userId: this.currentUserSubject.value.id,
-    // };
-    // return this.http.post<Quiz>(this.url + 'markasfavourite', JSON.stringify(favoriteInfo), this.httpOptions).pipe(
-    //   catchError(this.handleError<Quiz>('markasfavorite'))
-    // );
+  publishQuiz(id: string){
+    const quizInfo = {
+      quizId: id
+    };
+
+    return this.http.post<Quiz>(this.url + 'markaspublished', JSON.stringify(quizInfo), this.httpOptions)
   }
 
   

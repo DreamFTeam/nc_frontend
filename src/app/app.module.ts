@@ -25,15 +25,12 @@ import { EditQuestionComponent } from './edit-question/edit-question.component';
 import { ViewQuizComponent } from './view-quiz/view-quiz.component';
 
 const appRoutes: Routes =[
-  {path: '', component: LandingPageComponent},
-  {path: 'recovery', component: ChangePasswordComponent},
-  {path: '**', redirectTo: ''},
-    { path: 'log-in', component: LogInComponent },
-    { path: 'sign-up', component: SignUpComponent },
-    { path: 'forgot-pass', component: RecoverPasswordComponent },
-    { path: 'quiz/:id', component: QuizComponent},
-    { path: 'quiz', component: QuizComponent},
-    { path: 'viewquiz/:id', component: ViewQuizComponent}
+    {path: '', component: LandingPageComponent},
+    {path: 'recovery', component: ChangePasswordComponent},
+    { path: 'quizedit/:id', component: QuizComponent},
+    { path: 'quizcreate', component: QuizComponent},
+    { path: 'viewquiz/:id', component: ViewQuizComponent},
+    {path: '**', redirectTo: ''},
 
 ];
 

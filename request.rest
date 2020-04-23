@@ -52,3 +52,13 @@ Content-Type: application/json
   "quizId":"2884f95f-ce2c-45a1-ac31-395ea33511ca"
 }
 
+###
+
+POST https://qznetbc.herokuapp.com/api/quiz/markasfavourite
+Content-Type: application/json
+
+{
+  "username":"first",
+  "password":"12345"
+}
+
