@@ -43,3 +43,13 @@ img{
     background: #8cc5e6;
     
 }
+
+.grid {
+    display: grid;
+    grid-template-columns: 25% 75%;
+    padding: 10px;
+  }
+  .grid-item {
+    padding: 20px;
+    font-size: 14px;
+  }
