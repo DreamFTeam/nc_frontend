@@ -27,12 +27,6 @@ export class QuizListComponent implements OnInit {
     this.page = 1;
     this.getTotalSize();
     this.getQuizzes(this.page);
-    this.config = {
-        itemsPerPage: PAGE_SIZE,
-        currentPage: 1,
-        totalItems: 32
-    }
-  
   }
 
   getQuizzes(p:number): void{
@@ -45,9 +39,19 @@ export class QuizListComponent implements OnInit {
       .subscribe(size => this.totalSize = size);
   }
 
-  pageChanged(event){
-      this.config.currentPage = event;
-      this.getQuizzes(event);
+  loadPage(event){
+    this.getQuizzes(event);
+    this.scrollToTop();
   }
 
+  scrollToTop(){
+    let scrollToTop = window.setInterval(() => {
+      let pos = window.pageYOffset;
+      if (pos > 0) {
+          window.scrollTo(0, pos - 40);
+      } else {
+          window.clearInterval(scrollToTop);
+      }
+    }, 16);
+  }
 }

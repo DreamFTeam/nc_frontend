@@ -73,16 +73,6 @@
     min-height: 150em;
 }
 
-.pagination-controls {
+.pagination-container {
     width: 100%;
-    text-align: center;
-    margin: 0 auto;
-    padding: 3px;
-    font-size: large;
-    font-weight: bold;
-}
-
-.pagination-inside {
-    display: inline-block;
-    margin: 0 auto;
 }
