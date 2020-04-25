@@ -1,14 +1,8 @@
-<<<<<<< HEAD
 import {Component} from '@angular/core';
 import {AuthenticationService} from '../_services/authentication.service';
 import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {RecoverPasswordComponent} from '../recover-password/recover-password.component';
-=======
-import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthenticationService } from '../_services/authentication.service';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
->>>>>>> b9ecbac7eba0e24ee35883cdd4ac65a1ce99ef31
 
 @Component({
   selector: 'app-log-in',
@@ -16,17 +10,10 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./log-in.component.css']
 })
 export class LogInComponent {
-<<<<<<< HEAD
   constructor(private authenticationService: AuthenticationService,
               public activeModal: NgbActiveModal,
-              private modalService: NgbModal) {
-=======
-  constructor(private _router: Router,
-    private authenticationService: AuthenticationService,
-    public activeModal: NgbActiveModal) {
->>>>>>> b9ecbac7eba0e24ee35883cdd4ac65a1ce99ef31
-  }
-
+              private modalService: NgbModal, private _router: Router) {
+  }l
   email = '';
   password = '';
   loading: boolean;
