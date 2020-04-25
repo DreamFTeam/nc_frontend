@@ -1,6 +1,6 @@
 .grid-container {
     display: grid;
-    grid-template-columns: auto auto auto auto;
+    grid-template-columns: auto auto auto;
     padding: 5px;
   }
   .grid-item {
@@ -14,7 +14,7 @@
 
   button.addb {
 
-    margin-top: 2px;
+    margin: 2px auto auto auto;
     border: 0px;
     background-color: transparent;
   }

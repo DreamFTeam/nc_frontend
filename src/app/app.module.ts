@@ -3,7 +3,6 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {AppRoutingModule} from './app-routing.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-
 import {AppComponent} from './app.component';
 import {RecoverPasswordComponent} from './recover-password/recover-password.component';
 import {LogInComponent} from './log-in/log-in.component';
@@ -24,13 +23,6 @@ import { EditQuestionComponent } from './edit-question/edit-question.component';
 import { ViewQuizComponent } from './view-quiz/view-quiz.component';
 
 const appRoutes: Routes =[
-    {path: '', component: LandingPageComponent},
-    {path: 'recovery', component: ChangePasswordComponent},
-    { path: 'quizedit/:id', component: QuizComponent},
-    { path: 'quizcreate', component: QuizComponent},
-    { path: 'viewquiz/:id', component: ViewQuizComponent},
-    {path: '**', redirectTo: ''},
-
 ];
 
 @NgModule({
