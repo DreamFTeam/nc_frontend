@@ -1,18 +1,17 @@
 <div class="content" role="main">
     <div id="search" class="mainstyle">Search</div>
-
-    <div id="quizlist" class="grid mainstyle">
-        <div *ngFor="let item of quizList | paginate: config" class="quizprev">
-            <a routerLink="/viewquiz/{{item.id}}">
-                <img id="pic" src="../../assets/img/quiz.jpg">
-                <!-- [src]="item.image_ref"    (pageChange) = "page = $event">-->
-                <p>{{item.title}}</p>
-            </a>
+    <div id="quizlist" class="mainstyle">
+        <div class="grid">
+            <div *ngFor="let item of quizList" class="quizprev">
+                <a routerLink="/viewquiz/{{item.id}}">
+                    <img id="pic" src="../../assets/img/quiz.jpg">
+                    <!-- [src]="item.image_ref"    (pageChange) = "page = $event">-->
+                    <p>{{item.title}}</p>
+                </a>
+            </div>
         </div>
-    </div>
-    <div class="pagination-controls mainstyle">
-        <div class="pagination-inside">
-            <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+        <div class="pagination-container">
+            <ngb-pagination class="d-flex justify-content-center" size="lg" [collectionSize]="totalSize" [(page)]="page" [maxSize]="7" [rotate]="true" (pageChange)="loadPage($event)"></ngb-pagination>
         </div>
     </div>
 </div>
