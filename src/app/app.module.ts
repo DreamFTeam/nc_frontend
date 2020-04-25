@@ -13,7 +13,6 @@ import { LandingPageComponent } from './landing-page/landing-page.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {AuthenticationService} from './_services/authentication.service';
 import { HttpClientModule} from '@angular/common/http';
-import { QuizComponent } from './quiz/quiz.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { TrueFalseComponent } from './true-false/true-false.component';
 import { SeqOptionsComponent } from './seq-options/seq-options.component';
@@ -30,7 +29,6 @@ const appRoutes: Routes =[
     { path: 'log-in', component: LogInComponent },
     { path: 'sign-up', component: SignUpComponent },
     { path: 'forgot-pass', component: RecoverPasswordComponent },
-    { path: 'quiz', component: QuizComponent},
     { path: 'quiz-list', component: QuizListComponent}
 ];
 
@@ -41,7 +39,6 @@ const appRoutes: Routes =[
     LogInComponent,
     SignUpComponent,
     LandingPageComponent,
-    QuizComponent,
     NavbarComponent,
     TrueFalseComponent,
     SeqOptionsComponent,
