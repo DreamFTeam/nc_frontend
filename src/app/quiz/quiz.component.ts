@@ -77,7 +77,7 @@ export class QuizComponent implements OnInit {
     alert("Quiz created!");
     this.quiz.id = ans.id;
     console.log(this.quiz);
-    this.router.navigate(['/quiz/'+this.quiz.id]);
+    this.router.navigate(['/quizedit/'+this.quiz.id]);
   }
 
 
@@ -102,10 +102,9 @@ export class QuizComponent implements OnInit {
     alert("Question created!");
     this.question.id = ans.id;
     console.log(this.question);
-    this.questions.push(Object.assign({}, this.question));
+    this.questions.push(Object.create(this.question));
+    
   }
-
-
 
 
   //Getting questions of quiz
@@ -179,7 +178,7 @@ export class QuizComponent implements OnInit {
 
   //Saving question
   saveQuestion() {
-    if(this.question.points !== 0){
+    if(this.question.points > 0){
       if(this.question.title !== "" || this.question.content !== ""){
         if(this.question instanceof OneToFour){
           if(!this.question.answers.includes("") && this.question.rightAnswers.includes(true)){
@@ -232,7 +231,7 @@ export class QuizComponent implements OnInit {
         alert("Title or content is empty");
       }  
     }else{
-      alert("Points have value of 0");
+      alert("Points can`t be zero, negative or not numeric");
     }
     
   }

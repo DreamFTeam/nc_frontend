@@ -5,7 +5,7 @@
     </button>
   </div>
   <div class="grid-item">
-    <input style="width: 100%;"  [(ngModel)]="question.answers[i]">
+    <input style="width: 100%;"  [(ngModel)]="question.answers[i]" placeholder="answer {{i+1}}">
   </div>
   <div class="grid-item"><input type="checkbox" [(ngModel)]="question.rightAnswers[i]"></div>
 </div>

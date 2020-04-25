@@ -13,7 +13,6 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AuthenticationService} from './_services/authentication.service';
 import { HttpClientModule} from '@angular/common/http';
 import { QuizComponent } from './quiz/quiz.component';
-import { NavbarComponent } from './navbar/navbar.component';
 import {NavBarComponent} from './nav-bar/nav-bar.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {ChangePasswordComponent} from './change-password/change-password.component';
@@ -42,7 +41,6 @@ const appRoutes: Routes =[
     SignUpComponent,
     LandingPageComponent,
     QuizComponent,
-    NavbarComponent,
     TrueFalseComponent,
     SeqOptionsComponent,
     OneOfFourComponent,

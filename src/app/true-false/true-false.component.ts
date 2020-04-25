@@ -15,14 +15,15 @@ export class TrueFalseComponent implements OnInit {
   }
 
   onChange(deviceValue) {
-    if(deviceValue === "0"){
-      this.question.rightAnswer = "false";
-      this.question.answer = "true";
+    if(deviceValue){
+      this.question.answer = "false";
       
     }else{
-      this.question.rightAnswer = "true";
-      this.question.answer = "false";
+      this.question.answer = "true";
     }
+
+
+    console.log(this.question);
   }
 
 }
