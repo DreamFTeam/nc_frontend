@@ -2,49 +2,50 @@
 <div class="content" role="main">
     <div id="create-main" class="div-cont">
         <h1 class="title font-base" >Create quiz</h1>
-
-        <div class="grid">
-            <div class="grid-item">
-                <button>Upload image</button>
+        <div>
+            <div class="left">
+                    <button>Upload image</button>
             </div>
-            <div class="grid-item"> 
-                <div>
-                    <span class="label font-base">Title:</span>
-                    <input type="text"  [(ngModel)]="quiz.title">
-                </div>
-                
-                <!-- <div>
-                    <span class="label font-base">Category:</span>
-                    <input type="text"  [(ngModel)]="quiz">
-                </div>
-                
-                <div>
-                    <span class="label font-base">Tags:</span>
-                    <input type="text"  [(ngModel)]="tags">
-                </div> -->
+            <div class="right">
+                <div class="block">
+                    <div>
+                        <span class="label font-base">Title:</span>
+                        <input type="text"  [(ngModel)]="quiz.title">
+                    </div>
+                    
+                    <!-- <div>
+                        <span class="label font-base">Category:</span>
+                        <input type="text"  [(ngModel)]="quiz">
+                    </div>
+                    
+                    <div>
+                        <span class="label font-base">Tags:</span>
+                        <input type="text"  [(ngModel)]="tags">
+                    </div> -->
 
-                <div>
-                    <span class="label font-base">Language:</span>
-                    <select [(ngModel)]="quiz.quizLanguage">
-                        <option selected="selected" value="eng">English</option>
-                        <option value="ukr">Ukrainian</option>
-                    </select>
-                </div>
+                    <div>
+                        <span class="label font-base">Language:</span>
+                        <select [(ngModel)]="quiz.quizLanguage">
+                            <option selected="selected" value="eng">English</option>
+                            <option value="ukr">Ukrainian</option>
+                        </select>
+                    </div>
 
-                
-                <div class="label font-base">Description:</div>
-                <textarea id="description"  name="description"  [(ngModel)]="quiz.description"></textarea>
+                    
+                    <div class="label font-base">Description:</div>
+                    <textarea id="description"  name="description"  [(ngModel)]="quiz.description"></textarea>
+                </div>
             </div>
         </div>
         
         
 
         <div id="buttons">
-            <div *ngIf="isButtonLocked() == false" class="button b1 font-base" style="float: left; margin-right: 10px;" (click)="createQuiz()" >Save quiz</div>
+            <div *ngIf="isButtonLocked() == false" class="button b1 font-base" style="float: left;" (click)="createQuiz()" >Save quiz</div>
             <div class="button b2 font-base" style="float: left;" (click)="publish()">Publish quiz</div>
         </div>
 
-        <div style="float: none; margin: 20px auto auto 20px;">
+        <div style="float: none">
             <div *ngFor="let question of questions; let i = index">
                 <button (click)="showAnswer(i)">{{i}}</button>
             </div>

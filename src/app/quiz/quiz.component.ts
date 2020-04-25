@@ -59,14 +59,11 @@ export class QuizComponent implements OnInit {
 
   //Save(create) quiz button
   createQuiz(){
-    if(this.quiz.title !== "" && this.quiz.description !== ""){
-      if(this.quiz.id === ""){
-        this.quizService.createQuiz(this.quiz).subscribe(ans =>this.mapCreatedQuiz(ans),err => this.getCreatedErr(err));
-      }else{
-        this.quizService.saveQuiz(this.quiz).subscribe(ans =>console.log(ans),err => console.log(err));
-      }
+    //TODO: validation
+    if(this.quiz.id === ""){
+      this.quizService.createQuiz(this.quiz).subscribe(ans =>this.mapCreatedQuiz(ans),err => this.getCreatedErr(err));
     }else{
-      alert("Title and description must be provided");
+      this.quizService.saveQuiz(this.quiz).subscribe(ans =>console.log(ans),err => console.log(err));
     }
     
   }

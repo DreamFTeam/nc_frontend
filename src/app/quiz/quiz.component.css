@@ -118,15 +118,7 @@ button.removeb {
     background-color: transparent;
   }
   
-  .grid {
-    display: grid;
-    grid-template-columns: 25% 75%;
-    padding: 10px;
-  }
-  .grid-item {
-    padding: 20px;
-    font-size: 14px;
-  }
+
 
 
 
