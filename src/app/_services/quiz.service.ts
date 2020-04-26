@@ -4,15 +4,22 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import { Quiz } from '../_models/quiz';
 import { User } from '../_models/user';
 import * as jwt_decode from 'jwt-decode';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 export class QuizService {
-  url = `https://qznetbc.herokuapp.com/api/quiz/`;
+  url2 = `https://qzbc2.herokuapp.com/api/quiz/`
+  url = `https://qzbc2.herokuapp.com/api/quiz/`;
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('userData')).token
+    })
+  };
+  httpOptions2 = {
+    headers: new HttpHeaders({
       Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('userData')).token
     })
   };
@@ -89,6 +96,12 @@ export class QuizService {
 
   canIEditQuiz(id: string){
     return id === this.user.id;
+  }
+
+
+  uploadImage(data : FormData) {
+
+    return this.http.post<Quiz>(this.url2+"quiz-image", data, this.httpOptions2);
   }
 
 }

@@ -4,7 +4,7 @@ export interface Quiz {
     category: string[];
     tags: string[];
     description: string;
-    imageReference: string;
+    imageReference: Blob;
     creationDate: Date;
     creatorId: string;
     activated: boolean;

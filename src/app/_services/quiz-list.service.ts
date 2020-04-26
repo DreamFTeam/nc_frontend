@@ -10,20 +10,20 @@ import { catchError } from 'rxjs/operators';
 
 export class QuizListService {
   private baseUrl = 'https://qznetbc.herokuapp.com/api/quiz/';
-  private quizListUrl = 'quiz-list/';
+  private quizListUrl = 'quiz-list/page/';
   private totalSizeUrl = 'getquiztotalsize/';
   httpOptions = {
     headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('userData')).token
+      'Content-Type': 'application/json'
     })
   };
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+   }
 
   getQuizzesByPage(pageToSend: number): Observable<QuizPreview[]> {
     return this.http.
-      get<QuizPreview[]>(this.baseUrl + this.quizListUrl + pageToSend, this.httpOptions).pipe(
+      get<QuizPreview[]>(this.baseUrl + this.quizListUrl + pageToSend).pipe(
         catchError(this.handleError<QuizPreview[]>('getQuizzesByPage', []))
       );
   }

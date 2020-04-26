@@ -16,7 +16,7 @@ export class ViewQuizComponent implements OnInit {
     category: ["3b338765-c75d-40e2-9ab0-789738acd07a"],
     tags: ["c03a2080-d447-4bde-be2e-6f22c6ebee63"],
     description: "",
-    imageReference: "",
+    imageReference: new Blob(),
     creationDate: new Date(),
     creatorId: "",
     activated: false,

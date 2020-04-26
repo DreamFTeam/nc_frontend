@@ -9,6 +9,7 @@ import { QuizService } from '../_services/quiz.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { QuestionService } from '../_services/question.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-quiz',
@@ -23,7 +24,7 @@ export class QuizComponent implements OnInit {
     category: ["3b338765-c75d-40e2-9ab0-789738acd07a"],
     tags: ["c03a2080-d447-4bde-be2e-6f22c6ebee63"],
     description: "",
-    imageReference: "",
+    imageReference: new Blob(),
     creationDate: new Date(),
     creatorId: "",
     activated: false,
@@ -34,11 +35,12 @@ export class QuizComponent implements OnInit {
     published: false,
 
   };
+  thumbnail: any;
   questions: Question[] = [];
   question: Question = new OneToFour("","","","",0,this.quiz.id,1,["",""],[false,false]);
 
   constructor(private quizService: QuizService, private questionService: QuestionService,
-     private activateRoute: ActivatedRoute, private router: Router) { 
+     private activateRoute: ActivatedRoute, private router: Router,private sanitizer: DomSanitizer) { 
     this.activateRoute.paramMap.pipe(
       switchMap(params => params.getAll('id')))
      .subscribe(data => this.getAllQuiz(data)); 
@@ -83,18 +85,19 @@ export class QuizComponent implements OnInit {
 
   //Gettig quiz by id in url
   mapGettedQuiz(answer){
+    console.log(answer);
     this.quiz.id=answer.id;
     this.quiz.title=answer.title;
     this.quiz.description=answer.description;
-    this.quiz.imageReference=answer.imageRef;
+    this.quiz.imageReference=answer.imageContent;
     this.quiz.quizLanguage=answer.language;
     this.quiz.published = answer.published;
     //TODO: map tags and categs
     this.lockedButtons=false;
-    console.log(answer);
     console.log(this.quiz);
-    
-    
+
+    const objectURL = 'data:image/jpeg;base64,' + this.quiz.imageReference;
+    this.thumbnail = this.sanitizer.bypassSecurityTrustUrl(objectURL);
   }
 
   //GET questions of quiz
@@ -141,13 +144,11 @@ export class QuizComponent implements OnInit {
           question.rightOptions[0]));
       }
       if(question.typeId === 4){
-        console.log(question.typeId);
         this.questions.push(new SequenceAnswer(question.id,question.title,question.content,
           question.image, question.points,question.quizId,question.typeId,
           question.rightOptions));
       }
     }
-    console.log(this.questions);
   }
 
   mapEditedQuestion(ans){
@@ -323,12 +324,18 @@ export class QuizComponent implements OnInit {
     }
   }
 
-  uploadImage(){
-    this.question.image="image";
+  quizImage(e){
+    const file: File = e.target.files[0];
+    //console.log(file);
+    const formData = new FormData();
+    formData.append('img', file);
+    formData.append('quizId',this.quiz.id);
+
+    this.quizService.uploadImage(formData).subscribe(ans =>console.log(ans),err => console.log(err))
   }
 
-  quizImage(){
-    this.quiz.imageReference="image";
+  questionImage(e){
+    this.question.image="image";
   }
 
   isOneToFour(val) { return val instanceof OneToFour; }
@@ -336,8 +343,6 @@ export class QuizComponent implements OnInit {
   isOpenAnswer(val) { return val instanceof OpenAnswer; }
   isSequenceAnswer(val) { return  val instanceof SequenceAnswer; }
   isQuizCreated(){ return this.quiz.id !== ""; }
-  isButtonLocked(){
-    return !this.isQuizCreated() && this.lockedButtons;
-  }
+  isButtonLocked(){ return !this.isQuizCreated() && this.lockedButtons; }
 
 }

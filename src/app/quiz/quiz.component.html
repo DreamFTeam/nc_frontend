@@ -6,7 +6,9 @@
 
         <div class="row ml-2 mt-3">
             <div class="col-sm-3 ">
-                <img src="//" alt="Upload" class="img-thumbnail">
+                <img [src]='thumbnail' alt="Upload" class="img-thumbnail" (click)="imageInput.click()">
+                <input style="display: none" #imageInput type="file"
+                accept="image/*" (change)="quizImage($event)">
             </div>
             <div class="col-sm-8"> 
 
@@ -118,7 +120,7 @@
                     <app-seq-options *ngIf="isSequenceAnswer(question)" [question]="question"></app-seq-options> 
                 </div>
                 <div class="col-sm-3">
-                    <img src="./assets/img/uplalt.png" alt="" class="img-thumbnail mt-5 mx-auto d-block">
+                    <input type="file" (change)="questionImage($event)"><img src="./assets/img/uplalt.png" alt="" class="img-thumbnail mt-5 mx-auto d-block" >
                 </div>
             </div>
             
@@ -136,7 +138,7 @@
         </div>
     </div>
 
-    <button class="btn buttonpr mt-5"(click)="saveQuestion()">Save question</button>
+    <button class="btn buttonpr mt-5" (click)="saveQuestion()">Save question</button>
 </div>
 </div>
 

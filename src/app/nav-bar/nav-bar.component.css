@@ -17,6 +17,14 @@ input
   font-weight:      bold;
 }
 
+.nav-link{
+  font-size:        22px;
+}
+
+.navbar-brand{
+  font-size:        22px;
+}
+
 .toolbaritm
 {
   position: relative;
