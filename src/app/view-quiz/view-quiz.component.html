@@ -17,6 +17,7 @@
         
 
         <div id="buttons">
-            <div class="button b1 font-base" style="float: left;" (click)="markAsFavorite()" >Mark as favorite</div>
+            <div class="btn buttonpr" (click)="markAsFavorite()" >Mark as favorite</div>
+            <a *ngIf="isMyQuiz()" class="btn buttonsec ml-1" routerLink="/quizedit/{{quiz.id}}" >Edit quiz</a>
         </div>
 </div>

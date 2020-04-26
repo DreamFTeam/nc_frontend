@@ -85,4 +85,8 @@ export class QuizService {
     return this.http.post<Quiz>(this.url + 'markaspublished', JSON.stringify(quizInfo), this.httpOptions)
   }
 
+  canIEditQuiz(id: string){
+    return id === this.user.id;
+  }
+
 }

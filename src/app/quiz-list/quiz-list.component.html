@@ -1,0 +1,19 @@
+<div class="content" role="main">
+    <div id="search" class="mainstyle">Search</div>
+    <div id="quizlist" class="mainstyle">
+        <a routerLink="/quizcreate">Create quiz</a>
+        <div class="grid">
+            <div *ngFor="let item of quizList$ | async" class="quizprev">
+                <a routerLink="/viewquiz/{{item.quiz_id}}">
+                    <img id="pic" src="../../assets/img/quiz.jpg">
+                    <!-- [src]="item.image_ref"    (pageChange) = "page = $event">-->
+                    <p>{{item.title}}</p>
+                    
+                </a>
+            </div>
+        </div>
+        <div class="pagination-container">
+            <ngb-pagination class="d-flex justify-content-center" size="lg" [collectionSize]="totalSize$ | async" [(page)]="page" [maxSize]="7" [rotate]="true" (pageChange)="loadPage($event)"></ngb-pagination>
+        </div>
+    </div>
+</div>

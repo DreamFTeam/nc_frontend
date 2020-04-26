@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {RouterModule} from '@angular/router';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {LogInComponent} from '../log-in/log-in.component';
 import {SignUpComponent} from '../sign-up/sign-up.component';

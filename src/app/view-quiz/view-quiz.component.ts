@@ -63,6 +63,10 @@ export class ViewQuizComponent implements OnInit {
        err => console.log(err))
   }
 
+  isMyQuiz(){
+    return this.quizService.canIEditQuiz(this.quiz.creatorId);
+  }
+
 
   ngOnInit(): void {
 

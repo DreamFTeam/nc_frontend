@@ -4,14 +4,18 @@ import { LandingPageComponent } from './landing-page/landing-page.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { QuizComponent } from './quiz/quiz.component';
 import { ViewQuizComponent } from './view-quiz/view-quiz.component';
+import { QuizListComponent } from './quiz-list/quiz-list.component';
 
 
-const routes: Routes = [{path: '', component: LandingPageComponent},
-{path: 'recovery', component: ChangePasswordComponent},
-{ path: 'quizedit/:id', component: QuizComponent},
-{ path: 'quizcreate', component: QuizComponent},
-{ path: 'viewquiz/:id', component: ViewQuizComponent},
-{path: '**', redirectTo: ''}];
+const routes: Routes = [
+  { path: '', component: LandingPageComponent},
+  { path: 'recovery', component: ChangePasswordComponent},
+  { path: 'quizedit/:id', component: QuizComponent},
+  { path: 'quizcreate', component: QuizComponent},
+  { path: 'viewquiz/:id', component: ViewQuizComponent},
+  { path: 'quiz-list', component: QuizListComponent},
+  { path: '**', redirectTo: ''}
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

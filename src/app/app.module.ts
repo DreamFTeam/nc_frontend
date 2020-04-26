@@ -21,6 +21,11 @@ import { OneOfFourComponent } from './one-of-four/one-of-four.component';
 import { OpenAnswerComponent } from './open-answer/open-answer.component';
 import { EditQuestionComponent } from './edit-question/edit-question.component';
 import { ViewQuizComponent } from './view-quiz/view-quiz.component';
+import { QuizListComponent } from './quiz-list/quiz-list.component';
+import { QuizListService } from './_services/quiz-list.service';
+import {NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
+import { QuizService } from './_services/quiz.service';
+import { QuestionService } from './_services/question.service';
 
 const appRoutes: Routes =[
 ];
@@ -32,6 +37,7 @@ const appRoutes: Routes =[
     LogInComponent,
     SignUpComponent,
     LandingPageComponent,
+    QuizListComponent,
     QuizComponent,
     TrueFalseComponent,
     SeqOptionsComponent,
@@ -41,6 +47,7 @@ const appRoutes: Routes =[
     ViewQuizComponent,
     NavBarComponent,
     ChangePasswordComponent
+    
   ],
   imports: [
     BrowserModule,
@@ -54,7 +61,7 @@ const appRoutes: Routes =[
     NgbModule
   ],
   entryComponents: [LogInComponent, SignUpComponent, RecoverPasswordComponent],
-  providers: [AuthenticationService],
+  providers: [AuthenticationService, QuizListService, QuestionService, QuizService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
