@@ -2,7 +2,7 @@
     <div id="search" class="mainstyle">Search</div>
     <div id="quizlist" class="mainstyle">
         <div class="grid">
-            <div *ngFor="let item of quizList" class="quizprev">
+            <div *ngFor="let item of quizList$ | async" class="quizprev">
                 <a routerLink="/viewquiz/{{item.id}}">
                     <img id="pic" src="../../assets/img/quiz.jpg">
                     <!-- [src]="item.image_ref"    (pageChange) = "page = $event">-->
@@ -11,7 +11,7 @@
             </div>
         </div>
         <div class="pagination-container">
-            <ngb-pagination class="d-flex justify-content-center" size="lg" [collectionSize]="totalSize" [(page)]="page" [maxSize]="7" [rotate]="true" (pageChange)="loadPage($event)"></ngb-pagination>
+            <ngb-pagination class="d-flex justify-content-center" size="lg" [collectionSize]="totalSize$ | async" [(page)]="page" [maxSize]="7" [rotate]="true" (pageChange)="loadPage($event)"></ngb-pagination>
         </div>
     </div>
 </div>

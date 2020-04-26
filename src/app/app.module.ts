@@ -21,7 +21,6 @@ import { OpenAnswerComponent } from './open-answer/open-answer.component';
 import { EditQuestionComponent } from './edit-question/edit-question.component';
 import { QuizListComponent } from './quiz-list/quiz-list.component';
 import { QuizListService } from './_services/quiz-list.service';
-import {NgxPaginationModule} from 'ngx-pagination';
 import {NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
 
 const appRoutes: Routes =[
@@ -55,7 +54,6 @@ const appRoutes: Routes =[
     ReactiveFormsModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    NgxPaginationModule,
     NgbPaginationModule
   ],
   providers: [AuthenticationService, QuizListService],
