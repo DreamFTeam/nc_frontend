@@ -23,12 +23,17 @@ import { EditQuestionComponent } from './edit-question/edit-question.component';
 import { ViewQuizComponent } from './view-quiz/view-quiz.component';
 import { QuizListComponent } from './quiz-list/quiz-list.component';
 import { QuizListService } from './_services/quiz-list.service';
-import {NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
 import { QuizService } from './_services/quiz.service';
 import { QuestionService } from './_services/question.service';
+import { ProfileComponent } from './profile/profile.component';
+import { UsersComponent } from './users/users.component';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import { PrivilegedProfileComponent } from './privileged-profile/privileged-profile.component';
+import { CreatePrivilegedComponent } from './create-privileged/create-privileged.component';
 
 const appRoutes: Routes =[
 ];
+
 
 @NgModule({
   declarations: [
@@ -46,9 +51,13 @@ const appRoutes: Routes =[
     EditQuestionComponent,
     ViewQuizComponent,
     NavBarComponent,
-    ChangePasswordComponent
-    
-  ],
+    ChangePasswordComponent,
+    NavBarComponent,
+    ProfileComponent,
+    UsersComponent,
+    EditProfileComponent,
+    PrivilegedProfileComponent,
+    CreatePrivilegedComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

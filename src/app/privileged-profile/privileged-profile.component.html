@@ -1,0 +1,11 @@
+<div class="content" role="main" >
+  <div id="profile"  >
+   <b> Username</b> : {{profile.username}}
+      <img id="image">
+   <b><br> Role: </b>{{profile.role.substr(5).toLowerCase()}}
+   <div class="btncreate" *ngIf="profile.role=='ROLE_SUPERADMIN'" (click)="createAdmin()">Create admin</div>
+   <div class="btncreate" *ngIf="profile.role!='ROLE_MODERATOR'" (click)="createModerator()">Create  moderator</div>
+  </div>
+  <div id="quizlist"> Quizzes to review </div>
+ 
+</div>

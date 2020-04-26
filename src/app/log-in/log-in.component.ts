@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {AuthenticationService} from '../_services/authentication.service';
 import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {RecoverPasswordComponent} from '../recover-password/recover-password.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-log-in',
@@ -11,7 +12,7 @@ import {RecoverPasswordComponent} from '../recover-password/recover-password.com
 export class LogInComponent {
   constructor(private authenticationService: AuthenticationService,
               public activeModal: NgbActiveModal,
-              private modalService: NgbModal) {
+              private modalService: NgbModal, private _router: Router) {
   }
 
   email = '';
@@ -21,14 +22,15 @@ export class LogInComponent {
 
 
   logIn() {
-    if (this.email == '' || this.email == null) {
+    if (this.email === '' || this.email == null) {
       alert('Enter the email or username!');
       return;
     }
-    if (this.password == '' || this.password == null) {
+    if (this.password === '' || this.password == null) {
       alert('Enter the password!');
       return;
     }
+
     /*Code for comunication with back-end*/
     this.authenticationService.loginUser(this.email, this.password)
       .subscribe(n => {
