@@ -30,6 +30,7 @@ import { UsersComponent } from './users/users.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { PrivilegedProfileComponent } from './privileged-profile/privileged-profile.component';
 import { CreatePrivilegedComponent } from './create-privileged/create-privileged.component';
+import { ValidationPageComponent } from './validation-page/validation-page.component';
 
 const appRoutes: Routes =[
 ];
@@ -57,7 +58,8 @@ const appRoutes: Routes =[
     UsersComponent,
     EditProfileComponent,
     PrivilegedProfileComponent,
-    CreatePrivilegedComponent],
+    CreatePrivilegedComponent,
+    ValidationPageComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

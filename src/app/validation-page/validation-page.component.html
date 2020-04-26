@@ -1,0 +1,26 @@
+<div class="content container" role="main">
+    <div class="col mainstyle container">
+        <div class="row jumbotron">
+            <h1>%USER_NAME% quiz validation list</h1>
+        </div>
+        <div class="row media">
+            <!-- <-- ngFor -->
+            <div class="media-left media-middle pic">
+                <img class="media-object" src="../../assets/img/quiz.jpg">
+            </div>
+            <div class="media-body">
+                <h4>Title of quiz here</h4>
+                <p class="fnt-size"><strong>Description:</strong> Description here </p>
+                <p class="fnt-size"><strong>Author:</strong> %AUTHOR_HERE%</p>
+                <p class="fnt-size"><strong>Date:</strong> 26.04.2020</p>
+                <p>
+                    <button class="btn btn-lg buttonsec float-none" type="button">Reject</button>
+                    <button class="btn btn-lg buttonpr float-right mrgn-right" type="button">Validate</button>
+                </p>
+            </div>
+        </div>
+        <div class="pagination-container">
+            <ngb-pagination class="d-flex justify-content-center" size="lg" [collectionSize]="totalSize$ | async" [(page)]="page" [maxSize]="7" [rotate]="true" (pageChange)="loadPage($event)"></ngb-pagination>
+        </div>
+    </div>
+</div>
