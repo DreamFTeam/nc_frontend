@@ -4,7 +4,6 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import { Quiz } from '../_models/quiz';
 import { User } from '../_models/user';
 import * as jwt_decode from 'jwt-decode';
-import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'

@@ -3,6 +3,7 @@ import { Quiz } from '../_models/quiz';
 import { QuizService } from '../_services/quiz.service';
 import { ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-view-quiz',
@@ -27,8 +28,11 @@ export class ViewQuizComponent implements OnInit {
     published: false,
 
   };
+  id: string;
+  thumbnail: any;
 
-  constructor(private quizService: QuizService, private activateRoute: ActivatedRoute) { 
+  constructor(private quizService: QuizService, private activateRoute: ActivatedRoute,
+    private sanitizer: DomSanitizer) { 
     this.activateRoute.paramMap.pipe(
       switchMap(params => params.getAll('id')))
      .subscribe(data => this.getAllQuiz(data)); 
@@ -40,17 +44,20 @@ export class ViewQuizComponent implements OnInit {
   }
 
   mapGettedQuiz(answer){
-    console.log("answer");
     console.log(answer);
     this.quiz.id=answer.id;
     this.quiz.title=answer.title;
     this.quiz.description=answer.description;
-    this.quiz.imageReference=answer.imageRef;
+    this.quiz.imageReference=answer.imageContent;
     this.quiz.quizLanguage=answer.language;
     this.quiz.tags = answer.tagNameList;
     this.quiz.category = answer.categoryNameList;
     this.quiz.creationDate = answer.creationDate;
-    this.quiz.creatorId = answer.creatorId;
+    this.quiz.creatorId = answer.author
+    this.id= answer.creatorId;
+    
+    const objectURL = 'data:image/jpeg;base64,' + this.quiz.imageReference;
+    this.thumbnail = this.sanitizer.bypassSecurityTrustUrl(objectURL);;
     
   }
 
@@ -64,7 +71,7 @@ export class ViewQuizComponent implements OnInit {
   }
 
   isMyQuiz(){
-    return this.quizService.canIEditQuiz(this.quiz.creatorId);
+    return this.quizService.canIEditQuiz(this.id);
   }
 
 
