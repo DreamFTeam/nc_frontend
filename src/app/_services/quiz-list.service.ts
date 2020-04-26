@@ -10,7 +10,7 @@ import { catchError } from 'rxjs/operators';
 
 export class QuizListService {
   private baseUrl = 'https://qznetbc.herokuapp.com/api/quiz/';
-  private quizListUrl = 'quiz-list/';
+  private quizListUrl = 'quiz-list/page/';
   private totalSizeUrl = 'getquiztotalsize/';
   httpOptions = {
     headers: new HttpHeaders({

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { QuizValidationService } from '../_services/quiz-validation.service';
+import { Observable } from 'rxjs';
+import { QuizValidationPreview } from '../_models/quiz-validation-preview';
+import { QuizValidationListService} from '../_services/quiz-validation-list.service';
 
 @Component({
   selector: 'app-validation-page',
@@ -7,19 +9,18 @@ import { QuizValidationService } from '../_services/quiz-validation.service';
   styleUrls: ['./validation-page.component.css']
 })
 export class ValidationPageComponent implements OnInit {
+  active: number;
 
-  page: number;
-  pageSize: number;
-
-  //totalSize$: Observable<number>;
-  //quizList$: Observable<QuizPreview[]>;
-
-  constructor(private quizValidationService: QuizValidationService) {
-
-   }
+  constructor(private quizValidationService: QuizValidationListService) {
+    this.active = 1;
+  }
 
   ngOnInit(): void {
-  
+
+  }
+
+  changeList(event):void{
+    this.quizValidationService.listType = event;
   }
 
 }

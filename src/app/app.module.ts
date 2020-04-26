@@ -31,6 +31,8 @@ import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { PrivilegedProfileComponent } from './privileged-profile/privileged-profile.component';
 import { CreatePrivilegedComponent } from './create-privileged/create-privileged.component';
 import { ValidationPageComponent } from './validation-page/validation-page.component';
+import { ValidationTabComponent } from './validation-page/validation-tab/validation-tab.component';
+import { QuizValidationListService } from './_services/quiz-validation-list.service';
 
 const appRoutes: Routes =[
 ];
@@ -59,7 +61,8 @@ const appRoutes: Routes =[
     EditProfileComponent,
     PrivilegedProfileComponent,
     CreatePrivilegedComponent,
-    ValidationPageComponent],
+    ValidationPageComponent,
+    ValidationTabComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -72,7 +75,7 @@ const appRoutes: Routes =[
     NgbModule
   ],
   entryComponents: [LogInComponent, SignUpComponent, RecoverPasswordComponent],
-  providers: [AuthenticationService, QuizListService, QuestionService, QuizService],
+  providers: [AuthenticationService, QuizListService, QuestionService, QuizService, QuizValidationListService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
