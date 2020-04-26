@@ -12,7 +12,7 @@ import { environment } from '../../environments/environment';
 export class AuthenticationService {
   private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
-  usersUrl = `${environment.apiUrl}`;
+  usersUrl = `https://qznetbc.herokuapp.com/api/`;
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
@@ -30,10 +30,10 @@ export class AuthenticationService {
   }
 
   /* POST: login user */
-  loginUser(login: string, password: string): Observable<User> {
+  loginUser(username: string, password: string): Observable<User> {
     const userInfo = {
-      username: login,
-      email: login,
+      username: username,
+      email: username,
       password
     };
     return this.http.post<User>(this.usersUrl + 'log-in', JSON.stringify(userInfo), this.httpOptions).pipe(
@@ -97,5 +97,9 @@ export class AuthenticationService {
 
       return of(result as T);
     };
-}
+  }
+
+  private extractData(res: Response) {
+    return res || { };
+  }
 }

@@ -34,7 +34,7 @@ export class LogInComponent {
     /*Code for comunication with back-end*/
     this.authenticationService.loginUser(this.email, this.password)
       .subscribe(n => {
-          alert(n.username + ' logged in!');
+          location.reload();
           this.loading = false;
         },
         error => {

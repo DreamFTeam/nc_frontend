@@ -10,19 +10,18 @@ import * as jwt_decode from 'jwt-decode';
 })
 export class QuizService {
   url = `https://qznetbc.herokuapp.com/api/quiz/`;
-  httpOptions = {};
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('userData')).token
+    })
+  };
   user: User;
 
   constructor(private http: HttpClient) {
     let info = JSON.parse(localStorage.getItem('userData'));
     this.user = jwt_decode(info.token)
     this.user.token = info.token;
-    this.httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + this.user.token
-      })
-    };
   }
 
 
@@ -62,9 +61,12 @@ export class QuizService {
 
   getQuiz(quizId: string) : Observable<Quiz> {
 
-    let params = new HttpParams().set('quizId', quizId).set('userId', this.user.id);
+    const options = {
+      headers: this.httpOptions.headers,
+      params: new HttpParams().set('quizId', quizId).set('userId', this.user.id)
 
-    return this.http.get<Quiz>(this.url + 'get', {params: params});
+    }
+    return this.http.get<Quiz>(this.url + 'get', options);
   }
 
 

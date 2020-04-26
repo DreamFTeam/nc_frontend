@@ -14,7 +14,8 @@ export class QuizListService {
   private totalSizeUrl = 'getquiztotalsize/';
   httpOptions = {
     headers: new HttpHeaders({
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('userData')).token
     })
   };
 
