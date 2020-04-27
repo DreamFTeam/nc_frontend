@@ -41,9 +41,10 @@ export class ProfileComponent implements OnInit {
         this.setRights();
         if (this.profile.role === 'ROLE_USER') {
           this.getQuizzes();
-        } else {
-          this.ready = true;
         }
+
+        this.ready = true;
+
       },
       error => {
         console.error(error.error);
@@ -105,7 +106,6 @@ export class ProfileComponent implements OnInit {
     this.getProfileService.getProfileQuiz(this.profile.id).subscribe(
       result => {
         this.quizzes = result;
-        this.ready = true;
       },
       error => {
         console.error(error.error);

@@ -13,6 +13,7 @@
       </div>
       <div class="info">
       <a   routerLink="/profile/{{user.username}}">{{user.username}}</a>
+      <h3 *ngIf="!user.activated" style="color: red; font-size: smaller;">deactivated</h3>
         <h3 *ngIf="user.online==true; else lastseen" style="color:#31708E; font-size: smaller;"> online </h3>
         <ng-template #lastseen> <h3 style="color:#31708E; font-size: smaller;">
           Last seen on {{user.lastTimeOnline |  date:'medium'}} </h3> </ng-template>
