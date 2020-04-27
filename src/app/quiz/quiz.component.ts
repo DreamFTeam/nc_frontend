@@ -35,8 +35,12 @@ export class QuizComponent implements OnInit {
     published: false,
 
   };
-  thumbnail: any;
-  thumbnail2: any;
+  thumbnail: any; //Quiz image
+  thumbnail2: any; //Question image
+
+  file: File; //Quiz image file
+  file2: File; //Question image file
+
   questions: Question[] = [];
   question: Question = new OneToFour("","","",new Blob(),0,this.quiz.id,1,["",""],[false,false]);
 
@@ -66,12 +70,18 @@ export class QuizComponent implements OnInit {
       if(this.quiz.id === ""){
         this.quizService.createQuiz(this.quiz).subscribe(ans =>this.mapCreatedQuiz(ans),err => this.getCreatedErr(err));
       }else{
-        this.quizService.saveQuiz(this.quiz).subscribe(ans =>console.log(ans),err => console.log(err));
+        this.quizService.saveQuiz(this.quiz).subscribe(ans => this.mapSavedQuiz(ans),err => console.log(err));
       }
     }else{
       alert("Title and description must be provided");
     }
     
+  }
+
+  mapSavedQuiz(ans){
+    alert("Quiz saved!");
+    this.questionService.uploadImage(this.getFormData(this.file,true))
+    .subscribe(ans =>console.log(ans),err => alert("Couldn`t upload image: "+err));
   }
 
 
@@ -106,6 +116,9 @@ export class QuizComponent implements OnInit {
     this.question.id = ans.id;
     console.log(this.question);
     this.questions.push(Object.create(this.question));
+    this.questionService.uploadImage(this.getFormData(this.file2,false))
+    .subscribe(ans =>console.log(ans),err => alert("Couldn`t upload image: "+err));
+    
     
   }
 
@@ -154,15 +167,14 @@ export class QuizComponent implements OnInit {
     }
 
     console.log(this.question);
-
-    const objectURL = 'data:image/jpeg;base64,' + this.question.image;
-    this.thumbnail2 = this.sanitizer.bypassSecurityTrustUrl(objectURL);
   }
 
   mapEditedQuestion(ans){
     alert("Question edited!");
     this.question.id = ans.id;
     console.log(this.question);
+    this.questionService.uploadImage(this.getFormData(this.file2,false))
+    .subscribe(ans =>console.log(ans),err => alert("Couldn`t upload image: "+err));
   }
 
   //Created quiz error
@@ -251,6 +263,9 @@ export class QuizComponent implements OnInit {
 
   showAnswer(i){
     this.question = this.questions[i];
+    
+    const objectURL = 'data:image/jpeg;base64,' + this.question.image;
+    this.thumbnail2 = this.sanitizer.bypassSecurityTrustUrl(objectURL);
   }
 
   public publish() {
@@ -333,26 +348,41 @@ export class QuizComponent implements OnInit {
   }
 
   quizImage(e){
-    const file: File = e.target.files[0];
-    const formData = new FormData();
-    formData.append('img', file);
-    formData.append('quizId',this.quiz.id);
+    this.file = e.target.files[0];
 
-    this.thumbnail=file;
+    let reader = new FileReader();
+    reader.readAsDataURL(this.file);
+    reader.onload = () => {
+      this.thumbnail = reader.result;
+    }
 
-    this.quizService.uploadImage(formData).subscribe(ans =>console.log(ans),err => console.log(err));
+    //this.quizService.uploadImage(formData).subscribe(ans =>console.log(ans),err => console.log(err));
   }
 
   questionImage(e){
-    const file: File = e.target.files[0];
+    this.file2 = e.target.files[0];
+
+    let reader = new FileReader();
+    reader.readAsDataURL(this.file2);
+    reader.onload = () => {
+      this.thumbnail2 = reader.result;
+    }
+
+    //this.questionService.uploadImage(formData).subscribe(ans =>console.log(ans),err => console.log(err));
+  }
+
+  getFormData(file: File, type: boolean): FormData {
 
     const formData = new FormData();
     formData.append('img', file);
-    formData.append('questionId',this.question.id);
+    if(type){
+      formData.append('quizId',this.quiz.id);
+    }else{
+      formData.append('questionId',this.question.id);
+    }
+    
 
-    this.thumbnail2=file;
-
-    this.questionService.uploadImage(formData).subscribe(ans =>console.log(ans),err => console.log(err));
+    return formData;
   }
 
   isOneToFour(val) { return val instanceof OneToFour; }
