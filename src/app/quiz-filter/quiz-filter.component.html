@@ -1,0 +1,113 @@
+<div class="filter">
+<ngb-accordion #acc="ngbAccordion">
+  <ngb-panel>
+    <ng-template ngbPanelTitle>
+      <span><b>Filter</b></span>
+    </ng-template>
+    <ng-template ngbPanelContent>
+
+
+       <div class="form-group">
+          <label for="username">Creator username</label>
+          <input type="text" [(ngModel)]="userName" class="form-control" id="username">
+        </div>
+      <div *ngIf="tags.length > 0" class="form-group">
+  <label for="tags-list">Tags</label>
+  <div id="tags-list">
+  <span class="mr-1" *ngFor="let tag of tags">
+    <span class="badge badge-primary p-1">
+    <svg (click)="deleteTag(tag.id)"
+         class="bi bi-x-circle"
+         width="1em"
+         height="1em"
+         viewBox="0 0 16 16"
+         fill="currentColor"
+         xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z" clip-rule="evenodd"/>
+  <path fill-rule="evenodd"
+        d="M11.854 4.146a.5.5 0 010 .708l-7 7a.5.5 0 01-.708-.708l7-7a.5.5 0 01.708 0z"
+        clip-rule="evenodd"/>
+  <path fill-rule="evenodd"
+        d="M4.146 4.146a.5.5 0 000 .708l7 7a.5.5 0 00.708-.708l-7-7a.5.5 0 00-.708 0z"
+        clip-rule="evenodd"/>
+</svg>
+      <span class="ml-1">{{tag.description}}</span>
+  </span>
+  </span>
+</div>
+</div>
+      <div class="form-group">
+          <label for="tag-input">Add tag</label>
+          <input type="text" [ngbTypeahead]="searchTag"
+                 [inputFormatter]="formatterTags"
+                 [resultFormatter]="formatterTags"
+                 [editable]='false'
+                 [(ngModel)]="newTag"
+                 (keydown.enter)="addTag()"
+                 class="form-control"
+                 id="tag-input">
+      </div>
+
+      <div *ngIf="categories.length > 0" class="form-group">
+        <label for="categories-list">Categories</label>
+        <div id="categories-list">
+        <span class="mr-1" *ngFor="let categ of categories">
+          <span class="badge badge-danger p-1">
+          <svg (click)="deleteCategor(categ.id)"
+               class="bi bi-x-circle"
+               width="1em"
+               height="1em"
+               viewBox="0 0 16 16"
+               fill="currentColor"
+               xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd"
+              d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z"
+              clip-rule="evenodd"/>
+        <path fill-rule="evenodd"
+              d="M11.854 4.146a.5.5 0 010 .708l-7 7a.5.5 0 01-.708-.708l7-7a.5.5 0 01.708 0z"
+              clip-rule="evenodd"/>
+        <path fill-rule="evenodd"
+              d="M4.146 4.146a.5.5 0 000 .708l7 7a.5.5 0 00.708-.708l-7-7a.5.5 0 00-.708 0z"
+              clip-rule="evenodd"/>
+      </svg>
+            <span class="ml-1">{{categ.title}}</span>
+        </span>
+        </span>
+      </div>
+      </div>
+
+      <div class="form-group">
+          <label for="category-input">Add category</label>
+          <input type="text"
+                 [ngbTypeahead]="searchCat"
+                 [inputFormatter]="formatterCateg"
+                 [resultFormatter]="formatterCateg"
+                 [(ngModel)]="newCateg"
+                 [editable]='false'
+                 (keydown.enter)="addCateg()"
+                 class="form-control" id="category-input">
+      </div>
+
+
+      <div class="form-group">
+      <label for="minRating">Rating from</label>
+      <select class="form-control" id="minRating" [(ngModel)]="minRating">
+        <option [disabled]="i > maxRating" *ngFor="let i of rating">
+          {{i}}
+        </option>
+      </select>
+      </div>
+      <div class="form-group">
+      <label for="maxRating">Rating to</label>
+      <select class="form-control" id="maxRating" [(ngModel)]="maxRating">
+        <option [disabled]="i < minRating" *ngFor="let i of rating">
+          {{i}}
+        </option>
+      </select>
+      </div>
+      <button (click)="filter()" class="form-group btn btn-block btn-primary">Apply</button>
+
+    </ng-template>
+  </ngb-panel>
+</ngb-accordion>
+</div>
