@@ -10,13 +10,14 @@ import { QuizValidationListService} from '../_services/quiz-validation-list.serv
 })
 export class ValidationPageComponent implements OnInit {
   active: number;
+  currentUsername: string;
 
   constructor(private quizValidationService: QuizValidationListService) {
     this.active = 1;
   }
 
   ngOnInit(): void {
-
+    this.currentUsername = this.quizValidationService.getCurrentUsername();
   }
 
   changeList(event):void{

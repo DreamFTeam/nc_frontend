@@ -33,6 +33,7 @@ import { CreatePrivilegedComponent } from './create-privileged/create-privileged
 import { ValidationPageComponent } from './validation-page/validation-page.component';
 import { ValidationTabComponent } from './validation-page/validation-tab/validation-tab.component';
 import { QuizValidationListService } from './_services/quiz-validation-list.service';
+import { QuizValidationComponent } from './quiz-validation/quiz-validation.component';
 
 const appRoutes: Routes =[
 ];
@@ -62,7 +63,8 @@ const appRoutes: Routes =[
     PrivilegedProfileComponent,
     CreatePrivilegedComponent,
     ValidationPageComponent,
-    ValidationTabComponent],
+    ValidationTabComponent,
+    QuizValidationComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
