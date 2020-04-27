@@ -5,13 +5,13 @@
         </div>
         <ul ngbNav #nav="ngbNav" [(activeId)]="active" (activeIdChange)="changeList($event)" class="nav-tabs">
             <li [ngbNavItem]="1" [destroyOnHide]="true">
-                <a ngbNavLink>Unvalidated</a>
+                <a ngbNavLink class="tab-head">Unvalidated</a>
                 <ng-template ngbNavContent>
                     <app-validation-tab></app-validation-tab>
                 </ng-template>
             </li>
             <li [ngbNavItem]="2" [destroyOnHide]="true">
-                <a ngbNavLink>Validated</a>
+                <a ngbNavLink class="tab-head">Validated</a>
                 <ng-template ngbNavContent>
                     <app-validation-tab></app-validation-tab>
                 </ng-template>

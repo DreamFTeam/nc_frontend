@@ -8,27 +8,6 @@
     min-height: 150em;
 }
 
-.message {
-    font-weight: bold;
-}
-
-.pic {
-    padding: 1em;
-}
-
-.pic img {
-    max-width: 15em;
-}
-
-.mrgn-right {
-    margin-right: 1em;
-}
-
-.fnt-size {
-    font-size: large;
-    margin: 0;
-}
-
-.pdng {
-    padding: 0.5em;
+.tab-head {
+    font-size: x-large;
 }
