@@ -16,27 +16,32 @@ export class QuestionService {
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
+       Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('userData')).token
+    })
+  };
+  httpOptions2 = {
+    headers: new HttpHeaders({
+      Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('userData')).token
     })
   };
   user: User;
 
   constructor(private http: HttpClient) {
     this.user = JSON.parse(localStorage.getItem('userData'));
-    this.httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + this.user.token
-      })
-    };
     
   }
 
 
 
   getAllQuestions(quizId: string){
-    let params = new HttpParams().set('quizId', quizId);
 
-    return this.http.get<Question[]>(this.url + 'getquestionlist', {params: params});
+    const options = {
+      headers: this.httpOptions.headers,
+      params: new HttpParams().set('quizId', quizId)
+
+    }
+
+    return this.http.get<Question[]>(this.url + 'getquestionlist', options);
   }
 
 
@@ -144,6 +149,11 @@ export class QuestionService {
     };
     
       return this.http.delete<Question>(this.url + 'delete/question',options);
+  }
+
+  uploadImage(data : FormData) {
+
+    return this.http.post<Question>(this.url+"question-image", data, this.httpOptions2);
   }
 
   

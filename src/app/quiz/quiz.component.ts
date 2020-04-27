@@ -36,8 +36,9 @@ export class QuizComponent implements OnInit {
 
   };
   thumbnail: any;
+  thumbnail2: any;
   questions: Question[] = [];
-  question: Question = new OneToFour("","","","",0,this.quiz.id,1,["",""],[false,false]);
+  question: Question = new OneToFour("","","",new Blob(),0,this.quiz.id,1,["",""],[false,false]);
 
   constructor(private quizService: QuizService, private questionService: QuestionService,
      private activateRoute: ActivatedRoute, private router: Router,private sanitizer: DomSanitizer) { 
@@ -85,7 +86,6 @@ export class QuizComponent implements OnInit {
 
   //Gettig quiz by id in url
   mapGettedQuiz(answer){
-    console.log(answer);
     this.quiz.id=answer.id;
     this.quiz.title=answer.title;
     this.quiz.description=answer.description;
@@ -112,6 +112,7 @@ export class QuizComponent implements OnInit {
 
   //Getting questions of quiz
   mapGettedQuestions(ans){
+    console.log(ans);
     for (let question of ans){
       if(question.typeId === 1){
         let rightAnswers: boolean[] = [];
@@ -123,8 +124,10 @@ export class QuizComponent implements OnInit {
         }
 
         this.questions.push(new OneToFour(question.id,question.title,question.content,
-          question.image, question.points,question.quizId,question.typeId,
+          question.imageContent, question.points,question.quizId,question.typeId,
           question.otherOptions.concat(question.rightOptions),rightAnswers));
+
+          this.question.image = question.imageContent;
       }
       if(question.typeId === 2){
         let otherOption: string;
@@ -135,20 +138,25 @@ export class QuizComponent implements OnInit {
         }
 
         this.questions.push(new TrueFalse(question.id,question.title,question.content,
-          question.image, question.points,question.quizId,question.typeId,
+          question.imageContent, question.points,question.quizId,question.typeId,
           otherOption,question.rightOptions[0]));
       }
       if(question.typeId === 3){
         this.questions.push(new OpenAnswer(question.id,question.title,question.content,
-          question.image, question.points,question.quizId,question.typeId,
+          question.imageContent, question.points,question.quizId,question.typeId,
           question.rightOptions[0]));
       }
       if(question.typeId === 4){
         this.questions.push(new SequenceAnswer(question.id,question.title,question.content,
-          question.image, question.points,question.quizId,question.typeId,
+          question.imageContent, question.points,question.quizId,question.typeId,
           question.rightOptions));
       }
     }
+
+    console.log(this.question);
+
+    const objectURL = 'data:image/jpeg;base64,' + this.question.image;
+    this.thumbnail2 = this.sanitizer.bypassSecurityTrustUrl(objectURL);
   }
 
   mapEditedQuestion(ans){
@@ -238,7 +246,7 @@ export class QuizComponent implements OnInit {
   }
 
   addNewQuestion(){
-    this.question = new OneToFour("","","","",0,this.quiz.id,1,["",""],[false,false]);
+    this.question = new OneToFour("","","",new Blob(),0,this.quiz.id,1,["",""],[false,false]);
   }
 
   showAnswer(i){
@@ -260,19 +268,19 @@ export class QuizComponent implements OnInit {
 
     switch(deviceValue) { 
       case "1": { 
-         this.question = new OneToFour("","","","",0,this.quiz.id,1,["",""],[]);
+         this.question = new OneToFour("","","",new Blob(),0,this.quiz.id,1,["",""],[]);
          break; 
       } 
       case "2": { 
-         this.question = new TrueFalse("","","","",0,this.quiz.id,1,"true","false");
+         this.question = new TrueFalse("","","",new Blob(),0,this.quiz.id,1,"true","false");
          break; 
       } 
       case "3": {
-         this.question = new OpenAnswer("","","","",0,this.quiz.id,1,"");
+         this.question = new OpenAnswer("","","",new Blob(),0,this.quiz.id,1,"");
          break; 
       } 
       case "4": {     
-        this.question = new SequenceAnswer("","","","",0,this.quiz.id,1,["","",""]);
+        this.question = new SequenceAnswer("","","",new Blob(),0,this.quiz.id,1,["","",""]);
         break; 
      } 
    }
@@ -306,19 +314,19 @@ export class QuizComponent implements OnInit {
   private clearInputs(){
     switch(this.question.typeId){
       case 1: { 
-        this.question = new OneToFour("","","","",0,this.quiz.id,1,["",""],[]);
+        this.question = new OneToFour("","","",new Blob(),0,this.quiz.id,1,["",""],[]);
         break; 
      } 
      case 2: { 
-        this.question = new TrueFalse("","","","",0,this.quiz.id,1,"true","false");
+        this.question = new TrueFalse("","","",new Blob(),0,this.quiz.id,1,"true","false");
         break; 
      } 
      case 3: {
-        this.question = new OpenAnswer("","","","",0,this.quiz.id,1,"");
+        this.question = new OpenAnswer("","","",new Blob(),0,this.quiz.id,1,"");
         break; 
      } 
      case 4: {     
-       this.question = new SequenceAnswer("","","","",0,this.quiz.id,1,["","",""]);
+       this.question = new SequenceAnswer("","","",new Blob(),0,this.quiz.id,1,["","",""]);
        break; 
     } 
     }
@@ -326,16 +334,25 @@ export class QuizComponent implements OnInit {
 
   quizImage(e){
     const file: File = e.target.files[0];
-    //console.log(file);
     const formData = new FormData();
     formData.append('img', file);
     formData.append('quizId',this.quiz.id);
 
-    this.quizService.uploadImage(formData).subscribe(ans =>console.log(ans),err => console.log(err))
+    this.thumbnail=file;
+
+    this.quizService.uploadImage(formData).subscribe(ans =>console.log(ans),err => console.log(err));
   }
 
   questionImage(e){
-    this.question.image="image";
+    const file: File = e.target.files[0];
+
+    const formData = new FormData();
+    formData.append('img', file);
+    formData.append('questionId',this.question.id);
+
+    this.thumbnail2=file;
+
+    this.questionService.uploadImage(formData).subscribe(ans =>console.log(ans),err => console.log(err));
   }
 
   isOneToFour(val) { return val instanceof OneToFour; }

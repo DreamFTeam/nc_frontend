@@ -120,7 +120,10 @@
                     <app-seq-options *ngIf="isSequenceAnswer(question)" [question]="question"></app-seq-options> 
                 </div>
                 <div class="col-sm-3">
-                    <input type="file" (change)="questionImage($event)"><img src="./assets/img/uplalt.png" alt="" class="img-thumbnail mt-5 mx-auto d-block" >
+                    <input style="display: none" #questionInput type="file"
+                    accept="image/*" (change)="questionImage($event)">
+                    <img [src]='thumbnail2'
+                    alt="Upload" class="img-thumbnail mt-5 mx-auto d-block" (click)="questionInput.click()">
                 </div>
             </div>
             

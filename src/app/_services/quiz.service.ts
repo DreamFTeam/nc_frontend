@@ -9,8 +9,7 @@ import * as jwt_decode from 'jwt-decode';
   providedIn: 'root'
 })
 export class QuizService {
-  url2 = `https://qzbc2.herokuapp.com/api/quiz/`
-  url = `https://qzbc2.herokuapp.com/api/quiz/`;
+  url = `https://qznetbc.herokuapp.com/api/quiz/`;
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
@@ -69,7 +68,7 @@ export class QuizService {
 
     const options = {
       headers: this.httpOptions.headers,
-      params: new HttpParams().set('quizId', quizId).set('userId', this.user.id)
+      params: new HttpParams().set('quizId', quizId)
 
     }
     return this.http.get<Quiz>(this.url + 'get', options);
@@ -100,7 +99,7 @@ export class QuizService {
 
   uploadImage(data : FormData) {
 
-    return this.http.post<Quiz>(this.url2+"quiz-image", data, this.httpOptions2);
+    return this.http.post<Quiz>(this.url+"quiz-image", data, this.httpOptions2);
   }
 
 }

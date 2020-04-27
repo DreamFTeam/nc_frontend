@@ -5,7 +5,7 @@ export class TrueFalse implements Question{
     id: string;
     title: string;
     content: string;
-    image: string;
+    image: Blob;
     points: number;
     quizId: string;
     typeId: number;
@@ -14,7 +14,7 @@ export class TrueFalse implements Question{
     rightAnswer: string;
     
     constructor(id: string, title: string, content: string,
-         image: string, points: number, quizId: string, typeId: number,
+         image: Blob, points: number, quizId: string, typeId: number,
          answer: string, rightAnswer: string) {
             this.id = id;
             this.title = title;

@@ -5,7 +5,7 @@ export class OneToFour implements Question{
     id: string;
     title: string;
     content: string;
-    image: string;
+    image: Blob;
     points: number;
     quizId: string;
     typeId: number;
@@ -14,7 +14,7 @@ export class OneToFour implements Question{
     rightAnswers: boolean[] = [];
     
     constructor(id: string, title: string, content: string,
-         image: string, points: number, quizId: string, typeId: number,
+         image: Blob, points: number, quizId: string, typeId: number,
          answers: string[], rightAnswers: boolean[]) {
             this.id = id;
             this.title = title;
