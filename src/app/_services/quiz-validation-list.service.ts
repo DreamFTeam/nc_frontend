@@ -17,8 +17,8 @@ export enum ListType {
 export class QuizValidationListService {
   private _listType: ListType;
   private baseUrl = 'https://qznetbc.herokuapp.com/api/quiz/';
-  private unvalSizeUrl = 'getinvalidquiztotalsize';
-  private validSizeUrl = 'getvalidquiztotalsize';
+  private unvalSizeUrl = 'getinvalidquiztotalsize/';
+  private validSizeUrl = 'getvalidquiztotalsize/';
   private quizUnvalListUrl = 'quiz-list-invalid/page/';
   private quizValidListUrl = 'quiz-list-valid/page/';
   private info: any;
@@ -40,7 +40,7 @@ export class QuizValidationListService {
   }
 
   getQuizListByPage(pageToSend: number): Observable<QuizValidationPreview[]>{
-    return of([]);
+    //return of([]);
     switch(this._listType){
       case ListType.Unvalidated: {
             return this.sendGetQuizListByPage(this.quizUnvalListUrl, pageToSend, 'getUnvalidatedQuizzesByPage');
@@ -65,7 +65,7 @@ export class QuizValidationListService {
   getTotalSize(): Observable<number>{
     console.log("Get total size... Current listType: ");
     console.log(ListType[this._listType]);
-    return of(32);
+    //return of(32);
     switch(this._listType){
       case ListType.Unvalidated: {
             return this.sendGetTotalSize(this.unvalSizeUrl, 'getUnvalidatedTotalSize');

@@ -1,1 +1,22 @@
-<p>quiz-validation works!</p>
+<div class="content container" role="main">
+    <div class="col mainstyle container">
+        <div class="row jumbotron">
+            <div class="row media">
+                <div class="media-left media-middle pic">
+                    <img class="media-object" src="../../assets/img/quiz.jpg">
+                </div>
+                <div class="media-body">
+                    <h2>{{quiz.title}}</h2>
+                    <p class="fnt-size"><strong>Description:</strong>{{quiz.description}}</p>
+                    <p class="fnt-size"><strong>Author:</strong><a routerLink="">{{quiz.username}}</a></p>
+                    <p class="fnt-size"><strong>Date of creation:</strong>{{quiz.creationDate}}</p>
+                    <p class="fnt-size"><strong>Language:</strong>{{quiz.language}}</p>
+                    <p>
+                        <button class="btn btn-lg buttonsec float-none" type="button">Reject now</button>
+                        <button class="btn btn-lg buttonpr float-right mrgn-right" type="button">Validate</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
