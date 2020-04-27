@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://qznetbc.herokuapp.com/api/'
+  apiUrl: 'https://qznetbc.herokuapp.com/api/'
 };
 
 /*

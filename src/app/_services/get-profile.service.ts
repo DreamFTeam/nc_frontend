@@ -1,28 +1,29 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable, of,  } from 'rxjs';
 import { Profile } from '../_models/profile';
 import { catchError } from 'rxjs/operators';
 import {Quiz} from '../_models/quiz'
+import { User } from '../_models/user';
+import  * as jwt_decode from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GetProfileService {
-  private user;
-  private profilesUrl = `${environment.apiUrl}profiles/`;
-  private httpOptions;
+  profilesUrl = `https://qznetbc.herokuapp.com/api/profiles/`;
+  httpOptions = {headers: new HttpHeaders({
+    'Content-Type': 'application/json',
+    Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('userData')).token
+  })};
+  user: User;
 
 
   constructor(private http: HttpClient) {
-    this.user = JSON.parse(localStorage.getItem('userData'));
-    this.httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + this.user.token
-      })
-    };
+    let info = JSON.parse(localStorage.getItem('userData'));
+    this.user = jwt_decode(info.token)
+    this.user.token = info.token;
   }
 
   public static getCurrentProfile(): string {
@@ -37,6 +38,12 @@ export class GetProfileService {
         params: { key: profile }
       }).pipe();
 
+  }
+
+  public getUsers(): Observable<Profile[]> {
+      let params = new HttpParams();
+  
+      return this.http.get<Profile[]>(this.profilesUrl, {params: params}).pipe();
   }
 
   public getProfilebyUserName(query: string): Observable<Profile[]> {
@@ -67,5 +74,4 @@ export class GetProfileService {
       return of(result as T);
     };
   }
-
 }

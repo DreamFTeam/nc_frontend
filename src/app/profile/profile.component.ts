@@ -114,7 +114,7 @@ export class ProfileComponent implements OnInit {
 
 
   goToQuiz(id: string) {
-    this._router.navigate(['/quiz/' + id]);
+    this._router.navigate(['/viewquiz/' + id]);
   }
 }
 

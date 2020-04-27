@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
-import {AuthenticationService} from '../_services/authentication.service';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthenticationService } from '../_services/authentication.service';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-sign-up',
@@ -15,7 +15,7 @@ export class SignUpComponent implements OnInit {
   loading: boolean;
 
   constructor(private authenticationService: AuthenticationService,
-              public activeModal: NgbActiveModal, private _router: Router) {
+    public activeModal: NgbActiveModal) {
   }
 
   username: string;
@@ -47,10 +47,10 @@ export class SignUpComponent implements OnInit {
     /*Code for comunication with back-end*/
     this.authenticationService.signupUser(this.username, this.email, this.password)
       .subscribe(n => {
-          if (n) {
-            this.isSent = true;
-          }
-        },
+        if (n) {
+          this.isSent = true;
+        }
+      },
         err => {
           this.message = err.error.message;
           this.loading = false;

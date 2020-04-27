@@ -62,3 +62,8 @@ Content-Type: application/json
   "password":"12345"
 }
 
+###
+
+GET https://qznetbc.herokuapp.com/api/profiles 
+Content-Type: application/json
+

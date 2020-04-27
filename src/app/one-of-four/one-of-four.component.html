@@ -5,8 +5,13 @@
     </button>
   </div>
   <div class="grid-item">
-    <input style="width: 100%;"  [(ngModel)]="question.answers[i]">
+    <input class="form-control" style="width: 100%;"  [(ngModel)]="question.answers[i]" placeholder="answer {{i+1}}">
   </div>
   <div class="grid-item"><input type="checkbox" [(ngModel)]="question.rightAnswers[i]"></div>
 </div>
-<button *ngIf="isLimitReached()" class="addb" (click)="addAnswer()"><img src="../assets/img/plus.png"></button>
+<div class="container-fluid">
+  <div class="col-sm-12 text-center">
+    <button *ngIf="isLimitReached()" class="btn addb" (click)="addAnswer()"><img src="../assets/img/plus.png"></button>
+  </div>
+</div>
+

@@ -26,7 +26,4 @@ export class UsersComponent implements OnInit {
         this.searchResults = result;
       });
   }
-
-
-
 }

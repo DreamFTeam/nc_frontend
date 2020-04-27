@@ -1,102 +1,146 @@
+<div role="main">
+    <div class="container-sm mt-2 p-3">
+        <h1 class="title font-base">Create quiz</h1>
 
-<div class="content" role="main">
-    <div id="create-main" class="div-cont">
-        <h1 class="title font-base" >Create quiz</h1>
-        <div>
-            <div class="left">
-                    <button>Upload image</button>
+        <div class="row ml-2 mt-3">
+            <div class="col-sm-3 ">
+                <img [src]='thumbnail' alt="Upload" class="img-thumbnail" (click)="imageInput.click()">
+                <input style="display: none" #imageInput type="file" accept="image/*" (change)="quizImage($event)">
             </div>
-            <div class="right">
-                <div class="block">
-                    <div>
-                        <span class="label font-base">Title:</span>
-                        <input type="text"  [(ngModel)]="quiz.title">
-                    </div>
-                    
-                    <!-- <div>
-                        <span class="label font-base">Category:</span>
-                        <input type="text"  [(ngModel)]="quiz">
-                    </div>
-                    
-                    <div>
-                        <span class="label font-base">Tags:</span>
-                        <input type="text"  [(ngModel)]="tags">
-                    </div> -->
+            <div class="col-sm-8">
 
-                    <div>
-                        <span class="label font-base">Language:</span>
-                        <select [(ngModel)]="quiz.quizLanguage">
-                            <option selected="selected" value="eng">English</option>
-                            <option value="ukr">Ukrainian</option>
+                <label>Title:</label>
+                <input class="form-control" type="text" [(ngModel)]="quiz.title" placeholder="Title of quiz">
+
+                <!-- <label>Category:</label>
+                <input type="text"  [(ngModel)]="quiz">
+
+                <label>Tags:</label>
+                <input type="text"  [(ngModel)]="tags"> -->
+
+                <label>Language:</label>
+                <select [(ngModel)]="quiz.quizLanguage" class="form-control">
+                    <option selected="selected" value="eng">English</option>
+                    <option value="ukr">Ukrainian</option>
+                </select>
+
+
+                <label>Description:</label>
+                <textarea class="form-control" rows="5" [(ngModel)]="quiz.description"
+                    placeholder="Description of quiz"></textarea>
+            </div>
+        </div>
+
+
+
+        <div class="m-3">
+            <button *ngIf="isButtonLocked() == false" class="btn buttonpr mr-4" (click)="createQuiz()">Save
+                quiz</button>
+            <button class="btn buttonsec" (click)="publish()">Publish quiz</button>
+        </div>
+
+
+        <div class="row m-4">
+            <div class="col-sm-3">
+                <h3>Questions:</h3>
+                <span *ngFor="let question of questions; let i = index">
+                    <button class="btn buttonpr mr-1 mt-1 rounded" (click)="showAnswer(i)">{{(i+1)}}</button>
+                </span>
+                <button class="btn buttonpr rounded mt-1" (click)="addNewQuestion()">+</button>
+            </div>
+
+        </div>
+
+    </div>
+    <div *ngIf="isQuizCreated()" class="container-sm mt-2 mb-2 p-4">
+
+        <div>
+            <button class="removeb" (click)="removeQuestion()"><img class="bttnimg"
+                    src="../assets/img/close-button.png"></button>
+            <label>Remove question</label>
+        </div>
+
+        <div>
+            <div class="mt-4">
+                <label>Question title</label>
+                <div class="row">
+
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" [(ngModel)]="question.title"
+                            placeholder="Title of question">
+                    </div>
+                    <div class="col-sm-3">
+                        <select (change)="onChange($event.target.value)" class="form-control">
+
+                            <option *ngIf="isOneToFour(question); else elseBlock" selected="selected" value="1">
+                                Select option
+                            </option>
+                            <ng-template #elseBlock>
+                                <option value="1">Select option</option>
+                            </ng-template>
+
+                            <option *ngIf="isTrueFalse(question); else elseBlock1" selected="selected" value="2">
+                                True\False
+                            </option>
+                            <ng-template #elseBlock1>
+                                <option value="2">True\False</option>
+                            </ng-template>
+
+                            <option *ngIf="isOpenAnswer(question); else elseBlock2" selected="selected" value="3">
+                                Type answer
+                            </option>
+                            <ng-template #elseBlock2>
+                                <option value="3">Type answer</option>
+                            </ng-template>
+
+                            <option *ngIf="isSequenceAnswer(question); else elseBlock3" selected="selected" value="4">
+                                Select sequence
+                            </option>
+                            <ng-template #elseBlock3>
+                                <option value="4">Select sequence</option>
+                            </ng-template>
+
                         </select>
                     </div>
-
-                    
-                    <div class="label font-base">Description:</div>
-                    <textarea id="description"  name="description"  [(ngModel)]="quiz.description"></textarea>
                 </div>
+
+
+
+
+
+                <div class="row">
+                    <div class="col-sm-8">
+                        <div class="m-3">
+                            <label>Content:</label>
+                            <textarea class="form-control" rows="3" [(ngModel)]="question.content"
+                                placeholder="Content of question"></textarea>
+                        </div>
+                        <app-one-of-four *ngIf="isOneToFour(question)" [question]="question"></app-one-of-four>
+                        <app-true-false *ngIf="isTrueFalse(question)" [question]="question"></app-true-false>
+                        <app-open-answer *ngIf="isOpenAnswer(question)" [question]="question"></app-open-answer>
+                        <app-seq-options *ngIf="isSequenceAnswer(question)" [question]="question"></app-seq-options>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="file" (change)="questionImage($event)"><img src="./assets/img/uplalt.png" alt=""
+                            class="img-thumbnail mt-5 mx-auto d-block">
+                    </div>
+                </div>
+
+
             </div>
         </div>
-        
-        
 
-        <div id="buttons">
-            <div *ngIf="isButtonLocked() == false" class="button b1 font-base" style="float: left;" (click)="createQuiz()" >Save quiz</div>
-            <div class="button b2 font-base" style="float: left;" (click)="publish()">Publish quiz</div>
-        </div>
-
-        <div style="float: none">
-            <div *ngFor="let question of questions; let i = index">
-                <button (click)="showAnswer(i)">{{i}}</button>
+        <label class="mt-4">Points:</label>
+        <div class="row">
+            <div class="col-sm-6">
+                <input class="form-control" style="max-width: 20%;" type="text" [(ngModel)]="question.points"
+                    placeholder="Points">
             </div>
-            <button (click)="addNewQuestion()">+</button>
-        </div>
-        
-</div>
-<div *ngIf="isQuizCreated()" id="questions" class="div-cont">
-    <h1 class="title" >Questions</h1>
-    <div id="questionContainer">
-        <div style="margin-top: 35px;">
-        <button class="removeb" (click)="removeQuestion()"><img src="../assets/img/close-button.png"></button>
-        <input class="title" type="text"  [(ngModel)]="question.title">
-         <select (change)="onChange($event.target.value)">
-             <option *ngIf="isOneToFour(question); else elseBlock" selected="selected" value="1">Select option</option>
-             <ng-template #elseBlock>
-                 <option value="1">Select option</option>
-             </ng-template>
-             <option *ngIf="isTrueFalse(question); else elseBlock1" selected="selected" value="2">True\False</option>
-             <ng-template #elseBlock1>
-                <option value="2">True\False</option>
-             </ng-template>
-             <option *ngIf="isOpenAnswer(question); else elseBlock2" selected="selected" value="3">Type answer</option>
-             <ng-template #elseBlock2>
-                <option value="3">Type answer</option>
-             </ng-template>
-             <option *ngIf="isSequenceAnswer(question); else elseBlock3" selected="selected" value="4">Select sequence</option>
-             <ng-template #elseBlock3>
-                <option value="4">Select sequence</option>
-             </ng-template>
-         </select>
-         <div style="margin-top: 5px;"><h3>Content:</h3></div>
-        <textarea class="title" [(ngModel)]="question.content"></textarea>
-         
+            <div class="col-sm-5">
 
-         <app-one-of-four *ngIf="isOneToFour(question)" [question]="question"></app-one-of-four>
-         <app-true-false *ngIf="isTrueFalse(question)" [question]="question"></app-true-false>
-         <app-open-answer *ngIf="isOpenAnswer(question)" [question]="question"></app-open-answer>
-         <app-seq-options *ngIf="isSequenceAnswer(question)" [question]="question"></app-seq-options> 
-         
+            </div>
         </div>
-    </div>
-    <h1>Points:</h1>
-         <input  type="text"  [(ngModel)]="question.points">
-    <button (click)="uploadImage()">Upload image</button>
-    <div id="buttons">
-        <div class="button b1 font-base" style="float: left;" (click)="saveQuestion()">Save question</div>
+
+        <button class="btn buttonpr mt-5" (click)="saveQuestion()">Save question</button>
     </div>
 </div>
-</div>
-
-
-  
-  

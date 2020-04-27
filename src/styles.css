@@ -26,3 +26,20 @@ a:active {
     margin-left: 10px;
     margin-right: 10px;
   }
+
+  .buttonpr{
+    background: #74BDE6;
+}
+
+.buttonpr:hover{
+    background: #8cc5e6;
+    
+}
+
+.buttonsec{
+    background: #E6B174;
+}
+
+.buttonsec:hover{
+    background: #e3be94;
+}

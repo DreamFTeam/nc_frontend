@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { LogInComponent } from '../log-in/log-in.component';
-import { SignUpComponent } from '../sign-up/sign-up.component';
+import {Component, OnInit} from '@angular/core';
+import {RouterModule} from '@angular/router';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {LogInComponent} from '../log-in/log-in.component';
+import {SignUpComponent} from '../sign-up/sign-up.component';
 
 @Component({
   selector: 'app-nav-bar',
@@ -9,6 +10,7 @@ import { SignUpComponent } from '../sign-up/sign-up.component';
   styleUrls: ['./nav-bar.component.css']
 })
 export class NavBarComponent implements OnInit {
+  public isMenuCollapsed = true;
   public signedIn;
   public privileged;
   constructor(private modalService: NgbModal) {
@@ -22,6 +24,7 @@ export class NavBarComponent implements OnInit {
 
 
   openLogin() {
+    this.isMenuCollapsed = true;
     const modalRef = this.modalService.open(LogInComponent);
     modalRef.result.then((result) => {
       if (result) {
@@ -31,6 +34,7 @@ export class NavBarComponent implements OnInit {
   }
 
   openReg() {
+    this.isMenuCollapsed = true;
     const modalRef = this.modalService.open(SignUpComponent, { size: 'lg' });
 
   }

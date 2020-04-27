@@ -1,27 +1,23 @@
-
 <div class="content" role="main">
-    <div id="create-main" class="div-cont">
-        <div>
-            <div class="left">
-                    <img src="../assets/img/quiz.jpg">
+    <div id="create-main" class="container-sm mt-2 p-5">
+        <div class="row">
+            <div class="col-sm-5">
+                <img class="img-thumbnail" [src]='thumbnail' alt="../assets/img/quiz.jpg">
             </div>
-            <div class="right">
-                <div class="block">
-
-                    <p>Title: {{quiz.title}}</p>              
-                    <p>Created: {{quiz.creationDate}}</p>
-                    <p>Author: {{quiz.creatorId}}</p>
-                    <p>Tags: {{quiz.tags}}</p>
-                    <p>Categories: {{quiz.category}}</p>
-
-                    <p>Description: {{quiz.description}}</p>
-                </div>
+            <div class="col-sm-6">
+                <p><b class="plabel mr-3">Title:</b>{{quiz.title}}</p>
+                <p><b class="plabel mr-3">Created:</b>{{quiz.creationDate}}</p>
+                <p><b class="plabel mr-3">Author:</b>{{quiz.creatorId}}</p>
+                <p><b class="plabel mr-3">Tags:</b>{{quiz.tags}}</p>
+                <p><b class="plabel mr-3">Categories:</b>{{quiz.category}}</p>
+                <p><b class="plabel mr-3">Description:</b>{{quiz.description}}</p>
             </div>
         </div>
-        
-        
+
+
 
         <div id="buttons">
-            <div class="button b1 font-base" style="float: left;" (click)="markAsFavorite()" >Mark as favorite</div>
+            <div class="btn buttonpr" (click)="markAsFavorite()">Mark as favorite</div>
+            <a *ngIf="isMyQuiz()" class="btn buttonsec ml-1" routerLink="/quizedit/{{quiz.id}}">Edit quiz</a>
         </div>
-</div>
+    </div>

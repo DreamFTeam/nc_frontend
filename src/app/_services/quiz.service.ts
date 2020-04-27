@@ -9,18 +9,25 @@ import * as jwt_decode from 'jwt-decode';
   providedIn: 'root'
 })
 export class QuizService {
-  url = `https://qznetbc.herokuapp.com/api/quiz/`;
-  httpOptions = {};
+  url2 = `https://qzbc2.herokuapp.com/api/quiz/`
+  url = `https://qzbc2.herokuapp.com/api/quiz/`;
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('userData')).token
+    })
+  };
+  httpOptions2 = {
+    headers: new HttpHeaders({
+      Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('userData')).token
+    })
+  };
   user: User;
 
   constructor(private http: HttpClient) {
-    this.user = JSON.parse(localStorage.getItem('userData'));
-    this.httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + this.user.token
-      })
-    };
+    let info = JSON.parse(localStorage.getItem('userData'));
+    this.user = jwt_decode(info.token)
+    this.user.token = info.token;
   }
 
 
@@ -30,7 +37,7 @@ export class QuizService {
     const quizInfo = {
       title: quiz.title,
       quizId: quiz.id,
-      creatorId: jwt_decode(this.user.token).id,
+      creatorId: this.user.id,
       newTitle: quiz.title,
       newLanguage: quiz.quizLanguage,
       newDescription: quiz.description,
@@ -47,7 +54,7 @@ export class QuizService {
   createQuiz(quiz: Quiz) : Observable<Quiz> {
     const quizInfo = {
       title: quiz.title,
-      creatorId: jwt_decode(this.user.token).id,
+      creatorId: this.user.id,
       language: quiz.quizLanguage,
       description: quiz.description,
       imageRef: quiz.imageReference,
@@ -60,16 +67,19 @@ export class QuizService {
 
   getQuiz(quizId: string) : Observable<Quiz> {
 
-    let params = new HttpParams().set('quizId', quizId).set('userId', jwt_decode(this.user.token).id);
+    const options = {
+      headers: this.httpOptions.headers,
+      params: new HttpParams().set('quizId', quizId).set('userId', this.user.id)
 
-    return this.http.get<Quiz>(this.url + 'get', {params: params});
+    }
+    return this.http.get<Quiz>(this.url + 'get', options);
   }
 
 
   markAsFavorite(id: string){
     const favoriteInfo = {
       quizId: id,
-      userId: jwt_decode(this.user.token).id,
+      userId: this.user.id,
     };
     return this.http.post<Quiz>(this.url + 'markasfavourite', JSON.stringify(favoriteInfo), this.httpOptions);
   }
@@ -83,6 +93,14 @@ export class QuizService {
     return this.http.post<Quiz>(this.url + 'markaspublished', JSON.stringify(quizInfo), this.httpOptions)
   }
 
-  
+  canIEditQuiz(id: string){
+    return id === this.user.id;
+  }
+
+
+  uploadImage(data : FormData) {
+
+    return this.http.post<Quiz>(this.url2+"quiz-image", data, this.httpOptions2);
+  }
 
 }
