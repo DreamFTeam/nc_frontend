@@ -8,12 +8,12 @@
                     <img id="pic" src="../../assets/img/quiz.jpg">
                     <!-- [src]="item.image_ref"    (pageChange) = "page = $event">-->
                     <p>{{item.title}}</p>
-                    
+
                 </a>
             </div>
         </div>
         <div class="pagination-container">
-            <ngb-pagination class="d-flex justify-content-center" size="lg" [collectionSize]="totalSize$ | async" [(page)]="page" [maxSize]="7" [rotate]="true" (pageChange)="loadPage($event)"></ngb-pagination>
+            <ngb-pagination class="d-flex justify-content-center" size="lg" [pageSize]="pageSize" [collectionSize]="totalSize$ | async" [(page)]="page" [maxSize]="7" [rotate]="true" (pageChange)="loadPage($event)"></ngb-pagination>
         </div>
     </div>
 </div>
