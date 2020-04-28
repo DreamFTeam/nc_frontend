@@ -32,19 +32,17 @@ export class AnnouncementEditComponent implements OnInit {
 
 
   constructor(private modalService: NgbModal, 
-    private announcementService: AnnouncementService/*,
-    private library: FaIconLibrary*/) { 
+    private announcementService: AnnouncementService) { 
     this.announcementService.getAmount().subscribe(ans => this.collectionSize = ans, err => console.log(err));
     this.announcementService.getAnnouncements(0,5).subscribe(ans => 
       this.setAnnouncements(ans)
       , err => console.log(err));
-      //library.addIcons(faSquare, faCheckSquare);
   }
 
   ngOnInit(): void {
     this.page = 1;
     this.pageSize = PAGE_SIZE;
-    this.inEdit = [false];  //EVERY TIME +1, first element for adding
+    this.inEdit = [false];  //EVERY TIME +1 in code, first element for adding
     this.editorEnabled = false;
   }
 
