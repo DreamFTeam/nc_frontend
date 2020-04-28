@@ -33,6 +33,8 @@ import { CreatePrivilegedComponent } from './create-privileged/create-privileged
 import { AnnouncementViewComponent } from './announcement-view/announcement-view.component';
 import { AnnouncementEditComponent } from './announcement-edit/announcement-edit.component';
 
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
 const appRoutes: Routes =[
 ];
 
@@ -71,7 +73,8 @@ const appRoutes: Routes =[
     BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,  
-    NgbModule
+    NgbModule,
+    FontAwesomeModule
   ],
   entryComponents: [LogInComponent, SignUpComponent, RecoverPasswordComponent],
   providers: [AuthenticationService, QuizListService, QuestionService, QuizService],

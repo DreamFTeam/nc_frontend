@@ -3,6 +3,7 @@
         <ngb-alert [type]="alert.type" (close)="close(alert)">{{ alert.message }}</ngb-alert>
     </p>
     <div class="container-sm mt-2 p-4">
+        <div *ngIf="!loading"> 
         <div *ngIf="!editorEnabled">
             <button class="btn addb" (click)="add()"><img src="../assets/img/plus.png"></button>
         </div>
@@ -59,7 +60,16 @@
             </div>
             
         </div>
+        
+
+        
+        
         <ngb-pagination [collectionSize]="collectionSize" [pageSize]="pageSize"
          [(page)]="page" class="d-flex justify-content-center" (pageChange)="loadPage($event)"></ngb-pagination>
+        </div>
+        <div style="text-align: center;" *ngIf="loading">
+            <fa-icon [icon]="faSpinner" [spin]="true"  size="6x" ></fa-icon>
+        </div>
+        
     </div>
 </div>

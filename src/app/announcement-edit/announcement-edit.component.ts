@@ -4,6 +4,8 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnnouncementService } from '../_services/announcement.service';
 import { Alert } from '../_models/Alert';
 
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+
 
 const PAGE_SIZE: number = 5;
 
@@ -24,11 +26,19 @@ export class AnnouncementEditComponent implements OnInit {
   page: number;
   pageSize: number;
 
-  constructor(private modalService: NgbModal, private announcementService: AnnouncementService) { 
+  loading: boolean = true;
+
+  faSpinner = faSpinner;
+
+
+  constructor(private modalService: NgbModal, 
+    private announcementService: AnnouncementService/*,
+    private library: FaIconLibrary*/) { 
     this.announcementService.getAmount().subscribe(ans => this.collectionSize = ans, err => console.log(err));
     this.announcementService.getAnnouncements(0,5).subscribe(ans => 
       this.setAnnouncements(ans)
       , err => console.log(err));
+      //library.addIcons(faSquare, faCheckSquare);
   }
 
   ngOnInit(): void {
@@ -48,6 +58,7 @@ export class AnnouncementEditComponent implements OnInit {
       this.isCollapsed.push(true);
       this.inEdit.push(false);
     }
+    this.loading = false;
   }
 
   //start editing announcement
@@ -140,6 +151,7 @@ export class AnnouncementEditComponent implements OnInit {
 
   //get announcements on page change
   loadPage(e){
+    this.loading = true;
     this.announcementService.getAnnouncements((this.page-1) * 5 ,5).subscribe(ans => 
       this.setAnnouncements(ans)
       , err => console.log(err));
