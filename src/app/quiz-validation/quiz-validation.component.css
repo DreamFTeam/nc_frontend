@@ -1,0 +1,18 @@
+.pic {
+    padding: 1em;
+}
+
+.pic img {
+    max-width: 20em;
+}
+
+.mainstyle {
+    border-radius: 8px;
+    background-color: #F7F9FB;
+    min-height: 10hv;
+}
+
+.content {
+    padding-top: 60px;
+    min-height: 150em;
+}

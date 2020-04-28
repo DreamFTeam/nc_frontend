@@ -12,6 +12,7 @@ const PAGE_SIZE: number = 6;
   styleUrls: ['./validation-tab.component.css']
 })
 export class ValidationTabComponent implements OnInit {
+  mockImageUrl:string = "../../assets/img/quiz.jpg";
   pageSize:number = PAGE_SIZE;
   page: number;
   totalSize$: Observable<number>;

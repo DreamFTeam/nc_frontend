@@ -1,7 +1,7 @@
 <div class="container">
     <div *ngFor="let item of quizList$ | async" class="row media">
         <div class="media-left media-middle pic">
-            <img class="media-object" src="../../assets/img/quiz.jpg">
+            <img class="media-object" [src]="item.imageContent ? item.imageContent : this.mockImageUrl" alt="Quiz icon">
         </div>
         <div class="media-body">
             <h4>{{item.title}}</h4>

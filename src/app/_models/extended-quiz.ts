@@ -20,6 +20,7 @@ export class ExtendedQuiz implements DesearizableWImage{
     categoryNameList: string[];
     isFavourite: boolean;
     imageContent: any;
+    
     deserialize(input: any, sanitizer: DomSanitizer): this {
         Object.assign(this, input);
         const objUrl = 'data:image/jpeg;base64,' + this.imageContent;
