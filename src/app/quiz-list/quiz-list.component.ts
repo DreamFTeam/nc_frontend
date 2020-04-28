@@ -20,10 +20,10 @@ export class QuizListComponent implements OnInit {
 
   constructor( private quizListService: QuizListService) { 
     this.pageSize = PAGE_SIZE;
+    this.page = 1;
   }
 
   ngOnInit(): void {
-    this.page = 1;
     this.getTotalSize();
     this.getQuizzes(this.page);
   }
@@ -34,7 +34,6 @@ export class QuizListComponent implements OnInit {
 
   getTotalSize(): void{
     this.totalSize$ = this.quizListService.getTotalSize();
-    this.totalSize$.subscribe(ans => console.log(ans));
   }
 
   loadPage(event){

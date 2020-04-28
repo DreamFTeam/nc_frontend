@@ -34,6 +34,7 @@ import { ValidationPageComponent } from './validation-page/validation-page.compo
 import { ValidationTabComponent } from './validation-page/validation-tab/validation-tab.component';
 import { QuizValidationListService } from './_services/quiz-validation-list.service';
 import { QuizValidationComponent } from './quiz-validation/quiz-validation.component';
+import { ConfirmModalComponent } from './confirm-modal/confirm-modal.component';
 
 const appRoutes: Routes =[
 ];
@@ -64,7 +65,8 @@ const appRoutes: Routes =[
     CreatePrivilegedComponent,
     ValidationPageComponent,
     ValidationTabComponent,
-    QuizValidationComponent],
+    QuizValidationComponent,
+    ConfirmModalComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

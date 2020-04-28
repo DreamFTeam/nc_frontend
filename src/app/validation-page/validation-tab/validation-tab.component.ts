@@ -42,7 +42,7 @@ export class ValidationTabComponent implements OnInit {
   }
 
   validate(id:string):void{
-    this.router.navigateByUrl('/validate/' + id); //further improvement is coming...
+    this.router.navigateByUrl('/validation/' + id); //further improvement is coming...
   }
 
   reject(id: string):void{

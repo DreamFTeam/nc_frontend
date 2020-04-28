@@ -1,20 +1,48 @@
 <div class="content container" role="main">
     <div class="col mainstyle container">
-        <div class="row jumbotron container">
-            <h1 class="row col">Quiz review</h1>
-            <div class="row media">
+        <div class="row">
+            <div class="col jumbotron">
+                <h1><strong>Quiz review:</strong> "{{quiz.title}}"</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col media">
                 <div class="media-left media-middle pic">
                     <img class="media-object" src="../../assets/img/quiz.jpg">
                 </div>
                 <div class="media-body">
-                    <p class="fnt-size"><strong>Description:</strong>{{quiz.title}}</p>
-                    <p class="fnt-size"><strong>Author:</strong>
-                        <a routerLink=""></a>
-                    </p>
-                    <p class="fnt-size"><strong>Date of creation:</strong></p>
-                    <p class="fnt-size"><strong>Language:</strong></p>
+                    <p class="fnt-size"><strong>Description:</strong>{{quiz.description}}</p>
+                    <a routerLink="profile/:{{quiz.author}}">
+                        <p class="fnt-size"><strong>Author: </strong>{{quiz.author}}</p>
+                    </a>
+                    <p class="fnt-size"><strong>Date of creation: </strong>{{quiz.creationDate}}</p>
+                    <p class="fnt-size"><strong>Language: </strong>{{quiz.language}}</p>
+                    <!--TAGS-->
+                    <!--Categories-->
+                    <!--BUTTONS-->
                 </div>
             </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col">
+                <h1 class="text-center">Questions</h1>
+            </div>
+        </div>
+        <hr>
+        <div class="row container mainstyle">
+            <!--*ngFor="let item of questionList$ | async"-->
+            <div class="container">
+                <img class="row" src="../../assets/img/quiz.jpg" alt="Question image">
+                <p>Title of a question</p>
+                <p>Content of a message. It is very long probably</p>
+                <p>Points: 10.5</p>
+                <p>Type: One of four</p>
+            </div>
+            <!--
+            <div class="pagination-container row">
+                <ngb-pagination class="d-flex justify-content-center" size="lg" [pageSize]="pageSize" [collectionSize]="totalSize$ | async" [(page)]="page" [maxSize]="7" [rotate]="true" (pageChange)="loadPage($event)"></ngb-pagination>
+            </div>-->
         </div>
     </div>
 </div>
