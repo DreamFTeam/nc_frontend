@@ -11,6 +11,7 @@ import { QuizValidationListService} from '../_services/quiz-validation-list.serv
 export class ValidationPageComponent implements OnInit {
   active: number;
   currentUsername: string;
+  showButtons: boolean = true;
 
   constructor(private quizValidationService: QuizValidationListService) {
     this.active = 1;
@@ -21,6 +22,12 @@ export class ValidationPageComponent implements OnInit {
   }
 
   changeList(event):void{
+    if (event == 1){
+      this.showButtons = true;
+    }
+    else{
+      this.showButtons = false;
+    }
     this.quizValidationService.listType = event;
   }
 

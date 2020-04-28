@@ -4,14 +4,16 @@
             <img class="media-object" [src]="item.imageContent ? item.imageContent : this.mockImageUrl" alt="Quiz icon">
         </div>
         <div class="media-body">
-            <h4>{{item.title}}</h4>
-            <p class="fnt-size"><strong>Description:</strong>{{item.description}}</p>
-            <p class="fnt-size"><strong>Author:</strong><a routerLink="">{{item.username}}</a></p>
-            <p class="fnt-size"><strong>Date of creation:</strong>{{item.creationDate}}</p>
-            <p class="fnt-size"><strong>Language:</strong>{{item.language}}</p>
-            <p>
-                <button class="btn btn-lg buttonsec float-none" type="button">Reject now</button>
-                <button class="btn btn-lg buttonpr float-right mrgn-right" type="button">Validate</button>
+            <a routerLink="/viewquiz/{{item.id}}">
+                <h4>{{item.title}}</h4>
+            </a>
+            <p class="fnt-size"><strong>Description: </strong>{{item.description}}</p>
+            <p class="fnt-size"><strong>Author: </strong><a routerLink="">{{item.username}}</a></p>
+            <p class="fnt-size"><strong>Date of creation: </strong>{{item.creationDate}}</p>
+            <p class="fnt-size"><strong>Language: </strong>{{item.language}}</p>
+            <p *ngIf="showButtons">
+                <button class="btn btn-lg buttonsec float-none" type="button" (click)="reject(item.id)">Reject now</button>
+                <button class="btn btn-lg buttonpr float-right mrgn-right" (click)="validate(item.id)" type="button">Validate</button>
             </p>
         </div>
     </div>
