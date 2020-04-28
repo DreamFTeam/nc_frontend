@@ -1,48 +1,64 @@
 <div class="content container" role="main">
-    <div class="col mainstyle container">
+    <div class="col mainstyle">
         <div class="row">
             <div class="col jumbotron">
                 <h1><strong>Quiz review:</strong> "{{quiz.title}}"</h1>
             </div>
         </div>
         <div class="row">
-            <div class="col media">
-                <div class="media-left media-middle pic">
-                    <img class="media-object" src="../../assets/img/quiz.jpg">
-                </div>
-                <div class="media-body">
-                    <p class="fnt-size"><strong>Description:</strong>{{quiz.description}}</p>
-                    <a routerLink="profile/:{{quiz.author}}">
-                        <p class="fnt-size"><strong>Author: </strong>{{quiz.author}}</p>
-                    </a>
-                    <p class="fnt-size"><strong>Date of creation: </strong>{{quiz.creationDate}}</p>
-                    <p class="fnt-size"><strong>Language: </strong>{{quiz.language}}</p>
-                    <!--TAGS-->
-                    <!--Categories-->
-                    <!--BUTTONS-->
-                </div>
+            <div class="col-md-4">
+                <img class="img-fluid" src="../../assets/img/quiz.jpg" alt="Quiz avatar">
+            </div>
+            <div class="col-md-8">
+                <p class="fnt-size"><strong>Description:</strong>{{quiz.description}}</p>
+                <a routerLink="profile/:{{quiz.author}}">
+                    <p class="fnt-size"><strong>Author: </strong>{{quiz.author}}</p>
+                </a>
+                <p class="fnt-size"><strong>Date of creation: </strong>{{quiz.creationDate}}</p>
+                <p class="fnt-size"><strong>Language: </strong>{{quiz.language}}</p>
+                <!--TAGS-->
+                <!--Categories-->
+                <!--BUTTONS-->
             </div>
         </div>
         <hr>
         <div class="row">
             <div class="col">
-                <h1 class="text-center">Questions</h1>
+                <h1 class="text-left quest-title">Questions</h1>
             </div>
         </div>
         <hr>
-        <div class="row container mainstyle">
+        <div class="row">
             <!--*ngFor="let item of questionList$ | async"-->
-            <div class="container">
-                <img class="row" src="../../assets/img/quiz.jpg" alt="Question image">
-                <p>Title of a question</p>
-                <p>Content of a message. It is very long probably</p>
-                <p>Points: 10.5</p>
-                <p>Type: One of four</p>
+            <div class="col quest-cont-title">
+                <h3>Title of a question</h3>
             </div>
-            <!--
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-7 mx-auto">
+                        <img class="img-fluid" src="../../assets/img/quiz.jpg" alt="Question image">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <h4>Info</h4>
+                        <hr>
+                        <p>Content of a message. It is very long probably</p>
+                        <p>Points: 10.5</p>
+                        <p>Type: One of four</p>
+                    </div>
+                    <div class="col-md-8">
+                        <h4>Answers</h4>
+                        <hr>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!--
             <div class="pagination-container row">
                 <ngb-pagination class="d-flex justify-content-center" size="lg" [pageSize]="pageSize" [collectionSize]="totalSize$ | async" [(page)]="page" [maxSize]="7" [rotate]="true" (pageChange)="loadPage($event)"></ngb-pagination>
             </div>-->
-        </div>
     </div>
 </div>
