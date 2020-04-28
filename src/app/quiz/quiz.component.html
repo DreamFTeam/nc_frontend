@@ -1,0 +1,150 @@
+
+
+<div role="main">
+    <div class="container-sm mt-2 p-3">
+        <h1 class="title font-base" >Create quiz</h1>
+
+        <div class="row ml-2 mt-3">
+            <div class="col-sm-3 ">
+                <img [src]='thumbnail' alt="Upload" class="img-thumbnail" (click)="imageInput.click()">
+                <input style="display: none" #imageInput type="file"
+                accept="image/*" (change)="quizImage($event)">
+            </div>
+            <div class="col-sm-8"> 
+
+                <label>Title:</label>
+                <input class="form-control" type="text"  [(ngModel)]="quiz.title" placeholder="Title of quiz">
+                
+                <!-- <label>Category:</label>
+                <input type="text"  [(ngModel)]="quiz">
+
+                <label>Tags:</label>
+                <input type="text"  [(ngModel)]="tags"> -->
+
+                <label>Language:</label>
+                <select [(ngModel)]="quiz.quizLanguage" class="form-control">
+                    <option selected="selected" value="eng">English</option>
+                    <option value="ukr">Ukrainian</option>
+                </select>
+
+                
+                <label>Description:</label >
+                <textarea class="form-control" rows="5"
+                [(ngModel)]="quiz.description" placeholder="Description of quiz"></textarea>
+            </div>
+        </div>
+        
+        
+
+        <div class="m-3">
+            <button *ngIf="isButtonLocked() == false" class="btn buttonpr mr-4" (click)="createQuiz()" >Save quiz</button>
+            <button class="btn buttonsec" (click)="publish()">Publish quiz</button>
+        </div>
+
+        
+        <div class="row m-4">
+            <div class="col-sm-3">
+                <h3>Questions:</h3>
+                <span *ngFor="let question of questions; let i = index">
+                    <button class="btn buttonpr mr-1 mt-1 rounded" (click)="showAnswer(i)">{{(i+1)}}</button>
+                </span>
+                <button class="btn buttonpr rounded mt-1" (click)="addNewQuestion()">+</button>
+            </div>
+            
+        </div>
+        
+</div>
+<div *ngIf="isQuizCreated()" class="container-sm mt-2 mb-2 p-4">
+
+    <div>
+        <button class="removeb" (click)="removeQuestion()"><img class="bttnimg" src="../assets/img/close-button.png"></button>
+        <label>Remove question</label>
+    </div>
+
+    <div>
+        <div class="mt-4">
+            <label>Question title</label>
+            <div class="row">
+                
+                <div class="col-sm-8">
+                    <input class="form-control" type="text"  [(ngModel)]="question.title" placeholder="Title of question">
+                </div>
+                <div class="col-sm-3">
+                    <select (change)="onChange($event.target.value)" class="form-control">
+
+                        <option *ngIf="isOneToFour(question); else elseBlock" selected="selected" value="1">
+                            Select option
+                        </option>
+                        <ng-template #elseBlock>
+                            <option value="1">Select option</option>
+                        </ng-template>
+
+                        <option *ngIf="isTrueFalse(question); else elseBlock1" selected="selected" value="2">
+                            True\False
+                        </option>
+                        <ng-template #elseBlock1>
+                           <option value="2">True\False</option>
+                        </ng-template>
+
+                        <option *ngIf="isOpenAnswer(question); else elseBlock2" selected="selected" value="3">
+                            Type answer
+                        </option>
+                        <ng-template #elseBlock2>
+                           <option value="3">Type answer</option>
+                        </ng-template>
+
+                        <option *ngIf="isSequenceAnswer(question); else elseBlock3" selected="selected" value="4">
+                            Select sequence
+                        </option>
+                        <ng-template #elseBlock3>
+                           <option value="4">Select sequence</option>
+                        </ng-template>
+
+                    </select>
+                </div>
+            </div>
+
+        
+            
+            
+            
+            <div class="row">
+                <div class="col-sm-8">
+                    <div class="m-3">
+                        <label>Content:</label>
+                        <textarea class="form-control" rows="3" [(ngModel)]="question.content" placeholder="Content of question"></textarea>
+                    </div>
+                    <app-one-of-four *ngIf="isOneToFour(question)" [question]="question"></app-one-of-four>
+                    <app-true-false *ngIf="isTrueFalse(question)" [question]="question"></app-true-false>
+                    <app-open-answer *ngIf="isOpenAnswer(question)" [question]="question"></app-open-answer>
+                    <app-seq-options *ngIf="isSequenceAnswer(question)" [question]="question"></app-seq-options> 
+                </div>
+                <div class="col-sm-3">
+                    <input style="display: none" #questionInput type="file"
+                    accept="image/*" (change)="questionImage($event)">
+                    <img [src]='thumbnail2'
+                    alt="Upload" class="img-thumbnail mt-5 mx-auto d-block" (click)="questionInput.click()">
+                </div>
+            </div>
+            
+         
+        </div>
+    </div>
+
+    <label class="mt-4">Points:</label>
+    <div class="row">
+        <div class="col-sm-6">    
+            <input class="form-control" style="max-width: 20%;"  type="text"  [(ngModel)]="question.points" placeholder="Points">
+        </div>
+        <div class="col-sm-5">
+            
+        </div>
+    </div>
+
+    <button class="btn buttonpr mt-5" (click)="saveQuestion()">Save question</button>
+</div>
+</div>
+
+
+  
+  

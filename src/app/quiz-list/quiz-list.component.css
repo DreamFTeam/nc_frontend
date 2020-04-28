@@ -1,0 +1,78 @@
+.mainstyle {
+    border-radius: 8px;
+    background-color: #F7F9FB;
+}
+
+#quizlist {
+    position: relative;
+    left: 15%;
+    width: 65%;
+    top: 40px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    min-height: 60em;
+    margin-bottom: 4em;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 20em 20em 20em 20em;
+    column-gap: auto;
+    row-gap: 3em;
+    align-items: stretch;
+}
+
+.quizprev {
+    margin: 1em;
+    text-align: center;
+    font-size: large;
+    font-family: "Comic Sans MS", cursive, sans-serif;
+}
+
+.quizprev img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+#bookmarks {
+    position: relative;
+    left: 15%;
+    width: auto;
+    margin-bottom: 1.5em;
+    text-align: center;
+    font-weight: bold;
+    font-size: large;
+}
+
+#allquizzes {
+    float: left;
+    width: 12em;
+    height: 3em;
+}
+
+#notplayed {
+    float: left;
+    width: 12em;
+    height: 3em;
+    margin-left: 10px;
+}
+
+#search {
+    position: relative;
+    left: 15%;
+    width: 75%;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    height: 50px;
+    text-align: center;
+}
+
+.content {
+    padding-top: 60px;
+    width: 100%;
+    min-height: 150em;
+}
+
+.pagination-container {
+    width: 100%;
+}

@@ -1,0 +1,8 @@
+ <div class="answer">
+     <span>Right answer: </span>
+     <select class="form-control" style="max-width: 100px;" 
+     (change)="onChange($event.target.value)" [(ngModel)]="question.rightAnswer" >
+        <option value="false">False</option>
+        <option value="true">True</option>
+      </select>
+ </div>

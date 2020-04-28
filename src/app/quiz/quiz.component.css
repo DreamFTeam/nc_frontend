@@ -1,0 +1,94 @@
+
+.container-sm{
+    border-radius: 8px;
+    background-color:#F7F9FB;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+textarea{
+    resize: none;
+}
+
+label{
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.form-control{
+    color: black;
+    font-weight: 400;
+}
+
+button.removeb {
+    margin-top: 2px;
+    border: 0px;
+    background-color: transparent;
+  }
+
+.title{
+    position: relative;  
+    color: rgba(0, 0, 0, 0.63);
+    font-size: 20px;
+    line-height: 24px;
+}
+
+.left {
+    float: left;
+    width:30%;
+    margin: 0px;
+}
+
+.right {
+    width: 65%;
+    float: left;
+}
+
+.inline { 
+    width: 50%;
+    float: left;
+    margin :10px;
+}
+
+.block { 
+    float:none;
+    display: block;  
+}
+
+
+.button{
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+    padding: 5px;
+    line-height: 13px;
+    font-size: 20px;
+    text-align: center;
+}
+
+.button:hover{
+    cursor: pointer;
+}
+
+.btn{
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 0px;
+}
+
+
+.bttnimg{
+    width: 20px;
+    height: 20px;
+  }
+
+
+  
+  .grid {
+    display: grid;
+    grid-template-columns: 25% 75%;
+    padding: 10px;
+  }
+  .grid-item {
+    padding: 20px;
+    font-size: 14px;
+  }
+
+
+

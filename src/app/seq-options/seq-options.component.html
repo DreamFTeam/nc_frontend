@@ -1,0 +1,19 @@
+<div *ngFor="let answer of question.rightAnswers; let i = index; trackBy: trackByFn" class="grid-container">
+    <div class="grid-item">
+        {{ (i+1) }}
+    </div>
+    <div class="grid-item">
+      <input class="form-control" style="width: 100%;"  [(ngModel)]="question.rightAnswers[i]">
+    </div>
+    <div class="grid-item">
+        <button *ngIf="isRemovable()" class="remb" (click)="removeAnswer(i)">
+          <img src="../assets/img/close-button.png">
+        </button>
+      </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="col-sm-12 text-center">
+      <button *ngIf="isLimitReached()" class="btn addb" (click)="addAnswer()"><img src="../assets/img/plus.png"></button>
+    </div>
+  </div>
