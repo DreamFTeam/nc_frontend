@@ -3,7 +3,7 @@ import { Announcement } from '../_models/announcement';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnnouncementService } from '../_services/announcement.service';
 import { Alert } from '../_models/Alert';
-import { map } from 'rxjs/operators';
+
 
 const PAGE_SIZE: number = 5;
 
@@ -38,6 +38,8 @@ export class AnnouncementEditComponent implements OnInit {
     this.editorEnabled = false;
   }
 
+  
+  //getting announcements on request
   setAnnouncements(ans){
     this.announcements = ans;
     this.isCollapsed = [];
@@ -48,12 +50,14 @@ export class AnnouncementEditComponent implements OnInit {
     }
   }
 
+  //start editing announcement
   edit(i){
     this.editorEnabled = true;
     this.inEdit[i+1]=true;
     this.currentAnnouncement = this.announcements[i];
   }
 
+  //deleting announcement
   delete(i){
     const modalRef = this.modalService.open(NgbdModalContent);
     modalRef.componentInstance.text="Are you sure you want to delete announcement?";
@@ -70,6 +74,7 @@ export class AnnouncementEditComponent implements OnInit {
       })
   }
 
+  //saving edited announcement
   save(i){
     if(this.announcementService.validateAnnouncement(this.currentAnnouncement)){
       const modalRef = this.modalService.open(NgbdModalContent);
@@ -92,13 +97,14 @@ export class AnnouncementEditComponent implements OnInit {
     }
   }
 
+  //cancel editing or adding
   cancel(i){
     this.inEdit[i+1]=false;
     this.currentAnnouncement = null;
     this.editorEnabled = false;
   }
 
-
+  //start adding announcement
   add(){
     this.editorEnabled = true;
     this.inEdit[0]=true;
@@ -106,6 +112,7 @@ export class AnnouncementEditComponent implements OnInit {
     "title":"","textContent":"","creationDate":new Date(),"image":"image"});
   }
 
+  //saving adding announcement
   saveAdd(){
     if(this.announcementService.validateAnnouncement(this.currentAnnouncement)){
       const modalRef = this.modalService.open(NgbdModalContent);
@@ -125,10 +132,13 @@ export class AnnouncementEditComponent implements OnInit {
     }
   }
 
+  //close alert
   close(alert: Alert) {
     this.alerts.splice(this.alerts.indexOf(alert), 1);
   }
 
+
+  //get announcements on page change
   loadPage(e){
     this.announcementService.getAnnouncements((this.page-1) * 5 ,5).subscribe(ans => 
       this.setAnnouncements(ans)

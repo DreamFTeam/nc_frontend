@@ -26,6 +26,7 @@ export class AnnouncementService {
     this.user.token = info.token;
   }
 
+  //GET list of announcements in range
   getAnnouncements(start: number, amount: number): Observable<Announcement[]>{
     const options = {
       headers: this.httpOptions.headers,
@@ -40,6 +41,7 @@ export class AnnouncementService {
     );
   }
 
+  //GET amount of announcements for pagination
   getAmount(): Observable<number>{
     const options = {
       headers: this.httpOptions.headers
@@ -48,6 +50,7 @@ export class AnnouncementService {
     return this.http.get<number>(this.url + '/getamount', options);
   }
 
+  //POST new announcement
   addAnnouncement(announcement: Announcement): Observable<Announcement>{
     console.log('in add');
     let postAnnouncement = announcement;
@@ -56,6 +59,7 @@ export class AnnouncementService {
     return this.http.post<Announcement>(this.url + '/create', JSON.stringify(postAnnouncement), this.httpOptions);
   }
 
+  //POST edited announcement
   editAnnouncement(announcement: Announcement): Observable<Announcement>{
     console.log('in edit');
     let postAnnouncement = announcement;
@@ -64,6 +68,7 @@ export class AnnouncementService {
     return this.http.post<Announcement>(this.url + '/edit', JSON.stringify(postAnnouncement), this.httpOptions);
   }
 
+  //POST delete announcement
   deleteAnnouncement(id: string): Observable<Announcement>{
     console.log('in delete');
     const options = {
@@ -73,19 +78,8 @@ export class AnnouncementService {
     return this.http.delete<Announcement>(this.url + '/delete/'+id, options);
   }
 
+  //validate announcement
   validateAnnouncement(announcement: Announcement): boolean{
     return announcement.textContent !=="" && announcement.title !== "";
   }
-
-  // mapAnnouncement(announcement: any[]){
-  //   // let result: Announcement;
-  //   // Object.assign(result, announcement);
-  //   // return result;
-  //   let result: Announcement[];
-  //   const mapper = from(announcement);
-  //   mapper.pipe(x => {
-
-  //   })
-  //   console.log(announcement)
-  // }
 }
