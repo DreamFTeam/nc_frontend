@@ -6,7 +6,7 @@
       <div id="online" *ngIf="profile.online==true;" >
 
     </div>
-    <a *ngIf="owner && profile.activated" class="btn btn-users" (click)="edit()">Edit profile</a>
+    <a *ngIf="owner && profile?.role!='ROLE_SUPERADMIN' && profile.activated" class="btn btn-users" (click)="edit()">Edit profile</a>
 
   </div>
       </div>

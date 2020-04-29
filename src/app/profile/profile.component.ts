@@ -77,7 +77,7 @@ export class ProfileComponent implements OnInit {
   }
 
   editAdmin(higher: boolean) {
-    this.privilegedService.edit(this.profile.id, higher).subscribe(result => {
+    this.privilegedService.edit(this.profile.id, 'role', higher).subscribe(result => {
       alert('Privileges have been changed');
       window.location.reload();
 
