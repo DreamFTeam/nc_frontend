@@ -58,7 +58,7 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        <h5 class="text-left quest-content text-center">{{question.content}}</h5>
+                        <h5 class="text-left quest-content text-center"><span class="lead q-fnt">Content: </span>{{question.content}}</h5>
                     </div>
                 </div>
                 <div class="row">
@@ -66,21 +66,36 @@
                         <h4 class="display-4 q-info-head ans-head">Answers</h4>
                         <hr>
                         <div *ngIf="isOneValQuestion(question.typeId)">
-                            <p></p>
+                            <h5>Right answer:</h5>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col ans seq-fnt">
+                                        <span *ngFor="let ans of question.rightOptions">
+                                            {{ans}}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div *ngIf="isSequenceQuestion(question.typeId)">
                             <h5>Right answer:</h5>
-                            <div>
-                                <span *ngFor="let ans of question.rightOptions; let isLast=last; let i = index">
-                                    {{i+1}}. {{ans}} {{isLast? '' : '; '}}
-                                </span>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col ans seq-fnt">
+                                        <span *ngFor="let ans of question.rightOptions; let isLast=last; let i = index">
+                                            <span>
+                                                <strong>{{i+1}}.</strong>
+                                            </span> {{ans}}{{isLast? '' : '; '}}
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div *ngIf="isOptionsAnswer(question.typeId)">
                             <div class="container">
                                 <div class="row">
-                                    <div *ngFor="let ans of question.rightOptions" class="bg-success col-md-6">{{ans}}</div>
-                                    <div *ngFor="let oAns of question.otherOptions" class="col-md-6">{{oAns}}</div>
+                                    <div *ngFor="let ans of question.rightOptions" class="rounded-sm bg-success col-md-6 ans-r ans">{{ans}} (✔)</div>
+                                    <div *ngFor="let oAns of question.otherOptions" class="rounded-sm col-md-6 ans">{{oAns}}</div>
                                 </div>
                             </div>
                         </div>
@@ -89,14 +104,9 @@
                 </div>
 
             </div>
-
         </div>
         <div class="pagination-container">
             <ngb-pagination class="d-flex justify-content-center" size="lg" [pageSize]="pageSize" [collectionSize]="totalQuestionsListSize$ | async" [(page)]="page" [maxSize]="7" [rotate]="true" (pageChange)="loadPage($event)"></ngb-pagination>
         </div>
-        <!--
-            <div class="pagination-container row ">
-                <ngb-pagination class="d-flex justify-content-center " size="lg " [pageSize]="pageSize " [collectionSize]="totalSize$ | async " [(page)]="page " [maxSize]="7 " [rotate]="true " (pageChange)="loadPage($event) "></ngb-pagination>
-            </div>-->
     </div>
 </div>
