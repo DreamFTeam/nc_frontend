@@ -44,30 +44,33 @@
                 <h3 class="lead q-fnt">Question {{i+1}}. {{question.title}}</h3>
                 <hr>
             </div>
+            <div>
+                <h5 class="text-left quest-content lead">{{question.content}}</h5>
+            </div>
             <div class="container">
                 <div class="row">
-                    <div class="col-md-7 mx-auto">
-                        <img *ngIf="question.imageContent" class="img-fluid" [src]="question.imageContent" alt="Question image">
-                        <!--<img class="img-fluid" [src]="this.mockImageUrl">-->
+                    <div *ngIf="question.imageContent" class="col-md-6 text-center">
+                        <img class="img-fluid" [src]="question.imageContent" alt="Question image">
                     </div>
-                </div>
-                <h5 class="text-left quest-content">{{question.content}}</h5>
-                <div class="row">
-                    <div class="col-md-4">
-                        <h4>Info</h4>
+                    <div class="col">
+                        <h4 class="display-4 q-info">Info</h4>
                         <hr>
                         <p>Points: {{question.points}}</p>
                         <p>Type: {{question.typeName}}</p>
                     </div>
+                </div>
+                <div class="row">
                     <div class="col-md-8">
                         <h4>Answers</h4>
                         <hr>
                         <!--
                         <div *ngIf="isOneOfFour(question.typeId)">
-
+    
                         </div>-->
                     </div>
+
                 </div>
+
             </div>
 
         </div>
