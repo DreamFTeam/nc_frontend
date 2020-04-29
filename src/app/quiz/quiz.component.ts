@@ -80,8 +80,11 @@ export class QuizComponent implements OnInit {
 
   mapSavedQuiz(ans){
     alert("Quiz saved!");
-    this.questionService.uploadImage(this.getFormData(this.file,true))
+    this.quiz.id = ans.id;
+    this.quizService.uploadImage(this.getFormData(this.file,true))
     .subscribe(ans =>console.log(ans),err => alert("Couldn`t upload image: "+err));
+
+    this.router.navigate(['/quizedit/'+this.quiz.id]);
   }
 
 
@@ -90,6 +93,9 @@ export class QuizComponent implements OnInit {
     alert("Quiz created!");
     this.quiz.id = ans.id;
     console.log(this.quiz);
+    this.quizService.uploadImage(this.getFormData(this.file,true))
+    .subscribe(ans =>console.log(ans),err => alert("Couldn`t upload image: "+err));
+    
     this.router.navigate(['/quizedit/'+this.quiz.id]);
   }
 
