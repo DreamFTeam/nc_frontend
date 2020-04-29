@@ -17,6 +17,7 @@
 
 
   #quizlist {
+    min-height:max-content;
     padding:10px;
     font-size: 20px;
     font-weight: bold;
@@ -26,11 +27,11 @@
     width:60%;
     top:40px;
     background-color:#F7F9FB;
-    height: 70vh;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   }
 
   .content {
+    height:max-content;
     padding-top: 60px;
   }
 
@@ -91,6 +92,8 @@
 
 
   .quizinfo {
+
+    display:grid;
     top:20px;
     left:20px;
     margin:20px;
