@@ -12,7 +12,7 @@ import  * as jwt_decode from 'jwt-decode';
   providedIn: 'root'
 })
 export class GetProfileService {
-  profilesUrl = `https://qznetbc.herokuapp.com/api/profiles/`;
+  profilesUrl = `http://localhost:8081/api/profiles/`;
   httpOptions = {headers: new HttpHeaders({
     'Content-Type': 'application/json',
     Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('userData')).token
@@ -53,17 +53,15 @@ export class GetProfileService {
   }
 
   public editProfile(field: string, value: string): Observable<Profile> {
-    if (field === 'aboutMe' || field === 'image') {
-      const obj = {};
-      obj[field] = value;
-      return this.http.post<Profile>(this.profilesUrl + 'edit/' + field, JSON.stringify(obj)
-        , this.httpOptions).pipe(catchError(this.handleError<any>('EditProfile')));
-    }
+      return this.http.post<Profile>(this.profilesUrl + 'edit/' + field,
+       { headers: this.httpOptions.headers, params: 
+        { key: value }} ).pipe(catchError(this.handleError<any>('EditProfile')));
+    
   }
 
   
   public getProfileQuiz(userId: string): Observable<Quiz[]> {
-         return this.http.get<Quiz[]>(`${environment.apiUrl}quiz/` + 'getuserquizlist',
+         return this.http.get<Quiz[]>(`${environment.apiUrl}quizzes/` + 'user-list',
         { headers: this.httpOptions.headers, params: {userId } }).pipe();
 
   }

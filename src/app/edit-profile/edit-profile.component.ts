@@ -2,6 +2,8 @@ import { Component, OnInit, Output, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { GetProfileService } from '../_services/get-profile.service';
 import { PrivilegedService } from '../_services/privileged.service';
+import {DomSanitizer} from '@angular/platform-browser';
+
 @Component({
   selector: 'app-edit-profile',
   templateUrl: './edit-profile.component.html',
@@ -14,7 +16,7 @@ export class EditProfileComponent implements OnInit {
   profile
 
   constructor(private _router: Router, private getProfileService: GetProfileService,
-    private priviligedService: PrivilegedService) {
+    private priviligedService: PrivilegedService,   private sanitizer:DomSanitizer) {
     this.ready = false;
     this.usernameToChange = history.state.data;
     if (this.usernameToChange === undefined
@@ -25,6 +27,7 @@ export class EditProfileComponent implements OnInit {
     } else if (this.usernameToChange === undefined || this.usernameToChange == null) {
       this.usernameToChange = GetProfileService.getCurrentProfile();
     }
+
   }
 
   ngOnInit(): void {
@@ -33,6 +36,7 @@ export class EditProfileComponent implements OnInit {
       result => {
         this.profile = result;
         this.newAboutMe = this.profile.aboutMe;
+        this.profile.imageContent = this.sanitizer.bypassSecurityTrustUrl("data:image\/(png|jpg);base64," + this.profile.imageContent)
         this.ready = true;
       },
       error => {
@@ -40,6 +44,7 @@ export class EditProfileComponent implements OnInit {
         console.error(error.error);
         this._router.navigate(['/']);
       });
+
 
   }
 
@@ -61,6 +66,7 @@ export class EditProfileComponent implements OnInit {
         error => console.log(error.err)
       )
     }
+    this._router.navigate(['/profile/' + this.usernameToChange]);
 
   }
 

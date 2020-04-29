@@ -1,7 +1,7 @@
 export interface Profile {
     username: string;
     aboutMe: string;
-    picture: string;
+    imageContent: string;
     isonline: boolean;
     lastTimeOnline: Date;
 }

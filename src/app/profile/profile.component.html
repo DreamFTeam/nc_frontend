@@ -2,11 +2,11 @@
     <div id="profile"  >
       <div id="block" *ngIf="profile">
       <div id="picture" >
-        <img id="image">
+        <img *ngIf="profile.imageContent" id="image" [src]="profile.imageContent">
+        <img *ngIf="!profile.imageContent" id="image" style= "background: url('../../assets/img/nopicture.jpg')center no-repeat; object-fit: contain;">
       <div id="online" *ngIf="profile.online==true;" >
-
-    </div>
-    <a *ngIf="owner && profile?.role!='ROLE_SUPERADMIN' && profile.activated" class="btn btn-users" (click)="edit()">Edit profile</a>
+      </div>
+        <a *ngIf="owner && profile.role!='ROLE_SUPERADMIN' && profile.activated" class="btn btn-users" (click)="edit()">Edit profile</a>
 
   </div>
       </div>

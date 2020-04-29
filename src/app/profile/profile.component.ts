@@ -2,8 +2,9 @@ import { Component, OnInit, Output } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { GetProfileService } from '../_services/get-profile.service';
 import { PrivilegedService } from '../_services/privileged.service';
-import { AuthenticationService } from '../_services/authentication.service';
 import { Quiz } from '../_models/quiz'
+import { DomSanitizer } from '@angular/platform-browser';
+
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -22,7 +23,7 @@ export class ProfileComponent implements OnInit {
     private route: ActivatedRoute,
     private getProfileService: GetProfileService,
     private privilegedService: PrivilegedService,
-    private authenticationService: AuthenticationService,
+    private sanitizer: DomSanitizer
   ) {
     this.role = JSON.parse(localStorage.getItem('userData')).role
   }
@@ -38,6 +39,10 @@ export class ProfileComponent implements OnInit {
     this.getProfileService.getProfile(this.username).subscribe(
       result => {
         this.profile = result;
+        if (this.profile.imageContent != null) {
+          this.profile.imageContent = this.sanitizer.bypassSecurityTrustUrl("data:image\/(png|jpg);base64," + this.profile.imageContent)
+
+        }
         this.setRights();
         if (this.profile.role === 'ROLE_USER') {
           this.getQuizzes();
