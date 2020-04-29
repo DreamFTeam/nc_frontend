@@ -17,10 +17,10 @@ export enum ListType {
 })
 export class QuizValidationListService {
   private _listType: ListType;
-  //private baseUrl = 'https://qznetbc.herokuapp.com/api/quiz/';
-  private baseUrl = 'http://localhost:8081/api/quiz/';
-  private unvalSizeUrl = 'getinvalidquiztotalsize/';
-  private validSizeUrl = 'getvalidquiztotalsize/';
+  private baseUrl = 'https://qznetbc.herokuapp.com/api/quizzes/';
+  //private baseUrl = 'http://localhost:8081/api/quizzes/';
+  private unvalSizeUrl = 'invalidquiztotalsize';
+  private validSizeUrl = 'validquiztotalsize';
   private quizUnvalListUrl = 'quiz-list-invalid/page/';
   private quizValidListUrl = 'quiz-list-valid/page/';
   private info: any;
