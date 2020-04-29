@@ -16,19 +16,19 @@ export class ExtendedQuestion implements DesearizableWImage {
         Object.assign(this, input);
         switch(this.typeId){
             case 1:{
-                this.typeName = 'Open answer';
+                this.typeName = 'Options';
                 break;
             }
             case 2:{
-                this.typeName = 'One of four';
+                this.typeName = 'True or false';
                 break;
             }
             case 3:{
-                this.typeName = 'Sequence';
+                this.typeName = 'Open answer';
                 break;
             }
             case 4:{
-                this.typeName = 'True of false';
+                this.typeName = 'Sequence answer';
                 break;
             }
         }

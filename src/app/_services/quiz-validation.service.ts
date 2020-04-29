@@ -17,7 +17,7 @@ export class QuizValidationService {
   private baseUrl = 'https://qznetbc.herokuapp.com/api/quizzes/';
   private setValidatorUrl = 'setvalidator';
   private validateUrl = "validate";
-  private questionsTotalSize = "/questions/amount";//quiz_id before it
+  private questionsTotalSizeUrl = "/questions/amount";//quiz_id before it
   private questionsByPageUrl =  "/questions/page/";//quiz_id before it
 
   //private quizUnvalListUrl = 'quiz-list-invalid/page/';
@@ -63,7 +63,7 @@ export class QuizValidationService {
   
   getTotalQuestionsListSize(quiz_id: string): Observable<number>{
     //return of(12);
-    return this.http.get<number>(this.baseUrl + quiz_id + this.questionsTotalSize, this.httpOptions)
+    return this.http.get<number>(this.baseUrl + quiz_id + this.questionsTotalSizeUrl, this.httpOptions)
       .pipe(catchError(this.handleErrorsService.handleError<number>("getTotalQuestionsListSize", 0)));
   } 
 }

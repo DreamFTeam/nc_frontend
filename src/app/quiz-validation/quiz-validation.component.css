@@ -29,6 +29,7 @@
 .quest-content {
     margin-top: 1.5em;
     margin-bottom: 1.5em;
+    font-size: 1.75rem;
 }
 
 .fnt-size p {
@@ -39,6 +40,14 @@
     font-size: 2rem;
 }
 
-.q-info {
+.q-info .q-info-head {
     font-size: 2rem;
+}
+
+.q-info p {
+    font-size: 1.5rem;
+}
+
+.ans-head {
+    padding-left: 0.5em;
 }

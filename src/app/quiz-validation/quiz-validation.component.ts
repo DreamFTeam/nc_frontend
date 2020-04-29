@@ -29,9 +29,6 @@ export class QuizValidationComponent implements OnInit {
 
   quiz: ExtendedQuiz;
   
-  //MOCK
-  //quiz: ExtendedQuiz;
-
   constructor(private route: ActivatedRoute,
               private location: Location,
               private sanitizer: DomSanitizer,
@@ -64,5 +61,16 @@ export class QuizValidationComponent implements OnInit {
   loadPage(event): void{
     this.getQuestionListByPage(event);
   }
+
+  isSequenceQuestion(type: number): boolean{
+    return type === 4;
+  }
+  isOptionsAnswer(type: number): boolean{
+    return type === 1;
+  }
+  isOneValQuestion(type: number): boolean{
+    return type === 3 || type === 2;
+  }
+  
 
 }
