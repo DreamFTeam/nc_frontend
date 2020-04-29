@@ -1,91 +1,88 @@
-
-
 <nav class="navbar navbar-expand-lg navbar-light bg-light mb-3" *ngIf="signedIn== false">
 
-  <button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">
+    <button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">
     &#9776;
   </button>
 
-  <a class="navbar-brand" [routerLink]="'/'">QUIZ-NET</a>
+    <a class="navbar-brand" [routerLink]="'/'">QUIZ-NET</a>
 
-  <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
-    <ul class="navbar-nav mx-auto">
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="'/'" (click)="isMenuCollapsed = true">MAIN PAGE</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="'/quiz-list'" (click)="isMenuCollapsed = true">QUIZZES</a>
-      </li>
-      <li class="nav-item">
-        <input class="form-control mr-sm-2" type="text" placeholder="Search">
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" (click)="openLogin()">LOG IN</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" (click)="openReg()">SIGN UP</a>
-      </li>
-    </ul>
-  </div>
+    <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
+        <ul class="navbar-nav mx-auto">
+            <li class="nav-item">
+                <a class="nav-link" [routerLink]="'/'" (click)="isMenuCollapsed = true">MAIN PAGE</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" [routerLink]="'/quiz-list'" (click)="isMenuCollapsed = true">QUIZZES</a>
+            </li>
+            <li class="nav-item">
+                <input class="form-control mr-sm-2" type="text" placeholder="Search">
+            </li>
+            <li class="nav-item">
+                <a class="nav-link clickable" (click)="openLogin()">LOG IN</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link clickable" (click)="openReg()">SIGN UP</a>
+            </li>
+        </ul>
+    </div>
 </nav>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light mb-3" *ngIf="signedIn && !privileged">
 
-  <button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">
+    <button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">
     &#9776;
   </button>
 
-  <a class="navbar-brand" [routerLink]="'/'">QUIZ-NET</a>
+    <a class="navbar-brand" [routerLink]="'/'">QUIZ-NET</a>
 
-  <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
-    <ul class="navbar-nav mx-auto">
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="'/profile'" (click)="isMenuCollapsed = true">PROFILE</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="'/quiz-list'" (click)="isMenuCollapsed = true">QUIZZES</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="'/users'" (click)="isMenuCollapsed = true">USERS</a>
-      </li>
-      <li class="nav-item">
-        <input class="form-control mr-sm-2" type="text" placeholder="Search">
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="'/'" (click)="isMenuCollapsed = true">LOG OUT</a>
-      </li>
-    </ul>
-  </div>
+    <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
+        <ul class="navbar-nav mx-auto">
+            <li class="nav-item">
+                <a class="nav-link" [routerLink]="'/profile'" (click)="isMenuCollapsed = true">PROFILE</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" [routerLink]="'/quiz-list'" (click)="isMenuCollapsed = true">QUIZZES</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" [routerLink]="'/users'" (click)="isMenuCollapsed = true">USERS</a>
+            </li>
+            <li class="nav-item">
+                <input class="form-control mr-sm-2" type="text" placeholder="Search">
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" [routerLink]="'/'" (click)="isMenuCollapsed = true">LOG OUT</a>
+            </li>
+        </ul>
+    </div>
 </nav>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light mb-3" *ngIf="signedIn == true  && privileged == true">
 
-  <button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">
+    <button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">
     &#9776;
   </button>
-  <a class="navbar-brand" [routerLink]="'/'">QUIZ-NET</a>
+    <a class="navbar-brand" [routerLink]="'/'">QUIZ-NET</a>
 
-  <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
-    <ul class="navbar-nav mx-auto">
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="'/privileged/main'" (click)="isMenuCollapsed = true">MAIN</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="'/profile'" (click)="isMenuCollapsed = true">PROFILE</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="'/quiz-list'" (click)="isMenuCollapsed = true">QUIZZES</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="'/users'" (click)="isMenuCollapsed = true">USERS</a>
-      </li>
-      <li class="nav-item">
-        <input class="form-control mr-sm-2" type="text" placeholder="Search">
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="'/'" (click)="isMenuCollapsed = true">LOG OUT</a>
-      </li>
-    </ul>
-  </div>
+    <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
+        <ul class="navbar-nav mx-auto">
+            <li class="nav-item">
+                <a class="nav-link" [routerLink]="'/privileged/main'" (click)="isMenuCollapsed = true">MAIN</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" [routerLink]="'/profile'" (click)="isMenuCollapsed = true">PROFILE</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" [routerLink]="'/quiz-list'" (click)="isMenuCollapsed = true">QUIZZES</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" [routerLink]="'/users'" (click)="isMenuCollapsed = true">USERS</a>
+            </li>
+            <li class="nav-item">
+                <input class="form-control mr-sm-2" type="text" placeholder="Search">
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" [routerLink]="'/'" (click)="isMenuCollapsed = true">LOG OUT</a>
+            </li>
+        </ul>
+    </div>
 </nav>
-
