@@ -9,8 +9,7 @@ import * as jwt_decode from 'jwt-decode';
   providedIn: 'root'
 })
 export class QuizService {
-  //url = `https://qznetbc.herokuapp.com/api/quizzes/`;
-  url = `http://localhost:8081/api/quizzes/`;
+  url = `https://qznetbc.herokuapp.com/api/quizzes/`;
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
