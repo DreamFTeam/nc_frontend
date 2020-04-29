@@ -11,7 +11,7 @@
   </div>
       </div>
       <div id="info">
-      <h3><b>{{profile?.username}}</b></h3>
+      <h3><b>{{profile?.username}}</b> <span *ngIf="profile.role!='ROLE_USER'"  style="color:#31708E; margin-left: 10px;"> {{profile.role.substr(5).toLowerCase()}}</span></h3>
       <h5 *ngIf="!profile?.activated" style="color: red;">deactivated</h5>
 
       <h3 *ngIf="profile && profile?.online==true; else lastseen" style="color:#31708E;"> online </h3>
@@ -23,8 +23,8 @@
 
     <div id="pr" *ngIf= "owner && privileged && profile.activated &&  role!= this.profile.role" > 
       <a id="bt" class="btn btn-users"  (click)="deactivate(false)">Deactivate </a>
-      <a id="btupgr"  *ngIf="this.profile.role!='ROLE_ADMIN'" class="btn btn-users"  (click)="editAdmin(true)">Upgrade to Admin </a>
-      <a id="btdowngr" *ngIf="this.profile.role!='ROLE_MODERATOR'" class="btn btn-users"  (click)="editAdmin(false)">Downgrade to Moderator </a>
+      <a id="btupgr"  *ngIf="role=='ROLE_SUPERADMIN' && this.profile.role!='ROLE_ADMIN' " class="btn btn-users"  (click)="editAdmin(true)">Upgrade to Admin </a>
+      <a id="btdowngr" *ngIf="role=='ROLE_SUPERADMIN' && this.profile.role!='ROLE_MODERATOR' " class="btn btn-users"  (click)="editAdmin(false)">Downgrade to Moderator </a>
     </div>
   <div id="quizlist" *ngIf="profile?.role=='ROLE_USER'">{{profile?.username}}'s quizzes <span style="display: block;"></span>
 
