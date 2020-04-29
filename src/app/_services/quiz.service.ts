@@ -56,10 +56,11 @@ export class QuizService {
       creatorId: this.user.id,
       language: quiz.quizLanguage,
       description: quiz.description,
-      imageRef: quiz.imageReference,
+      //imageRef: quiz.imageReference,
       tagList: quiz.tags,
       categoryList: quiz.category
     };
+    console.log(quizInfo);
 
     return this.http.post<Quiz>(this.url, JSON.stringify(quizInfo), this.httpOptions)
   }
@@ -80,6 +81,7 @@ export class QuizService {
       quizId: id,
       userId: this.user.id,
     };
+    
     return this.http.post<Quiz>(this.url + 'markasfavourite', JSON.stringify(favoriteInfo), this.httpOptions);
   }
 

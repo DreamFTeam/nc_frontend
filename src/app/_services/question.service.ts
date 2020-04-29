@@ -60,7 +60,7 @@ export class QuestionService {
     };
     console.log(quizInfo);
     if(createEdit){
-      return this.http.post<Question>(this.url + 'question', JSON.stringify(quizInfo), this.httpOptions);
+      return this.http.post<Question>(this.url + 'questions', JSON.stringify(quizInfo), this.httpOptions);
     }else{
       console.log("edit");
       return this.http.post<Question>(this.url + 'questions/edit', JSON.stringify(quizInfo), this.httpOptions);

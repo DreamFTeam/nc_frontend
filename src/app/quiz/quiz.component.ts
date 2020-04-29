@@ -96,6 +96,7 @@ export class QuizComponent implements OnInit {
 
   //Gettig quiz by id in url
   mapGettedQuiz(answer){
+    console.log(answer);
     this.quiz.id=answer.id;
     this.quiz.title=answer.title;
     this.quiz.description=answer.description;
