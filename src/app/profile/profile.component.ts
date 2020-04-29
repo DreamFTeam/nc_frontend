@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { GetProfileService } from '../_services/get-profile.service';
 import { PrivilegedService } from '../_services/privileged.service';
 import { Quiz } from '../_models/quiz'
+import { Profile } from '../_models/profile'
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
@@ -38,11 +39,7 @@ export class ProfileComponent implements OnInit {
 
     this.getProfileService.getProfile(this.username).subscribe(
       result => {
-        this.profile = result;
-        if (this.profile.imageContent != null) {
-          this.profile.imageContent = this.sanitizer.bypassSecurityTrustUrl("data:image\/(png|jpg);base64," + this.profile.imageContent)
-
-        }
+        this.profile = Profile.deserialize(result, this.sanitizer);
         this.setRights();
         if (this.profile.role === 'ROLE_USER') {
           this.getQuizzes();

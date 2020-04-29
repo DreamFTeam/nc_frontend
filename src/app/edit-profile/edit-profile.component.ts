@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { GetProfileService } from '../_services/get-profile.service';
 import { PrivilegedService } from '../_services/privileged.service';
 import {DomSanitizer} from '@angular/platform-browser';
-
+import {Profile} from '../_models/profile'
 @Component({
   selector: 'app-edit-profile',
   templateUrl: './edit-profile.component.html',
@@ -34,9 +34,8 @@ export class EditProfileComponent implements OnInit {
     let thiserr = null;
     this.getProfileService.getProfile(this.usernameToChange).subscribe(
       result => {
-        this.profile = result;
+        this.profile = Profile.deserialize(result, this.sanitizer);
         this.newAboutMe = this.profile.aboutMe;
-        this.profile.imageContent = this.sanitizer.bypassSecurityTrustUrl("data:image\/(png|jpg);base64," + this.profile.imageContent)
         this.ready = true;
       },
       error => {

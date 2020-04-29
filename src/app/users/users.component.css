@@ -59,7 +59,6 @@
   #picture {
     float: left;
     display: block;
-    background: url("../../assets/img/nopicture.jpg") no-repeat;
     border-radius: 8px;
     width:8vw;
     height:18vh;
@@ -81,4 +80,11 @@
   margin-top: 15px;
   margin: 10px;
   position: relative;
+}
+
+
+#img {
+  border-radius: 8px;
+  width: inherit;
+  height: inherit;
 }
