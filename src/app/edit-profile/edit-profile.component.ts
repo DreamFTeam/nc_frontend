@@ -66,7 +66,6 @@ export class EditProfileComponent implements OnInit {
         error => console.log(error.err)
       )
     }
-    this._router.navigate(['/profile/' + this.usernameToChange]);
 
   }
 
