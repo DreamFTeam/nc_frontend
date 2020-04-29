@@ -1,22 +1,29 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { Observable, of,  } from 'rxjs';
+import { Observable, of, } from 'rxjs';
 import { Profile } from '../_models/profile';
 import { catchError } from 'rxjs/operators';
-import {Quiz} from '../_models/quiz'
+import { Quiz } from '../_models/quiz'
 import { User } from '../_models/user';
-import  * as jwt_decode from 'jwt-decode';
+import * as jwt_decode from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GetProfileService {
   profilesUrl = `http://localhost:8081/api/profiles/`;
-  httpOptions = {headers: new HttpHeaders({
-    'Content-Type': 'application/json',
-    Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('userData')).token
-  })};
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('userData')).token
+    })
+  };
+  httpOptions2 = {
+    headers: new HttpHeaders({
+      Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('userData')).token
+    })
+  };
   user: User;
 
 
@@ -41,9 +48,9 @@ export class GetProfileService {
   }
 
   public getUsers(): Observable<Profile[]> {
-      let params = new HttpParams();
-  
-      return this.http.get<Profile[]>(this.profilesUrl, {params: params}).pipe();
+    let params = new HttpParams();
+
+    return this.http.get<Profile[]>(this.profilesUrl, { params: params }).pipe();
   }
 
   public getProfilebyUserName(query: string): Observable<Profile[]> {
@@ -53,16 +60,16 @@ export class GetProfileService {
   }
 
   public editProfile(field: string, value: string): Observable<Profile> {
-      return this.http.post<Profile>(this.profilesUrl + 'edit/' + field,
-       { headers: this.httpOptions.headers, params: 
-        { key: value }} ).pipe(catchError(this.handleError<any>('EditProfile')));
-    
+    return this.http.post<Profile>(this.profilesUrl + 'edit/' + field, 
+     null, {params: {key : value}, headers: this.httpOptions2.headers}
+      ).pipe(catchError(this.handleError<any>('EditProfile')));
+
   }
 
-  
+
   public getProfileQuiz(userId: string): Observable<Quiz[]> {
-         return this.http.get<Quiz[]>(`${environment.apiUrl}quizzes/` + 'user-list',
-        { headers: this.httpOptions.headers, params: {userId } }).pipe();
+    return this.http.get<Quiz[]>(`${environment.apiUrl}quizzes/` + 'user-list',
+      { headers: this.httpOptions.headers, params: { userId } }).pipe();
 
   }
 
