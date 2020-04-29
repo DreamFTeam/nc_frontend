@@ -9,7 +9,7 @@ import * as jwt_decode from 'jwt-decode';
   providedIn: 'root'
 })
 export class QuizService {
-  url = `https://qznetbc.herokuapp.com/api/quiz/`;
+  url = `https://qznetbc.herokuapp.com/api/quizzes/`;
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
@@ -61,7 +61,7 @@ export class QuizService {
       categoryList: quiz.category
     };
 
-    return this.http.post<Quiz>(this.url + 'create', JSON.stringify(quizInfo), this.httpOptions)
+    return this.http.post<Quiz>(this.url, JSON.stringify(quizInfo), this.httpOptions)
   }
 
   getQuiz(quizId: string) : Observable<Quiz> {
@@ -71,7 +71,7 @@ export class QuizService {
       params: new HttpParams().set('quizId', quizId)
 
     }
-    return this.http.get<Quiz>(this.url + 'get', options);
+    return this.http.get<Quiz>(this.url, options);
   }
 
 

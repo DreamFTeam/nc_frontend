@@ -63,7 +63,7 @@ export class GetProfileService {
 
   
   public getProfileQuiz(userId: string): Observable<Quiz[]> {
-         return this.http.get<Quiz[]>(`${environment.apiUrl}quiz/` + 'getuserquizlist',
+         return this.http.get<Quiz[]>(`${environment.apiUrl}quizzes/` + 'user-list',
         { headers: this.httpOptions.headers, params: {userId } }).pipe();
 
   }

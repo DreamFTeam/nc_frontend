@@ -12,7 +12,7 @@ import { SequenceAnswer } from '../_models/question/sequenceanswer';
   providedIn: 'root'
 })
 export class QuestionService {
-  url = `https://qznetbc.herokuapp.com/api/quiz/`;
+  url = `https://qznetbc.herokuapp.com/api/quizzes/`;
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
@@ -41,7 +41,7 @@ export class QuestionService {
 
     }
 
-    return this.http.get<Question[]>(this.url + 'getquestionlist', options);
+    return this.http.get<Question[]>(this.url + 'questions', options);
   }
 
 
@@ -60,10 +60,10 @@ export class QuestionService {
     };
     console.log(quizInfo);
     if(createEdit){
-      return this.http.post<Question>(this.url + 'create/question', JSON.stringify(quizInfo), this.httpOptions);
+      return this.http.post<Question>(this.url + 'question', JSON.stringify(quizInfo), this.httpOptions);
     }else{
       console.log("edit");
-      return this.http.post<Question>(this.url + 'edit/question', JSON.stringify(quizInfo), this.httpOptions);
+      return this.http.post<Question>(this.url + 'questions/edit', JSON.stringify(quizInfo), this.httpOptions);
     }
     
   }
@@ -82,9 +82,9 @@ export class QuestionService {
     };
     console.log(quizInfo);
     if(createEdit){
-      return this.http.post<Question>(this.url + 'create/question', JSON.stringify(quizInfo), this.httpOptions);
+      return this.http.post<Question>(this.url + 'questions', JSON.stringify(quizInfo), this.httpOptions);
     }else{
-      return this.http.post<Question>(this.url + 'edit/question', JSON.stringify(quizInfo), this.httpOptions);
+      return this.http.post<Question>(this.url + 'questions/edit', JSON.stringify(quizInfo), this.httpOptions);
     }
   }
 
@@ -101,9 +101,9 @@ export class QuestionService {
     };
     console.log(quizInfo);
     if(createEdit){
-      return this.http.post<Question>(this.url + 'create/question', JSON.stringify(quizInfo), this.httpOptions);
+      return this.http.post<Question>(this.url + 'questions', JSON.stringify(quizInfo), this.httpOptions);
     }else{
-      return this.http.post<Question>(this.url + 'edit/question', JSON.stringify(quizInfo), this.httpOptions);
+      return this.http.post<Question>(this.url + 'questions/edit', JSON.stringify(quizInfo), this.httpOptions);
     }
   }
 
@@ -120,9 +120,9 @@ export class QuestionService {
     };
     console.log(quizInfo);
     if(createEdit){
-      return this.http.post<Question>(this.url + 'create/question', JSON.stringify(quizInfo), this.httpOptions);
+      return this.http.post<Question>(this.url + 'questions', JSON.stringify(quizInfo), this.httpOptions);
     }else{
-      return this.http.post<Question>(this.url + 'edit/question', JSON.stringify(quizInfo), this.httpOptions);
+      return this.http.post<Question>(this.url + 'questions/edit', JSON.stringify(quizInfo), this.httpOptions);
     }
   }
 
@@ -148,7 +148,7 @@ export class QuestionService {
       },
     };
     
-      return this.http.delete<Question>(this.url + 'delete/question',options);
+      return this.http.delete<Question>(this.url + 'questions',options);
   }
 
   uploadImage(data : FormData) {
