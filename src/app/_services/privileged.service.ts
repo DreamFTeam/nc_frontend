@@ -23,7 +23,8 @@ export class PrivilegedService {
     };
   }
 
-  public create(username: string, email: string, password: string, userrole : string): Observable<any> {
+
+  public create(username: string, email: string, password: string, userrole: string): Observable<any> {
     const userInfo = {
       username,
       email,
@@ -33,7 +34,7 @@ export class PrivilegedService {
     return this.http.post<User>(this.url, JSON.stringify(userInfo), this.httpOptions).pipe(
       catchError(err => {
         return throwError(err);
-    }))
+      }))
   }
 
 
@@ -45,20 +46,22 @@ export class PrivilegedService {
     return this.http.post<User>(this.url + '/activation', JSON.stringify(userInfo), this.httpOptions).pipe(
       catchError(err => {
         return throwError(err);
-    }))
+      }));
   }
 
 
 
-  public edit(id: string, higher: boolean): Observable<any> {
+  public edit(id: string, field: string, value: any): Observable<any> {
+
     const userInfo = {
-      id,
-      role: higher ? 'ROLE_ADMIN' : 'ROLE_MODERATOR'
+      id
     };
-    return this.http.post<User>(this.url + '/edit/' + 'role', JSON.stringify(userInfo), this.httpOptions).pipe(
+    userInfo[field] = (field !== 'role') ? value : value != 0 ? 'ROLE_ADMIN' : 'ROLE_MODERATOR'
+
+    return this.http.post<User>(this.url + '/edit/' + field, JSON.stringify(userInfo), this.httpOptions).pipe(
       catchError(err => {
         return throwError(err);
-    }))
+      }));
   }
 
 }
