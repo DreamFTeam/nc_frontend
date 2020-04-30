@@ -12,7 +12,7 @@ import * as jwt_decode from 'jwt-decode';
   providedIn: 'root'
 })
 export class GetProfileService {
-  profilesUrl = `http://localhost:8081/api/profiles/`;
+  profilesUrl = `https://qznetbc.herokuapp.com/api/profiles/`;
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
