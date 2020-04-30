@@ -40,7 +40,7 @@ export class QuizValidationService {
   }
 
   validateQuiz(id: string, toValidate: boolean, admComment: string){
-    return this.http.post(this.baseUrl + this.validateUrl, {quiz_id: id, validated: toValidate, adminCommentary: admComment}, this.httpOptions);
+    return this.http.post(this.baseUrl + this.validateUrl, {quizId: id, validated: toValidate, adminCommentary: admComment}, this.httpOptions);
   }
 
   getQuizToValidate(id: string): Observable<ExtendedQuiz>{

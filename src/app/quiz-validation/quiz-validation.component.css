@@ -11,6 +11,7 @@
 
 .pagination-container {
     width: 100%;
+    margin-top: 1em;
 }
 
 .quest-title {
@@ -68,4 +69,11 @@
 
 .seq-ftn {
     font-size: 1.4rem;
+}
+
+.adm-comm {
+    font-size: 1rem;
+    padding: 0.5em;
+    margin-bottom: 0.5em;
+    width: 100%;
 }

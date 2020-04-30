@@ -22,12 +22,13 @@
                 <p *ngIf="quiz.categoryNameList">
                     <strong>Categories: </strong><span *ngFor="let cat of quiz.categoryNameList; let isL=last">{{cat}}{{isL? '' : ', '}}</span>
                 </p>
+                <input class="adm-comm" [(ngModel)]="adminComment" placeholder="Admin comment" />
                 <div class="row">
                     <div class="col">
-                        <button class="btn btn-lg buttonsec float-none" type="button">Reject</button>
+                        <button class="btn btn-lg buttonsec float-none" type="button" (click)="reject(quiz.id)">Reject</button>
                     </div>
                     <div class="col">
-                        <button class="btn btn-lg buttonpr float-right mrgn-right" type="button">Validate</button>
+                        <button class="btn btn-lg buttonpr float-right mrgn-right" type="button" (click)="accept(quiz.id)">Accept and publish</button>
                     </div>
                 </div>
             </div>
