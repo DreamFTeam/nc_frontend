@@ -67,13 +67,7 @@ export class GetProfileService {
 
   
   public getProfileQuiz(userId: string): Observable<Quiz[]> {
-
-    const options = {
-      headers: this.httpOptions.headers,
-      userId: userId
-
-    }
-         return this.http.get<Quiz[]>(`https://qznetbc.herokuapp.com/api/quiz/` + 'getuserquizlist',
+         return this.http.get<Quiz[]>(`${environment.apiUrl}quizzes/` + 'user-list',
         { headers: this.httpOptions.headers, params: {userId } }).pipe();
 
   }
