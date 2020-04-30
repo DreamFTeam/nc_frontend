@@ -39,6 +39,7 @@ import { AnnouncementViewComponent } from './announcement-view/announcement-view
 import { AnnouncementEditComponent } from './announcement-edit/announcement-edit.component';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ShortQuizListComponent } from './short-quiz-list/short-quiz-list.component';
 
 const appRoutes: Routes =[
 ];
@@ -72,7 +73,8 @@ const appRoutes: Routes =[
     QuizValidationComponent,
     ConfirmModalComponent,
     AnnouncementViewComponent,
-    AnnouncementEditComponent],
+    AnnouncementEditComponent,
+    ShortQuizListComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

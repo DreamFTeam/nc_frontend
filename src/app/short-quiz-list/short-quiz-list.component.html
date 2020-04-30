@@ -1,0 +1,17 @@
+<div class="container">
+    <div class="card-group">
+        <div class="row">
+            <button class="arrows col-1 btn btn-lg" type="button" (click)="slideLeft()">&lt;</button>
+            <div class="col 10 row">
+                <div class="col-5 col-sm-6 col-md-3 card" *ngFor="let item of (shortQuizList$ | async) | slice:startIndex:endIndex">
+                    <a routerLink="/viewquiz/{{item.id}}">
+                        <img class="img-fluid rounded my-auto" [src]="item.imageContent ? item.imageContent : mockImgUrl">
+                    </a>
+                </div>
+            </div>
+            <button class="arrows col-1 btn btn-lg" type="button" (click)="slideRight()">&gt;</button>
+        </div>
+    </div>
+
+
+</div>
