@@ -20,11 +20,6 @@ export class QuizValidationService {
   private questionsTotalSizeUrl = "/questions/amount";//quiz_id before it
   private questionsByPageUrl =  "/questions/page/";//quiz_id before it
 
-  //private quizUnvalListUrl = 'quiz-list-invalid/page/';
-  //private quizValidListUrl = 'quiz-list-valid/page/';
-  //private unvalSizeUrl = 'getinvalidquiztotalsize';
-  //private validSizeUrl = 'getvalidquiztotalsize';
-
   private info: any;
   private httpOptions = {};
 
@@ -44,7 +39,6 @@ export class QuizValidationService {
   }
 
   getQuizToValidate(id: string): Observable<ExtendedQuiz>{
-    //return of(new ExtendedQuiz());
     return this.http.post<ExtendedQuiz>(this.baseUrl + this.setValidatorUrl, {quizId: id}, this.httpOptions)
     .pipe(map(data => {
       return new ExtendedQuiz().deserialize(data, this.sanitizer);
@@ -53,7 +47,6 @@ export class QuizValidationService {
   }
 
   getQuestionListByPage(quiz_id: string, page: number): Observable<ExtendedQuestion[]>{
-    //return of([]);
     return this.http.get<ExtendedQuestion[]>(this.baseUrl + quiz_id + this.questionsByPageUrl + page, this.httpOptions)
       .pipe(map(data => data.map(x => {
         return new ExtendedQuestion().deserialize(x, this.sanitizer);
