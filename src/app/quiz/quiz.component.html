@@ -103,27 +103,11 @@
                         </select>
                     </div>
                 </div>
-
-
-
-
-
-                <div class="row">
-                    <div class="col-sm-8">
-                        <div class="m-3">
-                            <label>Content:</label>
-                            <textarea class="form-control" rows="3" [(ngModel)]="question.content"
-                                placeholder="Content of question"></textarea>
-                        </div>
-                        <app-one-of-four *ngIf="isOneToFour(question)" [question]="question"></app-one-of-four>
-                        <app-true-false *ngIf="isTrueFalse(question)" [question]="question"></app-true-false>
-                        <app-open-answer *ngIf="isOpenAnswer(question)" [question]="question"></app-open-answer>
-                        <app-seq-options *ngIf="isSequenceAnswer(question)" [question]="question"></app-seq-options>
-                    </div>
-                    <div class="col-sm-3">
-                        <input type="file" (change)="questionImage($event)"><img src="./assets/img/uplalt.png" alt=""
-                            class="img-thumbnail mt-5 mx-auto d-block">
-                    </div>
+                <div class="col-sm-3">
+                    <input style="display: none" #questionInput type="file" accept="image/*"
+                        (change)="questionImage($event)">
+                    <img [src]='thumbnail2' alt="Upload" class="img-thumbnail mt-5 mx-auto d-block"
+                        (click)="questionInput.click()">
                 </div>
 
 

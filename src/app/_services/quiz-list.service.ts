@@ -1,30 +1,33 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError} from 'rxjs';
-import { QuizPreview } from '../_models/quiz-preview';
+import { ExtendedQuizPreview } from '../_models/extendedquiz-preview';
 import { HttpClient, HttpHeaders} from '@angular/common/http';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class QuizListService {
-  private baseUrl = 'https://qznetbc.herokuapp.com/api/quiz/';
+  private baseUrl = 'https://qznetbc.herokuapp.com/api/quizzes/';
   private quizListUrl = 'quiz-list/page/';
-  private totalSizeUrl = 'getquiztotalsize/';
+  private totalSizeUrl = 'totalsize';
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'
     })
   };
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private sanitizer: DomSanitizer) {
    }
 
-  getQuizzesByPage(pageToSend: number): Observable<QuizPreview[]> {
+  getQuizzesByPage(pageToSend: number): Observable<ExtendedQuizPreview[]> {
     return this.http.
-      get<QuizPreview[]>(this.baseUrl + this.quizListUrl + pageToSend).pipe(
-        catchError(this.handleError<QuizPreview[]>('getQuizzesByPage', []))
+      get<ExtendedQuizPreview[]>(this.baseUrl + this.quizListUrl + pageToSend)
+      .pipe(map(data => data.map(x => {
+        return new ExtendedQuizPreview().deserialize(x, this.sanitizer);
+      })),catchError(this.handleError<ExtendedQuizPreview[]>('getQuizzesByPage', []))
       );
   }
 

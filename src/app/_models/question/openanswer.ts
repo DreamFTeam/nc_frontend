@@ -5,7 +5,7 @@ export class OpenAnswer implements Question{
     id: string;
     title: string;
     content: string;
-    image: string;
+    image: Blob;
     points: number;
     quizId: string;
     typeId: number;
@@ -13,7 +13,7 @@ export class OpenAnswer implements Question{
     rightAnswer: string;
     
     constructor(id: string, title: string, content: string,
-         image: string, points: number, quizId: string,
+         image: Blob, points: number, quizId: string,
          typeId: number,rightAnswer: string) {
             this.id = id;
             this.title = title;
