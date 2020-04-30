@@ -29,11 +29,6 @@
     font-family: "Comic Sans MS", cursive, sans-serif;
 }
 
-.quizprev img {
-    max-width: 100%;
-    max-height: 100%;
-}
-
 #bookmarks {
     position: relative;
     left: 15%;
@@ -44,10 +39,21 @@
     font-size: large;
 }
 
+.thumbn {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    max-height: 11.5rem;
+}
+
 #allquizzes {
     float: left;
     width: 12em;
     height: 3em;
+}
+
+.cards {
+    margin-top: 1em;
+    margin-bottom: 1em;
 }
 
 #notplayed {
