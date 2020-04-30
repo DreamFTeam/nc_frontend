@@ -38,4 +38,10 @@ export class NavBarComponent implements OnInit {
     const modalRef = this.modalService.open(SignUpComponent, { size: 'lg' });
 
   }
+
+  logout(){
+    this.isMenuCollapsed = true
+    localStorage.removeItem('userData');
+    window.location.reload();
+  }
 }
