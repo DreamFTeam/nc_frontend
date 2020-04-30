@@ -34,7 +34,7 @@ export class ProfileComponent implements OnInit {
 
     this.setUsername();
 
-
+    console.log();
     this.getProfileService.getProfile(this.username).subscribe(
       result => {
         this.profile = result;
@@ -109,6 +109,7 @@ export class ProfileComponent implements OnInit {
       },
       error => {
         console.error(error.error);
+        this.ready = true;
       })
   }
 

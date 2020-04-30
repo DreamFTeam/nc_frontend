@@ -30,6 +30,10 @@ import { UsersComponent } from './users/users.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { PrivilegedProfileComponent } from './privileged-profile/privileged-profile.component';
 import { CreatePrivilegedComponent } from './create-privileged/create-privileged.component';
+import { AnnouncementViewComponent } from './announcement-view/announcement-view.component';
+import { AnnouncementEditComponent } from './announcement-edit/announcement-edit.component';
+
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 const appRoutes: Routes =[
 ];
@@ -57,7 +61,9 @@ const appRoutes: Routes =[
     UsersComponent,
     EditProfileComponent,
     PrivilegedProfileComponent,
-    CreatePrivilegedComponent],
+    CreatePrivilegedComponent,
+    AnnouncementViewComponent,
+    AnnouncementEditComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -67,7 +73,8 @@ const appRoutes: Routes =[
     BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,  
-    NgbModule
+    NgbModule,
+    FontAwesomeModule
   ],
   entryComponents: [LogInComponent, SignUpComponent, RecoverPasswordComponent],
   providers: [AuthenticationService, QuizListService, QuestionService, QuizService],

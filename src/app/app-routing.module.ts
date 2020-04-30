@@ -9,6 +9,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { UsersComponent } from './users/users.component';
 import { PrivilegedProfileComponent } from './privileged-profile/privileged-profile.component';
+import { AnnouncementEditComponent } from './announcement-edit/announcement-edit.component';
 
 
 const routes: Routes = [
@@ -23,6 +24,7 @@ const routes: Routes = [
   { path: 'quizcreate', component: QuizComponent},
   { path: 'viewquiz/:id', component: ViewQuizComponent},
   { path: 'quiz-list', component: QuizListComponent},
+  { path: 'editannouncements', component: AnnouncementEditComponent},
   { path: '**', redirectTo: ''}
 ];
 

@@ -32,11 +32,15 @@ export class GetProfileService {
 
 
   public getProfile(profile: string): Observable<Profile> {
-    return this.http.get<Profile>(this.profilesUrl + profile,
-      {
+    console.log(this.profilesUrl + profile)
+
+    const options = {
         headers: this.httpOptions.headers,
-        params: { key: profile }
-      }).pipe();
+    }
+
+
+    return this.http.get<Profile>(this.profilesUrl + profile,
+      options).pipe();
 
   }
 

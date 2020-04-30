@@ -61,7 +61,37 @@
     <button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">
     &#9776;
   </button>
-    <a class="navbar-brand" [routerLink]="'/'">QUIZ-NET</a>
+  <a class="navbar-brand" [routerLink]="'/'">QUIZ-NET</a>
+
+  <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
+    <ul class="navbar-nav mx-auto">
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="'/privileged/main'" (click)="isMenuCollapsed = true">MAIN</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="'/validation'" (click)="isMenuCollapsed = true">VALIDATION</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="'/editannouncements'" (click)="isMenuCollapsed = true">ANNOUNCEMENTS</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="'/profile'" (click)="isMenuCollapsed = true">PROFILE</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="'/quiz-list'" (click)="isMenuCollapsed = true">QUIZZES</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="'/users'" (click)="isMenuCollapsed = true">USERS</a>
+      </li>
+      <li class="nav-item">
+        <input class="form-control mr-sm-2" type="text" placeholder="Search">
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="'/'" (click)="isMenuCollapsed = true">LOG OUT</a>
+      </li>
+    </ul>
+  </div>
+</nav>
 
     <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
         <ul class="navbar-nav mx-auto">
