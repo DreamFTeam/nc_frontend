@@ -1,6 +1,6 @@
 import {Observable} from "rxjs";
 import { Component, OnInit } from '@angular/core';
-import { QuizPreview } from '../_models/quiz-preview';
+import { ExtendedQuizPreview } from '../_models/extendedquiz-preview';
 import { QuizListService } from '../_services/quiz-list.service';
 
 
@@ -16,7 +16,8 @@ export class QuizListComponent implements OnInit {
   pageSize: number;
 
   totalSize$: Observable<number>;
-  quizList$: Observable<QuizPreview[]>;
+  quizList$: Observable<ExtendedQuizPreview[]>;
+  mockImageUrl = "../../assets/img/quiz.jpg";
 
   constructor( private quizListService: QuizListService) { 
     this.pageSize = PAGE_SIZE;
