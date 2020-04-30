@@ -18,6 +18,11 @@ export class AnnouncementService {
       Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('userData')).token
     })
   };
+  httpOptions2 = {
+    headers: new HttpHeaders({
+      Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('userData')).token
+    })
+  };
   user: User;
   
   constructor(private http: HttpClient) { 

@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Announcement } from '../_models/announcement';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnnouncementService } from '../_services/announcement.service';
-import { Alert } from '../_models/Alert';
+import { Alert } from '../_models/alert';
 
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
@@ -49,6 +49,7 @@ export class AnnouncementEditComponent implements OnInit {
   
   //getting announcements on request
   setAnnouncements(ans){
+    console.log(ans);
     this.announcements = ans;
     this.isCollapsed = [];
     
@@ -129,6 +130,8 @@ export class AnnouncementEditComponent implements OnInit {
 
       modalRef.componentInstance.passEntry.subscribe((receivedEntry) => {
         if(receivedEntry){       
+
+          
             this.announcementService.addAnnouncement(this.currentAnnouncement)
             .subscribe(ans => console.log(ans), err => console.log(err));
             
@@ -153,6 +156,15 @@ export class AnnouncementEditComponent implements OnInit {
     this.announcementService.getAnnouncements((this.page-1) * 5 ,5).subscribe(ans => 
       this.setAnnouncements(ans)
       , err => console.log(err));
+  }
+
+  getFormData(file: File): FormData {
+
+    const formData = new FormData();
+    formData.append('img', file);
+    
+
+    return formData;
   }
 
 }
