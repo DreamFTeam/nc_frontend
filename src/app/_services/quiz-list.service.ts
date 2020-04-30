@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable, of, throwError} from 'rxjs';
 import { ExtendedQuizPreview } from '../_models/extendedquiz-preview';
 import { HttpClient, HttpHeaders} from '@angular/common/http';
+
+import { HandleErrorsService } from './handle-errors.service';
 import { catchError, map } from 'rxjs/operators';
 import { DomSanitizer } from '@angular/platform-browser';
 
@@ -19,7 +21,8 @@ export class QuizListService {
     })
   };
 
-  constructor(private http: HttpClient, private sanitizer: DomSanitizer) {
+  constructor(private http: HttpClient, private sanitizer: DomSanitizer
+    ,private handleErrorsService: HandleErrorsService) {
    }
 
   getQuizzesByPage(pageToSend: number): Observable<ExtendedQuizPreview[]> {
@@ -27,21 +30,12 @@ export class QuizListService {
       get<ExtendedQuizPreview[]>(this.baseUrl + this.quizListUrl + pageToSend)
       .pipe(map(data => data.map(x => {
         return new ExtendedQuizPreview().deserialize(x, this.sanitizer);
-      })),catchError(this.handleError<ExtendedQuizPreview[]>('getQuizzesByPage', []))
+      })),catchError(this.handleErrorsService.handleError<ExtendedQuizPreview[]>('getQuizzesByPage', []))
       );
   }
 
   getTotalSize(): Observable<number>{
     return this.http.get<number>(this.baseUrl + this.totalSizeUrl, this.httpOptions)
-        .pipe(catchError(this.handleError<number>('getTotalSize', 0)));
-  }
-
-  private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-
-      console.error(error); // log to console instead
-
-      return of(result as T);
-    };
+        .pipe(catchError(this.handleErrorsService.handleError<number>('getTotalSize', 0)));
   }
 }

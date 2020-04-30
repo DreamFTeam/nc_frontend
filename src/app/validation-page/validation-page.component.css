@@ -1,0 +1,13 @@
+.mainstyle {
+    border-radius: 8px;
+    background-color: #F7F9FB;
+}
+
+.content {
+    padding-top: 60px;
+    min-height: 150em;
+}
+
+.tab-head {
+    font-size: x-large;
+}
