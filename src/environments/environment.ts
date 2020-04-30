@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   apiUrl: 'https://qznetbc.herokuapp.com/api/'
+  //apiUrl: 'http://localhost:8081/api/'
 };
 
 /*

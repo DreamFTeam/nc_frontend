@@ -1,29 +1,10 @@
-#recommendation{
-  position: relative;
+.container-sm{
   border-radius: 8px;
-  top:20px;
-  left:20%;
-  width:60%;
   background-color:#F7F9FB;
-  height: 20vh;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 
-#quizlist {
-  position: relative;
-  border-radius: 8px;
-  left:20%;
-  width:60%;
-  top:40px;
-  background-color:#F7F9FB;
-  height: 80vh;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-}
-
-.content {
-  padding-top: 60px;
-}
 
 
 

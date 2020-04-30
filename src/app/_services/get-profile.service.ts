@@ -39,11 +39,15 @@ export class GetProfileService {
 
 
   public getProfile(profile: string): Observable<Profile> {
-    return this.http.get<Profile>(this.profilesUrl + profile,
-      {
+    console.log(this.profilesUrl + profile)
+
+    const options = {
         headers: this.httpOptions.headers,
-        params: { key: profile }
-      }).pipe();
+    }
+
+
+    return this.http.get<Profile>(this.profilesUrl + profile,
+      options).pipe();
 
   }
 
@@ -68,8 +72,8 @@ export class GetProfileService {
 
 
   public getProfileQuiz(userId: string): Observable<Quiz[]> {
-    return this.http.get<Quiz[]>(`${environment.apiUrl}quizzes/` + 'user-list',
-      { headers: this.httpOptions.headers, params: { userId } }).pipe();
+         return this.http.get<Quiz[]>(`${environment.apiUrl}quizzes/` + 'user-list',
+        { headers: this.httpOptions.headers, params: {userId } }).pipe();
 
   }
 

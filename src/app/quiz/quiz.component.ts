@@ -35,9 +35,14 @@ export class QuizComponent implements OnInit {
     published: false,
 
   };
-  thumbnail: any;
+  thumbnail: any; //Quiz image
+  thumbnail2: any; //Question image
+
+  file: File; //Quiz image file
+  file2: File; //Question image file
+
   questions: Question[] = [];
-  question: Question = new OneToFour("","","","",0,this.quiz.id,1,["",""],[false,false]);
+  question: Question = new OneToFour("","","",new Blob(),0,this.quiz.id,1,["",""],[false,false]);
 
   constructor(private quizService: QuizService, private questionService: QuestionService,
      private activateRoute: ActivatedRoute, private router: Router,private sanitizer: DomSanitizer) { 
@@ -65,12 +70,21 @@ export class QuizComponent implements OnInit {
       if(this.quiz.id === ""){
         this.quizService.createQuiz(this.quiz).subscribe(ans =>this.mapCreatedQuiz(ans),err => this.getCreatedErr(err));
       }else{
-        this.quizService.saveQuiz(this.quiz).subscribe(ans =>console.log(ans),err => console.log(err));
+        this.quizService.saveQuiz(this.quiz).subscribe(ans => this.mapSavedQuiz(ans),err => console.log(err));
       }
     }else{
       alert("Title and description must be provided");
     }
     
+  }
+
+  mapSavedQuiz(ans){
+    alert("Quiz saved!");
+    this.quiz.id = ans.id;
+    this.quizService.uploadImage(this.getFormData(this.file,true))
+    .subscribe(ans =>console.log(ans),err => alert("Couldn`t upload image: "+err));
+
+    this.router.navigate(['/quizedit/'+this.quiz.id]);
   }
 
 
@@ -79,6 +93,9 @@ export class QuizComponent implements OnInit {
     alert("Quiz created!");
     this.quiz.id = ans.id;
     console.log(this.quiz);
+    this.quizService.uploadImage(this.getFormData(this.file,true))
+    .subscribe(ans =>console.log(ans),err => alert("Couldn`t upload image: "+err));
+    
     this.router.navigate(['/quizedit/'+this.quiz.id]);
   }
 
@@ -106,12 +123,16 @@ export class QuizComponent implements OnInit {
     this.question.id = ans.id;
     console.log(this.question);
     this.questions.push(Object.create(this.question));
+    this.questionService.uploadImage(this.getFormData(this.file2,false))
+    .subscribe(ans =>console.log(ans),err => alert("Couldn`t upload image: "+err));
+    
     
   }
 
 
   //Getting questions of quiz
   mapGettedQuestions(ans){
+    console.log(ans);
     for (let question of ans){
       if(question.typeId === 1){
         let rightAnswers: boolean[] = [];
@@ -123,8 +144,10 @@ export class QuizComponent implements OnInit {
         }
 
         this.questions.push(new OneToFour(question.id,question.title,question.content,
-          question.image, question.points,question.quizId,question.typeId,
+          question.imageContent, question.points,question.quizId,question.typeId,
           question.otherOptions.concat(question.rightOptions),rightAnswers));
+
+          this.question.image = question.imageContent;
       }
       if(question.typeId === 2){
         let otherOption: string;
@@ -135,26 +158,30 @@ export class QuizComponent implements OnInit {
         }
 
         this.questions.push(new TrueFalse(question.id,question.title,question.content,
-          question.image, question.points,question.quizId,question.typeId,
+          question.imageContent, question.points,question.quizId,question.typeId,
           otherOption,question.rightOptions[0]));
       }
       if(question.typeId === 3){
         this.questions.push(new OpenAnswer(question.id,question.title,question.content,
-          question.image, question.points,question.quizId,question.typeId,
+          question.imageContent, question.points,question.quizId,question.typeId,
           question.rightOptions[0]));
       }
       if(question.typeId === 4){
         this.questions.push(new SequenceAnswer(question.id,question.title,question.content,
-          question.image, question.points,question.quizId,question.typeId,
+          question.imageContent, question.points,question.quizId,question.typeId,
           question.rightOptions));
       }
     }
+
+    console.log(this.question);
   }
 
   mapEditedQuestion(ans){
     alert("Question edited!");
     this.question.id = ans.id;
     console.log(this.question);
+    this.questionService.uploadImage(this.getFormData(this.file2,false))
+    .subscribe(ans =>console.log(ans),err => alert("Couldn`t upload image: "+err));
   }
 
   //Created quiz error
@@ -238,11 +265,14 @@ export class QuizComponent implements OnInit {
   }
 
   addNewQuestion(){
-    this.question = new OneToFour("","","","",0,this.quiz.id,1,["",""],[false,false]);
+    this.question = new OneToFour("","","",new Blob(),0,this.quiz.id,1,["",""],[false,false]);
   }
 
   showAnswer(i){
     this.question = this.questions[i];
+    
+    const objectURL = 'data:image/jpeg;base64,' + this.question.image;
+    this.thumbnail2 = this.sanitizer.bypassSecurityTrustUrl(objectURL);
   }
 
   public publish() {
@@ -260,19 +290,19 @@ export class QuizComponent implements OnInit {
 
     switch(deviceValue) { 
       case "1": { 
-         this.question = new OneToFour("","","","",0,this.quiz.id,1,["",""],[]);
+         this.question = new OneToFour("","","",new Blob(),0,this.quiz.id,1,["",""],[]);
          break; 
       } 
       case "2": { 
-         this.question = new TrueFalse("","","","",0,this.quiz.id,1,"true","false");
+         this.question = new TrueFalse("","","",new Blob(),0,this.quiz.id,1,"true","false");
          break; 
       } 
       case "3": {
-         this.question = new OpenAnswer("","","","",0,this.quiz.id,1,"");
+         this.question = new OpenAnswer("","","",new Blob(),0,this.quiz.id,1,"");
          break; 
       } 
       case "4": {     
-        this.question = new SequenceAnswer("","","","",0,this.quiz.id,1,["","",""]);
+        this.question = new SequenceAnswer("","","",new Blob(),0,this.quiz.id,1,["","",""]);
         break; 
      } 
    }
@@ -306,36 +336,60 @@ export class QuizComponent implements OnInit {
   private clearInputs(){
     switch(this.question.typeId){
       case 1: { 
-        this.question = new OneToFour("","","","",0,this.quiz.id,1,["",""],[]);
+        this.question = new OneToFour("","","",new Blob(),0,this.quiz.id,1,["",""],[]);
         break; 
      } 
      case 2: { 
-        this.question = new TrueFalse("","","","",0,this.quiz.id,1,"true","false");
+        this.question = new TrueFalse("","","",new Blob(),0,this.quiz.id,1,"true","false");
         break; 
      } 
      case 3: {
-        this.question = new OpenAnswer("","","","",0,this.quiz.id,1,"");
+        this.question = new OpenAnswer("","","",new Blob(),0,this.quiz.id,1,"");
         break; 
      } 
      case 4: {     
-       this.question = new SequenceAnswer("","","","",0,this.quiz.id,1,["","",""]);
+       this.question = new SequenceAnswer("","","",new Blob(),0,this.quiz.id,1,["","",""]);
        break; 
     } 
     }
   }
 
   quizImage(e){
-    const file: File = e.target.files[0];
-    //console.log(file);
-    const formData = new FormData();
-    formData.append('img', file);
-    formData.append('quizId',this.quiz.id);
+    this.file = e.target.files[0];
 
-    this.quizService.uploadImage(formData).subscribe(ans =>console.log(ans),err => console.log(err))
+    let reader = new FileReader();
+    reader.readAsDataURL(this.file);
+    reader.onload = () => {
+      this.thumbnail = reader.result;
+    }
+
+    //this.quizService.uploadImage(formData).subscribe(ans =>console.log(ans),err => console.log(err));
   }
 
   questionImage(e){
-    this.question.image="image";
+    this.file2 = e.target.files[0];
+
+    let reader = new FileReader();
+    reader.readAsDataURL(this.file2);
+    reader.onload = () => {
+      this.thumbnail2 = reader.result;
+    }
+
+    //this.questionService.uploadImage(formData).subscribe(ans =>console.log(ans),err => console.log(err));
+  }
+
+  getFormData(file: File, type: boolean): FormData {
+
+    const formData = new FormData();
+    formData.append('img', file);
+    if(type){
+      formData.append('quizId',this.quiz.id);
+    }else{
+      formData.append('questionId',this.question.id);
+    }
+    
+
+    return formData;
   }
 
   isOneToFour(val) { return val instanceof OneToFour; }

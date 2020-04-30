@@ -1,0 +1,113 @@
+<div class="content container" role="main">
+    <div class="col mainstyle">
+        <div class="row">
+            <div class="col jumbotron">
+                <h1 class="display-4"><strong>Quiz review:</strong> "{{quiz.title}}"</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <img class="img-fluid" [src]="quiz.imageContent ? quiz.imageContent : this.mockImageUrl" alt="Quiz icon">
+            </div>
+            <div class="col-md-8 fnt-size">
+                <p><strong>Description: </strong>{{quiz.description}}</p>
+                <a routerLink="profile/:{{quiz.author}}">
+                    <p><strong>Author: </strong>{{quiz.author}}</p>
+                </a>
+                <p><strong>Date of creation: </strong>{{quiz.creationDate}}</p>
+                <p><strong>Language: </strong>{{quiz.language}}</p>
+                <p *ngIf="quiz.tagNameList">
+                    <strong>Tags: </strong><span *ngFor="let tag of quiz.tagNameList; let isLast=last">{{tag}}{{isLast? '' : ', '}}</span>
+                </p>
+                <p *ngIf="quiz.categoryNameList">
+                    <strong>Categories: </strong><span *ngFor="let cat of quiz.categoryNameList; let isL=last">{{cat}}{{isL? '' : ', '}}</span>
+                </p>
+                <input class="adm-comm" [(ngModel)]="adminComment" placeholder="Admin comment" />
+                <div class="row">
+                    <div class="col">
+                        <button class="btn btn-lg buttonsec float-none" type="button" (click)="reject(quiz.id)">Reject</button>
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-lg buttonpr float-right mrgn-right" type="button" (click)="accept(quiz.id)">Accept and publish</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col">
+                <h1 class="text-center quest-title display-4">Questions</h1>
+            </div>
+        </div>
+        <div class="row quest" *ngFor="let question of (questionList$ | async); let i = index">
+            <div class="col quest-cont-title">
+                <hr>
+                <h3 class="lead q-fnt">Question {{i+1}}. {{question.title}}</h3>
+                <hr>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div *ngIf="question.imageContent" class="col-md-6 text-center">
+                        <img class="img-fluid" [src]="question.imageContent" alt="Question image">
+                    </div>
+                    <div class="col q-info">
+                        <h4 class="display-4 q-info-head">Info</h4>
+                        <hr>
+                        <p><strong>Points: </strong>{{question.points}}</p>
+                        <p><strong>Type: </strong>{{question.typeName}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <h5 class="text-left quest-content text-center"><span class="lead q-fnt">Content: </span>{{question.content}}</h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col q-info">
+                        <h4 class="display-4 q-info-head ans-head">Answers</h4>
+                        <hr>
+                        <div *ngIf="isOneValQuestion(question.typeId)">
+                            <h5>Right answer:</h5>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col ans seq-fnt">
+                                        <span *ngFor="let ans of question.rightOptions">
+                                            {{ans}}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="isSequenceQuestion(question.typeId)">
+                            <h5>Right answer:</h5>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col ans seq-fnt">
+                                        <span *ngFor="let ans of question.rightOptions; let isLast=last; let i = index">
+                                            <span>
+                                                <strong>{{i+1}}.</strong>
+                                            </span> {{ans}}{{isLast? '' : '; '}}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="isOptionsAnswer(question.typeId)">
+                            <div class="container">
+                                <div class="row">
+                                    <div *ngFor="let ans of question.rightOptions" class="rounded-sm bg-success col-md-6 ans-r ans">{{ans}} (✔)</div>
+                                    <div *ngFor="let oAns of question.otherOptions" class="rounded-sm col-md-6 ans">{{oAns}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        <div class="pagination-container">
+            <ngb-pagination class="d-flex justify-content-center" size="lg" [pageSize]="pageSize" [collectionSize]="totalQuestionsListSize$ | async" [(page)]="page" [maxSize]="7" [rotate]="true" (pageChange)="loadPage($event)"></ngb-pagination>
+        </div>
+    </div>
+</div>

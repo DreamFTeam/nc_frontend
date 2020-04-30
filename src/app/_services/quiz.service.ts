@@ -9,8 +9,7 @@ import * as jwt_decode from 'jwt-decode';
   providedIn: 'root'
 })
 export class QuizService {
-  url2 = `https://qzbc2.herokuapp.com/api/quiz/`
-  url = `https://qzbc2.herokuapp.com/api/quiz/`;
+  url = `https://qznetbc.herokuapp.com/api/quizzes/`;
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
@@ -57,22 +56,23 @@ export class QuizService {
       creatorId: this.user.id,
       language: quiz.quizLanguage,
       description: quiz.description,
-      imageRef: quiz.imageReference,
+      //imageRef: quiz.imageReference,
       tagList: quiz.tags,
       categoryList: quiz.category
     };
+    console.log(quizInfo);
 
-    return this.http.post<Quiz>(this.url + 'create', JSON.stringify(quizInfo), this.httpOptions)
+    return this.http.post<Quiz>(this.url, JSON.stringify(quizInfo), this.httpOptions)
   }
 
   getQuiz(quizId: string) : Observable<Quiz> {
 
     const options = {
       headers: this.httpOptions.headers,
-      params: new HttpParams().set('quizId', quizId).set('userId', this.user.id)
+      params: new HttpParams().set('quizId', quizId)
 
     }
-    return this.http.get<Quiz>(this.url + 'get', options);
+    return this.http.get<Quiz>(this.url, options);
   }
 
 
@@ -81,6 +81,7 @@ export class QuizService {
       quizId: id,
       userId: this.user.id,
     };
+    
     return this.http.post<Quiz>(this.url + 'markasfavourite', JSON.stringify(favoriteInfo), this.httpOptions);
   }
 
@@ -99,8 +100,8 @@ export class QuizService {
 
 
   uploadImage(data : FormData) {
-
-    return this.http.post<Quiz>(this.url2+"quiz-image", data, this.httpOptions2);
+    console.log(data)
+    return this.http.post<Quiz>(this.url+"quiz-image", data, this.httpOptions2);
   }
 
 }
