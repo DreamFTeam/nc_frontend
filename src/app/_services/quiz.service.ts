@@ -10,19 +10,23 @@ import * as jwt_decode from 'jwt-decode';
 })
 export class QuizService {
   url = `https://qznetbc.herokuapp.com/api/quizzes/`;
-  httpOptions = {};
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('userData')).token
+    })
+  };
+  httpOptions2 = {
+    headers: new HttpHeaders({
+      Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('userData')).token
+    })
+  };
   user: User;
 
   constructor(private http: HttpClient) {
     let info = JSON.parse(localStorage.getItem('userData'));
     this.user = jwt_decode(info.token)
     this.user.token = info.token;
-    this.httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + this.user.token
-      })
-    };
   }
 
 
@@ -52,19 +56,23 @@ export class QuizService {
       creatorId: this.user.id,
       language: quiz.quizLanguage,
       description: quiz.description,
-      imageRef: quiz.imageReference,
+      //imageRef: quiz.imageReference,
       tagList: quiz.tags,
       categoryList: quiz.category
     };
+    console.log(quizInfo);
 
     return this.http.post<Quiz>(this.url, JSON.stringify(quizInfo), this.httpOptions)
   }
 
   getQuiz(quizId: string) : Observable<Quiz> {
 
-    let params = new HttpParams().set('quizId', quizId).set('userId', this.user.id);
+    const options = {
+      headers: this.httpOptions.headers,
+      params: new HttpParams().set('quizId', quizId)
 
-    return this.http.get<Quiz>(this.url, {params: params});
+    }
+    return this.http.get<Quiz>(this.url, options);
   }
 
 
@@ -73,6 +81,7 @@ export class QuizService {
       quizId: id,
       userId: this.user.id,
     };
+    
     return this.http.post<Quiz>(this.url + 'markasfavourite', JSON.stringify(favoriteInfo), this.httpOptions);
   }
 
@@ -87,6 +96,12 @@ export class QuizService {
 
   canIEditQuiz(id: string){
     return id === this.user.id;
+  }
+
+
+  uploadImage(data : FormData) {
+    console.log(data)
+    return this.http.post<Quiz>(this.url+"quiz-image", data, this.httpOptions2);
   }
 
 }

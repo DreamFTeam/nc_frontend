@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError} from 'rxjs';
-import { QuizPreview } from '../_models/quiz-preview';
+import { ExtendedQuizPreview } from '../_models/extendedquiz-preview';
 import { HttpClient, HttpHeaders} from '@angular/common/http';
-import { catchError } from 'rxjs/operators';
+
 import { HandleErrorsService } from './handle-errors.service';
+import { catchError, map } from 'rxjs/operators';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Injectable({
   providedIn: 'root'
@@ -19,13 +21,16 @@ export class QuizListService {
     })
   };
 
-  constructor(private http: HttpClient,
-              private handleErrorsService: HandleErrorsService) { }
+  constructor(private http: HttpClient, private sanitizer: DomSanitizer
+    ,private handleErrorsService: HandleErrorsService) {
+   }
 
-  getQuizzesByPage(pageToSend: number): Observable<QuizPreview[]> {
+  getQuizzesByPage(pageToSend: number): Observable<ExtendedQuizPreview[]> {
     return this.http.
-      get<QuizPreview[]>(this.baseUrl + this.quizListUrl + pageToSend, this.httpOptions).pipe(
-        catchError(this.handleErrorsService.handleError<QuizPreview[]>('getQuizzesByPage', []))
+      get<ExtendedQuizPreview[]>(this.baseUrl + this.quizListUrl + pageToSend)
+      .pipe(map(data => data.map(x => {
+        return new ExtendedQuizPreview().deserialize(x, this.sanitizer);
+      })),catchError(this.handleErrorsService.handleError<ExtendedQuizPreview[]>('getQuizzesByPage', []))
       );
   }
 

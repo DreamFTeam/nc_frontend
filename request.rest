@@ -62,3 +62,8 @@ Content-Type: application/json
   "password":"12345"
 }
 
+###
+
+GET https://qznetbc.herokuapp.com/api/quiz/getquestionlist?quizId=3411bcf6-bc64-4ef9-83c0-431e9674242f
+
+

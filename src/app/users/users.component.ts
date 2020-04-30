@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { GetProfileService } from '../_services/get-profile.service'
-
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
@@ -27,7 +26,4 @@ export class UsersComponent implements OnInit {
         this.searchResults = result;
       });
   }
-
-
-
 }

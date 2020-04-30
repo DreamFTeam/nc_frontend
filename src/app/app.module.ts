@@ -35,6 +35,10 @@ import { ValidationTabComponent } from './validation-page/validation-tab/validat
 import { QuizValidationListService } from './_services/quiz-validation-list.service';
 import { QuizValidationComponent } from './quiz-validation/quiz-validation.component';
 import { ConfirmModalComponent } from './confirm-modal/confirm-modal.component';
+import { AnnouncementViewComponent } from './announcement-view/announcement-view.component';
+import { AnnouncementEditComponent } from './announcement-edit/announcement-edit.component';
+
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 const appRoutes: Routes =[
 ];
@@ -66,7 +70,9 @@ const appRoutes: Routes =[
     ValidationPageComponent,
     ValidationTabComponent,
     QuizValidationComponent,
-    ConfirmModalComponent],
+    ConfirmModalComponent,
+    AnnouncementViewComponent,
+    AnnouncementEditComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -76,7 +82,8 @@ const appRoutes: Routes =[
     BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,  
-    NgbModule
+    NgbModule,
+    FontAwesomeModule
   ],
   entryComponents: [LogInComponent, SignUpComponent, RecoverPasswordComponent],
   providers: [AuthenticationService, QuizListService, QuestionService, QuizService, QuizValidationListService],

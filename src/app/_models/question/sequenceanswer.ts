@@ -5,7 +5,7 @@ export class SequenceAnswer implements Question{
     id: string;
     title: string;
     content: string;
-    image: string;
+    image: Blob;
     points: number;
     quizId: string;
     typeId: number;
@@ -13,7 +13,7 @@ export class SequenceAnswer implements Question{
     rightAnswers: string[] = [];
 
     constructor(id: string, title: string, content: string,
-         image: string, points: number, quizId: string, 
+         image: Blob, points: number, quizId: string, 
          typeId: number, rightAnswers: string[]) {
             this.id = id;
             this.title = title;

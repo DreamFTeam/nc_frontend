@@ -2,14 +2,14 @@
     <div id="search" class="mainstyle">Search</div>
     <div id="quizlist" class="mainstyle">
         <a class="byn buttonpr p-2" routerLink="/quizcreate">Create quiz</a>
-        <div class="grid">
-            <div *ngFor="let item of quizList$ | async" class="quizprev">
-                <a routerLink="/viewquiz/{{item.quiz_id}}">
-                    <img id="pic" src="../../assets/img/quiz.jpg">
-                    <!-- [src]="item.image_ref"    (pageChange) = "page = $event">-->
-                    <p>{{item.title}}</p>
-
-                </a>
+        <div class="container">
+            <div class="row">
+                <div *ngFor="let item of quizList$ | async" class="col-lg-3 col-md-4 col-sm-6 card text-center cards">
+                    <a routerLink="/viewquiz/{{item.quiz_id}}">
+                        <img class="img-fluid card-img-top thumbn" [src]="item.image_content ? item.image_content : this.mockImageUrl" alt="Quiz icon">
+                        <h5 class="card-title">{{item.title}}</h5>
+                    </a>
+                </div>
             </div>
         </div>
         <div class="pagination-container">

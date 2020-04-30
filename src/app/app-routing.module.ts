@@ -11,6 +11,7 @@ import { UsersComponent } from './users/users.component';
 import { PrivilegedProfileComponent } from './privileged-profile/privileged-profile.component';
 import { ValidationPageComponent } from './validation-page/validation-page.component';
 import { QuizValidationComponent } from './quiz-validation/quiz-validation.component';
+import { AnnouncementEditComponent } from './announcement-edit/announcement-edit.component';
 
 
 const routes: Routes = [
@@ -27,6 +28,7 @@ const routes: Routes = [
   { path: 'quiz-list', component: QuizListComponent},
   { path: 'validation', component: ValidationPageComponent},
   { path: 'validation/:id', component: QuizValidationComponent},
+  { path: 'editannouncements', component: AnnouncementEditComponent},
   { path: '**', redirectTo: ''}
 ];
 

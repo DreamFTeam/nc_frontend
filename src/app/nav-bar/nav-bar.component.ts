@@ -10,6 +10,7 @@ import {SignUpComponent} from '../sign-up/sign-up.component';
   styleUrls: ['./nav-bar.component.css']
 })
 export class NavBarComponent implements OnInit {
+  public isMenuCollapsed = true;
   public signedIn;
   public privileged;
   constructor(private modalService: NgbModal) {
@@ -23,6 +24,7 @@ export class NavBarComponent implements OnInit {
 
 
   openLogin() {
+    this.isMenuCollapsed = true;
     const modalRef = this.modalService.open(LogInComponent);
     modalRef.result.then((result) => {
       if (result) {
@@ -32,6 +34,7 @@ export class NavBarComponent implements OnInit {
   }
 
   openReg() {
+    this.isMenuCollapsed = true;
     const modalRef = this.modalService.open(SignUpComponent, { size: 'lg' });
 
   }
