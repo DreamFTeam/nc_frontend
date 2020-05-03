@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { Observable, of, } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Profile } from '../_models/profile';
 import { catchError } from 'rxjs/operators';
-import { Quiz } from '../_models/quiz'
 import { User } from '../_models/user';
 import * as jwt_decode from 'jwt-decode';
+import { Quiz } from '../_models/quiz';
 
 @Injectable({
   providedIn: 'root'
@@ -42,7 +42,7 @@ export class GetProfileService {
     console.log(this.profilesUrl + profile)
 
     const options = {
-        headers: this.httpOptions.headers,
+      headers: this.httpOptions.headers,
     }
 
 
@@ -64,16 +64,16 @@ export class GetProfileService {
   }
 
   public editProfile(field: string, value: string): Observable<Profile> {
-    return this.http.post<Profile>(this.profilesUrl + 'edit/' + field, 
-     null, {params: {key : value}, headers: this.httpOptions2.headers}
-      ).pipe(catchError(this.handleError<any>('EditProfile')));
+    return this.http.post<Profile>(this.profilesUrl + 'edit/' + field,
+      null, { params: { key: value }, headers: this.httpOptions2.headers }
+    ).pipe(catchError(this.handleError<any>('EditProfile')));
 
   }
 
 
   public getProfileQuiz(userId: string): Observable<Quiz[]> {
-         return this.http.get<Quiz[]>(`${environment.apiUrl}quizzes/` + 'user-list',
-        { headers: this.httpOptions.headers, params: {userId } }).pipe();
+    return this.http.get<Quiz[]>(`${environment.apiUrl}quizzes/` + 'user-list',
+      { headers: this.httpOptions.headers, params: { userId } }).pipe()
 
   }
 

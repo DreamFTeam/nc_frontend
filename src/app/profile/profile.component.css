@@ -74,11 +74,9 @@
   #quizimage {
     top:20px;
     left:20px;
-    background: url("../../assets/img/quiz.jpg");
     border-radius: 8px;
     width:10vw;
     height:15vh;
-    background-size: 100%;
     position: relative;
     float: left;
     margin-right: 1vw;
