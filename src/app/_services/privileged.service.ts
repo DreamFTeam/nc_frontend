@@ -64,5 +64,18 @@ export class PrivilegedService {
       }));
   }
 
+
+  public uploadPicture(value: FormData) {
+
+    return this.http.post<any>(this.url + '/edit/image', value,
+      {headers:
+          new HttpHeaders({
+            Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('userData')).token
+          })
+    }
+
+    ).pipe();
+  }
+
 }
 

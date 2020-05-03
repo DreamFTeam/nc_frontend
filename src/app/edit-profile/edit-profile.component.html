@@ -3,7 +3,7 @@
       <div id="picture" >
         <img *ngIf="profile.imageContent" id="image" [src]="profile.imageContent">
         <img *ngIf="!profile.imageContent" id="image" style= "background: url('../../assets/img/nopicture.jpg')center no-repeat; object-fit: contain;">
-      <a class="btn btn-users" (click)="upload()"> Upload</a>
+        <input id= "upload" type='file' (change)="onSelectFile($event)" content="Upload">
 
       </div>
       <div id="info">

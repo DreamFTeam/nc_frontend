@@ -12,7 +12,7 @@ import { Quiz } from '../_models/quiz';
   providedIn: 'root'
 })
 export class GetProfileService {
-  profilesUrl = `https://qznetbc.herokuapp.com/api/profiles/`;
+  profilesUrl = `${environment.apiUrl}profiles/`;
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
@@ -68,6 +68,18 @@ export class GetProfileService {
       null, { params: { key: value }, headers: this.httpOptions2.headers }
     ).pipe(catchError(this.handleError<any>('EditProfile')));
 
+  }
+
+  public uploadPicture(value: FormData) {
+
+    return this.http.post<Profile>(this.profilesUrl + 'edit/image', value,
+      {headers:
+          new HttpHeaders({
+            Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('userData')).token
+          })
+    }
+
+    ).pipe(catchError(this.handleError<any>('EditProfile')));
   }
 
 
