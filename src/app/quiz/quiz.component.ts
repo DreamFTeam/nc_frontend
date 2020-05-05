@@ -10,6 +10,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { QuestionService } from '../_services/question.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ExtendedQuiz } from '../_models/extended-quiz';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { ExtendedQuestion } from '../_models/question/extendedquestion';
 
 @Component({
   selector: 'app-quiz',
@@ -35,14 +38,36 @@ export class QuizComponent implements OnInit {
     published: false,
 
   };
+
+  
+
+  
+
   thumbnail: any; //Quiz image
-  thumbnail2: any; //Question image
+ 
 
   file: File; //Quiz image file
   file2: File; //Question image file
 
   questions: Question[] = [];
-  question: Question = new OneToFour("","","",new Blob(),0,this.quiz.id,1,["",""],[false,false]);
+
+  
+
+  question: Question;
+
+  
+
+  //new attributes
+
+  quiz1: ExtendedQuiz;
+
+  questions1: ExtendedQuestion[] = [];
+
+  question1: ExtendedQuestion;
+
+  faSpinner = faSpinner;
+
+  quizLoading: boolean = true;
 
   constructor(private quizService: QuizService, private questionService: QuestionService,
      private activateRoute: ActivatedRoute, private router: Router,private sanitizer: DomSanitizer) { 
@@ -56,13 +81,53 @@ export class QuizComponent implements OnInit {
     
   }
 
+  //REFACTORED
+
 
   getAllQuiz(data){
-    this.questionService.getAllQuestions(data)
+    //Find questions
+    this.questionService.getAllQuestionsNew(data)
     .subscribe(ans =>this.mapGettedQuestions(ans),err => this.getQuestionsErr(err));
-    this.quizService.getQuiz(data).subscribe(ans => this.mapGettedQuiz(ans),
+
+    //Find quiz
+    this.quizService.getQuizNew(data).subscribe(ans => this.setGettedQuiz(ans),
        err => this.getEditQuizErr(err))
   }
+
+  //Gettig quiz by id in url
+  setGettedQuiz(answer){
+      
+    this.quiz1 = answer;
+    this.question = new OneToFour("","","",new Blob(),0,this.quiz1.id,1,["",""],[false,false]);
+    this.thumbnail = this.quiz1.imageContent;
+
+    console.log(this.quiz1);
+
+    this.quizLoading = false;
+
+    
+  }
+
+  //Getting questions of quiz
+  mapGettedQuestions(ans){
+  
+    this.questions1 = ans;
+
+    console.log(this.questions1);
+  }
+
+
+  //Clicked on already saved questions
+  showQuestion(i){
+
+    this.question1 = this.questions1[i];
+    
+    //this.thumbnail2 = this.question1.imageContent
+  }
+
+
+
+  //END OF REFACTORED
 
   //Save(create) quiz button
   createQuiz(){
@@ -100,22 +165,7 @@ export class QuizComponent implements OnInit {
   }
 
 
-  //Gettig quiz by id in url
-  mapGettedQuiz(answer){
-    console.log(answer);
-    this.quiz.id=answer.id;
-    this.quiz.title=answer.title;
-    this.quiz.description=answer.description;
-    this.quiz.imageReference=answer.imageContent;
-    this.quiz.quizLanguage=answer.language;
-    this.quiz.published = answer.published;
-    //TODO: map tags and categs
-    this.lockedButtons=false;
-    console.log(this.quiz);
-
-    const objectURL = 'data:image/jpeg;base64,' + this.quiz.imageReference;
-    this.thumbnail = this.sanitizer.bypassSecurityTrustUrl(objectURL);
-  }
+  
 
   //GET questions of quiz
   mapCreatedQuestion(ans){
@@ -130,51 +180,7 @@ export class QuizComponent implements OnInit {
   }
 
 
-  //Getting questions of quiz
-  mapGettedQuestions(ans){
-    console.log(ans);
-    for (let question of ans){
-      if(question.typeId === 1){
-        let rightAnswers: boolean[] = [];
-        for (let i = 0; i < question.otherOptions.length; i++) {
-          rightAnswers.push(false);
-        }
-        for (let i = 0; i < question.rightOptions.length; i++) {
-          rightAnswers.push(true);
-        }
-
-        this.questions.push(new OneToFour(question.id,question.title,question.content,
-          question.imageContent, question.points,question.quizId,question.typeId,
-          question.otherOptions.concat(question.rightOptions),rightAnswers));
-
-          this.question.image = question.imageContent;
-      }
-      if(question.typeId === 2){
-        let otherOption: string;
-        if(question.rightOptions[0]){
-          otherOption = "false";
-        }else{
-          otherOption = "true";
-        }
-
-        this.questions.push(new TrueFalse(question.id,question.title,question.content,
-          question.imageContent, question.points,question.quizId,question.typeId,
-          otherOption,question.rightOptions[0]));
-      }
-      if(question.typeId === 3){
-        this.questions.push(new OpenAnswer(question.id,question.title,question.content,
-          question.imageContent, question.points,question.quizId,question.typeId,
-          question.rightOptions[0]));
-      }
-      if(question.typeId === 4){
-        this.questions.push(new SequenceAnswer(question.id,question.title,question.content,
-          question.imageContent, question.points,question.quizId,question.typeId,
-          question.rightOptions));
-      }
-    }
-
-    console.log(this.question);
-  }
+  
 
   mapEditedQuestion(ans){
     alert("Question edited!");
@@ -204,76 +210,74 @@ export class QuizComponent implements OnInit {
     alert("Questions could not be retrieved: "+err.error.message);
   }
 
-  //Saving question
   saveQuestion() {
-    if(this.question.points > 0){
-      if(this.question.title !== "" || this.question.content !== ""){
-        if(this.question instanceof OneToFour){
-          if(!this.question.answers.includes("") && this.question.rightAnswers.includes(true)){
-            if(this.question.id === ""){
-              this.questionService.firstType(this.question, this.quiz.id, true).subscribe(ans => this.mapCreatedQuestion(ans),
-            err => this.getCreatedQuestionErr(err));
-            }else{
-              this.questionService.firstType(this.question, this.quiz.id, false).subscribe(ans => this.mapEditedQuestion(ans),
-            err => this.getCreatedQuestionErr(err));
-            }
+  }
+
+  //Saving question
+  // saveQuestion() {
+  //   if(this.question.points > 0){
+  //     if(this.question.title !== "" || this.question.content !== ""){
+  //       if(this.question instanceof OneToFour){
+  //         if(!this.question.answers.includes("") && this.question.rightAnswers.includes(true)){
+  //           if(this.question.id === ""){
+  //             this.questionService.firstType(this.question, this.quiz.id, true).subscribe(ans => this.mapCreatedQuestion(ans),
+  //           err => this.getCreatedQuestionErr(err));
+  //           }else{
+  //             this.questionService.firstType(this.question, this.quiz.id, false).subscribe(ans => this.mapEditedQuestion(ans),
+  //           err => this.getCreatedQuestionErr(err));
+  //           }
             
 
-          }else{
-            alert("No right question or one of questions is empty");
-          }
-        }
+  //         }else{
+  //           alert("No right question or one of questions is empty");
+  //         }
+  //       }
 
-        if(this.question instanceof TrueFalse){
-          if(this.question.id === ""){
-            this.questionService.secondType(this.question, this.quiz.id, true).subscribe(ans => this.mapCreatedQuestion(ans),
-              err => this.getCreatedQuestionErr(err));
-          }else{
-            this.questionService.secondType(this.question, this.quiz.id, false).subscribe(ans => this.mapEditedQuestion(ans),
-              err => this.getCreatedQuestionErr(err));
-          }
-        }
+  //       if(this.question instanceof TrueFalse){
+  //         if(this.question.id === ""){
+  //           this.questionService.secondType(this.question, this.quiz.id, true).subscribe(ans => this.mapCreatedQuestion(ans),
+  //             err => this.getCreatedQuestionErr(err));
+  //         }else{
+  //           this.questionService.secondType(this.question, this.quiz.id, false).subscribe(ans => this.mapEditedQuestion(ans),
+  //             err => this.getCreatedQuestionErr(err));
+  //         }
+  //       }
 
-        if(this.question instanceof OpenAnswer){
-          if(this.question.id === ""){
-            this.questionService.thirdType(this.question, this.quiz.id, true).subscribe(ans => this.mapCreatedQuestion(ans),
-              err => this.getCreatedQuestionErr(err));
-          }else{
-            this.questionService.thirdType(this.question, this.quiz.id, false).subscribe(ans => this.mapEditedQuestion(ans),
-              err => this.getCreatedQuestionErr(err));
-          }
-        }
+  //       if(this.question instanceof OpenAnswer){
+  //         if(this.question.id === ""){
+  //           this.questionService.thirdType(this.question, this.quiz.id, true).subscribe(ans => this.mapCreatedQuestion(ans),
+  //             err => this.getCreatedQuestionErr(err));
+  //         }else{
+  //           this.questionService.thirdType(this.question, this.quiz.id, false).subscribe(ans => this.mapEditedQuestion(ans),
+  //             err => this.getCreatedQuestionErr(err));
+  //         }
+  //       }
 
-        if(this.question instanceof SequenceAnswer){
-          console.log(this.question);
-          if(this.question.id === ""){
-            this.questionService.fourthType(this.question, this.quiz.id, true).subscribe(ans => this.mapCreatedQuestion(ans),
-              err => this.getCreatedQuestionErr(err));
-          }else{
-            this.questionService.fourthType(this.question, this.quiz.id, false).subscribe(ans => this.mapEditedQuestion(ans),
-            err => this.getCreatedQuestionErr(err));
-          }
-        }
+  //       if(this.question instanceof SequenceAnswer){
+  //         console.log(this.question);
+  //         if(this.question.id === ""){
+  //           this.questionService.fourthType(this.question, this.quiz.id, true).subscribe(ans => this.mapCreatedQuestion(ans),
+  //             err => this.getCreatedQuestionErr(err));
+  //         }else{
+  //           this.questionService.fourthType(this.question, this.quiz.id, false).subscribe(ans => this.mapEditedQuestion(ans),
+  //           err => this.getCreatedQuestionErr(err));
+  //         }
+  //       }
 
-      }else{
-        alert("Title or content is empty");
-      }  
-    }else{
-      alert("Points can`t be zero, negative or not numeric");
-    }
+  //     }else{
+  //       alert("Title or content is empty");
+  //     }  
+  //   }else{
+  //     alert("Points can`t be zero, negative or not numeric");
+  //   }
     
-  }
+  // }
 
   addNewQuestion(){
     this.question = new OneToFour("","","",new Blob(),0,this.quiz.id,1,["",""],[false,false]);
   }
 
-  showAnswer(i){
-    this.question = this.questions[i];
-    
-    const objectURL = 'data:image/jpeg;base64,' + this.question.image;
-    this.thumbnail2 = this.sanitizer.bypassSecurityTrustUrl(objectURL);
-  }
+  
 
   public publish() {
     if(this.questions.length > 0) {
@@ -283,30 +287,7 @@ export class QuizComponent implements OnInit {
     }
   }
 
-  //Changed question type
-  onChange(deviceValue) {
-    console.log(deviceValue);
-    
-
-    switch(deviceValue) { 
-      case "1": { 
-         this.question = new OneToFour("","","",new Blob(),0,this.quiz.id,1,["",""],[]);
-         break; 
-      } 
-      case "2": { 
-         this.question = new TrueFalse("","","",new Blob(),0,this.quiz.id,1,"true","false");
-         break; 
-      } 
-      case "3": {
-         this.question = new OpenAnswer("","","",new Blob(),0,this.quiz.id,1,"");
-         break; 
-      } 
-      case "4": {     
-        this.question = new SequenceAnswer("","","",new Blob(),0,this.quiz.id,1,["","",""]);
-        break; 
-     } 
-   }
-  }
+  
 
   //Removing questin or clear input
   removeQuestion(){
@@ -372,7 +353,7 @@ export class QuizComponent implements OnInit {
     let reader = new FileReader();
     reader.readAsDataURL(this.file2);
     reader.onload = () => {
-      this.thumbnail2 = reader.result;
+      //this.thumbnail2 = reader.result;
     }
 
     //this.questionService.uploadImage(formData).subscribe(ans =>console.log(ans),err => console.log(err));
@@ -392,11 +373,7 @@ export class QuizComponent implements OnInit {
     return formData;
   }
 
-  isOneToFour(val) { return val instanceof OneToFour; }
-  isTrueFalse(val) { return val instanceof TrueFalse; }
-  isOpenAnswer(val) { return val instanceof OpenAnswer; }
-  isSequenceAnswer(val) { return  val instanceof SequenceAnswer; }
+  
   isQuizCreated(){ return this.quiz.id !== ""; }
-  isButtonLocked(){ return !this.isQuizCreated() && this.lockedButtons; }
 
 }

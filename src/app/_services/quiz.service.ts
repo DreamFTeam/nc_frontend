@@ -4,6 +4,9 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import { Quiz } from '../_models/quiz';
 import { User } from '../_models/user';
 import * as jwt_decode from 'jwt-decode';
+import { ExtendedQuiz } from '../_models/extended-quiz';
+import { map } from 'rxjs/operators';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +26,7 @@ export class QuizService {
   };
   user: User;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private sanitizer: DomSanitizer) {
     let info = JSON.parse(localStorage.getItem('userData'));
     this.user = jwt_decode(info.token)
     this.user.token = info.token;
@@ -63,6 +66,19 @@ export class QuizService {
     console.log(quizInfo);
 
     return this.http.post<Quiz>(this.url, JSON.stringify(quizInfo), this.httpOptions)
+  }
+
+  getQuizNew(quizId: string): Observable<ExtendedQuiz>{
+    const options = {
+      headers: this.httpOptions.headers,
+      params: new HttpParams().set('quizId', quizId)
+
+    }
+
+    return this.http.get<ExtendedQuiz>(this.url, options)
+    .pipe(map(data => {
+      return new ExtendedQuiz().deserialize(data, this.sanitizer);
+    }));
   }
 
   getQuiz(quizId: string) : Observable<Quiz> {

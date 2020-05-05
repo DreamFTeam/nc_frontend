@@ -7,6 +7,9 @@ import { Question } from '../_models/question/question';
 import { TrueFalse } from '../_models/question/truefalse';
 import { OpenAnswer } from '../_models/question/openanswer';
 import { SequenceAnswer } from '../_models/question/sequenceanswer';
+import { ExtendedQuestion } from '../_models/question/extendedquestion';
+import { DomSanitizer } from '@angular/platform-browser';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -26,11 +29,30 @@ export class QuestionService {
   };
   user: User;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient , private sanitizer: DomSanitizer) {
     this.user = JSON.parse(localStorage.getItem('userData'));
     
   }
 
+  //REFACTORED
+
+  getAllQuestionsNew(quizId: string): Observable<ExtendedQuestion[]>{
+    const options = {
+      headers: this.httpOptions.headers,
+      params: new HttpParams().set('quizId', quizId)
+
+    }
+    
+    return this.http.get<ExtendedQuestion[]>(this.url + 'questions', options)
+      .pipe(map(data => data.map(x => {
+        return new ExtendedQuestion().deserialize(x, this.sanitizer);
+      })));
+  }
+
+
+
+  //END OF REFACTORED
+  
 
 
   getAllQuestions(quizId: string){
