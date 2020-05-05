@@ -1,10 +1,10 @@
 
-<label class="mb-2">
+<label>
   Right answers
 </label>
-<div class="row" *ngFor="let answer of this.question.rightOptions; let i = index; trackBy: trackByFn">
+<div class="row  mt-2" *ngFor="let answer of this.question.rightOptions; let i = index; trackBy: trackByFn">
  
-    <div class="col-sm-2" *ngIf="isRemovableRight()">
+    <div class="col-sm-2 text-center" *ngIf="isRemovableRight()">
       <button class="remb" (click)="removeRight(i)">
         <img src="../assets/img/close-button.png">
       </button>
@@ -25,12 +25,12 @@
 
 
 
-<label class="mb-2">
+<label >
   Other answers
 </label>
-<div class="row" *ngFor="let answer of this.question.otherOptions; let i = index; trackBy: trackByFn">
+<div class="row mt-2" *ngFor="let answer of this.question.otherOptions; let i = index; trackBy: trackByFn">
 
-  <div class="col-sm-2" *ngIf="isRemovableOther()">
+  <div class="col-sm-2 text-center" *ngIf="isRemovableOther()">
     <button  class="remb" (click)="removeOther(i)">
       <img src="../assets/img/close-button.png">
     </button>

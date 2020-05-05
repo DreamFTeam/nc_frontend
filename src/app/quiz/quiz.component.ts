@@ -39,10 +39,6 @@ export class QuizComponent implements OnInit {
 
   };
 
-  
-
-  
-
   thumbnail: any; //Quiz image
  
 
@@ -51,11 +47,6 @@ export class QuizComponent implements OnInit {
 
   questions: Question[] = [];
 
-  
-
-  question: Question;
-
-  
 
   //new attributes
 
@@ -91,21 +82,18 @@ export class QuizComponent implements OnInit {
 
     //Find quiz
     this.quizService.getQuizNew(data).subscribe(ans => this.setGettedQuiz(ans),
-       err => this.getEditQuizErr(err))
+       err => this.getEditQuizErr(err));
+
   }
 
   //Gettig quiz by id in url
-  setGettedQuiz(answer){
-      
+  setGettedQuiz(answer){    
     this.quiz1 = answer;
-    this.question = new OneToFour("","","",new Blob(),0,this.quiz1.id,1,["",""],[false,false]);
     this.thumbnail = this.quiz1.imageContent;
 
-    console.log(this.quiz1);
+    this.question1 = this.initQuestion();
 
     this.quizLoading = false;
-
-    
   }
 
   //Getting questions of quiz
@@ -123,6 +111,11 @@ export class QuizComponent implements OnInit {
     this.question1 = this.questions1[i];
     
     //this.thumbnail2 = this.question1.imageContent
+  }
+
+
+  addNewQuestion(){
+    this.question1 = this.initQuestion();
   }
 
 
@@ -167,28 +160,23 @@ export class QuizComponent implements OnInit {
 
   
 
-  //GET questions of quiz
-  mapCreatedQuestion(ans){
-    alert("Question created!");
-    this.question.id = ans.id;
-    console.log(this.question);
-    this.questions.push(Object.create(this.question));
-    this.questionService.uploadImage(this.getFormData(this.file2,false))
-    .subscribe(ans =>console.log(ans),err => alert("Couldn`t upload image: "+err));
-    
-    
-  }
+  // //GET questions of quiz
+  // mapCreatedQuestion(ans){
+  //   alert("Question created!");
+  //   this.question.id = ans.id;
+  //   console.log(this.question);
+  //   this.questions.push(Object.create(this.question));
+  //   this.questionService.uploadImage(this.getFormData(this.file2,false))
+  //   .subscribe(ans =>console.log(ans),err => alert("Couldn`t upload image: "+err));
+  // }
 
-
-  
-
-  mapEditedQuestion(ans){
-    alert("Question edited!");
-    this.question.id = ans.id;
-    console.log(this.question);
-    this.questionService.uploadImage(this.getFormData(this.file2,false))
-    .subscribe(ans =>console.log(ans),err => alert("Couldn`t upload image: "+err));
-  }
+  // mapEditedQuestion(ans){
+  //   alert("Question edited!");
+  //   this.question.id = ans.id;
+  //   console.log(this.question);
+  //   this.questionService.uploadImage(this.getFormData(this.file2,false))
+  //   .subscribe(ans =>console.log(ans),err => alert("Couldn`t upload image: "+err));
+  // }
 
   //Created quiz error
   getCreatedErr(err){
@@ -211,6 +199,8 @@ export class QuizComponent implements OnInit {
   }
 
   saveQuestion() {
+    console.log(this.question1);
+    this.questionService.sendQuestion(this.question1, true).subscribe(ans => alert(ans), err => console.log(err));
   }
 
   //Saving question
@@ -273,9 +263,7 @@ export class QuizComponent implements OnInit {
     
   // }
 
-  addNewQuestion(){
-    this.question = new OneToFour("","","",new Blob(),0,this.quiz.id,1,["",""],[false,false]);
-  }
+  
 
   
 
@@ -291,11 +279,11 @@ export class QuizComponent implements OnInit {
 
   //Removing questin or clear input
   removeQuestion(){
-    if(this.question.id === ""){
-      this.clearInputs();
+    if(this.question1.id === ""){
+      //this.clearInputs();
       alert("Inputs cleared");
     }else{
-      this.questionService.deleteQuestion(this.question.id)
+      this.questionService.deleteQuestion(this.question1.id)
       .subscribe(ans =>this.removeQuestionSuccess(ans),err => this.removeQuestionErr(err));
       
     }
@@ -303,8 +291,8 @@ export class QuizComponent implements OnInit {
 
   removeQuestionSuccess(ans){
     console.log(ans);
-    const index = this.questions.findIndex(question => question.id === this.question.id); 
-      this.questions.splice(index, 1); 
+    const index = this.questions1.findIndex(question => question.id === this.question1.id); 
+      this.questions1.splice(index, 1); 
       alert("Question removed");
   }
 
@@ -314,26 +302,26 @@ export class QuizComponent implements OnInit {
   }
 
 
-  private clearInputs(){
-    switch(this.question.typeId){
-      case 1: { 
-        this.question = new OneToFour("","","",new Blob(),0,this.quiz.id,1,["",""],[]);
-        break; 
-     } 
-     case 2: { 
-        this.question = new TrueFalse("","","",new Blob(),0,this.quiz.id,1,"true","false");
-        break; 
-     } 
-     case 3: {
-        this.question = new OpenAnswer("","","",new Blob(),0,this.quiz.id,1,"");
-        break; 
-     } 
-     case 4: {     
-       this.question = new SequenceAnswer("","","",new Blob(),0,this.quiz.id,1,["","",""]);
-       break; 
-    } 
-    }
-  }
+  // private clearInputs(){
+  //   switch(this.question.typeId){
+  //     case 1: { 
+  //       this.question = new OneToFour("","","",new Blob(),0,this.quiz.id,1,["",""],[]);
+  //       break; 
+  //    } 
+  //    case 2: { 
+  //       this.question = new TrueFalse("","","",new Blob(),0,this.quiz.id,1,"true","false");
+  //       break; 
+  //    } 
+  //    case 3: {
+  //       this.question = new OpenAnswer("","","",new Blob(),0,this.quiz.id,1,"");
+  //       break; 
+  //    } 
+  //    case 4: {     
+  //      this.question = new SequenceAnswer("","","",new Blob(),0,this.quiz.id,1,["","",""]);
+  //      break; 
+  //   } 
+  //   }
+  // }
 
   quizImage(e){
     this.file = e.target.files[0];
@@ -366,11 +354,30 @@ export class QuizComponent implements OnInit {
     if(type){
       formData.append('quizId',this.quiz.id);
     }else{
-      formData.append('questionId',this.question.id);
+      formData.append('questionId',this.question1.id);
     }
     
 
     return formData;
+  }
+
+
+  initQuestion(): ExtendedQuestion{
+
+    const res = new ExtendedQuestion().deserialize({
+      id: "",
+      quizId: this.quiz1.id,
+      title: "",
+      content: "",
+      imageContent: "",
+      points: 1,
+      typeId: 1,
+      typeName: "",
+      rightOptions: [""],
+      otherOptions: [""]
+
+    }, this.sanitizer); 
+    return res;
   }
 
   

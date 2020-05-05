@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { SequenceAnswer } from '../_models/question/sequenceanswer';
+import { ExtendedQuestion } from '../_models/question/extendedquestion';
 
 @Component({
   selector: 'app-seq-options',
@@ -7,27 +8,31 @@ import { SequenceAnswer } from '../_models/question/sequenceanswer';
   styleUrls: ['./seq-options.component.css']
 })
 export class SeqOptionsComponent implements OnInit {
-  @Input() question: SequenceAnswer;
+  @Input() question: ExtendedQuestion;
 
   constructor() { }
 
   ngOnInit(): void {
+    if(this.question.id === ""){
+      this.question.rightOptions.push("");
+      this.question.rightOptions.push("");
+    }
   }
 
   addAnswer(){
-    this.question.rightAnswers.push("");
+    this.question.rightOptions.push("");
   }
 
   removeAnswer(i){
-    this.question.rightAnswers.splice(i,1);
+    this.question.rightOptions.splice(i,1);
   }
 
   isLimitReached(){
-    return this.question.rightAnswers.length!=8;
+    return this.question.rightOptions.length!=8;
   }
 
   isRemovable(){
-    return this.question.rightAnswers.length>3;
+    return this.question.rightOptions.length>3;
   }
 
   trackByFn(index: any, item: any) {

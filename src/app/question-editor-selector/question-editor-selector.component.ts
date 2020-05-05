@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ExtendedQuestion } from '../_models/question/extendedquestion';
-import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-question-editor-selector',
@@ -12,12 +11,10 @@ export class QuestionEditorSelectorComponent implements OnInit {
   @Input()
   question: ExtendedQuestion;
 
-  @Input()
-  quizId: string;
 
   thumbnail: any; 
 
-  constructor(private sanitizer: DomSanitizer) { 
+  constructor() { 
   }
 
   ngOnInit(): void {
@@ -26,10 +23,31 @@ export class QuestionEditorSelectorComponent implements OnInit {
   //Changed question type
   onChange(deviceValue) {
     this.question.typeId = parseInt(deviceValue);
+    switch (this.question.typeId) {
+      case 1: {
+        this.question.rightOptions = [""];
+        this.question.otherOptions = [""];
+        break;
+      }
+      case 2: {
+        this.question.rightOptions = ["true"];
+        this.question.otherOptions = ["false"];
+        break;
+      }
+      case 3: {
+        this.question.rightOptions = [""];
+        this.question.otherOptions = [];
+        break;
+      }
+      case 4: {
+        this.question.otherOptions = ["","",""];
+        this.question.otherOptions = [];
+        break;
+      }
+    }
   }
 
   questionImage(e){
-
   }
 
   isOneToFour() { return this.question.typeId === 1; }

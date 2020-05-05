@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { OneToFour } from '../_models/question/onetofour';
 import { ExtendedQuestion } from '../_models/question/extendedquestion';
 
 @Component({

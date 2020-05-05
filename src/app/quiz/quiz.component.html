@@ -60,7 +60,8 @@
         </div>
         
     </div>
-    <div class="container-sm mt-2 mb-2 p-4">
+
+    <div class="container-sm mt-2 mb-2 p-4" *ngIf="!quizLoading">
         <div>
             <button class="removeb" (click)="removeQuestion()"><img class="bttnimg" src="../assets/img/close-button.png"></button>
             <label>Remove question</label>

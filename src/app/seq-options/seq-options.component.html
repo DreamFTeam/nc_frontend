@@ -1,9 +1,9 @@
-<div *ngFor="let answer of question.rightAnswers; let i = index; trackBy: trackByFn" class="grid-container">
+<div *ngFor="let answer of question.rightOptions; let i = index; trackBy: trackByFn" class="grid-container">
     <div class="grid-item">
         {{ (i+1) }}
     </div>
     <div class="grid-item">
-      <input class="form-control" style="width: 100%;"  [(ngModel)]="question.rightAnswers[i]">
+      <input class="form-control" style="width: 100%;"  [(ngModel)]="question.rightOptions[i]">
     </div>
     <div class="grid-item">
         <button *ngIf="isRemovable()" class="remb" (click)="removeAnswer(i)">

@@ -66,6 +66,25 @@ export class QuestionService {
     return this.http.get<Question[]>(this.url + 'questions', options);
   }
 
+  sendQuestion(question: ExtendedQuestion, createEdit: boolean){
+
+    var questionInfo = Object.assign({}, question);
+    delete questionInfo.imageContent;
+    
+    if(question.typeId === 3 || question.typeId === 4){
+      questionInfo.otherOptions = [];
+    }
+    
+
+    console.log(questionInfo);
+
+    if(createEdit){
+      return this.http.post<Question>(this.url + 'questions', JSON.stringify(questionInfo), this.httpOptions);
+    }else{
+      return this.http.post<Question>(this.url + 'questions/edit', JSON.stringify(questionInfo), this.httpOptions);
+    }
+  }
+
 
 
   firstType(question: OneToFour, quizId: string, createEdit: boolean){
