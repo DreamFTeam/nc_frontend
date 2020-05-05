@@ -11,13 +11,25 @@ export class QuestionEditorSelectorComponent implements OnInit {
   @Input()
   question: ExtendedQuestion;
 
+  @Input()
+  formData: FormData
 
-  thumbnail: any; 
+  @Input()
+  thumbnail: any;
 
-  constructor() { 
+  file: File;
+
+   
+
+  constructor() {
+    if(this.question !== undefined 
+      && this.question.imageContent !== "" ){
+      this.thumbnail = this.question.imageContent;
+      }
   }
 
   ngOnInit(): void {
+    
   }
 
   //Changed question type
@@ -48,6 +60,18 @@ export class QuestionEditorSelectorComponent implements OnInit {
   }
 
   questionImage(e){
+    this.file = e.target.files[0];
+    this.setImage(this.file);
+    this.formData.set("img",this.file);
+    console.log(this.formData.get("questionId"))
+  }
+
+  setImage(file: File){
+    let reader = new FileReader();
+    reader.readAsDataURL(this.file);
+    reader.onload = () => {
+      this.thumbnail = reader.result;
+    }
   }
 
   isOneToFour() { return this.question.typeId === 1; }

@@ -14,7 +14,7 @@ export class ExtendedQuiz implements DesearizableWImage{
     language: string;
     adminComment: string;
     rating: number;
-    tagsIdList: string[];
+    tagIdList: string[];
     tagNameList: string[];
     categoryIdList: string[];
     categoryNameList: string[];

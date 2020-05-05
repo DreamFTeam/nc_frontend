@@ -32,10 +32,30 @@ export class QuizService {
     this.user.token = info.token;
   }
 
+  saveQuizNew(quiz: ExtendedQuiz): Observable<ExtendedQuiz> {
+    console.log(quiz.tagIdList);
+
+    const quizInfo = {
+      title: quiz.title,
+      quizId: quiz.id,
+      creatorId: this.user.id,
+      newTitle: quiz.title,
+      newLanguage: quiz.language,
+      newDescription: quiz.description,
+      newImageRef: "",
+      newTagList: quiz.tagIdList,
+      newCategoryList: quiz.categoryIdList
+    };
+
+    console.log(quizInfo);
+    return this.http.post<ExtendedQuiz>(this.url + 'edit', JSON.stringify(quizInfo), this.httpOptions)
+      .pipe(map(data => {
+        return new ExtendedQuiz().deserialize(data, this.sanitizer);
+      }));
+  }
+
 
   saveQuiz(quiz: Quiz) : Observable<Quiz>{
-
-
     const quizInfo = {
       title: quiz.title,
       quizId: quiz.id,
@@ -53,6 +73,21 @@ export class QuizService {
   }
   
 
+  createQuizNew(quiz: ExtendedQuiz) : Observable<ExtendedQuiz> {
+    const quizInfo = {
+      title: quiz.title,
+      creatorId: this.user.id,
+      language: quiz.language,
+      description: quiz.description,
+      tagList: quiz.tagIdList,
+      categoryList: quiz.categoryIdList
+    };
+
+    console.log(quizInfo);
+
+    return this.http.post<ExtendedQuiz>(this.url, JSON.stringify(quizInfo), this.httpOptions)
+  }
+
   createQuiz(quiz: Quiz) : Observable<Quiz> {
     const quizInfo = {
       title: quiz.title,
@@ -68,7 +103,7 @@ export class QuizService {
     return this.http.post<Quiz>(this.url, JSON.stringify(quizInfo), this.httpOptions)
   }
 
-  getQuizNew(quizId: string): Observable<ExtendedQuiz>{
+  getQuizNew(quizId: string): Observable<ExtendedQuiz> {
     const options = {
       headers: this.httpOptions.headers,
       params: new HttpParams().set('quizId', quizId)
@@ -76,9 +111,10 @@ export class QuizService {
     }
 
     return this.http.get<ExtendedQuiz>(this.url, options)
-    .pipe(map(data => {
-      return new ExtendedQuiz().deserialize(data, this.sanitizer);
-    }));
+      .pipe(map(data => {
+        console.log(data);
+        return new ExtendedQuiz().deserialize(data, this.sanitizer);
+      }));
   }
 
   getQuiz(quizId: string) : Observable<Quiz> {
@@ -107,7 +143,7 @@ export class QuizService {
       quizId: id
     };
 
-    return this.http.post<Quiz>(this.url + 'markaspublished', JSON.stringify(quizInfo), this.httpOptions)
+    return this.http.post<ExtendedQuiz>(this.url + 'markaspublished', JSON.stringify(quizInfo), this.httpOptions)
   }
 
   canIEditQuiz(id: string){
@@ -117,7 +153,7 @@ export class QuizService {
 
   uploadImage(data : FormData) {
     console.log(data)
-    return this.http.post<Quiz>(this.url+"quiz-image", data, this.httpOptions2);
+    return this.http.post(this.url+"quiz-image", data, this.httpOptions2);
   }
 
 }

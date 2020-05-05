@@ -66,120 +66,31 @@ export class QuestionService {
     return this.http.get<Question[]>(this.url + 'questions', options);
   }
 
-  sendQuestion(question: ExtendedQuestion, createEdit: boolean){
+  sendQuestion(question: ExtendedQuestion, createEdit: boolean) {
 
     var questionInfo = Object.assign({}, question);
     delete questionInfo.imageContent;
-    
-    if(question.typeId === 3 || question.typeId === 4){
+
+    if (question.typeId === 3 || question.typeId === 4) {
       questionInfo.otherOptions = [];
     }
-    
 
     console.log(questionInfo);
 
-    if(createEdit){
-      return this.http.post<Question>(this.url + 'questions', JSON.stringify(questionInfo), this.httpOptions);
-    }else{
-      return this.http.post<Question>(this.url + 'questions/edit', JSON.stringify(questionInfo), this.httpOptions);
+    if (createEdit) {
+      return this.http.post<ExtendedQuestion>(this.url + 'questions', JSON.stringify(questionInfo), this.httpOptions)
+        .pipe(map(data => {
+          return new ExtendedQuestion().deserialize(data, this.sanitizer);
+        }));
+    } else {
+      return this.http.post<ExtendedQuestion>(this.url + 'questions/edit', JSON.stringify(questionInfo), this.httpOptions)
+        .pipe(map(data => {
+          return new ExtendedQuestion().deserialize(data, this.sanitizer);
+        }));
     }
   }
 
 
-
-  firstType(question: OneToFour, quizId: string, createEdit: boolean){
-    const ans = this.firstTypeRightAnswers(question.answers,question.rightAnswers);
-    const quizInfo = {
-      id: question.id,
-      title: question.title,
-      quizId: quizId,
-      content: question.content, 
-      points: question.points,  
-      typeId: "1",
-      rightOptions: ans.rightAnswers,
-      otherOptions: ans.answers
-    };
-    console.log(quizInfo);
-    if(createEdit){
-      return this.http.post<Question>(this.url + 'questions', JSON.stringify(quizInfo), this.httpOptions);
-    }else{
-      console.log("edit");
-      return this.http.post<Question>(this.url + 'questions/edit', JSON.stringify(quizInfo), this.httpOptions);
-    }
-    
-  }
-
-
-  secondType(question: TrueFalse, quizId: string, createEdit: boolean){
-    const quizInfo = {
-      id: question.id,
-      title: question.title,
-      quizId: quizId,
-      content: question.content, 
-      points: question.points,  
-      typeId: "2",
-      rightOptions: [question.rightAnswer],
-      otherOptions: [question.answer]
-    };
-    console.log(quizInfo);
-    if(createEdit){
-      return this.http.post<Question>(this.url + 'questions', JSON.stringify(quizInfo), this.httpOptions);
-    }else{
-      return this.http.post<Question>(this.url + 'questions/edit', JSON.stringify(quizInfo), this.httpOptions);
-    }
-  }
-
-  thirdType(question: OpenAnswer, quizId: string, createEdit: boolean){
-    const quizInfo = {
-      id: question.id,
-      title: question.title,
-      quizId: quizId,
-      content: question.content, 
-      points: question.points,  
-      typeId: "3",
-      rightOptions: [question.rightAnswer],
-      otherOptions: []
-    };
-    console.log(quizInfo);
-    if(createEdit){
-      return this.http.post<Question>(this.url + 'questions', JSON.stringify(quizInfo), this.httpOptions);
-    }else{
-      return this.http.post<Question>(this.url + 'questions/edit', JSON.stringify(quizInfo), this.httpOptions);
-    }
-  }
-
-  fourthType(question: SequenceAnswer, quizId: string, createEdit: boolean){
-    const quizInfo = {
-      id: question.id,
-      title: question.title,
-      quizId: quizId,
-      content: question.content, 
-      points: question.points,  
-      typeId: "4",
-      rightOptions: question.rightAnswers,
-      otherOptions: []
-    };
-    console.log(quizInfo);
-    if(createEdit){
-      return this.http.post<Question>(this.url + 'questions', JSON.stringify(quizInfo), this.httpOptions);
-    }else{
-      return this.http.post<Question>(this.url + 'questions/edit', JSON.stringify(quizInfo), this.httpOptions);
-    }
-  }
-
-  firstTypeRightAnswers(answers: string[], rAnswers: boolean[]){
-    let rightAnswers: string[] = [];
-    let answ : string[] = [];
-    for (let i = 0; i < answers.length; i++) {
-      if(rAnswers[i]){
-        rightAnswers.push(answers[i]);
-      }else{
-        answ.push(answers[i]);
-      }
-    }
-
-    return {answers: answ, rightAnswers: rightAnswers};
-  }
 
   deleteQuestion(id: string){
     const options = {

@@ -6,11 +6,13 @@
         <div *ngIf="!quizLoading">
             <h1 class="title font-base" >Create quiz</h1>
             <div class="row ml-2 mt-3">
+
                 <div class="col-sm-3 ">
                     <img [src]='thumbnail' alt="Upload" class="img-thumbnail" (click)="imageInput.click()">
                     <input style="display: none" #imageInput type="file"
                     accept="image/*" (change)="quizImage($event)">
                 </div>
+
                 <div class="col-sm-8"> 
 
                     <label>Title:</label>
@@ -38,8 +40,8 @@
         
 
             <div class="m-3">
-                <button class="btn buttonpr mr-4" (click)="createQuiz()" >Save quiz</button>
-                <button class="btn buttonsec" (click)="publish()">Publish quiz</button>
+                <button class="btn buttonpr mr-4" (click)="saveQuiz()" >Save quiz</button>
+                <button *ngIf="isPublishAvailable()" class="btn buttonsec" (click)="publish()">Publish quiz</button>
             </div>
 
         
@@ -61,13 +63,14 @@
         
     </div>
 
-    <div class="container-sm mt-2 mb-2 p-4" *ngIf="!quizLoading">
+    <div class="container-sm mt-2 mb-2 p-4" *ngIf="!quizLoading && isQuizCreated()">
         <div>
             <button class="removeb" (click)="removeQuestion()"><img class="bttnimg" src="../assets/img/close-button.png"></button>
             <label>Remove question</label>
         </div>
 
-        <app-question-editor-selector [question]="question1" ></app-question-editor-selector>
+        <app-question-editor-selector [question]="question1" [formData]="questionData"
+        [thumbnail]="question1.imageContent"></app-question-editor-selector>
 
         <button class="btn buttonpr mt-5" (click)="saveQuestion()">Save question</button>
     </div>

@@ -13,10 +13,6 @@ export class SeqOptionsComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    if(this.question.id === ""){
-      this.question.rightOptions.push("");
-      this.question.rightOptions.push("");
-    }
   }
 
   addAnswer(){
