@@ -24,9 +24,7 @@ export class QuestionEditorSelectorComponent implements OnInit {
   file: File;
 
 
-   
-
-  constructor(private sanitizer: DomSanitizer) {
+  constructor() {
     
     if(this.question !== undefined 
       && this.question.imageContent !== "" ){
@@ -34,7 +32,9 @@ export class QuestionEditorSelectorComponent implements OnInit {
       }
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges() {
+    console.log("change");
+
     this.temp = [];
 
     this.temp.push({

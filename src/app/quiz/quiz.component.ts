@@ -6,6 +6,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ExtendedQuiz } from '../_models/extended-quiz';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { ExtendedQuestion } from '../_models/question/extendedquestion';
+import { Alert } from '../_models/alert';
 
 @Component({
   selector: 'app-quiz',
@@ -14,9 +15,10 @@ import { ExtendedQuestion } from '../_models/question/extendedquestion';
 })
 export class QuizComponent implements OnInit {
 
-  quiz1: ExtendedQuiz;
-  questions1: ExtendedQuestion[] = [];
-  question1: ExtendedQuestion;
+  quiz: ExtendedQuiz;
+  questions: ExtendedQuestion[] = [];
+
+  questionSelector: ExtendedQuestion;
 
   thumbnail: any; 
   file: File; 
@@ -25,6 +27,8 @@ export class QuizComponent implements OnInit {
 
   quizLoading: boolean;
   faSpinner = faSpinner;
+
+  questionAlerts: Alert[] = [];
 
 
   constructor(private quizService: QuizService, private questionService: QuestionService,
@@ -47,7 +51,7 @@ export class QuizComponent implements OnInit {
 
 
   initCreateQuiz() {
-    this.quiz1 = new ExtendedQuiz().deserialize({
+    this.quiz = new ExtendedQuiz().deserialize({
       id: "",
       title: "",
       description: "",
@@ -76,7 +80,7 @@ export class QuizComponent implements OnInit {
 
     const res = new ExtendedQuestion().deserialize({
       id: "",
-      quizId: this.quiz1.id,
+      quizId: this.quiz.id,
       title: "",
       content: "",
       imageContent: "",
@@ -113,65 +117,66 @@ export class QuizComponent implements OnInit {
 
   //Gettig quiz by id in url
   setGettedQuiz(answer){    
-    this.quiz1 = answer;
-    this.thumbnail = this.quiz1.imageContent;
+    this.quiz = answer;
+    this.thumbnail = this.quiz.imageContent;
 
     this.quizLoading = false;
 
-    console.log(this.quiz1);
+    console.log(this.quiz);
   }
 
-  //Getting questions of quiz 
+  //Getting questions of quiz in url 
   mapGettedQuestions(ans){
-    this.questions1 = ans;
+    this.questions = ans;
 
-    console.log(this.questions1);
+    console.log(this.questions);
   }
 
 
   //Clicked on already saved questions TODO : show image
   showQuestion(i){
-
-    this.question1 = this.questions1[i];
+    this.questionSelector = this.questions[i];
 
     this.questionData.set("img","");
-    this.questionData.set("questionId",this.question1.id);
+    this.questionData.set("questionId",this.questionSelector.id);
 
   }
 
 
-  // TODO : new question logic
   addNewQuestion(){
-    this.question1 = this.initQuestion();
-    this.questions1.push(this.question1)
+    this.questionSelector = this.initQuestion();
+    this.questions.push(this.questionSelector)
   }
 
 
-  // TODO : VALIDATION, image add
+  // TODO : image add
   saveQuestion() {
-    if(this.question1.id === ""){
+    const alert = this.questionService.questionValidator(this.questionSelector);
+    if (alert === undefined) {
+      if (this.questionSelector.id === "") {
+        this.questionService.sendQuestion(this.questionSelector, true).subscribe(
+          ans => this.setCreatedQuestion(ans),
+          err => console.log(err));
 
-      this.questionService.sendQuestion(this.question1, true).subscribe(
-        ans => this.mapCreatedQuestion(ans),
-        err => console.log(err));
-
+      } else {
+        this.questionService.sendQuestion(this.questionSelector, false).subscribe(
+          ans => this.setEditedQuestion(ans),
+          err => console.log(err));
+      }
+      this.questionAlerts = [];
     }else{
-
-      this.questionService.sendQuestion(this.question1, false).subscribe(
-        ans => this.mapEditedQuestion(ans),
-        err => console.log(err));
-
+      this.questionAlerts.push(alert);
     }
   }
 
 
   //TODO : fix send image
-  mapCreatedQuestion(ans){
+  setCreatedQuestion(ans){
     alert("Question created!");
 
-    this.question1.id = ans.id;
+    this.questionSelector.id = ans.id;
 
-    this.questionData.set("questionId",this.question1.id);
+    this.questionData.set("questionId",this.questionSelector.id);
 
     if(this.questionData.get("img") !== ""){
       this.questionService.uploadImage(this.questionData)
@@ -181,7 +186,7 @@ export class QuizComponent implements OnInit {
   }
 
   //TODO : fix send image
-  mapEditedQuestion(ans){
+  setEditedQuestion(ans){
 
     alert("Question edited!");
 
@@ -196,11 +201,11 @@ export class QuizComponent implements OnInit {
 
   //TODO : fix realization (image in save, save published quizzes logic)
   saveQuiz() {
-    if (this.quiz1.title !== "" && this.quiz1.description !== "") {
+    if (this.quiz.title !== "" && this.quiz.description !== "") {
       
 
-      if(this.file !== undefined && this.quiz1.id !== ""){
-        this.quizService.uploadImage(this.getFormData(this.quiz1.id))
+      if(this.file !== undefined && this.quiz.id !== ""){
+        this.quizService.uploadImage(this.getFormData(this.quiz.id))
         .subscribe(
           ans => this.createEditQuiz(),
           err => {
@@ -219,8 +224,8 @@ export class QuizComponent implements OnInit {
   }
 
   createEditQuiz(){
-    if (this.quiz1.id === "") {
-      this.quizService.createQuizNew(this.quiz1).subscribe(
+    if (this.quiz.id === "") {
+      this.quizService.createQuizNew(this.quiz).subscribe(
 
         ans => {
           if (this.file !== undefined) {
@@ -243,7 +248,7 @@ export class QuizComponent implements OnInit {
           alert("Sorry, couldn`t create your quiz :(")
         });
     } else {
-      this.quizService.saveQuizNew(this.quiz1).subscribe(
+      this.quizService.saveQuizNew(this.quiz).subscribe(
 
         ans => {
           alert("Saved!");
@@ -258,7 +263,7 @@ export class QuizComponent implements OnInit {
   }
 
   publish() {
-    this.quizService.publishQuiz(this.quiz1.id)
+    this.quizService.publishQuiz(this.quiz.id)
       .subscribe(
         ans => alert("Published!"),
         err => {
@@ -267,15 +272,13 @@ export class QuizComponent implements OnInit {
         });
   }
 
-  //Removing questin or clear input TODO : logic with new adding
   removeQuestion() {
-    if (this.question1.id === "") {
-      //this.clearInputs();
-      alert("Inputs cleared");
+    if (this.questionSelector.id === "") {
+      this.removeQuestionFromList();
     } else {
-      this.questionService.deleteQuestion(this.question1.id)
+      this.questionService.deleteQuestion(this.questionSelector.id)
         .subscribe(
-          ans => this.removeQuestionSuccess(),
+          ans => this.removeQuestionFromList(),
           err => {
             console.log(err);
             alert("Sorry, Couldn`t delete this question :(");
@@ -283,9 +286,9 @@ export class QuizComponent implements OnInit {
     }
   }
 
-  removeQuestionSuccess() {
-    const index = this.questions1.findIndex(question => question.id === this.question1.id);
-    this.questions1.splice(index, 1);
+  removeQuestionFromList() {
+    const index = this.questions.findIndex( el => el === this.questionSelector);
+    this.questions.splice(index, 1);
     alert("Question removed");
   }
 
@@ -313,10 +316,16 @@ export class QuizComponent implements OnInit {
     return formData;
   }
 
+
+  //close alert
+  close(alert: Alert) {
+    this.questionAlerts.splice(this.questionAlerts.indexOf(alert), 1);
+  }
+
   
-  isQuizCreated(){ return this.quiz1 !== undefined && this.quiz1.id !== ""; }
-  isPublishAvailable(){ return this.questions1.filter(q => q.id.length > 0).length > 0 && !this.quiz1.published }
-  isQuestionCreatorAvailable(){ return !this.quizLoading && !this.quiz1.published && this.isQuizCreated() }
-  isPlusActive(){ return this.question1.id !== ""}
+  isQuizCreated(){ return this.quiz !== undefined && this.quiz.id !== ""; }
+  isPublishAvailable(){ return this.questions.filter(q => q.id.length > 0).length > 0 && !this.quiz.published }
+  isQuestionCreatorAvailable(){ return !this.quizLoading && !this.quiz.published && this.isQuizCreated() }
+  isPlusActive(){ return this.questionSelector.id !== ""}
 
 }

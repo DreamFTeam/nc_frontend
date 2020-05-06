@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { User } from '../_models/user';
 import { OneToFour } from '../_models/question/onetofour';
 import { Question } from '../_models/question/question';
@@ -10,6 +10,7 @@ import { SequenceAnswer } from '../_models/question/sequenceanswer';
 import { ExtendedQuestion } from '../_models/question/extendedquestion';
 import { DomSanitizer } from '@angular/platform-browser';
 import { map } from 'rxjs/operators';
+import { Alert } from '../_models/alert';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,7 @@ export class QuestionService {
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
-       Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('userData')).token
+      Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('userData')).token
     })
   };
   httpOptions2 = {
@@ -29,20 +30,20 @@ export class QuestionService {
   };
   user: User;
 
-  constructor(private http: HttpClient , private sanitizer: DomSanitizer) {
+  constructor(private http: HttpClient, private sanitizer: DomSanitizer) {
     this.user = JSON.parse(localStorage.getItem('userData'));
-    
+
   }
 
   //REFACTORED
 
-  getAllQuestionsNew(quizId: string): Observable<ExtendedQuestion[]>{
+  getAllQuestionsNew(quizId: string): Observable<ExtendedQuestion[]> {
     const options = {
       headers: this.httpOptions.headers,
       params: new HttpParams().set('quizId', quizId)
 
     }
-    
+
     return this.http.get<ExtendedQuestion[]>(this.url + 'questions', options)
       .pipe(map(data => data.map(x => {
         return new ExtendedQuestion().deserialize(x, this.sanitizer);
@@ -52,10 +53,10 @@ export class QuestionService {
 
 
   //END OF REFACTORED
-  
 
 
-  getAllQuestions(quizId: string){
+
+  getAllQuestions(quizId: string) {
 
     const options = {
       headers: this.httpOptions.headers,
@@ -92,21 +93,43 @@ export class QuestionService {
 
 
 
-  deleteQuestion(id: string){
+  deleteQuestion(id: string) {
     const options = {
       headers: this.httpOptions.headers,
       body: {
         id: id
       },
     };
-    
-      return this.http.delete<Question>(this.url + 'questions',options);
+
+    return this.http.delete<Question>(this.url + 'questions', options);
   }
 
-  uploadImage(data : FormData) {
+  uploadImage(data: FormData) {
 
-    return this.http.post<Question>(this.url+"question-image", data, this.httpOptions2);
+    return this.http.post<Question>(this.url + "question-image", data, this.httpOptions2);
   }
 
-  
+  questionValidator(question: ExtendedQuestion): Alert {
+
+    if(question.title === ""){
+      return {type: 'warning', message: 'No title provided'};
+    }
+
+    if(question.content === ""){
+      return {type: 'warning', message: 'No content provided'};
+    }
+
+    if(question.rightOptions.includes("") || question.otherOptions.includes("")){
+      return {type: 'warning', message: 'One of answers is empty'};
+    }
+
+    if(!(question.points > 0)){
+      return {type: 'warning', message: 'Points are < 0 or has text value'};
+    }
+
+
+    return undefined;
+  }
+
+
 }

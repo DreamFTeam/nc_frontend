@@ -1,7 +1,6 @@
 
 
 <div role="main">
-    
     <div class="container-sm mt-2 p-3">
         <div *ngIf="!quizLoading">
             <h1 class="title font-base" >Create quiz</h1>
@@ -16,7 +15,7 @@
                 <div class="col-sm-8"> 
 
                     <label>Title:</label>
-                    <input class="form-control" type="text"  [(ngModel)]="quiz1.title" placeholder="Title of quiz">
+                    <input class="form-control" type="text"  [(ngModel)]="quiz.title" placeholder="Title of quiz">
                     
                     <!-- <label>Category:</label>
                     <input type="text"  [(ngModel)]="quiz">
@@ -25,7 +24,7 @@
                     <input type="text"  [(ngModel)]="tags"> -->
 
                     <label>Language:</label>
-                    <select [(ngModel)]="quiz1.language" class="form-control">
+                    <select [(ngModel)]="quiz.language" class="form-control">
                         <option selected="selected" value="eng">English</option>
                         <option value="ukr">Ukrainian</option>
                     </select>
@@ -33,7 +32,7 @@
                     
                     <label>Description:</label >
                     <textarea class="form-control" rows="5"
-                    [(ngModel)]="quiz1.description" placeholder="Description of quiz"></textarea>
+                    [(ngModel)]="quiz.description" placeholder="Description of quiz"></textarea>
                 </div>
             </div>
         
@@ -53,7 +52,7 @@
         <div *ngIf="isQuizCreated()" class="row m-4">
             <div class="col-sm-3">
                 <h3>Questions:</h3>
-                <div *ngFor="let question of questions1; let i = index">
+                <div *ngFor="let question of questions; let i = index">
                     <button *ngIf="question.id !== ''" class="btn buttonpr mr-1 mt-1 rounded" (click)="showQuestion(i)">{{question.title}}</button>
                     <button *ngIf="question.id === ''" class="btn buttonpn mr-1 mt-1 rounded" (click)="showQuestion(i)">
                         <div *ngIf="question.title !== ''">{{question.title}}</div>
@@ -72,16 +71,22 @@
         
     </div>
 
-    <div *ngIf="isQuizCreated() && question1 !== undefined" class="container-sm mt-2 mb-2 p-4" >
+    <div *ngIf="isQuizCreated() && questionSelector !== undefined" class="container-sm mt-2 mb-2 p-4" >
         <div>
             <button class="removeb" (click)="removeQuestion()"><img class="bttnimg" src="../assets/img/close-button.png"></button>
             <label>Remove question</label>
         </div>
 
-        <app-question-editor-selector [question]="question1" [formData]="questionData"
-        [thumbnail]="question1.imageContent"></app-question-editor-selector>
+        <div class="mb-2">
+            <app-question-editor-selector [question]="questionSelector" [formData]="questionData"
+                [thumbnail]="questionSelector.imageContent"></app-question-editor-selector>
+        </div>
+        
 
-        <button *ngIf="isQuestionCreatorAvailable()" class="btn buttonpr mt-5" (click)="saveQuestion()">Save question</button>
+        <p *ngFor="let alert of questionAlerts">
+            <ngb-alert [type]="alert.type" (close)="close(alert)">{{ alert.message }}</ngb-alert>
+        </p>
+        <button *ngIf="isQuestionCreatorAvailable()" class="btn buttonpr mt-2" (click)="saveQuestion()">Save question</button>
     </div>
 </div>
 
