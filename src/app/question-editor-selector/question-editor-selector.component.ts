@@ -1,5 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { ExtendedQuestion } from '../_models/question/extendedquestion';
+import { DomSanitizer } from '@angular/platform-browser';
+import { Temp } from '../_models/temp';
 
 @Component({
   selector: 'app-question-editor-selector',
@@ -7,6 +9,8 @@ import { ExtendedQuestion } from '../_models/question/extendedquestion';
   styleUrls: ['./question-editor-selector.component.css']
 })
 export class QuestionEditorSelectorComponent implements OnInit {
+
+  temp: Temp[];
 
   @Input()
   question: ExtendedQuestion;
@@ -19,13 +23,36 @@ export class QuestionEditorSelectorComponent implements OnInit {
 
   file: File;
 
+
    
 
-  constructor() {
+  constructor(private sanitizer: DomSanitizer) {
+    
     if(this.question !== undefined 
       && this.question.imageContent !== "" ){
       this.thumbnail = this.question.imageContent;
       }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.temp = [];
+
+    this.temp.push({
+      rightOptions:[""],
+      otherOptions:[""]
+    })
+    this.temp.push({
+      rightOptions:["true"],
+      otherOptions:["false"]
+    });
+    this.temp.push({
+      rightOptions:[""],
+      otherOptions:[]
+    })
+    this.temp.push({
+      rightOptions:["","",""],
+      otherOptions:[]
+    })
   }
 
   ngOnInit(): void {
@@ -34,29 +61,17 @@ export class QuestionEditorSelectorComponent implements OnInit {
 
   //Changed question type
   onChange(deviceValue) {
+    
+    //Save question in temp
+    this.temp[this.question.typeId-1].rightOptions = (this.question.rightOptions);
+    this.temp[this.question.typeId-1].otherOptions = (this.question.otherOptions);
+
+    //Change question type
     this.question.typeId = parseInt(deviceValue);
-    switch (this.question.typeId) {
-      case 1: {
-        this.question.rightOptions = [""];
-        this.question.otherOptions = [""];
-        break;
-      }
-      case 2: {
-        this.question.rightOptions = ["true"];
-        this.question.otherOptions = ["false"];
-        break;
-      }
-      case 3: {
-        this.question.rightOptions = [""];
-        this.question.otherOptions = [];
-        break;
-      }
-      case 4: {
-        this.question.otherOptions = ["","",""];
-        this.question.otherOptions = [];
-        break;
-      }
-    }
+    
+    //Reinit from temp 
+    this.question.rightOptions = (this.temp[this.question.typeId-1].rightOptions);
+    this.question.otherOptions = (this.temp[this.question.typeId-1].otherOptions);
   }
 
   questionImage(e){

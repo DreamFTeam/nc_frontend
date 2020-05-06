@@ -1,13 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Quiz } from '../_models/quiz';
-import { Question } from '../_models/question/question';
-import { OneToFour } from '../_models/question/onetofour';
-import { TrueFalse } from '../_models/question/truefalse';
-import { OpenAnswer } from '../_models/question/openanswer';
-import { SequenceAnswer } from '../_models/question/sequenceanswer';
 import { QuizService } from '../_services/quiz.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
 import { QuestionService } from '../_services/question.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ExtendedQuiz } from '../_models/extended-quiz';
@@ -30,11 +23,14 @@ export class QuizComponent implements OnInit {
 
   questionData: FormData;
 
+  quizLoading: boolean;
   faSpinner = faSpinner;
-  quizLoading: boolean = true;
+
 
   constructor(private quizService: QuizService, private questionService: QuestionService,
      private activateRoute: ActivatedRoute, private router: Router,private sanitizer: DomSanitizer) { 
+       this.quizLoading = true;
+
       const id = this.activateRoute.snapshot.params.id;
       if(id === undefined){
         this.initCreateQuiz();
@@ -49,15 +45,13 @@ export class QuizComponent implements OnInit {
     this.questionData.append("questionId","");
   }
 
-  //REFACTORED
-
 
   initCreateQuiz() {
     this.quiz1 = new ExtendedQuiz().deserialize({
       id: "",
       title: "",
       description: "",
-      creationDate: Date,
+      creationDate: new Date(),
       creatorId: "",
       author: "",
       activated: false,
@@ -74,8 +68,8 @@ export class QuizComponent implements OnInit {
       imageContent: ""
     }, this.sanitizer);
 
-    this.quizLoading = false;
 
+    this.quizLoading = false;
   }
 
   initQuestion(): ExtendedQuestion{
@@ -122,8 +116,6 @@ export class QuizComponent implements OnInit {
     this.quiz1 = answer;
     this.thumbnail = this.quiz1.imageContent;
 
-    this.question1 = this.initQuestion();
-
     this.quizLoading = false;
 
     console.log(this.quiz1);
@@ -132,7 +124,7 @@ export class QuizComponent implements OnInit {
   //Getting questions of quiz 
   mapGettedQuestions(ans){
     this.questions1 = ans;
-    
+
     console.log(this.questions1);
   }
 
@@ -151,12 +143,12 @@ export class QuizComponent implements OnInit {
   // TODO : new question logic
   addNewQuestion(){
     this.question1 = this.initQuestion();
+    this.questions1.push(this.question1)
   }
 
 
   // TODO : VALIDATION, image add
   saveQuestion() {
-    console.log(this.question1);
     if(this.question1.id === ""){
 
       this.questionService.sendQuestion(this.question1, true).subscribe(
@@ -177,14 +169,7 @@ export class QuizComponent implements OnInit {
   mapCreatedQuestion(ans){
     alert("Question created!");
 
-    console.log(ans)
-
-    this.question1 = ans;
-
-    this.questions1.push(new ExtendedQuestion().deserialize(this.question1,this.sanitizer));
-
-    console.log(this.questions1)
-
+    this.question1.id = ans.id;
 
     this.questionData.set("questionId",this.question1.id);
 
@@ -200,18 +185,6 @@ export class QuizComponent implements OnInit {
 
     alert("Question edited!");
 
-    console.log(ans)
-
-    const index = this.questions1.findIndex(question => question.id === this.question1.id); 
-
-    this.question1 = ans;
-
-    console.log(this.question1)
-    
-    this.questions1.splice(index,1,new ExtendedQuestion().deserialize(this.question1,this.sanitizer)); 
-
-
-    console.log(this.questions1);
 
     console.log(this.questionData.get("questionId"));
     if(this.questionData.get("img") !== ""){
@@ -313,7 +286,6 @@ export class QuizComponent implements OnInit {
   removeQuestionSuccess() {
     const index = this.questions1.findIndex(question => question.id === this.question1.id);
     this.questions1.splice(index, 1);
-    this.initQuestion();
     alert("Question removed");
   }
 
@@ -341,40 +313,10 @@ export class QuizComponent implements OnInit {
     return formData;
   }
 
-
-
-
-
-  //END OF REFACTORED
   
-
-  
-
-
-
-
-
-
-
-  // questionImage(e){
-  //   this.file2 = e.target.files[0];
-
-  //   let reader = new FileReader();
-  //   reader.readAsDataURL(this.file2);
-  //   reader.onload = () => {
-  //     //this.thumbnail2 = reader.result;
-  //   }
-
-  //   //this.questionService.uploadImage(formData).subscribe(ans =>console.log(ans),err => console.log(err));
-  // }
-
-  
-
-
-  
-
-  
-  isQuizCreated(){ return this.quiz1.id !== ""; }
-  isPublishAvailable(){ return this.questions1.length > 0 && !this.quiz1.published }
+  isQuizCreated(){ return this.quiz1 !== undefined && this.quiz1.id !== ""; }
+  isPublishAvailable(){ return this.questions1.filter(q => q.id.length > 0).length > 0 && !this.quiz1.published }
+  isQuestionCreatorAvailable(){ return !this.quizLoading && !this.quiz1.published && this.isQuizCreated() }
+  isPlusActive(){ return this.question1.id !== ""}
 
 }

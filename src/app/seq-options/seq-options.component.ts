@@ -10,7 +10,9 @@ import { ExtendedQuestion } from '../_models/question/extendedquestion';
 export class SeqOptionsComponent implements OnInit {
   @Input() question: ExtendedQuestion;
 
-  constructor() { }
+  constructor() {
+    
+   }
 
   ngOnInit(): void {
   }

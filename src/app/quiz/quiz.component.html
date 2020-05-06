@@ -40,16 +40,25 @@
         
 
             <div class="m-3">
-                <button class="btn buttonpr mr-4" (click)="saveQuiz()" >Save quiz</button>
+
+
+<!--DRAFT LOGIC !!! (UPDATE NOT PUBLISHED, FORK FROM PUBLISHED)  -->
+
+                
+                <button class="btn buttonpr mr-4" (click)="saveQuiz()" >Save as new quiz</button>
                 <button *ngIf="isPublishAvailable()" class="btn buttonsec" (click)="publish()">Publish quiz</button>
             </div>
 
         
-        <div class="row m-4">
+        <div *ngIf="isQuizCreated()" class="row m-4">
             <div class="col-sm-3">
                 <h3>Questions:</h3>
                 <div *ngFor="let question of questions1; let i = index">
-                    <button class="btn buttonpr mr-1 mt-1 rounded" (click)="showQuestion(i)">{{question.title}}</button>
+                    <button *ngIf="question.id !== ''" class="btn buttonpr mr-1 mt-1 rounded" (click)="showQuestion(i)">{{question.title}}</button>
+                    <button *ngIf="question.id === ''" class="btn buttonpn mr-1 mt-1 rounded" (click)="showQuestion(i)">
+                        <div *ngIf="question.title !== ''">{{question.title}}</div>
+                        <div *ngIf="question.title === ''">New question</div>
+                    </button>
                 </div>
                 <button class="btn buttonpr rounded mt-1" (click)="addNewQuestion()">+</button>
             </div>
@@ -57,13 +66,13 @@
         </div>
     </div>
 
-        <div style="text-align: center;" *ngIf="quizLoading">
-            <fa-icon [icon]="faSpinner" [spin]="true"  size="6x" ></fa-icon>
-        </div>
+    <div style="text-align: center;" *ngIf="quizLoading">
+        <fa-icon [icon]="faSpinner" [spin]="true"  size="6x" ></fa-icon>
+    </div>
         
     </div>
 
-    <div class="container-sm mt-2 mb-2 p-4" *ngIf="!quizLoading && isQuizCreated()">
+    <div *ngIf="isQuizCreated() && question1 !== undefined" class="container-sm mt-2 mb-2 p-4" >
         <div>
             <button class="removeb" (click)="removeQuestion()"><img class="bttnimg" src="../assets/img/close-button.png"></button>
             <label>Remove question</label>
@@ -72,7 +81,7 @@
         <app-question-editor-selector [question]="question1" [formData]="questionData"
         [thumbnail]="question1.imageContent"></app-question-editor-selector>
 
-        <button class="btn buttonpr mt-5" (click)="saveQuestion()">Save question</button>
+        <button *ngIf="isQuestionCreatorAvailable()" class="btn buttonpr mt-5" (click)="saveQuestion()">Save question</button>
     </div>
 </div>
 

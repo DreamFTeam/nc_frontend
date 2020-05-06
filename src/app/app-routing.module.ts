@@ -26,7 +26,7 @@ const routes: Routes = [
   { path: 'users', component: UsersComponent },
   { path: 'privileged/main', component:PrivilegedProfileComponent },
   { path: 'quizcreate', component: QuizComponent, canActivate: [AuthGuard], data: { roles: [Role.User] }},
-  { path: 'viewquiz/:id', component: ViewQuizComponent},
+  { path: 'viewquiz/:id', component: ViewQuizComponent, canActivate: [AuthGuard], data: { roles: [Role.User] }},
   { path: 'quiz-list', component: QuizListComponent},
   { path: 'validation', component: ValidationPageComponent},
   { path: 'validation/:id', component: QuizValidationComponent},
