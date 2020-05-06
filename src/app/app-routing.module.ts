@@ -12,6 +12,8 @@ import { PrivilegedProfileComponent } from './privileged-profile/privileged-prof
 import { ValidationPageComponent } from './validation-page/validation-page.component';
 import { QuizValidationComponent } from './quiz-validation/quiz-validation.component';
 import { AnnouncementEditComponent } from './announcement-edit/announcement-edit.component';
+import { AuthGuard } from './guards/editor.guard';
+import { Role } from './_models/role';
 
 
 const routes: Routes = [
@@ -22,8 +24,8 @@ const routes: Routes = [
   { path: 'profile', component: ProfileComponent },
   { path: 'editprofile', component: EditProfileComponent},
   { path: 'users', component: UsersComponent },
-  {path: 'privileged/main', component:PrivilegedProfileComponent },
-  { path: 'quizcreate', component: QuizComponent},
+  { path: 'privileged/main', component:PrivilegedProfileComponent },
+  { path: 'quizcreate', component: QuizComponent, canActivate: [AuthGuard], data: { roles: [Role.User] }},
   { path: 'viewquiz/:id', component: ViewQuizComponent},
   { path: 'quiz-list', component: QuizListComponent},
   { path: 'validation', component: ValidationPageComponent},
