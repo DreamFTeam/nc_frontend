@@ -21,6 +21,11 @@ export class ExtendedQuestion implements DesearizableWImage {
             }
             case 2:{
                 this.typeName = 'True or false';
+                if(this.rightOptions[0]){
+                    this.otherOptions = ["false"];
+                }else{
+                    this.otherOptions = ["true"];
+                }
                 break;
             }
             case 3:{
@@ -32,6 +37,7 @@ export class ExtendedQuestion implements DesearizableWImage {
                 break;
             }
         }
+
         let img = this.imageContent;
         if (img !== null){
             const objUrl = 'data:image/jpeg;base64,' + this.imageContent;
