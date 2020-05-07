@@ -289,6 +289,7 @@ export class QuizComponent implements OnInit {
   removeQuestionFromList() {
     const index = this.questions.findIndex( el => el === this.questionSelector);
     this.questions.splice(index, 1);
+    this.questionSelector = undefined
     alert("Question removed");
   }
 
