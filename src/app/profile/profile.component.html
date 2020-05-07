@@ -30,7 +30,8 @@
 
     <div class="quizblocks" *ngFor="let quiz of quizzes">
       <div class="indquiz">
-        <img id="quizimage">
+        <img *ngIf = "quiz.imageContent" id="quizimage" [src]="quiz.imageContent">
+        <img *ngIf = "!quiz.imageContent" id="quizimage" style="background: url('../../assets/img/quiz.jpg');background-size: contain;">
         <div class="quizinfo">
         <a (click)="goToQuiz(quiz.id)" style="text-decoration: underline; user-select: none;"><b>{{quiz.title}}</b></a> <br>
       Description: {{quiz.description}}<br>

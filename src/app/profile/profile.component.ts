@@ -107,6 +107,15 @@ export class ProfileComponent implements OnInit {
 
     this.getProfileService.getProfileQuiz(this.profile.id).subscribe(
       result => {
+        result.forEach(input => {
+          if (input['imageContent'] !== null) {
+            input['imageContent'] =
+              this.sanitizer.bypassSecurityTrustUrl
+                ("data:image\/(png|jpg|jpeg);base64,"
+                  + input['imageContent'])
+          }
+          return input;
+        })
         this.quizzes = result;
       },
       error => {
