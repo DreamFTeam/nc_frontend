@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Announcement } from '../_models/announcement';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnnouncementService } from '../_services/announcement.service';
-import { Alert } from '../_models/Alert'
+import { Alert } from '../_models/alert'
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 

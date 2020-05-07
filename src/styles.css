@@ -36,6 +36,14 @@ a:active {
     background: #8cc5e6;
 }
 
+.buttonpn {
+    background: #00FFFF;
+}
+
+.buttonpn:hover {
+    background: #47fcfc;
+}
+
 .buttonsec {
     background: #E6B174;
 }
