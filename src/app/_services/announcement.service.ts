@@ -6,6 +6,7 @@ import * as jwt_decode from 'jwt-decode';
 import { User } from '../_models/user';
 import { Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +26,7 @@ export class AnnouncementService {
   };
   user: User;
   
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient, private sanitizer: DomSanitizer) { 
     let info = JSON.parse(localStorage.getItem('userData'));
     this.user = jwt_decode(info.token)
     this.user.token = info.token;
@@ -41,7 +42,7 @@ export class AnnouncementService {
 
     return this.http.get<Announcement[]>(this.url + '/getall', options).pipe(
       map(data => data.map(x=>{
-        return new Announcement().deserialize(x);
+        return new Announcement().deserialize(x, this.sanitizer);
       }))
     );
   }
@@ -56,12 +57,19 @@ export class AnnouncementService {
   }
 
   //POST new announcement
-  addAnnouncement(announcement: Announcement): Observable<Announcement>{
+  addAnnouncement(announcement: Announcement, img: File): Observable<Announcement>{
     console.log('in add');
     let postAnnouncement = announcement;
     postAnnouncement.creatorId = this.user.id;
+    const formData = new FormData();
 
-    return this.http.post<Announcement>(this.url + '/create', JSON.stringify(postAnnouncement), this.httpOptions);
+    formData.append("obj", JSON.stringify(postAnnouncement));
+    if(img !== undefined){
+      formData.append("img",img, img.name);
+    }
+    
+
+    return this.http.post<Announcement>(this.url + '/create', formData, this.httpOptions2);
   }
 
   //POST edited announcement
@@ -87,4 +95,9 @@ export class AnnouncementService {
   validateAnnouncement(announcement: Announcement): boolean{
     return announcement.textContent !=="" && announcement.title !== "";
   }
+
+  getAdminName(){
+    return this.user.username;
+  }
+
 }

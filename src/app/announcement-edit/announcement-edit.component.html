@@ -7,6 +7,9 @@
         <div *ngIf="!editorEnabled">
             <button class="btn addb" (click)="add()"><img src="../assets/img/plus.png"></button>
         </div>
+
+        <!-- ANNOUNCEMENT ADD -->
+
         <div *ngIf="inEdit[0]">
             <div><label>Adding announcement</label></div>
             <label class="mt-4">Title:</label>
@@ -14,25 +17,39 @@
             <label>Content:</label>
             <textarea class="form-control" rows="5"
             [(ngModel)]="currentAnnouncement.textContent" placeholder="Content of announcement"></textarea>
-            <div class="mt-4"><i class="fas fa-chevron-down"></i>
+
+            <div class="mt-2">
+                <img [src]='thumbnail' alt="Upload" class="img-thumbnail" (click)="imageInput.click()">
+                    <input style="display: none" #imageInput type="file"
+                    accept="image/*" (change)="uploadImage($event)">
+            </div>
+
+            <div class="mt-4">
                 <button class="btn buttonsec" (click)="saveAdd()">Save</button>
                 <button class="btn buttonpr ml-2" (click)="cancel(-1)">Cancel</button>
             </div>
         </div>
         
+
+        <!-- ANNOUNCEMENTS LIST -->
+
         <div class="mb-4" *ngFor="let announcement of announcements; let i = index">
             <div *ngIf="!inEdit[i+1]">
                 <hr class="my-4">
                 <div class="row">
                     <div class="col-sm-8">
-                        <label>Title:</label>
-                        <p>{{announcement.title}}</p>
+                        <label>{{announcement.title}}</label>
                     </div>
                     <div class="col-sm-3 float-right">
                         <p style="font-style: italic;">{{announcement.creationDate | date}}</p>
                         <p style="font-weight: bold;">{{announcement.creatorId}}</p>
                     </div>
                 </div>
+
+                <div>
+                    <img *ngIf="announcement.image !== null" [src]='announcement.image' class="img-thumbnail">
+                </div>
+
                 <button class="btn" (click)="isCollapsed[i] = !isCollapsed[i]"><a>Content</a><span *ngIf="!isCollapsed[i]">   ↑</span><span *ngIf="isCollapsed[i]">   ↓</span></button>
                 <div [ngbCollapse]="isCollapsed[i]">
                     <p>{{announcement.textContent}}</p>
@@ -42,6 +59,11 @@
                     <button class="btn buttondel ml-2" (click)="delete(i)">Delete announcement</button>
                 </div>
             </div>
+
+
+
+            <!-- ANNOUNCEMENT EDITOR -->
+
             <div *ngIf="inEdit[i+1]">
                 <hr class="my-4">
                 <div>
@@ -54,7 +76,7 @@
                 <textarea class="form-control" rows="5"
                 [(ngModel)]="currentAnnouncement.textContent" placeholder="Content of announcement"></textarea>
                 <div class="mt-4"><i class="fas fa-chevron-down"></i>
-                    <button class="btn buttonsec" (click)="save(i)">Save</button>
+                    <button class="btn buttonsec" (click)="saveEdit(i)">Save</button>
                     <button class="btn buttonpr ml-2" (click)="cancel(i)">Cancel</button>
                 </div>
             </div>
@@ -63,7 +85,8 @@
         
 
         
-        
+        <!-- PAGINATION -->
+
         <ngb-pagination [collectionSize]="collectionSize" [pageSize]="pageSize"
          [(page)]="page" class="d-flex justify-content-center" (pageChange)="loadPage($event)"></ngb-pagination>
         </div>
