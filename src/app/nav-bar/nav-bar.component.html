@@ -15,8 +15,7 @@
         <a class="nav-link" [routerLink]="'/quiz-list'" (click)="isMenuCollapsed = true">QUIZZES</a>
       </li>
       <li class="nav-item">
-        <input class="form-control mr-sm-2 mt-2" type="text" name="search" [(ngModel)]="searchArea"
-          [ngbTypeahead]="search" [inputFormatter]="formatter" [resultFormatter]="formatter" [editable]='false'
+        <input class="form-control mr-sm-2 mt-2" type="text" name="search" [(ngModel)]="searchArea" (keydown.enter)="search()"
           placeholder="Search">
       </li>
       <li class="nav-item">
@@ -49,8 +48,8 @@
         <a class="nav-link" [routerLink]="'/users'" (click)="isMenuCollapsed = true">USERS</a>
       </li>
       <li class="nav-item">
-        <input class="form-control mr-sm-2" type="text" placeholder="Search" name="search" [(ngModel)]="searchArea"
-          [ngbTypeahead]="search" [inputFormatter]="formatter" [resultFormatter]="formatter" [editable]='false'>
+        <input class="form-control mr-sm-2 mt-2" type="text" name="search" [(ngModel)]="searchArea" (keydown.enter)="search()"
+               placeholder="Search">
       </li>
       <li class="nav-item">
         <a class="nav-link" [routerLink]="'/'" (click)="isMenuCollapsed = true">LOG OUT</a>
@@ -87,8 +86,8 @@
         <a class="nav-link" [routerLink]="'/users'" (click)="isMenuCollapsed = true">USERS</a>
       </li>
       <li class="nav-item">
-        <input class="form-control mr-sm-2" type="text" placeholder="Search" name="search" [(ngModel)]="searchArea"
-          [ngbTypeahead]="search" [inputFormatter]="formatter" [resultFormatter]="formatter" [editable]='false'>
+        <input class="form-control mr-sm-2 mt-2" type="text" name="search" [(ngModel)]="searchArea" (keydown.enter)="search()"
+               placeholder="Search">
       </li>
       <li class="nav-item">
         <a class="nav-link" [routerLink]="'/'" (click)="isMenuCollapsed = true">LOG OUT</a>

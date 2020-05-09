@@ -1,12 +1,11 @@
 <div class="content" role="main">
-    <div id="search" class="mainstyle">Search</div>
     <div id="quizlist" class="mainstyle">
         <a class="byn buttonpr p-2" routerLink="/quizcreate">Create quiz</a>
         <div class="container">
             <div class="row">
-                <div *ngFor="let item of quizList$ | async" class="col-lg-3 col-md-4 col-sm-6 card text-center cards">
-                    <a routerLink="/viewquiz/{{item.quiz_id}}">
-                        <img class="img-fluid card-img-top thumbn" [src]="item.image_content ? item.image_content : this.mockImageUrl" alt="Quiz icon">
+                <div *ngFor="let item of quizList" class="col-lg-3 col-md-4 col-sm-6 card text-center cards">
+                    <a routerLink="/viewquiz/{{item.id}}">
+                        <img class="img-fluid card-img-top thumbn" [src]="item.imageContent ? item.imageContent : this.mockImageUrl" alt="Quiz icon">
                         <h5 class="card-title">{{item.title}}</h5>
                     </a>
                 </div>
@@ -16,4 +15,5 @@
             <ngb-pagination class="d-flex justify-content-center" size="lg" [pageSize]="pageSize" [collectionSize]="totalSize$ | async" [(page)]="page" [maxSize]="7" [rotate]="true" (pageChange)="loadPage($event)"></ngb-pagination>
         </div>
     </div>
+    <app-quiz-filter></app-quiz-filter>
 </div>

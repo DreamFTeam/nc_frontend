@@ -32,7 +32,7 @@ import { PrivilegedProfileComponent } from './privileged-profile/privileged-prof
 import { CreatePrivilegedComponent } from './create-privileged/create-privileged.component';
 import { AnnouncementViewComponent } from './announcement-view/announcement-view.component';
 import { AnnouncementEditComponent } from './announcement-edit/announcement-edit.component';
-
+import {QuizFilterComponent} from './quiz-filter/quiz-filter.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 const appRoutes: Routes = [];
@@ -62,7 +62,8 @@ const appRoutes: Routes = [];
     PrivilegedProfileComponent,
     CreatePrivilegedComponent,
     AnnouncementViewComponent,
-    AnnouncementEditComponent],
+    AnnouncementEditComponent,
+    QuizFilterComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

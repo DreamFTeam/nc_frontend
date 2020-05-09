@@ -9,14 +9,14 @@
 
        <div class="form-group">
           <label for="username">Creator username</label>
-          <input type="text" [(ngModel)]="userName" class="form-control" id="username">
+          <input type="text" [(ngModel)]="settings.userName" class="form-control" id="username">
         </div>
-      <div *ngIf="tags.length > 0" class="form-group">
-  <label for="tags-list">Tags</label>
+      <div *ngIf="settings.tags.length > 0" class="form-group">
+  <label for="tags-list">Tag</label>
   <div id="tags-list">
-  <span class="mr-1" *ngFor="let tag of tags">
+  <span class="mr-1" *ngFor="let tag of settings.tags">
     <span class="badge badge-primary p-1">
-    <svg (click)="deleteTag(tag.id)"
+    <svg (click)="deleteTag(tag.tag_id)"
          class="bi bi-x-circle"
          width="1em"
          height="1em"
@@ -48,12 +48,12 @@
                  id="tag-input">
       </div>
 
-      <div *ngIf="categories.length > 0" class="form-group">
+      <div *ngIf="settings.categories.length > 0" class="form-group">
         <label for="categories-list">Categories</label>
         <div id="categories-list">
-        <span class="mr-1" *ngFor="let categ of categories">
+        <span class="mr-1" *ngFor="let categ of settings.categories">
           <span class="badge badge-danger p-1">
-          <svg (click)="deleteCategor(categ.id)"
+          <svg (click)="deleteCategor(categ.category_id)"
                class="bi bi-x-circle"
                width="1em"
                height="1em"
@@ -91,16 +91,16 @@
 
       <div class="form-group">
       <label for="minRating">Rating from</label>
-      <select class="form-control" id="minRating" [(ngModel)]="minRating">
-        <option [disabled]="i > maxRating" *ngFor="let i of rating">
+      <select class="form-control" id="minRating" [(ngModel)]="settings.moreThanRating">
+        <option [disabled]="i > settings.lessThanRating" *ngFor="let i of rating">
           {{i}}
         </option>
       </select>
       </div>
       <div class="form-group">
       <label for="maxRating">Rating to</label>
-      <select class="form-control" id="maxRating" [(ngModel)]="maxRating">
-        <option [disabled]="i < minRating" *ngFor="let i of rating">
+      <select class="form-control" id="maxRating" [(ngModel)]="settings.lessThanRating">
+        <option [disabled]="i < settings.moreThanRating" *ngFor="let i of rating">
           {{i}}
         </option>
       </select>

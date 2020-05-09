@@ -1,16 +1,19 @@
-import { Injectable } from '@angular/core';
-import { Observable, of, throwError} from 'rxjs';
-import { ExtendedQuizPreview } from '../_models/extendedquiz-preview';
-import { HttpClient, HttpHeaders} from '@angular/common/http';
-import { catchError, map } from 'rxjs/operators';
-import { DomSanitizer } from '@angular/platform-browser';
+import {Injectable} from '@angular/core';
+import {Observable, of} from 'rxjs';
+import {ExtendedQuizPreview} from '../_models/extendedquiz-preview';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {catchError, map} from 'rxjs/operators';
+import {DomSanitizer} from '@angular/platform-browser';
+import {environment} from '../../environments/environment';
+import {SearchFilterQuizService} from './search-filter-quiz.service';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class QuizListService {
-  private baseUrl = 'https://qznetbc.herokuapp.com/api/quizzes/';
+  private baseUrl = `${environment.apiUrl}quizzes/`;
+
   private quizListUrl = 'quiz-list/page/';
   private totalSizeUrl = 'totalsize';
   httpOptions = {
@@ -19,21 +22,18 @@ export class QuizListService {
     })
   };
 
-  constructor(private http: HttpClient, private sanitizer: DomSanitizer) {
-   }
-
-  getQuizzesByPage(pageToSend: number): Observable<ExtendedQuizPreview[]> {
-    return this.http.
-      get<ExtendedQuizPreview[]>(this.baseUrl + this.quizListUrl + pageToSend)
-      .pipe(map(data => data.map(x => {
-        return new ExtendedQuizPreview().deserialize(x, this.sanitizer);
-      })),catchError(this.handleError<ExtendedQuizPreview[]>('getQuizzesByPage', []))
-      );
+  constructor(private http: HttpClient, private sanitizer: DomSanitizer,
+              private searchFilterQuizService: SearchFilterQuizService) {
   }
 
-  getTotalSize(): Observable<number>{
+  getQuizzesByPage(pageToSend: number): Observable<ExtendedQuizPreview[]> {
+    this.searchFilterQuizService.updPage(pageToSend);
+    return this.searchFilterQuizService.filterQuiz();
+  }
+
+  getTotalSize(): Observable<number> {
     return this.http.get<number>(this.baseUrl + this.totalSizeUrl, this.httpOptions)
-        .pipe(catchError(this.handleError<number>('getTotalSize', 0)));
+      .pipe(catchError(this.handleError<number>('getTotalSize', 0)));
   }
 
   private handleError<T>(operation = 'operation', result?: T) {

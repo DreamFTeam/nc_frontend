@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {RouterModule} from '@angular/router';
+import {Router, RouterModule} from '@angular/router';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {LogInComponent} from '../log-in/log-in.component';
 import {SignUpComponent} from '../sign-up/sign-up.component';
@@ -21,7 +21,8 @@ export class NavBarComponent implements OnInit {
   searchArea = '';
 
   constructor(private modalService: NgbModal,
-              private searchFilterQuizService: SearchFilterQuizService) {
+              private searchFilterQuizService: SearchFilterQuizService,
+              private router: Router) {
   }
 
   ngOnInit(): void {
@@ -30,14 +31,10 @@ export class NavBarComponent implements OnInit {
       JSON.parse(localStorage.getItem('userData')).role !== 'ROLE_USER') ? true : false;
   }
 
-  formatter = (userNewDial: Quiz) => userNewDial.title;
-  search = (text: Observable<string>) =>
-    text.pipe(
-      debounceTime(200),
-      distinctUntilChanged(),
-      switchMap(term => term.length < 2 ? []
-        : this.searchFilterQuizService.searchQuiz(term))
-    )
+  search() {
+    this.searchFilterQuizService.searchQuiz(this.searchArea);
+    this.router.navigateByUrl('/quiz-list');
+  }
 
 
   openLogin() {
