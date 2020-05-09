@@ -21,7 +21,7 @@ export class AuthenticationService {
   };
 
   constructor(private http: HttpClient) {
-    this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('userToken')));
+    this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('userData')));
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
@@ -81,12 +81,11 @@ export class AuthenticationService {
     const userInfo = {
       Token: this.currentUserValue.token
     };
-    localStorage.removeItem('currentUser');
+    localStorage.removeItem('userData');
     this.currentUserSubject.next(null);
-    throwError('Backend is not ready'); // DELETE WHEN THE backend logout IS IMPLEMENTED
-    this.http.post(this.usersUrl + 'logout', userInfo, this.httpOptions).pipe(
-      catchError(this.handleError<any>('signOutUser'))
-    );
+    // this.http.post(this.usersUrl + 'logout', userInfo, this.httpOptions).pipe(
+    //   catchError(this.handleError<any>('signOutUser'))
+    // );
   }
 
 
