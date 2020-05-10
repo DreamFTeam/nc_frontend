@@ -14,6 +14,8 @@ import { QuizValidationComponent } from './quiz-validation/quiz-validation.compo
 import { AnnouncementEditComponent } from './announcement-edit/announcement-edit.component';
 import { AuthGuard } from './guards/editor.guard';
 import { Role } from './_models/role';
+import {GameSettingsComponent} from './game-settings/game-settings.component';
+import {GameConnectorComponent} from './game-connector/game-connector.component';
 
 
 const routes: Routes = [
@@ -31,6 +33,8 @@ const routes: Routes = [
   { path: 'validation', component: ValidationPageComponent},
   { path: 'validation/:id', component: QuizValidationComponent},
   { path: 'editannouncements', component: AnnouncementEditComponent},
+  { path: 'quiz/:id/newgame', component: GameSettingsComponent },
+  { path: 'game/:id/lobby', component: GameConnectorComponent },
   { path: '**', redirectTo: ''}
 ];
 
