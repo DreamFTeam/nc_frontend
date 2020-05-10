@@ -59,3 +59,7 @@ a:active {
 .buttondel:hover {
     background-color: #d94e5c;
 }
+
+.newlines {
+    white-space: pre-wrap;
+}

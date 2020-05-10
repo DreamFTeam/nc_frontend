@@ -49,7 +49,6 @@ export class ExtendedQuiz implements DesearizableWImage {
             }
         }
 
-
         if (img !== null) {
             const objUrl = 'data:image/jpeg;base64,' + this.imageContent;
             this.imageContent = sanitizer.bypassSecurityTrustUrl(objUrl);
