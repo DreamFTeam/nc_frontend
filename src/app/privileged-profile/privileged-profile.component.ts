@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import {CreatePrivilegedComponent} from '../create-privileged/create-privileged.component'
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {CreatePrivilegedComponent} from '../create-privileged/create-privileged.component';
+import {AuthenticationService} from '../_services/authentication.service';
+import {User} from '../_models/user';
+
 @Component({
   selector: 'app-privileged-profile',
   templateUrl: './privileged-profile.component.html',
@@ -9,32 +12,33 @@ import {CreatePrivilegedComponent} from '../create-privileged/create-privileged.
 })
 export class PrivilegedProfileComponent implements OnInit {
   ready: boolean;
-  privilege : string;
-  profile;
+  privilege: string;
+  profile: User;
 
-  constructor(private _router: Router, private modalService: NgbModal) {
+  constructor(private _router: Router, private modalService: NgbModal,
+              private authenticationService: AuthenticationService) {
     this.ready = false;
+    this.profile = authenticationService.currentUserValue;
   }
 
   ngOnInit(): void {
-    if (localStorage.getItem('userData') == null ||
-      JSON.parse(localStorage.getItem('userData')).role == 'ROLE_USER') {
+    if (this.profile == null ||
+      this.profile.role == 'ROLE_USER') {
       this._router.navigate(['/']);
     }
-    this.profile = JSON.parse(localStorage.getItem('userData'));
     this.ready = true;
   }
 
 
   createAdmin() {
     const modalRef = this.modalService.open(CreatePrivilegedComponent);
-    modalRef.componentInstance.userrole = 'ROLE_ADMIN'
+    modalRef.componentInstance.userrole = 'ROLE_ADMIN';
 
   }
 
   createModerator() {
     const modalRef = this.modalService.open(CreatePrivilegedComponent);
-    modalRef.componentInstance.userrole = 'ROLE_MODERATOR'
+    modalRef.componentInstance.userrole = 'ROLE_MODERATOR';
 
   }
 }

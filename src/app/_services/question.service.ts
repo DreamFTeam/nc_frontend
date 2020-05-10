@@ -1,48 +1,42 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { User } from '../_models/user';
-import { OneToFour } from '../_models/question/onetofour';
-import { Question } from '../_models/question/question';
-import { TrueFalse } from '../_models/question/truefalse';
-import { OpenAnswer } from '../_models/question/openanswer';
-import { SequenceAnswer } from '../_models/question/sequenceanswer';
-import { ExtendedQuestion } from '../_models/question/extendedquestion';
-import { DomSanitizer } from '@angular/platform-browser';
-import { map } from 'rxjs/operators';
-import { Alert } from '../_models/alert';
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {User} from '../_models/user';
+import {Question} from '../_models/question/question';
+import {ExtendedQuestion} from '../_models/question/extendedquestion';
+import {DomSanitizer} from '@angular/platform-browser';
+import {map} from 'rxjs/operators';
+import {Alert} from '../_models/alert';
+import {environment} from '../../environments/environment';
+import {AuthenticationService} from './authentication.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class QuestionService {
-  url = `https://qznetbc.herokuapp.com/api/quizzes/`;
+  url = `${environment.apiUrl}quizzes/`;
   httpOptions = {
     headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('userData')).token
+      'Content-Type': 'application/json'
     })
   };
-  httpOptions2 = {
-    headers: new HttpHeaders({
-      Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('userData')).token
-    })
-  };
+
   user: User;
 
-  constructor(private http: HttpClient, private sanitizer: DomSanitizer) {
-    this.user = JSON.parse(localStorage.getItem('userData'));
+  constructor(private http: HttpClient, private sanitizer: DomSanitizer,
+              private authenticationService: AuthenticationService) {
+    this.user = authenticationService.currentUserValue;
 
   }
 
-  //REFACTORED
+  // REFACTORED
 
   getAllQuestionsNew(quizId: string): Observable<ExtendedQuestion[]> {
     const options = {
       headers: this.httpOptions.headers,
       params: new HttpParams().set('quizId', quizId)
 
-    }
+    };
 
     return this.http.get<ExtendedQuestion[]>(this.url + 'questions', options)
       .pipe(map(data => data.map(x => {
@@ -51,9 +45,7 @@ export class QuestionService {
   }
 
 
-
-  //END OF REFACTORED
-
+  // END OF REFACTORED
 
 
   getAllQuestions(quizId: string) {
@@ -62,14 +54,14 @@ export class QuestionService {
       headers: this.httpOptions.headers,
       params: new HttpParams().set('quizId', quizId)
 
-    }
+    };
 
     return this.http.get<Question[]>(this.url + 'questions', options);
   }
 
   sendQuestion(question: ExtendedQuestion, createEdit: boolean) {
 
-    var questionInfo = Object.assign({}, question);
+    const questionInfo = Object.assign({}, question);
     delete questionInfo.imageContent;
 
     if (question.typeId === 3 || question.typeId === 4) {
@@ -92,12 +84,11 @@ export class QuestionService {
   }
 
 
-
   deleteQuestion(id: string) {
     const options = {
       headers: this.httpOptions.headers,
       body: {
-        id: id
+        id
       },
     };
 
@@ -105,25 +96,24 @@ export class QuestionService {
   }
 
   uploadImage(data: FormData) {
-
-    return this.http.post<Question>(this.url + "question-image", data, this.httpOptions2);
+    return this.http.post<Question>(this.url + 'question-image', data);
   }
 
   questionValidator(question: ExtendedQuestion): Alert {
 
-    if(question.title === ""){
+    if (question.title === '') {
       return {type: 'warning', message: 'No title provided'};
     }
 
-    if(question.content === ""){
+    if (question.content === '') {
       return {type: 'warning', message: 'No content provided'};
     }
 
-    if(question.rightOptions.includes("") || question.otherOptions.includes("")){
+    if (question.rightOptions.includes('') || question.otherOptions.includes('')) {
       return {type: 'warning', message: 'One of answers is empty'};
     }
 
-    if(!(question.points > 0)){
+    if (!(question.points > 0)) {
       return {type: 'warning', message: 'Points are < 0 or has text value'};
     }
 
@@ -131,5 +121,8 @@ export class QuestionService {
     return undefined;
   }
 
+  questionsTotalSize(quizId: string): Observable<number> {
+    return this.http.get<number>(this.url + quizId + '/questions/amount');
+  }
 
 }

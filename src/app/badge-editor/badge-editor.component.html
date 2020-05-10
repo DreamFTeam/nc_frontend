@@ -1,7 +1,7 @@
 <div><label>{{label}}:</label></div>
 <span *ngFor="let item of tagCateg; let i = index" 
 [ngClass]="{'badge-primary': isTag(), 'badge-success': !isTag()}" 
-class="badge">
+class="badge mr-1">
     {{ item.description }}
     <svg class="bi bi-x-circle removeb" width="1.2em" height="1.2em" viewBox="0 0 16 16" fill="currentColor"
         xmlns="http://www.w3.org/2000/svg" (click)="remove(i)">

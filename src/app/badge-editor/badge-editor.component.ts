@@ -60,6 +60,7 @@ export class BadgeEditorComponent implements OnInit {
       }else{
         this.tagCateg.push(new Category(this.model.id, this.model.description));
       }
+      this.model = undefined;
     }
   }
 
