@@ -3,7 +3,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Tag } from './tag';
 import { Category } from './category';
 
-export class ExtendedQuiz implements DesearizableWImage{
+export class ExtendedQuiz implements DesearizableWImage {
     id: string;
     title: string;
     description: string;
@@ -26,25 +26,33 @@ export class ExtendedQuiz implements DesearizableWImage{
 
     isFavourite: boolean;
     imageContent: any;
-    
+    favourite: boolean;
+
     deserialize(input: any, sanitizer: DomSanitizer): this {
         Object.assign(this, input);
         let img = this.imageContent;
 
-        this.tags = [];
-        for (let i =0; i < input.tagIdList.length; i++){
-            this.tags.push(new Tag(input.tagIdList[i],  input.tagNameList[i]))
+        console.log("got");
+
+
+        if (input.tagIdList !== undefined) {
+            this.tags = [];
+            for (let i = 0; i < input.tagIdList.length; i++) {
+                this.tags.push(new Tag(input.tagIdList[i], input.tagNameList[i]))
+            }
         }
 
+        if (input.categoryIdList !== undefined) {
         this.categories = [];
-        for (let i =0; i < input.categoryIdList.length; i++){
-            this.categories.push(new Category(input.categoryIdList[i], input.categoryNameList[i]))
+            for (let i = 0; i < input.categoryIdList.length; i++) {
+                this.categories.push(new Category(input.categoryIdList[i], input.categoryNameList[i]))
+            }
         }
 
 
-        if (img !== null){
+        if (img !== null) {
             const objUrl = 'data:image/jpeg;base64,' + this.imageContent;
-            this.imageContent = sanitizer.bypassSecurityTrustUrl(objUrl);    
+            this.imageContent = sanitizer.bypassSecurityTrustUrl(objUrl);
         }
         return this;
     }

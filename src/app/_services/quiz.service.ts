@@ -72,7 +72,7 @@ export class QuizService {
   getQuizNew(quizId: string): Observable<ExtendedQuiz> {
     const options = {
       headers: this.httpOptions.headers,
-      params: new HttpParams().set('quizId', quizId)
+      params: new HttpParams().set('quizId', quizId).set('userId',this.user.id)
 
     };
 

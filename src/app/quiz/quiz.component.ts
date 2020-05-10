@@ -36,7 +36,11 @@ export class QuizComponent implements OnInit {
 
   constructor(private quizService: QuizService, private questionService: QuestionService,
      private activateRoute: ActivatedRoute, private router: Router,private sanitizer: DomSanitizer) { 
-       this.quizLoading = true;
+       
+  }
+
+  ngOnInit(): void {
+    this.quizLoading = true;
 
       const id = this.activateRoute.snapshot.params.id;
       if(id === undefined){
@@ -44,9 +48,8 @@ export class QuizComponent implements OnInit {
       }else{
         this.getAllQuiz(id)
       }
-  }
 
-  ngOnInit(): void {
+
     this.questionData = new FormData();
     this.questionData.append("img","");
     this.questionData.append("questionId","");
@@ -131,8 +134,6 @@ export class QuizComponent implements OnInit {
   //Getting questions of quiz in url 
   mapGettedQuestions(ans){
     this.questions = ans;
-
-    console.log(this.questions);
   }
 
 
@@ -205,7 +206,7 @@ export class QuizComponent implements OnInit {
   //TODO : fix realization (image in save, save published quizzes logic)
   saveQuiz() {
     if (this.quiz.title !== "" && this.quiz.description !== "") {
-      
+      this.quizLoading = true;
 
       if(this.file !== undefined && this.quiz.id !== ""){
         this.quizService.uploadImage(this.getFormData(this.quiz.id))
@@ -243,6 +244,7 @@ export class QuizComponent implements OnInit {
           }
 
           alert("Created!");
+          this.quizLoading = false;
           this.router.navigate(['/quizedit/' + ans.id])
         },
 
@@ -255,7 +257,13 @@ export class QuizComponent implements OnInit {
 
         ans => {
           alert("Saved!");
-          this.router.navigate(['/quizedit/' + ans.id])
+          this.quiz = ans;
+          this.quizLoading = false;
+          console.log(this.quiz.published);
+          if(this.quiz.published === true){
+            this.router.navigate(['/quizedit/' + ans.id])
+          }
+          
         },
 
         err => {
@@ -268,7 +276,10 @@ export class QuizComponent implements OnInit {
   publish() {
     this.quizService.publishQuiz(this.quiz.id)
       .subscribe(
-        ans => alert("Published!"),
+        ans => {
+          alert("Published!")
+          this.quiz.published = true;
+        },
         err => {
           console.log(err)
           alert("Sorry, couldn`t publish your quiz :(")

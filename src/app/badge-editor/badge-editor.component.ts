@@ -41,7 +41,6 @@ export class BadgeEditorComponent implements OnInit {
   mapAllTagsOrCategs(ans: Observable<any>){
     ans.subscribe(
       ans => ans.forEach( (element) => {
-        console.log(element)
         this.allObjects.push(element);
     }), 
     err => console.log(err));
