@@ -12,16 +12,16 @@ import {AuthenticationService} from '../_services/authentication.service';
 })
 export class NavBarComponent implements OnInit {
   public isMenuCollapsed = true;
-  public signedIn;
+  public signedIn: boolean;
   public privileged;
   constructor(private modalService: NgbModal,
               private authenticationService: AuthenticationService) {
   }
 
   ngOnInit(): void {
-    this.signedIn = (localStorage.getItem('userData') == null) ? false : true;
+    this.signedIn = (this.authenticationService.currentUserValue === undefined) ? false : true;
     this.privileged = (this.signedIn &&
-      JSON.parse(localStorage.getItem('userData')).role !== 'ROLE_USER') ? true : false;
+      this.authenticationService.currentUserValue.role !== 'ROLE_USER');
   }
 
 
