@@ -4,6 +4,8 @@ import {User} from '../_models/user';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {catchError, map} from 'rxjs/operators';
 import {environment} from '../../environments/environment';
+import * as jwt_decode from 'jwt-decode';
+
 
 
 @Injectable({
@@ -12,7 +14,7 @@ import {environment} from '../../environments/environment';
 export class AuthenticationService {
   private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
-  usersUrl = `https://qznetbc.herokuapp.com/api/`;
+  url = environment.apiUrl;
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
@@ -21,7 +23,8 @@ export class AuthenticationService {
   };
 
   constructor(private http: HttpClient) {
-    this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('userToken')));
+    this.currentUserSubject = new BehaviorSubject<User>(
+      localStorage.getItem('userData') ? jwt_decode(localStorage.getItem('userData')) : undefined);
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
@@ -32,16 +35,18 @@ export class AuthenticationService {
   /* POST: login user */
   loginUser(username: string, password: string): Observable<User> {
     const userInfo = {
-      username: username,
+      username,
       email: username,
       password
     };
-    return this.http.post<User>(this.usersUrl + 'log-in', JSON.stringify(userInfo), this.httpOptions).pipe(
+    return this.http.post<User>(this.url + 'log-in', JSON.stringify(userInfo), this.httpOptions).pipe(
       map(data => {
-        const token: User = data;
-        localStorage.setItem('userData', JSON.stringify(token));
-        this.currentUserSubject.next(token);
-        return token;
+        const tokenJSON: any = data;
+        localStorage.setItem('userData', tokenJSON.token);
+        const userDecode: User = jwt_decode(tokenJSON.token);
+        console.log(userDecode);
+        this.currentUserSubject.next(userDecode);
+        return userDecode;
       })
     );
   }
@@ -53,7 +58,7 @@ export class AuthenticationService {
       password,
       email
     };
-    return this.http.post<User>(this.usersUrl + 'sign-up', JSON.stringify(userInfo), this.httpOptions);
+    return this.http.post<User>(this.url + 'sign-up', JSON.stringify(userInfo), this.httpOptions);
   }
 
   /* POST: recover password */
@@ -61,7 +66,7 @@ export class AuthenticationService {
     const userInfo = {
       email
     };
-    return this.http.post<User>(this.usersUrl + 'recovery/send', JSON.stringify(userInfo), this.httpOptions).pipe(
+    return this.http.post<User>(this.url + 'recovery/send', JSON.stringify(userInfo), this.httpOptions).pipe(
       catchError(this.handleError<User>('recoverPassword'))
     );
   }
@@ -72,21 +77,14 @@ export class AuthenticationService {
       recoverUrl,
       password
     };
-    return this.http.post(this.usersUrl + 'recovery/changePassword', JSON.stringify(userInfo), this.httpOptions);
+    return this.http.post(this.url + 'recovery/changePassword', JSON.stringify(userInfo), this.httpOptions);
   }
 
 
-  /* POST: logout a user */
+  /* POST: logout */
   signoutUser(): void {
-    const userInfo = {
-      Token: this.currentUserValue.token
-    };
-    localStorage.removeItem('currentUser');
+    localStorage.removeItem('userData');
     this.currentUserSubject.next(null);
-    throwError('Backend is not ready'); // DELETE WHEN THE backend logout IS IMPLEMENTED
-    this.http.post(this.usersUrl + 'logout', userInfo, this.httpOptions).pipe(
-      catchError(this.handleError<any>('signOutUser'))
-    );
   }
 
 

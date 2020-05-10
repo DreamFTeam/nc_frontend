@@ -1,35 +1,30 @@
-import { Injectable } from '@angular/core';
-import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import { Quiz } from '../_models/quiz';
-import { User } from '../_models/user';
-import * as jwt_decode from 'jwt-decode';
-import { ExtendedQuiz } from '../_models/extended-quiz';
-import { map } from 'rxjs/operators';
-import { DomSanitizer } from '@angular/platform-browser';
+import {Quiz} from '../_models/quiz';
+import {User} from '../_models/user';
+import {ExtendedQuiz} from '../_models/extended-quiz';
+import {map} from 'rxjs/operators';
+import {DomSanitizer} from '@angular/platform-browser';
+import {AuthenticationService} from './authentication.service';
+import {environment} from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class QuizService {
-  url = `https://qznetbc.herokuapp.com/api/quizzes/`;
+  url = `${environment.apiUrl}quizzes/`;
   httpOptions = {
     headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('userData')).token
+      'Content-Type': 'application/json'
     })
   };
-  httpOptions2 = {
-    headers: new HttpHeaders({
-      Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('userData')).token
-    })
-  };
+
   user: User;
 
-  constructor(private http: HttpClient, private sanitizer: DomSanitizer) {
-    let info = JSON.parse(localStorage.getItem('userData'));
-    this.user = jwt_decode(info.token)
-    this.user.token = info.token;
+  constructor(private http: HttpClient, private sanitizer: DomSanitizer,
+              private authenticationService: AuthenticationService) {
+    this.user = authenticationService.currentUserValue;
   }
 
   saveQuizNew(quiz: ExtendedQuiz): Observable<ExtendedQuiz> {
@@ -42,7 +37,7 @@ export class QuizService {
       newTitle: quiz.title,
       newLanguage: quiz.language,
       newDescription: quiz.description,
-      newImageRef: "",
+      newImageRef: '',
       newTagList: quiz.tagIdList,
       newCategoryList: quiz.categoryIdList
     };
@@ -55,7 +50,7 @@ export class QuizService {
   }
 
 
-  saveQuiz(quiz: Quiz) : Observable<Quiz>{
+  saveQuiz(quiz: Quiz): Observable<Quiz> {
     const quizInfo = {
       title: quiz.title,
       quizId: quiz.id,
@@ -69,11 +64,11 @@ export class QuizService {
     };
 
     console.log(quizInfo);
-    return this.http.post<Quiz>(this.url + 'edit', JSON.stringify(quizInfo), this.httpOptions)
+    return this.http.post<Quiz>(this.url + 'edit', JSON.stringify(quizInfo), this.httpOptions);
   }
-  
 
-  createQuizNew(quiz: ExtendedQuiz) : Observable<ExtendedQuiz> {
+
+  createQuizNew(quiz: ExtendedQuiz): Observable<ExtendedQuiz> {
     const quizInfo = {
       title: quiz.title,
       creatorId: this.user.id,
@@ -85,22 +80,22 @@ export class QuizService {
 
     console.log(quizInfo);
 
-    return this.http.post<ExtendedQuiz>(this.url, JSON.stringify(quizInfo), this.httpOptions)
+    return this.http.post<ExtendedQuiz>(this.url, JSON.stringify(quizInfo), this.httpOptions);
   }
 
-  createQuiz(quiz: Quiz) : Observable<Quiz> {
+  createQuiz(quiz: Quiz): Observable<Quiz> {
     const quizInfo = {
       title: quiz.title,
       creatorId: this.user.id,
       language: quiz.quizLanguage,
       description: quiz.description,
-      //imageRef: quiz.imageReference,
+      // imageRef: quiz.imageReference,
       tagList: quiz.tags,
       categoryList: quiz.category
     };
     console.log(quizInfo);
 
-    return this.http.post<Quiz>(this.url, JSON.stringify(quizInfo), this.httpOptions)
+    return this.http.post<Quiz>(this.url, JSON.stringify(quizInfo), this.httpOptions);
   }
 
   getQuizNew(quizId: string): Observable<ExtendedQuiz> {
@@ -108,7 +103,7 @@ export class QuizService {
       headers: this.httpOptions.headers,
       params: new HttpParams().set('quizId', quizId)
 
-    }
+    };
 
     return this.http.get<ExtendedQuiz>(this.url, options)
       .pipe(map(data => {
@@ -117,43 +112,43 @@ export class QuizService {
       }));
   }
 
-  getQuiz(quizId: string) : Observable<Quiz> {
+  getQuiz(quizId: string): Observable<Quiz> {
 
     const options = {
       headers: this.httpOptions.headers,
       params: new HttpParams().set('quizId', quizId)
 
-    }
+    };
     return this.http.get<Quiz>(this.url, options);
   }
 
 
-  markAsFavorite(id: string){
+  markAsFavorite(id: string) {
     const favoriteInfo = {
       quizId: id,
       userId: this.user.id,
     };
-    
+
     return this.http.post<Quiz>(this.url + 'markasfavourite', JSON.stringify(favoriteInfo), this.httpOptions);
   }
 
 
-  publishQuiz(id: string){
+  publishQuiz(id: string) {
     const quizInfo = {
       quizId: id
     };
 
-    return this.http.post<ExtendedQuiz>(this.url + 'markaspublished', JSON.stringify(quizInfo), this.httpOptions)
+    return this.http.post<ExtendedQuiz>(this.url + 'markaspublished', JSON.stringify(quizInfo), this.httpOptions);
   }
 
-  canIEditQuiz(id: string){
+  canIEditQuiz(id: string) {
     return id === this.user.id;
   }
 
 
-  uploadImage(data : FormData) {
-    console.log(data)
-    return this.http.post(this.url+"quiz-image", data, this.httpOptions2);
+  uploadImage(data: FormData) {
+    console.log(data);
+    return this.http.post(this.url + 'quiz-image', data);
   }
 
 }

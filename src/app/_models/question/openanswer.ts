@@ -1,28 +1,28 @@
 import {Question} from './question';
 
-export class OpenAnswer implements Question{
- 
-    id: string;
-    title: string;
-    content: string;
-    image: Blob;
-    points: number;
-    quizId: string;
-    typeId: number;
+export class OpenAnswer implements Question {
 
-    rightAnswer: string;
-    
-    constructor(id: string, title: string, content: string,
-         image: Blob, points: number, quizId: string,
-         typeId: number,rightAnswer: string) {
-            this.id = id;
-            this.title = title;
-            this.content = content;
-            this.image = image;
-            this.points = points;
-            this.quizId = quizId;
-            this.typeId = typeId;
-        
-            this.rightAnswer = rightAnswer;
-    }
+  id: string;
+  title: string;
+  content: string;
+  image: Blob;
+  points: number;
+  quizId: string;
+  typeId: number;
+
+  rightAnswer: string;
+
+  constructor(id: string, title: string, content: string,
+              image: Blob, points: number, quizId: string,
+              typeId: number, rightAnswer: string) {
+    this.id = id;
+    this.title = title;
+    this.content = content;
+    this.image = image;
+    this.points = points;
+    this.quizId = quizId;
+    this.typeId = typeId;
+
+    this.rightAnswer = rightAnswer;
+  }
 }
