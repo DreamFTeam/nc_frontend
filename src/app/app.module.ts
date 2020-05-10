@@ -43,8 +43,10 @@ import {ShortQuizListComponent} from './short-quiz-list/short-quiz-list.componen
 import {QuestionEditorSelectorComponent} from './question-editor-selector/question-editor-selector.component';
 import {JwtInterceptor} from './_helpers/jwt.interceptor';
 import {ErrorInterceptor} from './_helpers/error.interceptor';
-import { GameSettingsComponent } from './game-settings/game-settings.component';
-import { GameConnectorComponent } from './game-connector/game-connector.component';
+import {GameSettingsComponent} from './game-settings/game-settings.component';
+import {GameConnectorComponent} from './game-connector/game-connector.component';
+import {QRCodeModule} from 'angularx-qrcode';
+import { AnonimInitComponent } from './anonim-init/anonim-init.component';
 
 const appRoutes: Routes = [];
 
@@ -81,7 +83,8 @@ const appRoutes: Routes = [];
     ShortQuizListComponent,
     QuestionEditorSelectorComponent,
     GameSettingsComponent,
-    GameConnectorComponent],
+    GameConnectorComponent,
+    AnonimInitComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -92,7 +95,8 @@ const appRoutes: Routes = [];
     HttpClientModule,
     FormsModule,
     NgbModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    QRCodeModule
   ],
   entryComponents: [LogInComponent, SignUpComponent, RecoverPasswordComponent],
   providers: [AuthenticationService, QuizListService, QuestionService, QuizService, QuizValidationListService,

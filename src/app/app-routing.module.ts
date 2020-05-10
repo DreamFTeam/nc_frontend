@@ -16,6 +16,8 @@ import { AuthGuard } from './guards/editor.guard';
 import { Role } from './_models/role';
 import {GameSettingsComponent} from './game-settings/game-settings.component';
 import {GameConnectorComponent} from './game-connector/game-connector.component';
+import {GameConnectionGuard} from './guards/game-connection.guard';
+import {AnonimInitComponent} from './anonim-init/anonim-init.component';
 
 
 const routes: Routes = [
@@ -26,7 +28,7 @@ const routes: Routes = [
   { path: 'profile', component: ProfileComponent },
   { path: 'editprofile', component: EditProfileComponent},
   { path: 'users', component: UsersComponent },
-  { path: 'privileged/main', component:PrivilegedProfileComponent },
+  { path: 'privileged/main', component: PrivilegedProfileComponent },
   { path: 'quizcreate', component: QuizComponent, canActivate: [AuthGuard], data: { roles: [Role.User] }},
   { path: 'viewquiz/:id', component: ViewQuizComponent, canActivate: [AuthGuard], data: { roles: [Role.User] }},
   { path: 'quiz-list', component: QuizListComponent},
@@ -35,6 +37,7 @@ const routes: Routes = [
   { path: 'editannouncements', component: AnnouncementEditComponent},
   { path: 'quiz/:id/newgame', component: GameSettingsComponent },
   { path: 'game/:id/lobby', component: GameConnectorComponent },
+  { path: 'join/:accessId', canActivate: [GameConnectionGuard], component: AnonimInitComponent },
   { path: '**', redirectTo: ''}
 ];
 

@@ -4,6 +4,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {LogInComponent} from '../log-in/log-in.component';
 import {SignUpComponent} from '../sign-up/sign-up.component';
 import {AuthenticationService} from '../_services/authentication.service';
+import {GameSettingsService} from '../_services/game-settings.service';
 
 @Component({
   selector: 'app-nav-bar',
