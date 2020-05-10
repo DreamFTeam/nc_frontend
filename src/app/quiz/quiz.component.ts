@@ -15,6 +15,9 @@ import { Alert } from '../_models/alert';
 })
 export class QuizComponent implements OnInit {
 
+  tagLabel: string = "Tags";
+  categoryLabel: string = "Categories";
+
   quiz: ExtendedQuiz;
   questions: ExtendedQuestion[] = [];
 
@@ -64,9 +67,9 @@ export class QuizComponent implements OnInit {
       language: "eng",
       adminComment: "",
       rating: 0,
-      tagIdList: ["c03a2080-d447-4bde-be2e-6f22c6ebee63"],
+      tagIdList: [],
       tagNameList: [],
-      categoryIdList: ["3b338765-c75d-40e2-9ab0-789738acd07a"],
+      categoryIdList: [],
       categoryNameList: [],
       isFavourite: false,
       imageContent: ""

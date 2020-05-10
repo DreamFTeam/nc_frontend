@@ -41,6 +41,7 @@ import { AnnouncementEditComponent } from './announcement-edit/announcement-edit
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ShortQuizListComponent } from './short-quiz-list/short-quiz-list.component';
 import { QuestionEditorSelectorComponent } from './question-editor-selector/question-editor-selector.component';
+import { BadgeEditorComponent } from './badge-editor/badge-editor.component';
 
 const appRoutes: Routes =[
 ];
@@ -76,7 +77,8 @@ const appRoutes: Routes =[
     AnnouncementViewComponent,
     AnnouncementEditComponent,
     ShortQuizListComponent,
-    QuestionEditorSelectorComponent],
+    QuestionEditorSelectorComponent,
+    BadgeEditorComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

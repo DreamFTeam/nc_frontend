@@ -16,14 +16,22 @@
 
                     <label>Title:</label>
                     <input class="form-control" type="text"  [(ngModel)]="quiz.title" placeholder="Title of quiz">
+
                     
-                    <!-- <label>Category:</label>
-                    <input type="text"  [(ngModel)]="quiz">
+                    <div class="mt-2">
+                        <app-badge-editor [label]="tagLabel" 
+                        [tagCateg]="quiz.tags" ></app-badge-editor>
+                    </div>
+                    
 
-                    <label>Tags:</label>
-                    <input type="text"  [(ngModel)]="tags"> -->
+                    <div class="mt-2">
+                        <app-badge-editor [label]="categoryLabel" 
+                        [tagCateg]="quiz.categories"></app-badge-editor>
+                    </div>
 
-                    <label>Language:</label>
+
+
+                    <label class="mt-2">Language:</label>
                     <select [(ngModel)]="quiz.language" class="form-control">
                         <option selected="selected" value="eng">English</option>
                         <option value="ukr">Ukrainian</option>
@@ -53,8 +61,8 @@
             <div class="col-sm-3">
                 <h3>Questions:</h3>
                 <div *ngFor="let question of questions; let i = index">
-                    <button *ngIf="question.id !== ''" class="btn buttonpr mr-1 mt-1 rounded" (click)="showQuestion(i)">{{question.title}}</button>
-                    <button *ngIf="question.id === ''" class="btn buttonpn mr-1 mt-1 rounded" (click)="showQuestion(i)">
+                    <button class="btn mr-1 mt-1 rounded" (click)="showQuestion(i)"
+                        [ngClass]="{'buttonpn': question.id === '', 'buttonpr': question.id !== ''}">
                         <div *ngIf="question.title !== ''">{{question.title}}</div>
                         <div *ngIf="question.title === ''">New question</div>
                     </button>
@@ -73,7 +81,9 @@
 
     <div *ngIf="isQuizCreated() && questionSelector !== undefined" class="container-sm mt-2 mb-2 p-4" >
         <div>
-            <button class="removeb" (click)="removeQuestion()"><img class="bttnimg" src="../assets/img/close-button.png"></button>
+            <button class="removeb" (click)="removeQuestion()">
+                <img class="bttnimg" src="../assets/img/close-button.png">
+            </button>
             <label>Remove question</label>
         </div>
 

@@ -7,6 +7,8 @@ import * as jwt_decode from 'jwt-decode';
 import { ExtendedQuiz } from '../_models/extended-quiz';
 import { map } from 'rxjs/operators';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Category } from '../_models/category';
+import { Tag } from '../_models/tag';
 
 @Injectable({
   providedIn: 'root'
@@ -144,6 +146,29 @@ export class QuizService {
     };
 
     return this.http.post<ExtendedQuiz>(this.url + 'markaspublished', JSON.stringify(quizInfo), this.httpOptions)
+  }
+
+  getTagsList(): Observable<Tag[]>{
+    const options = {
+      headers: this.httpOptions.headers,
+    }
+
+    return this.http.get<any[]>(this.url+"tags", options)
+    .pipe(map(data => data.map(x => {
+      return new Tag(x.tag_id, x.description);
+    })));
+  }
+
+  getCategoriesList() : Observable<Category[]>{
+    const options = {
+      headers: this.httpOptions.headers,
+    }
+
+    return this.http.get<any[]>(this.url+"categories", options)
+    .pipe(map(data => data.map(x => {
+      console.log(x);
+      return new Category(x.category_id, x.title);
+    })));;
   }
 
   canIEditQuiz(id: string){

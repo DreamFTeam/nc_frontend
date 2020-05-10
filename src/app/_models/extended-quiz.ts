@@ -1,5 +1,7 @@
 import { DesearizableWImage } from './deserializable-w-image';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Tag } from './tag';
+import { Category } from './category';
 
 export class ExtendedQuiz implements DesearizableWImage{
     id: string;
@@ -18,12 +20,28 @@ export class ExtendedQuiz implements DesearizableWImage{
     tagNameList: string[];
     categoryIdList: string[];
     categoryNameList: string[];
+
+    tags: Tag[];
+    categories: Category[];
+
     isFavourite: boolean;
     imageContent: any;
     
     deserialize(input: any, sanitizer: DomSanitizer): this {
         Object.assign(this, input);
         let img = this.imageContent;
+
+        this.tags = [];
+        for (let i =0; i < input.tagIdList.length; i++){
+            this.tags.push(new Tag(input.tagIdList[i],  input.tagNameList[i]))
+        }
+
+        this.categories = [];
+        for (let i =0; i < input.categoryIdList.length; i++){
+            this.categories.push(new Category(input.categoryIdList[i], input.categoryNameList[i]))
+        }
+
+
         if (img !== null){
             const objUrl = 'data:image/jpeg;base64,' + this.imageContent;
             this.imageContent = sanitizer.bypassSecurityTrustUrl(objUrl);    
