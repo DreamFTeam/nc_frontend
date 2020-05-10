@@ -35,6 +35,7 @@ export class ValidationTabComponent implements OnInit {
 
   getTotalSize(): void{
     this.totalSize$ = this.quizValidationListService.getTotalSize();
+    this.totalSize$.subscribe(n => console.log(n));
   }
 
   getQuizList(page): void{
