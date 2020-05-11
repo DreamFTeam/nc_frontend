@@ -28,6 +28,8 @@ export class AnnouncementEditComponent implements OnInit {
 
   loading: boolean = true;
 
+  saveLoading: boolean = false;
+
   faSpinner = faSpinner;
 
   img: File;
@@ -70,9 +72,16 @@ export class AnnouncementEditComponent implements OnInit {
 
   //start editing announcement
   edit(i) {
+    this.img = undefined;
     this.editorEnabled = true;
     this.inEdit[i + 1] = true;
     this.currentAnnouncement = Object.assign({},this.announcements[i]);
+
+    if(this.currentAnnouncement.image !== null){
+      this.thumbnail = this.currentAnnouncement.image;
+    }else{
+      this.thumbnail = null;
+    }
   }
 
   //deleting announcement
@@ -102,14 +111,18 @@ export class AnnouncementEditComponent implements OnInit {
       modalRef.componentInstance.passEntry.subscribe((receivedEntry) => {
         console.log(receivedEntry);
         if (receivedEntry) {
-
-          this.announcementService.editAnnouncement(this.currentAnnouncement)
+          this.saveLoading = true;
+          this.announcementService.editAnnouncement(this.currentAnnouncement, this.img)
             .subscribe(ans => {
-              this.announcements[i] = Object.assign({},this.currentAnnouncement);
+              this.announcements[i] = ans;
+              this.announcements[i]. creatorId = this.announcementService.getAdminName();
               this.cancel(i);
+              this.saveLoading = false;
             }, 
             err => {
+              console.log(err);
               this.alerts.push({ type: 'danger', message: 'Sorry, announcement upload failed :(', });
+              this.saveLoading = false;
             });
 
           
@@ -129,11 +142,13 @@ export class AnnouncementEditComponent implements OnInit {
 
   //start adding announcement
   add() {
+    this.img = undefined;
     this.editorEnabled = true;
     this.inEdit[0] = true;
+    this.thumbnail = null;
     this.currentAnnouncement = new Announcement().deserialize({
       "announcementId": "", "creatorId": "",
-      "title": "", "textContent": "", "creationDate": new Date(), "image": "image"
+      "title": "", "textContent": "", "creationDate": new Date(), "image": null
     }, this.sanitizer);
   }
 
@@ -145,18 +160,20 @@ export class AnnouncementEditComponent implements OnInit {
 
       modalRef.componentInstance.passEntry.subscribe((receivedEntry) => {
         if (receivedEntry) {
-
+          this.saveLoading = true;
           this.announcementService.addAnnouncement(this.currentAnnouncement, this.img)
             .subscribe(
-              _ans => {
-                this.currentAnnouncement.creatorId = this.announcementService.getAdminName();
-                this.announcements.unshift(new Announcement().deserialize(Object.assign({},this.currentAnnouncement),
-                  this.sanitizer));
+              ans => {
+                this.announcements.unshift(ans);
+                this.announcements[0].creatorId = this.announcementService.getAdminName();
                 this.cancel(-1);
+                this.saveLoading = false;
               },
 
-              _err => {
+              err => {
+                console.log(err);
                 this.alerts.push({ type: 'danger', message: 'Sorry, announcement upload failed :(', });
+                this.saveLoading = false;
               });
 
 
@@ -193,6 +210,18 @@ export class AnnouncementEditComponent implements OnInit {
       }
     }
 
+
+  }
+
+
+  removeImage(){
+    this.thumbnail = null;
+    
+    if(this.currentAnnouncement.announcementId === ""){
+      this.img = undefined;
+    }else{
+      this.img = null;
+    }
 
   }
 }

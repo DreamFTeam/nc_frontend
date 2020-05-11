@@ -69,17 +69,46 @@ export class AnnouncementService {
     }
     
 
-    return this.http.post<Announcement>(this.url + '/create', formData, this.httpOptions2);
+    return this.http.post<Announcement>(this.url + '/create', formData, this.httpOptions2)
+      .pipe(map(data => {
+        console.log(data);
+        return new Announcement().deserialize(data, this.sanitizer);
+      }));
   }
 
-  //POST edited announcement
-  editAnnouncement(announcement: Announcement): Observable<Announcement>{
+
+  editAnnouncement(announcement: Announcement, img: File): Observable<Announcement> {
     console.log('in edit');
     let postAnnouncement = announcement;
     postAnnouncement.creatorId = this.user.id;
+    const formData = new FormData();
 
-    return this.http.post<Announcement>(this.url + '/edit', JSON.stringify(postAnnouncement), this.httpOptions);
+    formData.append("obj", JSON.stringify(postAnnouncement));
+
+    if(img !== undefined && img !== null){
+      formData.append("img",img, img.name);
+      formData.append("newimage","true");
+    }else if(img === null){
+      formData.append("newimage","true");
+    }
+
+    return this.http.post<Announcement>(this.url + '/edit', formData, this.httpOptions2)
+      .pipe(map(data => {
+        console.log(data);
+        return new Announcement().deserialize(data, this.sanitizer);
+      }));
   }
+
+
+
+  // //POST edited announcement
+  // editAnnouncement(announcement: Announcement): Observable<Announcement>{
+  //   console.log('in edit');
+  //   let postAnnouncement = announcement;
+  //   postAnnouncement.creatorId = this.user.id;
+
+  //   return this.http.post<Announcement>(this.url + '/edit', JSON.stringify(postAnnouncement), this.httpOptions);
+  // }
 
   //POST delete announcement
   deleteAnnouncement(id: string): Observable<Announcement>{
