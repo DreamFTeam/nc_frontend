@@ -16,7 +16,7 @@ const PAGE_SIZE: number = 5;
 })
 export class AnnouncementEditComponent implements OnInit {
   announcements: Announcement[];
-  currentAnnouncement: Announcement
+  currentAnnouncement: Announcement;
   isCollapsed: boolean[];
   inEdit: boolean[];
   editorEnabled: boolean;

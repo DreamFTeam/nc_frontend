@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Announcement } from '../_models/announcement';
 import { HttpHeaders, HttpClient, HttpParams } from '@angular/common/http';
-import * as jwt_decode from 'jwt-decode';
 import { User } from '../_models/user';
 import { Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DomSanitizer } from '@angular/platform-browser';
+import { AuthenticationService } from './authentication.service';
 
 @Injectable({
   providedIn: 'root'
@@ -26,10 +26,9 @@ export class AnnouncementService {
   };
   user: User;
   
-  constructor(private http: HttpClient, private sanitizer: DomSanitizer) { 
-    let info = JSON.parse(localStorage.getItem('userData'));
-    this.user = jwt_decode(info.token)
-    this.user.token = info.token;
+  constructor(private http: HttpClient, private sanitizer: DomSanitizer,
+    private authenticationService: AuthenticationService) {
+    this.user = authenticationService.currentUserValue;
   }
 
   //GET list of announcements in range
