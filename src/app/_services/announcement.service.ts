@@ -26,7 +26,7 @@ export class AnnouncementService {
   
   constructor(private http: HttpClient, private sanitizer: DomSanitizer,
     private authenticationService: AuthenticationService) {
-    //this.user = authenticationService.currentUserValue;
+    this.user = authenticationService.currentUserValue;
   }
 
   //GET list of announcements in range
