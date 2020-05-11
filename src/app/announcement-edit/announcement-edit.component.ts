@@ -37,9 +37,6 @@ export class AnnouncementEditComponent implements OnInit {
   thumbnail: any;
 
 
-  // TODO : fix err ans !!!!!!
-
-
 
   constructor(private modalService: NgbModal,
     private announcementService: AnnouncementService, private sanitizer: DomSanitizer) {

@@ -16,19 +16,17 @@ export class AnnouncementService {
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('userData')).token
     })
   };
   httpOptions2 = {
     headers: new HttpHeaders({
-      Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('userData')).token
     })
   };
   user: User;
   
   constructor(private http: HttpClient, private sanitizer: DomSanitizer,
     private authenticationService: AuthenticationService) {
-    this.user = authenticationService.currentUserValue;
+    //this.user = authenticationService.currentUserValue;
   }
 
   //GET list of announcements in range
