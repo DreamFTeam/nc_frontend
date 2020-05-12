@@ -30,7 +30,7 @@ export class EditProfileComponent implements OnInit {
       this._router.navigate(['/']);
 
     } else if (this.usernameToChange === undefined || this.usernameToChange == null) {
-      this.usernameToChange = this.getProfileService.getCurrentProfile();
+      this.usernameToChange = this.authenticationService.currentUserValue.username;
     }
 
   }

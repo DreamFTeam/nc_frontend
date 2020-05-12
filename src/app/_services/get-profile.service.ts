@@ -1,18 +1,23 @@
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {environment} from '../../environments/environment';
-import {Observable, of} from 'rxjs';
-import {Profile} from '../_models/profile';
-import {catchError} from 'rxjs/operators';
-import {User} from '../_models/user';
-import {Quiz} from '../_models/quiz';
-import {AuthenticationService} from './authentication.service';
-import * as jwt_decode from 'jwt-decode';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { environment } from '../../environments/environment';
+import { Observable, of } from 'rxjs';
+import { Profile } from '../_models/profile';
+import { catchError, map } from 'rxjs/operators';
+import { User } from '../_models/user';
+import { Quiz } from '../_models/quiz';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GetProfileService {
+  private rolesHierarchy = {
+    ROLE_USER: 10,
+    ROLE_MODERATOR: 0,
+    ROLE_ADMIN: 1,
+    ROLE_SUPERADMIN: 2
+  };
+
   profilesUrl = `${environment.apiUrl}profiles/`;
   httpOptions = {
     headers: new HttpHeaders({
@@ -20,21 +25,17 @@ export class GetProfileService {
     })
   };
 
-  user: User;
+  private user: User;
 
-
-  constructor(private http: HttpClient,
-              private authenticationService: AuthenticationService) {
-    this.user = authenticationService.currentUserValue;
+  constructor(private http: HttpClient) {
   }
 
-  public getCurrentProfile(): string {
-    return this.user.username;
-  }
 
+  public compare(role1: string, role2: string): boolean {
+    return (this.rolesHierarchy[role1] - this.rolesHierarchy[role2]) > 0;
+  }
 
   public getProfile(profile: string): Observable<Profile> {
-    console.log(this.profilesUrl + profile);
 
     const options = {
       headers: this.httpOptions.headers,
@@ -49,18 +50,18 @@ export class GetProfileService {
   public getUsers(): Observable<Profile[]> {
     const params = new HttpParams();
 
-    return this.http.get<Profile[]>(this.profilesUrl, {params}).pipe();
+    return this.http.get<Profile[]>(this.profilesUrl, { params }).pipe();
   }
 
   public getProfilebyUserName(query: string): Observable<Profile[]> {
     return this.http.get<Profile[]>(this.profilesUrl + 'search',
-      {headers: this.httpOptions.headers, params: {key: query}}).pipe();
+      { headers: this.httpOptions.headers, params: { key: query } }).pipe();
 
   }
 
   public editProfile(field: string, value: string): Observable<Profile> {
     return this.http.post<Profile>(this.profilesUrl + 'edit/' + field,
-      null, {params: {key: value}}
+      null, { params: { key: value } }
     ).pipe(catchError(this.handleError<any>('EditProfile')));
 
   }
@@ -73,8 +74,8 @@ export class GetProfileService {
 
 
   public getProfileQuiz(userId: string): Observable<Quiz[]> {
-    return this.http.get<Quiz[]>(`${environment.apiUrl}quizzes/` + 'user-list',
-      {headers: this.httpOptions.headers, params: {userId}}).pipe();
+    return this.http.get<Quiz[]>(`${environment.apiUrl}quizzes/user-list`,
+      { headers: this.httpOptions.headers, params: { userId } }).pipe();
 
   }
 

@@ -1,48 +1,49 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {GetProfileService} from '../_services/get-profile.service';
-import {PrivilegedService} from '../_services/privileged.service';
-import {Quiz} from '../_models/quiz';
-import {Profile} from '../_models/profile';
-import {DomSanitizer} from '@angular/platform-browser';
-import {AuthenticationService} from '../_services/authentication.service';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { GetProfileService } from '../_services/get-profile.service';
+import { PrivilegedService } from '../_services/privileged.service';
+import { Quiz } from '../_models/quiz';
+import { Profile } from '../_models/profile';
+import { DomSanitizer } from '@angular/platform-browser';
+import { AuthenticationService } from '../_services/authentication.service';
+import { ExtendedQuiz } from '../_models/extended-quiz';
+import { ExtendedQuizPreview } from '../_models/extendedquiz-preview';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent implements OnInit {
-  public profile;
-  role: string;
-  privileged: boolean = false;
-  private username;
-  ready: boolean;
-  owner;
-  quizzes: Quiz[];
 
-  constructor(private _router: Router,
+export class ProfileComponent implements OnInit {
+  role: string; // role of the current user
+  privileged: boolean; // indicates whether it is privileged to privileged relation
+  ready: boolean; // indicates the profile was loaded (doesn't include quizzes)
+  owner: boolean; // indicates which rights the user has concerning this profile
+  quizzes;
+  profile: Profile;
+
+
+  constructor(private router: Router,
               private route: ActivatedRoute,
               private getProfileService: GetProfileService,
               private privilegedService: PrivilegedService,
               private sanitizer: DomSanitizer,
-              private authenticationService: AuthenticationService
+              private authenticationService: AuthenticationService,
   ) {
     this.role = authenticationService.currentUserValue.role;
   }
 
   ngOnInit(): void {
-    if (this.getProfileService.getCurrentProfile() == null) {
-      this._router.navigate(['/']);
+    if (this.authenticationService.currentUserValue == null) {
+      this.router.navigate(['/']);
     }
 
-    this.setUsername();
-
-    console.log();
-    this.getProfileService.getProfile(this.username).subscribe(
+    this.getProfileService.getProfile(this.getUsername()).subscribe(
       result => {
         this.profile = Profile.deserialize(result, this.sanitizer);
         this.setRights();
+
         if (this.profile.role === 'ROLE_USER') {
           this.getQuizzes();
         }
@@ -52,24 +53,19 @@ export class ProfileComponent implements OnInit {
       },
       error => {
         console.error(error.error);
-        this._router.navigate(['/']);
+        this.router.navigate(['/']);
       });
   }
 
-  setUsername() {
-    this.username = this.route.snapshot.paramMap.get('username');
-    if (this.username == null) {
-      this.username = this.getProfileService.getCurrentProfile();
-      this._router.navigate(['/profile/' + this.getProfileService.getCurrentProfile()]);
-    }
-
+  getUsername(): string {
+    return this.route.snapshot.paramMap.get('username') || this.authenticationService.currentUserValue.username;
   }
 
   setRights() {
-    this.owner = (this.getProfileService.getCurrentProfile() === this.username &&
-      this.role.match('^ROLE_USER|ROLE_SUPERADMIN$')) ||
-      (this.role === 'ROLE_SUPERADMIN' && this.profile.role.match('^ROLE_MODERATOR|ROLE_ADMIN'))
-      || (this.role === 'ROLE_ADMIN' && this.profile.role === 'ROLE_MODERATOR');
+    this.owner =
+      this.authenticationService.currentUserValue.username === this.profile.username &&
+      this.role === 'ROLE_USER' ||
+      this.getProfileService.compare(this.role, this.profile.role);
 
     if (this.role !== 'ROLE_USER' && this.profile.role !== 'ROLE_USER') {
       this.privileged = true;
@@ -77,15 +73,16 @@ export class ProfileComponent implements OnInit {
   }
 
   edit() {
-    this._router.navigate(['/editprofile'], {state: {data: this.profile.username}});
+    this.router.navigate(['/editprofile'],
+        { state: { data: this.profile.username } });
   }
 
-  editAdmin(higher: boolean) {
-    this.privilegedService.edit(this.profile.id, 'role', higher).subscribe(result => {
-        alert('Privileges have been changed');
-        window.location.reload();
+  editAdmin(isAnUpgrade: boolean) {
+    this.privilegedService.edit(this.profile.id, 'role', isAnUpgrade).subscribe(result => {
+      alert('Privileges have been changed');
+      window.location.reload();
 
-      },
+    },
       error => {
         console.log(error);
         alert('An error occured, try again');
@@ -94,10 +91,10 @@ export class ProfileComponent implements OnInit {
 
   deactivate(bool: boolean) {
     this.privilegedService.deactivate(this.profile.id, bool).subscribe(result => {
-        alert('User`s activation status changed');
-        window.location.reload();
+      alert('User`s activation status changed');
+      window.location.reload();
 
-      },
+    },
       error => {
         console.log(error);
         alert('An error occured, try again');
@@ -128,8 +125,9 @@ export class ProfileComponent implements OnInit {
 
 
   goToQuiz(id: string) {
-    this._router.navigate(['/viewquiz/' + id]);
+    this.router.navigate(['/viewquiz/' + id]);
   }
+
 }
 
 
