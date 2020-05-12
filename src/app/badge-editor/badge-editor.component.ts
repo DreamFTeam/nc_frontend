@@ -19,6 +19,9 @@ export class BadgeEditorComponent implements OnInit {
   @Input()
   tagCateg: TagCatg[];
 
+  @Input()
+  available: boolean;
+
   model: TagCatg;
 
   allObjects: TagCatg[];
@@ -35,6 +38,7 @@ export class BadgeEditorComponent implements OnInit {
     }else{
       this.mapAllTagsOrCategs(this.quizService.getCategoriesList())
     }
+    console.log(this.available);
     
   }
 

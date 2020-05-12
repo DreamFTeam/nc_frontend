@@ -4,10 +4,11 @@
         <div class="row">
             <div class="col-sm-8">
                 
-                <input class="form-control" type="text" [(ngModel)]="question.title" placeholder="Title of question">
+                <input [disabled]="!available"
+                 class="form-control" type="text" [(ngModel)]="question.title" placeholder="Title of question">
             </div>
             <div class="col-sm-3">
-                <select (change)="onChange($event.target.value)" class="form-control">
+                <select [disabled]="!available" (change)="onChange($event.target.value)" class="form-control">
 
                     <option *ngIf="isOneToFour(); else elseBlock" selected="selected" value="1">
                         Select option
@@ -46,7 +47,8 @@
             <div class="col-sm-8">
                 <div class="m-3">
                     <label>Content:</label>
-                    <textarea class="form-control" rows="3" [(ngModel)]="question.content" placeholder="Content of question"></textarea>
+                    <textarea [disabled]="!available"
+                     class="form-control" rows="3" [(ngModel)]="question.content" placeholder="Content of question"></textarea>
                 </div>
 
                 <app-one-of-four *ngIf="isOneToFour()" [question]="question"></app-one-of-four>
@@ -59,6 +61,8 @@
                     (change)="questionImage($event)">
                 <img [src]='thumbnail' alt="Upload" class="img-thumbnail mt-5 mx-auto d-block"
                     (click)="questionInput.click()">
+                    <button *ngIf="thumbnail !== null && thumbnail !== undefined"
+                     class="btn buttondel mt-2" (click)="removeImage()" >Remove image</button>
             </div>
         </div>
 
@@ -69,7 +73,7 @@
 <label class="mt-4">Points:</label>
 <div class="row">
     <div class="col-sm-6">
-        <input class="form-control" style="max-width: 20%;" type="text" [(ngModel)]="question.points"
+        <input [disabled]="!available" class="form-control" style="max-width: 20%;" type="text" [(ngModel)]="question.points"
             placeholder="Points">
     </div>
     <div class="col-sm-5">

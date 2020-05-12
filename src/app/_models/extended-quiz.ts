@@ -27,6 +27,7 @@ export class ExtendedQuiz implements DesearizableWImage {
     isFavourite: boolean;
     imageContent: any;
     favourite: boolean;
+    unsanitizedImage: File;
 
     deserialize(input: any, sanitizer: DomSanitizer): this {
         Object.assign(this, input);
@@ -52,7 +53,20 @@ export class ExtendedQuiz implements DesearizableWImage {
         if (img !== null) {
             const objUrl = 'data:image/jpeg;base64,' + this.imageContent;
             this.imageContent = sanitizer.bypassSecurityTrustUrl(objUrl);
+
+            this.unsanitizedImage = this.dataURLtoFile(objUrl);
         }
         return this;
     }
+
+    dataURLtoFile(dataurl) {
+        let arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+            bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+        while (n--) {
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+        return new File([u8arr], "img", { type: mime });
+    }
+
+    
 }

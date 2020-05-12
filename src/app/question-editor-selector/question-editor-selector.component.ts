@@ -16,12 +16,11 @@ export class QuestionEditorSelectorComponent implements OnInit {
   question: ExtendedQuestion;
 
   @Input()
-  formData: FormData
+  available: boolean;
 
   @Input()
   thumbnail: any;
 
-  file: File;
 
 
   constructor() {
@@ -75,18 +74,23 @@ export class QuestionEditorSelectorComponent implements OnInit {
   }
 
   questionImage(e){
-    this.file = e.target.files[0];
-    this.setImage(this.file);
-    this.formData.set("img",this.file);
-    console.log(this.formData.get("questionId"))
+    if (e.target.files[0] !== null && e.target.files[0] !== undefined) {
+      this.question.unsanitizedImage = e.target.files[0];
+      this.setImage(this.question.unsanitizedImage);
+    }
   }
 
   setImage(file: File){
     let reader = new FileReader();
-    reader.readAsDataURL(this.file);
+    reader.readAsDataURL(this.question.unsanitizedImage);
     reader.onload = () => {
       this.thumbnail = reader.result;
     }
+  }
+
+  removeImage(){
+    this.question.unsanitizedImage = null;
+    this.thumbnail = null;
   }
 
   isOneToFour() { return this.question.typeId === 1; }

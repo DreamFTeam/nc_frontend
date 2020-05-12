@@ -121,7 +121,7 @@ export class ProfileComponent implements OnInit {
         this.quizzes = result;
       },
       error => {
-        console.error(error.error);
+        console.error(error);
         this.ready = true;
       });
   }

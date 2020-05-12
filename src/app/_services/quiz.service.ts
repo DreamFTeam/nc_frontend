@@ -31,9 +31,7 @@ export class QuizService {
     this.user = authenticationService.currentUserValue;
   }
 
-  saveQuizNew(quiz: ExtendedQuiz): Observable<ExtendedQuiz> {
-    console.log(quiz.tagIdList);
-
+  saveQuiz(quiz: ExtendedQuiz, img: File): Observable<ExtendedQuiz> {
     const quizInfo = {
       title: quiz.title,
       quizId: quiz.id,
@@ -46,15 +44,20 @@ export class QuizService {
       newCategoryList: quiz.categoryIdList
     };
 
+    const formData = new FormData();
+    formData.append("obj", JSON.stringify(quizInfo));
+    if(img !== undefined && img !== null){
+      formData.append("img",img, img.name);
+    }
+
     console.log(quizInfo);
-    return this.http.post<ExtendedQuiz>(this.url + 'edit', JSON.stringify(quizInfo), this.httpOptions)
+    return this.http.post<ExtendedQuiz>(this.url + 'edit', formData)
       .pipe(map(data => {
         return new ExtendedQuiz().deserialize(data, this.sanitizer);
       }));
   }
 
-
-  createQuizNew(quiz: ExtendedQuiz): Observable<ExtendedQuiz> {
+  createQuiz(quiz: ExtendedQuiz, img: File): Observable<ExtendedQuiz> {
     const quizInfo = {
       title: quiz.title,
       creatorId: this.user.id,
@@ -64,10 +67,17 @@ export class QuizService {
       categoryList: quiz.categories.map( a => a.id)
     };
 
+    const formData = new FormData();
+    formData.append("obj", JSON.stringify(quizInfo));
+    if(img !== undefined && img !== null){
+      formData.append("img",img, img.name);
+    }
+
     console.log(quizInfo);
 
-    return this.http.post<ExtendedQuiz>(this.url, JSON.stringify(quizInfo), this.httpOptions);
+    return this.http.post<ExtendedQuiz>(this.url, formData);
   }
+
 
   getQuizNew(quizId: string): Observable<ExtendedQuiz> {
     const options = {
@@ -82,17 +92,6 @@ export class QuizService {
         return new ExtendedQuiz().deserialize(data, this.sanitizer);
       }));
   }
-
-  getQuiz(quizId: string): Observable<Quiz> {
-
-    const options = {
-      headers: this.httpOptions.headers,
-      params: new HttpParams().set('quizId', quizId)
-
-    };
-    return this.http.get<Quiz>(this.url, options);
-  }
-
 
   markAsFavorite(id: string) {
     const favoriteInfo = {
@@ -130,7 +129,6 @@ export class QuizService {
 
     return this.http.get<any[]>(this.url+"categories", options)
     .pipe(map(data => data.map(x => {
-      console.log(x);
       return new Category(x.category_id, x.title);
     })));;
   }

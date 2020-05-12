@@ -26,13 +26,15 @@ export class QuizComponent implements OnInit {
   thumbnail: any; 
   file: File; 
 
-  questionData: FormData;
 
   quizLoading: boolean;
   faSpinner = faSpinner;
 
   questionAlerts: Alert[] = [];
 
+
+    // TODO : validation QUIZ AND QUESTION (LINE LENGTH etc.)
+    // IMAGE SWITCH
 
   constructor(private quizService: QuizService, private questionService: QuestionService,
      private activateRoute: ActivatedRoute, private router: Router,private sanitizer: DomSanitizer) { 
@@ -49,10 +51,6 @@ export class QuizComponent implements OnInit {
         this.getAllQuiz(id)
       }
 
-
-    this.questionData = new FormData();
-    this.questionData.append("img","");
-    this.questionData.append("questionId","");
   }
 
 
@@ -124,6 +122,7 @@ export class QuizComponent implements OnInit {
   //Gettig quiz by id in url
   setGettedQuiz(answer){    
     this.quiz = answer;
+    this.file = this.quiz.unsanitizedImage;
     this.thumbnail = this.quiz.imageContent;
 
     this.quizLoading = false;
@@ -140,10 +139,7 @@ export class QuizComponent implements OnInit {
   //Clicked on already saved questions TODO : show image
   showQuestion(i){
     this.questionSelector = this.questions[i];
-
-    this.questionData.set("img","");
-    this.questionData.set("questionId",this.questionSelector.id);
-
+    console.log(this.questionSelector);
   }
 
 
@@ -153,18 +149,18 @@ export class QuizComponent implements OnInit {
   }
 
 
-  // TODO : image add
+
   saveQuestion() {
     const alert = this.questionService.questionValidator(this.questionSelector);
     if (alert === undefined) {
       if (this.questionSelector.id === "") {
         this.questionService.sendQuestion(this.questionSelector, true).subscribe(
-          ans => this.setCreatedQuestion(ans),
+          ans => this.setSavedQuestion(ans),
           err => console.log(err));
 
       } else {
         this.questionService.sendQuestion(this.questionSelector, false).subscribe(
-          ans => this.setEditedQuestion(ans),
+          ans => this.setSavedQuestion(ans),
           err => console.log(err));
       }
       this.questionAlerts = [];
@@ -174,104 +170,67 @@ export class QuizComponent implements OnInit {
   }
 
 
-  //TODO : fix send image
-  setCreatedQuestion(ans){
-    alert("Question created!");
 
-    this.questionSelector.id = ans.id;
+  setSavedQuestion(ans){
+    const index = this.questions.findIndex( el => el === this.questionSelector);
 
-    this.questionData.set("questionId",this.questionSelector.id);
-
-    if(this.questionData.get("img") !== ""){
-      this.questionService.uploadImage(this.questionData)
-        .subscribe(ans => console.log(ans), err => alert("Couldn`t upload image: " + err));
-    }
+    this.questions[index] = ans;
     
-  }
-
-  //TODO : fix send image
-  setEditedQuestion(ans){
-
+    console.log(this.questions);
     alert("Question edited!");
 
-
-    console.log(this.questionData.get("questionId"));
-    if(this.questionData.get("img") !== ""){
-      this.questionService.uploadImage(this.questionData)
-        .subscribe(ans => console.log(ans), err => alert("Couldn`t upload image: " + err));
-    }
   }
 
-
-  //TODO : fix realization (image in save, save published quizzes logic)
   saveQuiz() {
     if (this.quiz.title !== "" && this.quiz.description !== "") {
       this.quizLoading = true;
 
-      if(this.file !== undefined && this.quiz.id !== ""){
-        this.quizService.uploadImage(this.getFormData(this.quiz.id))
-        .subscribe(
-          ans => this.createEditQuiz(),
-          err => {
-            console.log(err);
-            alert("Sorry, couldn`t upload your image :( (Quiz is not saved)")
-          }
-        )
+      if (this.quiz.id === "") {
+        this.create();
       }else{
-        this.createEditQuiz();
+        this.edit();
       }
-
       
     } else {
       alert("Title and description must be provided");
     }
   }
 
-  createEditQuiz(){
-    if (this.quiz.id === "") {
-      this.quizService.createQuizNew(this.quiz).subscribe(
+  create(){
+    this.quizService.createQuiz(this.quiz, this.file).subscribe(
 
-        ans => {
-          if (this.file !== undefined) {
-            this.quizService.uploadImage(this.getFormData(ans.id))
-            .subscribe(
-              ans => ans,
-              err => {
-                console.log(err);
-                alert("Sorry, couldn`t upload your image :( (Quiz is not saved)")
-              }
-            )
-          }
+      ans => {
+        alert("Created!");
+        this.quizLoading = false;
+        this.router.navigate(['/quizedit/' + ans.id])
+      },
 
-          alert("Created!");
-          this.quizLoading = false;
-          this.router.navigate(['/quizedit/' + ans.id])
-        },
-
-        err => {
-          console.log(err);
-          alert("Sorry, couldn`t create your quiz :(")
-        });
-    } else {
-      this.quizService.saveQuizNew(this.quiz).subscribe(
-
-        ans => {
-          alert("Saved!");
-          this.quiz = ans;
-          this.quizLoading = false;
-          console.log(this.quiz.published);
-          if(this.quiz.published === true){
-            this.router.navigate(['/quizedit/' + ans.id])
-          }
-          
-        },
-
-        err => {
-          console.log(err);
-          alert("Sorry, couldn`t save your quiz :(")
-        });
-    }
+      err => {
+        console.log(err);
+        alert("Sorry, couldn`t create your quiz :(")
+      });
   }
+
+  edit(){
+    this.quizService.saveQuiz(this.quiz, this.file).subscribe(
+
+      ans => {
+        alert("Saved!");
+        this.quiz = ans;
+        this.quizLoading = false;
+        console.log(this.quiz.published);
+        if(this.quiz.published === true){
+          this.router.navigate(['/quizedit/' + ans.id])
+        }
+        
+      },
+
+      err => {
+        console.log(err);
+        alert("Sorry, couldn`t save your quiz :(")
+      });
+  }
+
 
   publish() {
     this.quizService.publishQuiz(this.quiz.id)
@@ -308,12 +267,14 @@ export class QuizComponent implements OnInit {
   }
 
   quizImage(e){
-    this.file = e.target.files[0];
-    this.setImage(this.file);
+    if(e.target.files[0] !== null && e.target.files[0] !== undefined){
+      this.file = e.target.files[0];
+      this.setImage();
+    }
   }
 
 
-  setImage(file: File){
+  setImage(){
     let reader = new FileReader();
     reader.readAsDataURL(this.file);
     reader.onload = () => {
@@ -321,15 +282,11 @@ export class QuizComponent implements OnInit {
     }
   }
 
-
-  getFormData(id: string): FormData {
-
-    const formData = new FormData();
-    formData.append('img', this.file);
-    formData.append('quizId',id);
-
-    return formData;
+  removeImage(){
+    this.file = null;
+    this.thumbnail = null;
   }
+
 
 
   //close alert

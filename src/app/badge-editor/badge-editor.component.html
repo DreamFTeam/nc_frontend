@@ -3,7 +3,7 @@
 [ngClass]="{'badge-primary': isTag(), 'badge-success': !isTag()}" 
 class="badge mr-1">
     {{ item.description }}
-    <svg class="bi bi-x-circle removeb" width="1.2em" height="1.2em" viewBox="0 0 16 16" fill="currentColor"
+    <svg *ngIf="available" class="bi bi-x-circle removeb" width="1.2em" height="1.2em" viewBox="0 0 16 16" fill="currentColor"
         xmlns="http://www.w3.org/2000/svg" (click)="remove(i)">
         <path fill-rule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z"
             clip-rule="evenodd" />
@@ -17,7 +17,8 @@ class="badge mr-1">
     
 </span>
 
-<div>Search for {{ label }}:</div>
+<div *ngIf="available">
+    <div>Search for {{ label }}:</div>
 <input id="typeahead-prevent-manual-entry" type="text" class="form-control" [(ngModel)]="model" [ngbTypeahead]="search"
     [inputFormatter]="formatter" [resultFormatter]="formatter" [editable]='false' />
 
@@ -25,3 +26,4 @@ class="badge mr-1">
 <button class="btn buttonpr mr-1 mt-1 rounded" (click)="add()">
     Add
 </button>
+</div>
