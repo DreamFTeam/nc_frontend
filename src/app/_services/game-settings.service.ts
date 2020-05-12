@@ -5,6 +5,10 @@ import {environment} from '../../environments/environment';
 import {Game} from '../_models/game';
 import {SseService} from './sse.service';
 import {GameSession} from '../_models/game-session';
+import {User} from '../_models/user';
+import {Profile} from '../_models/profile';
+import {catchError} from 'rxjs/operators';
+import {HandleErrorsService} from './handle-errors.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +22,8 @@ export class GameSettingsService {
   };
 
   constructor(private http: HttpClient,
-              private sseService: SseService) { }
+              private sseService: SseService,
+              private errorsService: HandleErrorsService) { }
 
   createGame(settings: any): Observable<Game> {
     if (!settings.additionalPoints) {
@@ -34,5 +39,15 @@ export class GameSettingsService {
 
   join(accessId: string): Observable<GameSession> {
     return this.http.get<GameSession>(this.gameUrl + `join/${accessId}`, this.httpOptions);
+  }
+
+  // TODO Set images
+  getUsers(gameId: string): Observable<any> {
+    return this.http.get<any>(this.gameUrl + `sessions/${gameId}`, this.httpOptions);
+  }
+
+  setReady(gameId: string) {
+    return this.http.post(this.gameUrl + `game/${gameId}/ready`, this.httpOptions)
+      .pipe(catchError(this.errorsService.handleError('setReady')));
   }
 }

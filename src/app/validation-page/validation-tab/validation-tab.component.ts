@@ -57,10 +57,10 @@ export class ValidationTabComponent implements OnInit {
             alert("The quiz was rejected successfully");
             this.page = 1;
             this.getTotalSize();
-            this.getQuizList(this.page);        
+            this.getQuizList(this.page);
           },
             error => {
-              alert("Something went wrong with the rejection: "+ 
+              alert("Something went wrong with the rejection: "+
                 error.message);
             });
       }

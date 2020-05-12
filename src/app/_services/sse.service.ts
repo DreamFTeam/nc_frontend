@@ -6,7 +6,8 @@ import {Observable} from 'rxjs';
 })
 export class SseService {
 
-  constructor(private zone: NgZone) { }
+  constructor(private zone: NgZone) {
+  }
 
   getEventSource(url: string): EventSource {
     return new EventSource(url);

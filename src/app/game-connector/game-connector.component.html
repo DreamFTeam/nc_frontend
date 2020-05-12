@@ -6,19 +6,24 @@
           <div class="col-4 text-center pb-3">
             <p class="mt-4 h4">{{game.accessId}}</p>
             <qrcode [margin]="3"
-                [qrdata]="connectUrl + game.accessId"
-                [width]="256"
-                [errorCorrectionLevel]="'M'"
-                [elementType]="'url'"></qrcode>
-            <button class="btn ml-3 btn-success btn-block">Start game</button>
+                    [qrdata]="connectUrl + game.accessId"
+                    [width]="256"
+                    [errorCorrectionLevel]="'M'"
+                    [elementType]="'url'"></qrcode>
+            <button *ngIf="creator" class="btn ml-3 btn-success btn-block">Start game</button>
+            <button *ngIf="!ready" class="btn ml-3 btn-success btn-block" (click)="setReady()">Ready</button>
           </div>
           <div class="col-8 overflow-auto">
-            <div *ngFor="let user of users" class="border border-secondary rounded ml-3 m-1 p-2">
-              <img class="rounded-circle"
-                   width="35px"
-                   [src]="user.imageContent ? user.imageContent : mockImageUrl"
-                   alt="Quiz icon">
-              <span class="p-2 m-2">{{user.username}} connected</span>
+            <div class="container mb-4 mt-4">
+              <div *ngFor="let user of users"
+                   class="border border-secondary rounded ml-3 m-1 p-2"
+                   [ngClass]="{'border-success': user.is_creator, 'alert-success': usersIdReady.includes(user.id)}">
+                <img class="rounded-circle"
+                     width="35px"
+                     [src]="user.imageContent ? user.imageContent : mockImageUrl"
+                     alt="Quiz icon">
+                <span class="p-2 m-2">{{user.username}} connected</span>
+              </div>
             </div>
           </div>
         </div>

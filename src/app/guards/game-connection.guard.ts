@@ -34,6 +34,7 @@ export class GameConnectionGuard implements CanActivate {
     if (currentUser && currentUser.role === Role.User) {
       this.gameSettingsService.join(accessId).subscribe(
         n => {
+          console.log('Joining')
           localStorage.setItem('sessionid', n.id);
           this.router.navigateByUrl(`game/${n.gameId}/lobby`);
         },
