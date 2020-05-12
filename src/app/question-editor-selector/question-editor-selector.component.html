@@ -51,18 +51,25 @@
                      class="form-control" rows="3" [(ngModel)]="question.content" placeholder="Content of question"></textarea>
                 </div>
 
-                <app-one-of-four *ngIf="isOneToFour()" [question]="question"></app-one-of-four>
-                <app-true-false *ngIf="isTrueFalse()" [question]="question"></app-true-false>
-                <app-open-answer *ngIf="isOpenAnswer()" [question]="question"></app-open-answer>
-                <app-seq-options *ngIf="isSequenceAnswer()" [question]="question"></app-seq-options>
+                <app-one-of-four *ngIf="isOneToFour()" [available]="available" [question]="question"></app-one-of-four>
+                <app-true-false *ngIf="isTrueFalse()" [available]="available" [question]="question"></app-true-false>
+                <app-open-answer *ngIf="isOpenAnswer()" [available]="available" [question]="question"></app-open-answer>
+                <app-seq-options *ngIf="isSequenceAnswer()" [available]="available" [question]="question"></app-seq-options>
             </div>
             <div class="col-sm-3">
-                <input style="display: none" #questionInput type="file" accept="image/*"
+                <div *ngIf="available; else imgElse">
+                    <input style="display: none" #questionInput type="file" accept="image/*"
                     (change)="questionImage($event)">
                 <img [src]='thumbnail' alt="Upload" class="img-thumbnail mt-5 mx-auto d-block"
                     (click)="questionInput.click()">
                     <button *ngIf="thumbnail !== null && thumbnail !== undefined"
                      class="btn buttondel mt-2" (click)="removeImage()" >Remove image</button>
+                </div>
+                <ng-template #imgElse>
+                        <img *ngIf="thumbnail !== undefined && thumbnail !== null"
+                         class="img-thumbnail" [src]='thumbnail'>
+                </ng-template>
+                
             </div>
         </div>
 

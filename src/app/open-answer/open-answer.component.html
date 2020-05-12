@@ -1,4 +1,4 @@
 <div class="answer">
      <span>Right answer: </span>
-    <input class="form-control" style="width: 100%;" id="title" type="text"  [(ngModel)]="question.rightOptions[0]"> 
+    <input [disabled]="!available" class="form-control" style="width: 100%;" id="title" type="text"  [(ngModel)]="question.rightOptions[0]"> 
  </div>

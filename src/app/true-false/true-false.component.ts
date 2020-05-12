@@ -9,6 +9,9 @@ import { ExtendedQuestion } from '../_models/question/extendedquestion';
 export class TrueFalseComponent implements OnInit {
   @Input() question: ExtendedQuestion;
 
+  @Input()
+  available: boolean;
+
   constructor() {
     
    }
