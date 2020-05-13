@@ -8,13 +8,13 @@
           <a *ngIf="!owner && profile.activated && this.role=='ROLE_USER'" class="btn btn-outline-secondary mt-2 w-100"> Add friend </a>
         </div>
       </div>
-      <div class="col p-2">
-      <b>{{profile.username}}</b>
-      <span *ngIf="profile.role!='ROLE_USER'" class="blue"> {{profile.role.substr(5).toLowerCase()}}</span>
-      <h5 *ngIf="!profile.activated" style="color: red;"> deactivated </h5>
-      <h3 *ngIf="profile.online; else lastseen" class="blue"> online </h3>
-      <ng-template #lastseen> <h3 class="blue" *ngIf="profile.lastTimeOnline"> Last seen on {{profile.lastTimeOnline  |  date:'medium'}} </h3> </ng-template>
-      <h3>{{profile.aboutMe}}</h3>
+      <div class="col p-3">
+        <b>{{profile.username}}</b>
+        <span *ngIf="profile.role!='ROLE_USER'" class="blue"> {{profile.role.substr(5).toLowerCase()}}</span>
+        <h5 *ngIf="!profile.activated" style="color: red;"> deactivated </h5>
+        <h3 *ngIf="profile.online; else lastseen" class="blue"> online </h3>
+        <ng-template #lastseen> <h3 class="blue" *ngIf="profile.lastTimeOnline"> Last seen on {{profile.lastTimeOnline  |  date:'medium'}} </h3> </ng-template>
+        <h3>{{profile.aboutMe}}</h3>
       </div>
       <div *ngIf= "this.role!='ROLE_USER' && owner && profile.activated" class="col-3 ">
         <a class="btn btn-outline-secondary mt-2" (click)="deactivate(false)"> Deactivate </a>

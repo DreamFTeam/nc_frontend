@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable, of } from 'rxjs';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Profile } from '../_models/profile';
 import { catchError, map } from 'rxjs/operators';
 import { User } from '../_models/user';
@@ -10,6 +11,7 @@ import { Quiz } from '../_models/quiz';
 @Injectable({
   providedIn: 'root'
 })
+
 export class GetProfileService {
   private rolesHierarchy = {
     ROLE_USER: 10,
@@ -27,7 +29,7 @@ export class GetProfileService {
 
   private user: User;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private sanitizer: DomSanitizer) {
   }
 
 
@@ -43,7 +45,11 @@ export class GetProfileService {
 
 
     return this.http.get<Profile>(this.profilesUrl + profile,
-      options).pipe();
+      options).pipe(
+        map(data => {
+            return Profile.deserialize(data, this.sanitizer);
+        })
+      );
 
   }
 

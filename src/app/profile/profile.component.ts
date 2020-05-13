@@ -2,12 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GetProfileService } from '../_services/get-profile.service';
 import { PrivilegedService } from '../_services/privileged.service';
-import { Quiz } from '../_models/quiz';
 import { Profile } from '../_models/profile';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AuthenticationService } from '../_services/authentication.service';
-import { ExtendedQuiz } from '../_models/extended-quiz';
-import { ExtendedQuizPreview } from '../_models/extendedquiz-preview';
+
 
 @Component({
   selector: 'app-profile',
@@ -16,8 +14,8 @@ import { ExtendedQuizPreview } from '../_models/extendedquiz-preview';
 })
 
 export class ProfileComponent implements OnInit {
+
   role: string; // role of the current user
-  privileged: boolean; // indicates whether it is privileged to privileged relation
   ready: boolean; // indicates the profile was loaded (doesn't include quizzes)
   owner: boolean; // indicates which rights the user has concerning this profile
   quizzes;
@@ -41,7 +39,7 @@ export class ProfileComponent implements OnInit {
 
     this.getProfileService.getProfile(this.getUsername()).subscribe(
       result => {
-        this.profile = Profile.deserialize(result, this.sanitizer);
+        this.profile = result;
         this.setRights();
 
         if (this.profile.role === 'ROLE_USER') {
@@ -67,9 +65,6 @@ export class ProfileComponent implements OnInit {
       this.role === 'ROLE_USER' ||
       this.getProfileService.compare(this.role, this.profile.role);
 
-    if (this.role !== 'ROLE_USER' && this.profile.role !== 'ROLE_USER') {
-      this.privileged = true;
-    }
   }
 
   edit() {
@@ -119,7 +114,6 @@ export class ProfileComponent implements OnInit {
       },
       error => {
         console.error(error.error);
-        this.ready = true;
       });
   }
 
