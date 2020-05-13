@@ -12,6 +12,7 @@ import { PrivilegedProfileComponent } from './privileged-profile/privileged-prof
 import { ValidationPageComponent } from './validation-page/validation-page.component';
 import { QuizValidationComponent } from './quiz-validation/quiz-validation.component';
 import { AnnouncementEditComponent } from './announcement-edit/announcement-edit.component';
+import { GameQuestionComponent } from './game-question/game-question.component'
 import { AuthGuard } from './guards/editor.guard';
 import { Role } from './_models/role';
 
@@ -31,6 +32,7 @@ const routes: Routes = [
   { path: 'validation', component: ValidationPageComponent},
   { path: 'validation/:id', component: QuizValidationComponent},
   { path: 'editannouncements', component: AnnouncementEditComponent},
+  { path: 'play/:gameid', component: GameQuestionComponent},
   { path: '**', redirectTo: ''}
 ];
 

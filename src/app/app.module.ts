@@ -43,6 +43,7 @@ import {ShortQuizListComponent} from './short-quiz-list/short-quiz-list.componen
 import {QuestionEditorSelectorComponent} from './question-editor-selector/question-editor-selector.component';
 import {JwtInterceptor} from './_helpers/jwt.interceptor';
 import {ErrorInterceptor} from './_helpers/error.interceptor';
+import {GameQuestionComponent} from './game-question/game-question.component';
 
 const appRoutes: Routes = [];
 
@@ -77,7 +78,8 @@ const appRoutes: Routes = [];
     AnnouncementViewComponent,
     AnnouncementEditComponent,
     ShortQuizListComponent,
-    QuestionEditorSelectorComponent],
+    QuestionEditorSelectorComponent,
+    GameQuestionComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
