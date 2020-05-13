@@ -9,31 +9,28 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class UsersComponent implements OnInit {
 
-  searchResults;
-
-  constructor(private getProfileService: GetProfileService, private sanitizer: DomSanitizer
-    ) {
-    this.searchResults = null;
-   }
-
+  searchResults: Profile[];
   username: string;
 
-  ngOnInit(): void {
-    this.getProfileService.getProfilebyUserName('').subscribe(
-      data =>      {   this.searchResults = data;
-      this.searchResults.forEach(element => {
-        return  Profile.deserialize(element, this.sanitizer)
-      });
-    })
-
+  constructor(private getProfileService: GetProfileService,
+              private sanitizer: DomSanitizer
+  ) {
+    this.searchResults = null;
+    this.username = '';
   }
 
-  Search() {
+
+  ngOnInit(): void {
+    this.search();
+  }
+
+  search() {
     this.getProfileService.getProfilebyUserName(this.username).subscribe(
-      data =>      {   this.searchResults = data;
+      data => {
+        this.searchResults = data;
         this.searchResults.forEach(element => {
-          return  Profile.deserialize(element, this.sanitizer)
+          return Profile.deserialize(element, this.sanitizer)
         });
-      })
+      });
   }
 }
