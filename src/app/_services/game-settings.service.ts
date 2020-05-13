@@ -1,12 +1,10 @@
-import {Injectable, NgZone} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {Game} from '../_models/game';
 import {SseService} from './sse.service';
 import {GameSession} from '../_models/game-session';
-import {User} from '../_models/user';
-import {Profile} from '../_models/profile';
 import {catchError} from 'rxjs/operators';
 import {HandleErrorsService} from './handle-errors.service';
 
@@ -23,7 +21,8 @@ export class GameSettingsService {
 
   constructor(private http: HttpClient,
               private sseService: SseService,
-              private errorsService: HandleErrorsService) { }
+              private errorsService: HandleErrorsService) {
+  }
 
   createGame(settings: any): Observable<Game> {
     if (!settings.additionalPoints) {
@@ -38,7 +37,8 @@ export class GameSettingsService {
   }
 
   join(accessId: string): Observable<GameSession> {
-    return this.http.get<GameSession>(this.gameUrl + `join/${accessId}`, this.httpOptions);
+    return this.http.get<GameSession>(this.gameUrl + `join/${accessId}`,
+      this.httpOptions);
   }
 
   // TODO Set images
@@ -52,8 +52,9 @@ export class GameSettingsService {
   }
 
   startGame(gameId: string): Observable<any> {
-    return this.http.post(this.gameUrl + `start`, null, {headers: this.httpOptions.headers, params: {gameId}})
-      .pipe(catchError(this.errorsService.handleError('setReady')));
+    return this.http.post(this.gameUrl + `start`, null,
+      {headers: this.httpOptions.headers, params: {gameId}})
+      .pipe(catchError(this.errorsService.handleError('startGame')));
   }
 
 }

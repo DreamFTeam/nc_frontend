@@ -28,7 +28,6 @@ export class GameConnectorComponent implements OnInit {
   ready: boolean;
 
   constructor(private activateRoute: ActivatedRoute,
-              private questionService: QuestionService,
               private gameSettingsService: GameSettingsService,
               private router: Router,
               private sseService: SseService,
