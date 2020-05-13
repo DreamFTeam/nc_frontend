@@ -47,13 +47,11 @@ export class GetProfileService {
     return this.http.get<Profile>(this.profilesUrl + profile,
       options).pipe(
         map(data => {
-            return Profile.deserialize(data, this.sanitizer);
+          return Profile.deserialize(data, this.sanitizer);
         })
       );
 
   }
-
-
 
   public getUsers(): Observable<Profile[]> {
     const params = new HttpParams();
@@ -88,11 +86,10 @@ export class GetProfileService {
   }
 
 
-  public sendFriendRequest(field: string, value: string): Observable<Profile> {
-    return this.http.post<Profile>(this.profilesUrl + '',
-      null, { params: { key: value } }
+  public sendFriendRequest(targetId: string): Observable<Profile> {
+    return this.http.post<Profile>(this.profilesUrl + 'friends/invite',
+    null, { headers: this.httpOptions.headers,  params: { targetId }}
     ).pipe(catchError(this.handleError<any>('sendFriendRequest')));
-      //todo
   }
 
 

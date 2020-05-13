@@ -41,6 +41,7 @@ export class ProfileComponent implements OnInit {
 
     this.getProfileService.getProfile(this.getUsername()).subscribe(
       result => {
+        console.log(JSON.stringify(result));
         this.profile = result;
         this.setRights();
 
@@ -129,6 +130,13 @@ export class ProfileComponent implements OnInit {
     this.quizService.markAsFavorite(quiz.id).subscribe();
   }
 
+
+  sendFriendRequest(profile: Profile) {
+    this.getProfileService.sendFriendRequest(profile.id).subscribe()
+  }
+
+
 }
+
 
 
