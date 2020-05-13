@@ -28,7 +28,7 @@ export class ProfileComponent implements OnInit {
               private getProfileService: GetProfileService,
               private privilegedService: PrivilegedService,
               private sanitizer: DomSanitizer,
-              private quizService:QuizService,
+              private quizService: QuizService,
               private authenticationService: AuthenticationService,
   ) {
     this.role = authenticationService.currentUserValue.role;
@@ -41,7 +41,6 @@ export class ProfileComponent implements OnInit {
 
     this.getProfileService.getProfile(this.getUsername()).subscribe(
       result => {
-        console.log(JSON.stringify(result));
         this.profile = result;
         this.setRights();
 
@@ -137,6 +136,4 @@ export class ProfileComponent implements OnInit {
 
 
 }
-
-
 

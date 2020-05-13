@@ -37,7 +37,7 @@ import {QuizValidationComponent} from './quiz-validation/quiz-validation.compone
 import {ConfirmModalComponent} from './confirm-modal/confirm-modal.component';
 import {AnnouncementViewComponent} from './announcement-view/announcement-view.component';
 import {AnnouncementEditComponent} from './announcement-edit/announcement-edit.component';
-
+import { BadgeEditorComponent } from './badge-editor/badge-editor.component';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {ShortQuizListComponent} from './short-quiz-list/short-quiz-list.component';
 import {QuestionEditorSelectorComponent} from './question-editor-selector/question-editor-selector.component';
@@ -77,7 +77,8 @@ const appRoutes: Routes = [];
     AnnouncementViewComponent,
     AnnouncementEditComponent,
     ShortQuizListComponent,
-    QuestionEditorSelectorComponent],
+    QuestionEditorSelectorComponent,
+    BadgeEditorComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

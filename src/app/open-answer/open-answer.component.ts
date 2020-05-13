@@ -10,6 +10,9 @@ import { ExtendedQuestion } from '../_models/question/extendedquestion';
 export class OpenAnswerComponent implements OnInit {
   @Input() question: ExtendedQuestion;
 
+  @Input()
+  available: boolean;
+
   constructor() { }
 
   ngOnInit(): void {
