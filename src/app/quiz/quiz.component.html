@@ -6,63 +6,89 @@
             <h1 class="title font-base" >Create quiz</h1>
             <div class="row ml-2 mt-3">
 
-                <div class="col-sm-3 ">
-                    <img [src]='thumbnail' alt="Upload" class="img-thumbnail" (click)="imageInput.click()">
-                    <input style="display: none" #imageInput type="file"
-                    accept="image/*" (change)="quizImage($event)">
+                <div  class="col-sm-3 ">
+                    <div *ngIf="!quiz.published; else elseBlock">
+                        <img [src]='thumbnail' alt="Upload" class="img-thumbnail" (click)="imageInput.click()">
+                    <input style="display: none" #imageInput type="file" accept="image/*" (change)="quizImage($event)">
+                    <button *ngIf="thumbnail !== null && thumbnail !== undefined" class="btn buttondel mt-2 text-center"
+                        (click)="removeImage()">Remove image</button>
+                    </div>
+
+                    <ng-template #elseBlock>
+                        <img *ngIf="thumbnail !== undefined && thumbnail !== null
+                                            ; else elseImg" [src]='thumbnail' alt="Upload" class="img-thumbnail">
+                        <ng-template #elseImg>
+                            <img class="img-thumbnail" src="../assets/img/quiz.jpg">
+                        </ng-template>
+                    </ng-template>
                 </div>
+                
 
                 <div class="col-sm-8"> 
 
                     <label>Title:</label>
-                    <input class="form-control" type="text"  [(ngModel)]="quiz.title" placeholder="Title of quiz">
+                    <input [disabled]="quiz.published" class="form-control" type="text"  [(ngModel)]="quiz.title" placeholder="Title of quiz">
+
                     
-                    <!-- <label>Category:</label>
-                    <input type="text"  [(ngModel)]="quiz">
+                    <div class="mt-2">
+                        <app-badge-editor [available]="!quiz.published"  [label]="tagLabel" 
+                        [tagCateg]="quiz.tags" ></app-badge-editor>
+                    </div>
+                    
 
-                    <label>Tags:</label>
-                    <input type="text"  [(ngModel)]="tags"> -->
+                    <div class="mt-2">
+                        <app-badge-editor [available]="!quiz.published" [label]="categoryLabel" 
+                        [tagCateg]="quiz.categories"></app-badge-editor>
+                    </div>
+                    
 
-                    <label>Language:</label>
-                    <select [(ngModel)]="quiz.language" class="form-control">
+
+                    <label class="mt-2">Language:</label>
+                    <select [disabled]="quiz.published" [(ngModel)]="quiz.language" class="form-control">
                         <option selected="selected" value="eng">English</option>
                         <option value="ukr">Ukrainian</option>
                     </select>
 
                     
                     <label>Description:</label >
-                    <textarea class="form-control" rows="5"
+                    <textarea class="form-control" rows="5" [disabled]="quiz.published"
                     [(ngModel)]="quiz.description" placeholder="Description of quiz"></textarea>
                 </div>
             </div>
         
         
 
-            <div class="m-3">
+            <div class="m-3">    
+                <button class="btn buttonpr mr-4" (click)="saveQuiz()" >
+                    <div *ngIf="!quiz.published">Save</div>
+                    <div *ngIf="quiz.published">
+                        Save as new quiz
+                    </div>
 
-
-<!--DRAFT LOGIC !!! (UPDATE NOT PUBLISHED, FORK FROM PUBLISHED)  -->
-
-                
-                <button class="btn buttonpr mr-4" (click)="saveQuiz()" >Save as new quiz</button>
+                </button>
                 <button *ngIf="isPublishAvailable()" class="btn buttonsec" (click)="publish()">Publish quiz</button>
             </div>
 
         
+            <!-- THIS THING MUST BE ON THE LEFT-->
+
         <div *ngIf="isQuizCreated()" class="row m-4">
             <div class="col-sm-3">
                 <h3>Questions:</h3>
                 <div *ngFor="let question of questions; let i = index">
-                    <button *ngIf="question.id !== ''" class="btn buttonpr mr-1 mt-1 rounded" (click)="showQuestion(i)">{{question.title}}</button>
-                    <button *ngIf="question.id === ''" class="btn buttonpn mr-1 mt-1 rounded" (click)="showQuestion(i)">
+                    <button class="btn mr-1 mt-1 rounded" (click)="showQuestion(i)"
+                        [ngClass]="{'buttonpn': question.id === '', 'buttonpr': question.id !== ''}">
                         <div *ngIf="question.title !== ''">{{question.title}}</div>
                         <div *ngIf="question.title === ''">New question</div>
                     </button>
                 </div>
                 <button class="btn buttonpr rounded mt-1" (click)="addNewQuestion()">+</button>
             </div>
-            
         </div>
+
+
+        <!-- THIS THING END-->
+        
     </div>
 
     <div style="text-align: center;" *ngIf="quizLoading">
@@ -73,12 +99,14 @@
 
     <div *ngIf="isQuizCreated() && questionSelector !== undefined" class="container-sm mt-2 mb-2 p-4" >
         <div>
-            <button class="removeb" (click)="removeQuestion()"><img class="bttnimg" src="../assets/img/close-button.png"></button>
+            <button class="removeb" (click)="removeQuestion()">
+                <img class="bttnimg" src="../assets/img/close-button.png">
+            </button>
             <label>Remove question</label>
         </div>
 
         <div class="mb-2">
-            <app-question-editor-selector [question]="questionSelector" [formData]="questionData"
+            <app-question-editor-selector [available]="!quiz.published" [question]="questionSelector"
                 [thumbnail]="questionSelector.imageContent"></app-question-editor-selector>
         </div>
         

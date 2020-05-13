@@ -29,8 +29,6 @@ export class QuestionService {
 
   }
 
-  // REFACTORED
-
   getAllQuestionsNew(quizId: string): Observable<ExtendedQuestion[]> {
     const options = {
       headers: this.httpOptions.headers,
@@ -44,10 +42,6 @@ export class QuestionService {
       })));
   }
 
-
-  // END OF REFACTORED
-
-
   getAllQuestions(quizId: string) {
 
     const options = {
@@ -59,8 +53,7 @@ export class QuestionService {
     return this.http.get<Question[]>(this.url + 'questions', options);
   }
 
-  sendQuestion(question: ExtendedQuestion, createEdit: boolean) {
-
+  sendQuestion(question: ExtendedQuestion, createEdit: boolean) : Observable<ExtendedQuestion>{
     const questionInfo = Object.assign({}, question);
     delete questionInfo.imageContent;
 
@@ -68,20 +61,26 @@ export class QuestionService {
       questionInfo.otherOptions = [];
     }
 
-    console.log(questionInfo);
+    const formData = new FormData();
+    formData.append("obj", JSON.stringify(questionInfo));
+    if(questionInfo.unsanitizedImage !== undefined && questionInfo.unsanitizedImage !== null){
+      formData.append("img", questionInfo.unsanitizedImage, questionInfo.unsanitizedImage.name);
+    }
+
 
     if (createEdit) {
-      return this.http.post<ExtendedQuestion>(this.url + 'questions', JSON.stringify(questionInfo), this.httpOptions)
+      return this.http.post<ExtendedQuestion>(this.url + 'questions', formData)
         .pipe(map(data => {
           return new ExtendedQuestion().deserialize(data, this.sanitizer);
         }));
     } else {
-      return this.http.post<ExtendedQuestion>(this.url + 'questions/edit', JSON.stringify(questionInfo), this.httpOptions)
+      return this.http.post<ExtendedQuestion>(this.url + 'questions/edit', formData)
         .pipe(map(data => {
           return new ExtendedQuestion().deserialize(data, this.sanitizer);
         }));
     }
   }
+
 
 
   deleteQuestion(id: string) {
