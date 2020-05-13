@@ -10,19 +10,20 @@
                     [width]="256"
                     [errorCorrectionLevel]="'M'"
                     [elementType]="'url'"></qrcode>
-            <button *ngIf="creator" class="btn ml-3 btn-success btn-block">Start game</button>
+            <button *ngIf="creator && ready" (click)="startGame()" class="btn ml-3 btn-primary btn-block">Start game</button>
             <button *ngIf="!ready" class="btn ml-3 btn-success btn-block" (click)="setReady()">Ready</button>
           </div>
           <div class="col-8 overflow-auto">
             <div class="container mb-4 mt-4">
               <div *ngFor="let user of users"
                    class="border border-secondary rounded ml-3 m-1 p-2"
-                   [ngClass]="{'border-success': user.is_creator, 'alert-success': usersIdReady.includes(user.id)}">
+                   [ngClass]="{'border-success': user.is_creator, 'alert-success': usersIdReady.includes(user.user_id)}">
                 <img class="rounded-circle"
                      width="35px"
                      [src]="user.imageContent ? user.imageContent : mockImageUrl"
                      alt="Quiz icon">
                 <span class="p-2 m-2">{{user.username}} connected</span>
+
               </div>
             </div>
           </div>

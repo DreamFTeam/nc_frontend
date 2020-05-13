@@ -13,15 +13,15 @@ export class SseService {
     return new EventSource(url);
   }
 
-  getServerSentEvent(url: string): Observable<any> {
+  getServerSentEvent(url: string, type: string): Observable<any> {
     return Observable.create(observer => {
       const eventSource = this.getEventSource(url);
 
-      eventSource.onmessage = event => {
+      eventSource.addEventListener(type, event => {
         this.zone.run(() => {
           observer.next(event);
         });
-      };
+      });
 
       eventSource.onerror = error => {
         this.zone.run(() => {

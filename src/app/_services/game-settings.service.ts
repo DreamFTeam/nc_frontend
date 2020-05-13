@@ -50,4 +50,10 @@ export class GameSettingsService {
     return this.http.post(this.gameUrl + `game/${gameId}/ready`, this.httpOptions)
       .pipe(catchError(this.errorsService.handleError('setReady')));
   }
+
+  startGame(gameId: string): Observable<any> {
+    return this.http.post(this.gameUrl + `start`, null, {headers: this.httpOptions.headers, params: {gameId}})
+      .pipe(catchError(this.errorsService.handleError('setReady')));
+  }
+
 }

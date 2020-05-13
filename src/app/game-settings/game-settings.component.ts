@@ -47,7 +47,8 @@ export class GameSettingsComponent implements OnInit {
     settings.quizId = this.quizId;
     this.gameSettingsService.createGame(settings).subscribe(
       game => {
-        this.gameSettingsService.join(game.accessId);
+        console.log(game);
+        this.gameSettingsService.join(game.accessId).subscribe();
         this.router.navigateByUrl(`game/${game.id}/lobby`);
       }
       );
