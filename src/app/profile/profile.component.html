@@ -25,6 +25,7 @@
     </div>
 
   <div class="container-sm row p-4" *ngIf="profile.role=='ROLE_USER'">
+
     <b><span style="font-size: larger;">{{profile?.username}}'s quizzes</span></b>
     <div *ngFor="let quiz of quizzes" >
       <div *ngIf="owner || quiz.published" class="row m-2 border p-2 " >
@@ -39,7 +40,7 @@
           <h5 *ngIf="owner" > <b>Status:</b> {{quiz.published ? "published" : quiz.validated ? "not published" : "not validated"}}</h5> 
           <h5> <b>Rating:</b> {{quiz.rating}} </h5>
   </span> 
-  <img class="col-xs-2 col-sm-3 col-md-2 col-lg-1 p-2 float-right" [src]='quiz.favourite ? "../../assets/img/liked.png" : "../../assets/img/notliked.png"'>
+  <img class="col-xs-2 col-sm-3 col-md-2 col-lg-1 p-2 float-right" [src]='quiz.favourite ? "../../assets/img/liked.png" : "../../assets/img/notliked.png"' (click)="markQuizFavourite(quiz)">
 </div>
 </div>
     </div>

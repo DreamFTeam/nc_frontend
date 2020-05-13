@@ -53,6 +53,8 @@ export class GetProfileService {
 
   }
 
+
+
   public getUsers(): Observable<Profile[]> {
     const params = new HttpParams();
 
@@ -75,7 +77,7 @@ export class GetProfileService {
   public uploadPicture(value: FormData) {
 
     return this.http.post<Profile>(this.profilesUrl + 'edit/image', value)
-      .pipe(catchError(this.handleError<any>('EditProfile')));
+      .pipe(catchError(this.handleError<any>('uploadPicture')));
   }
 
 
@@ -84,6 +86,15 @@ export class GetProfileService {
       { headers: this.httpOptions.headers, params: { userId } }).pipe();
 
   }
+
+
+  public sendFriendRequest(field: string, value: string): Observable<Profile> {
+    return this.http.post<Profile>(this.profilesUrl + '',
+      null, { params: { key: value } }
+    ).pipe(catchError(this.handleError<any>('sendFriendRequest')));
+      //todo
+  }
+
 
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {

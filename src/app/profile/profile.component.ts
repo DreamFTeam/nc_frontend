@@ -5,6 +5,7 @@ import { PrivilegedService } from '../_services/privileged.service';
 import { Profile } from '../_models/profile';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AuthenticationService } from '../_services/authentication.service';
+import { QuizService } from '../_services/quiz.service';
 
 
 @Component({
@@ -27,6 +28,7 @@ export class ProfileComponent implements OnInit {
               private getProfileService: GetProfileService,
               private privilegedService: PrivilegedService,
               private sanitizer: DomSanitizer,
+              private quizService:QuizService,
               private authenticationService: AuthenticationService,
   ) {
     this.role = authenticationService.currentUserValue.role;
@@ -120,6 +122,11 @@ export class ProfileComponent implements OnInit {
 
   goToQuiz(id: string) {
     this.router.navigate(['/viewquiz/' + id]);
+  }
+
+  markQuizFavourite(quiz: any) {
+    quiz.favourite =  !quiz.favourite;
+    this.quizService.markAsFavorite(quiz.id).subscribe();
   }
 
 }
