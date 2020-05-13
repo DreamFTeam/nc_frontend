@@ -47,6 +47,7 @@ import {GameSettingsComponent} from './game-settings/game-settings.component';
 import {GameConnectorComponent} from './game-connector/game-connector.component';
 import {QRCodeModule} from 'angularx-qrcode';
 import { AnonimInitComponent } from './anonim-init/anonim-init.component';
+import { MessageModalComponent } from './message-modal/message-modal.component';
 
 const appRoutes: Routes = [];
 
@@ -84,7 +85,8 @@ const appRoutes: Routes = [];
     QuestionEditorSelectorComponent,
     GameSettingsComponent,
     GameConnectorComponent,
-    AnonimInitComponent],
+    AnonimInitComponent,
+    MessageModalComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
