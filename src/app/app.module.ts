@@ -43,6 +43,7 @@ import {ShortQuizListComponent} from './short-quiz-list/short-quiz-list.componen
 import {QuestionEditorSelectorComponent} from './question-editor-selector/question-editor-selector.component';
 import {JwtInterceptor} from './_helpers/jwt.interceptor';
 import {ErrorInterceptor} from './_helpers/error.interceptor';
+import { SuggestionsComponent } from './suggestions/suggestions.component';
 
 const appRoutes: Routes = [];
 
@@ -78,7 +79,8 @@ const appRoutes: Routes = [];
     AnnouncementEditComponent,
     ShortQuizListComponent,
     QuestionEditorSelectorComponent,
-    BadgeEditorComponent],
+    BadgeEditorComponent,
+    SuggestionsComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
