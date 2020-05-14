@@ -14,6 +14,7 @@ import { QuizValidationComponent } from './quiz-validation/quiz-validation.compo
 import { AnnouncementEditComponent } from './announcement-edit/announcement-edit.component';
 import { AuthGuard } from './guards/editor.guard';
 import { Role } from './_models/role';
+import { ActivitiesComponent } from './activities/activities.component';
 
 
 const routes: Routes = [
@@ -31,6 +32,7 @@ const routes: Routes = [
   { path: 'validation', component: ValidationPageComponent},
   { path: 'validation/:id', component: QuizValidationComponent},
   { path: 'editannouncements', component: AnnouncementEditComponent},
+  { path: 'activities', component: ActivitiesComponent},
   { path: '**', redirectTo: ''}
 ];
 

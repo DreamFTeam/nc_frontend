@@ -1,0 +1,19 @@
+<div class="container-sm p-4">
+    <div *ngFor="let act of activities; let i = index">
+        <hr class="my-4" *ngIf="i != 0">
+        <div class="row">
+            <div class="col-sm-10">
+                <p style="font-size: 20px;" routerLink="/profile/{{act.username}}">
+                    <img *ngIf="act.imageContent !== null" [src]='act.imageContent' class="img-thumbnail avatar">
+                    <img *ngIf="act.imageContent === null" src="../assets/img/nopicture.jpg" class="img-thumbnail avatar">
+                    <strong class="ml-2">{{act.username}}</strong>
+                    </p>
+                
+            </div>
+            <div class="col-sm-2 float-right">
+                <p style="font-style: italic;">{{act.datetime | date}}</p>
+            </div>
+        </div>
+        <p class="mt-2">{{act.content}}</p>
+    </div>
+</div>
