@@ -27,7 +27,8 @@
                 <div class="col-sm-8"> 
 
                     <label>Title:</label>
-                    <input [disabled]="quiz.published" class="form-control" type="text"  [(ngModel)]="quiz.title" placeholder="Title of quiz">
+                    <input [disabled]="quiz.published" class="form-control" type="text" maxlength="50"
+                    [(ngModel)]="quiz.title" placeholder="Title of quiz">
 
                     
                     <div class="mt-2">
@@ -51,7 +52,7 @@
 
                     
                     <label>Description:</label >
-                    <textarea class="form-control" rows="5" [disabled]="quiz.published"
+                    <textarea class="form-control" rows="5" [disabled]="quiz.published" maxlength="250"
                     [(ngModel)]="quiz.description" placeholder="Description of quiz"></textarea>
                 </div>
             </div>

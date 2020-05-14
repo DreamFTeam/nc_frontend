@@ -10,7 +10,8 @@
       </button>
     </div>
     <div class="col-sm-10 mx-auto">
-      <input [disabled]="!available" class="form-control"  [(ngModel)]="question.rightOptions[i]" placeholder="answer {{i+1}}">
+      <input maxlength="250" [disabled]="!available" 
+      class="form-control"  [(ngModel)]="question.rightOptions[i]" placeholder="answer {{i+1}}">
     </div>
 
 </div>
@@ -37,7 +38,8 @@
   </div>
 
   <div class="col-sm-10 mx-auto">
-    <input [disabled]="!available" class="form-control"  [(ngModel)]="question.otherOptions[i]" placeholder="answer {{i+1}}">
+    <input maxlength="250" [disabled]="!available" class="form-control"
+      [(ngModel)]="question.otherOptions[i]" placeholder="answer {{i+1}}">
   </div>
 
 

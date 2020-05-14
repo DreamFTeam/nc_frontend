@@ -34,7 +34,6 @@ export class QuizComponent implements OnInit {
 
 
     // TODO : validation QUIZ AND QUESTION (LINE LENGTH etc.)
-    // IMAGE SWITCH
 
   constructor(private quizService: QuizService, private questionService: QuestionService,
      private activateRoute: ActivatedRoute, private router: Router,private sanitizer: DomSanitizer) { 

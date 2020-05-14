@@ -3,7 +3,8 @@
         {{ (i+1) }}
     </div>
     <div class="grid-item">
-      <input [disabled]="!available" class="form-control" style="width: 100%;"  [(ngModel)]="question.rightOptions[i]">
+      <input maxlength="250" [disabled]="!available" class="form-control"
+       style="width: 100%;"  [(ngModel)]="question.rightOptions[i]">
     </div>
     <div class="grid-item">
         <button *ngIf="isRemovable() && available" class="remb" (click)="removeAnswer(i)">
