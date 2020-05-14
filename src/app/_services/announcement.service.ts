@@ -13,15 +13,6 @@ import { AuthenticationService } from './authentication.service';
 })
 export class AnnouncementService {
   url = `${environment.apiUrl}`+"announcement";
-  httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-    })
-  };
-  httpOptions2 = {
-    headers: new HttpHeaders({
-    })
-  };
   user: User;
   
   constructor(private http: HttpClient, private sanitizer: DomSanitizer,
@@ -32,7 +23,6 @@ export class AnnouncementService {
   //GET list of announcements in range
   getAnnouncements(start: number, amount: number): Observable<Announcement[]>{
     const options = {
-      headers: this.httpOptions.headers,
       params: new HttpParams().set('start', start.toString()).set('amount', amount.toString())
 
     }
@@ -46,11 +36,8 @@ export class AnnouncementService {
 
   //GET amount of announcements for pagination
   getAmount(): Observable<number>{
-    const options = {
-      headers: this.httpOptions.headers
-    }
 
-    return this.http.get<number>(this.url + '/getamount', options);
+    return this.http.get<number>(this.url + '/getamount');
   }
 
   //POST new announcement
@@ -66,7 +53,7 @@ export class AnnouncementService {
     }
     
 
-    return this.http.post<Announcement>(this.url + '/create', formData, this.httpOptions2)
+    return this.http.post<Announcement>(this.url + '/create', formData)
       .pipe(map(data => {
         console.log(data);
         return new Announcement().deserialize(data, this.sanitizer);
@@ -89,7 +76,7 @@ export class AnnouncementService {
       formData.append("newimage","true");
     }
 
-    return this.http.post<Announcement>(this.url + '/edit', formData, this.httpOptions2)
+    return this.http.post<Announcement>(this.url + '/edit', formData)
       .pipe(map(data => {
         console.log(data);
         return new Announcement().deserialize(data, this.sanitizer);
@@ -110,11 +97,8 @@ export class AnnouncementService {
   //POST delete announcement
   deleteAnnouncement(id: string): Observable<Announcement>{
     console.log('in delete');
-    const options = {
-      headers: this.httpOptions.headers
-    };
 
-    return this.http.delete<Announcement>(this.url + '/delete/'+id, options);
+    return this.http.delete<Announcement>(this.url + '/delete/'+id);
   }
 
   //validate announcement

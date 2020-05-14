@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {RouterModule} from '@angular/router';
+import {RouterModule, Router} from '@angular/router';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {LogInComponent} from '../log-in/log-in.component';
 import {SignUpComponent} from '../sign-up/sign-up.component';
@@ -15,7 +15,8 @@ export class NavBarComponent implements OnInit {
   public signedIn: boolean;
   public privileged;
   constructor(private modalService: NgbModal,
-              private authenticationService: AuthenticationService) {
+              private authenticationService: AuthenticationService,
+              private router: Router) {
   }
 
   ngOnInit(): void {
@@ -45,5 +46,6 @@ export class NavBarComponent implements OnInit {
     this.isMenuCollapsed = true;
     this.authenticationService.signoutUser();
     window.location.reload();
+    this.router.navigate(['/'])
   }
 }
