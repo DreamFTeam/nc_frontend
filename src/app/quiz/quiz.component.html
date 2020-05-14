@@ -3,7 +3,7 @@
     <ngb-toast
     *ngFor="let toast of toasts"
     [class]="toast.classname"
-    [autohide]="true"
+    [autohide]="false"
     [delay]="5000"
     (hide)="removeToast(toast)"
     >
