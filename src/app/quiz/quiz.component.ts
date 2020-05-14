@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { QuizService } from '../_services/quiz.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { QuestionService } from '../_services/question.service';
@@ -19,7 +19,7 @@ export class QuizComponent implements OnInit {
   categoryLabel: string = "Categories";
 
   quiz: ExtendedQuiz;
-  questions: ExtendedQuestion[] = [];
+  questions: ExtendedQuestion[];
 
   questionSelector: ExtendedQuestion;
 
@@ -28,30 +28,31 @@ export class QuizComponent implements OnInit {
 
 
   quizLoading: boolean;
+  questionLoading: boolean;
   faSpinner = faSpinner;
 
-  questionAlerts: Alert[] = [];
 
+  toasts: any[];
 
-    // TODO : validation QUIZ AND QUESTION (LINE LENGTH etc.)
-    // IMAGE SWITCH
 
   constructor(private quizService: QuizService, private questionService: QuestionService,
      private activateRoute: ActivatedRoute, private router: Router,private sanitizer: DomSanitizer) { 
-       
+       this.toasts = [];
+       this.quizLoading = true;
+       this.questionLoading=false;
+       this.questions = [];
   }
 
   ngOnInit(): void {
-    this.quizLoading = true;
-
       const id = this.activateRoute.snapshot.params.id;
       if(id === undefined){
         this.initCreateQuiz();
       }else{
         this.getAllQuiz(id)
       }
-
   }
+
+  
 
 
   initCreateQuiz() {
@@ -105,7 +106,7 @@ export class QuizComponent implements OnInit {
         ans => this.mapGettedQuestions(ans),
         err => {
           console.log(err);
-          alert("Couldn`t get questions :(");
+          this.toastAdd('Couldn`t get questions :(', { classname: 'bg-danger text-light'});
         });
 
     //Find quiz
@@ -114,7 +115,7 @@ export class QuizComponent implements OnInit {
         ans => this.setGettedQuiz(ans),
         err => {
           console.log(err);
-          alert("Couldn`t get this quiz :(");
+          this.toastAdd('Couldn`t get this quiz :(', { classname: 'bg-danger text-light'});
         });
 
   }
@@ -151,21 +152,26 @@ export class QuizComponent implements OnInit {
 
 
   saveQuestion() {
-    const alert = this.questionService.questionValidator(this.questionSelector);
-    if (alert === undefined) {
+    const validated = this.questionService.questionValidator(this.questionSelector);
+
+    console.log(validated);
+    if (validated.length == 0) {
+      this.questionLoading = true;
       if (this.questionSelector.id === "") {
         this.questionService.sendQuestion(this.questionSelector, true).subscribe(
           ans => this.setSavedQuestion(ans),
-          err => console.log(err));
+          err => this.setSavedQuestionError(err));
 
       } else {
         this.questionService.sendQuestion(this.questionSelector, false).subscribe(
           ans => this.setSavedQuestion(ans),
-          err => console.log(err));
+          err => this.setSavedQuestionError(err));
       }
-      this.questionAlerts = [];
+
     }else{
-      this.questionAlerts.push(alert);
+      this.toasts = [];
+      validated.forEach( x => 
+        this.toastAdd(x, { classname: 'bg-danger text-light'}));
     }
   }
 
@@ -177,12 +183,20 @@ export class QuizComponent implements OnInit {
     this.questions[index] = ans;
     
     console.log(this.questions);
-    alert("Question edited!");
+    this.toastAdd('Question saved!', { classname: 'bg-success text-light'});
+    this.questionLoading = false;
+  }
 
+  setSavedQuestionError(err){
+    console.log(err)
+    this.toastAdd("Question could not be saved :(", { classname: 'bg-danger text-light'});
+    this.questionLoading = false;
   }
 
   saveQuiz() {
-    if (this.quiz.title !== "" && this.quiz.description !== "") {
+    const validated = this.quizService.quizValidator(this.quiz);
+
+    if (validated.length == 0) {
       this.quizLoading = true;
 
       if (this.quiz.id === "") {
@@ -192,7 +206,9 @@ export class QuizComponent implements OnInit {
       }
       
     } else {
-      alert("Title and description must be provided");
+      this.toasts = [];
+      validated.forEach( x => 
+        this.toastAdd(x, { classname: 'bg-danger text-light'}))
     }
   }
 
@@ -200,14 +216,14 @@ export class QuizComponent implements OnInit {
     this.quizService.createQuiz(this.quiz, this.file).subscribe(
 
       ans => {
-        alert("Created!");
+        this.toastAdd('Created!', { classname: 'bg-success text-light'});
         this.quizLoading = false;
         this.router.navigate(['/quizedit/' + ans.id])
       },
 
       err => {
         console.log(err);
-        alert("Sorry, couldn`t create your quiz :(")
+        this.toastAdd('Sorry, couldn`t create your quiz :(', { classname: 'bg-danger text-light'});
       });
   }
 
@@ -215,7 +231,7 @@ export class QuizComponent implements OnInit {
     this.quizService.saveQuiz(this.quiz, this.file).subscribe(
 
       ans => {
-        alert("Saved!");
+        this.toastAdd('Saved!', { classname: 'bg-success text-light'});
         this.quiz = ans;
         this.quizLoading = false;
         console.log(this.quiz.published);
@@ -227,7 +243,7 @@ export class QuizComponent implements OnInit {
 
       err => {
         console.log(err);
-        alert("Sorry, couldn`t save your quiz :(")
+        this.toastAdd('Sorry, couldn`t save your quiz :(', { classname: 'bg-danger text-light'});
       });
   }
 
@@ -236,12 +252,12 @@ export class QuizComponent implements OnInit {
     this.quizService.publishQuiz(this.quiz.id)
       .subscribe(
         ans => {
-          alert("Published!")
+          this.toastAdd('Published!', { classname: 'bg-success text-light'});
           this.quiz.published = true;
         },
         err => {
           console.log(err)
-          alert("Sorry, couldn`t publish your quiz :(")
+          this.toastAdd('Sorry, couldn`t publish your quiz :(', { classname: 'bg-danger text-light'});
         });
   }
 
@@ -254,7 +270,7 @@ export class QuizComponent implements OnInit {
           ans => this.removeQuestionFromList(),
           err => {
             console.log(err);
-            alert("Sorry, Couldn`t delete this question :(");
+            this.toastAdd('Sorry, Couldn`t delete this question :(', { classname: 'bg-danger text-light'});
           });
     }
   }
@@ -263,7 +279,7 @@ export class QuizComponent implements OnInit {
     const index = this.questions.findIndex( el => el === this.questionSelector);
     this.questions.splice(index, 1);
     this.questionSelector = undefined
-    alert("Question removed");
+    this.toastAdd('Question removed', { classname: 'bg-success text-light'});
   }
 
   quizImage(e){
@@ -287,17 +303,20 @@ export class QuizComponent implements OnInit {
     this.thumbnail = null;
   }
 
-
-
-  //close alert
-  close(alert: Alert) {
-    this.questionAlerts.splice(this.questionAlerts.indexOf(alert), 1);
+  toastAdd(textOrTpl: string | TemplateRef<any>, options: any = {}) {
+    this.toasts.push({ textOrTpl, ...options });
   }
+
+  removeToast(toast) {
+    this.toasts = this.toasts.filter(t => t !== toast);
+  }
+
 
   
   isQuizCreated(){ return this.quiz !== undefined && this.quiz.id !== ""; }
   isPublishAvailable(){ return this.questions.filter(q => q.id.length > 0).length > 0 && !this.quiz.published }
-  isQuestionCreatorAvailable(){ return !this.quizLoading && !this.quiz.published && this.isQuizCreated() }
+  isQuestionCreatorAvailable(){ return !this.questionLoading && !this.quizLoading && !this.quiz.published && this.isQuizCreated() }
   isPlusActive(){ return this.questionSelector.id !== ""}
+  isTemplate(toast){return toast.textOrTpl instanceof TemplateRef}
 
 }
