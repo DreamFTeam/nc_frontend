@@ -50,6 +50,7 @@ import { AnonymInitComponent } from './anonym-init/anonym-init.component';
 import { MessageModalComponent } from './message-modal/message-modal.component';
 import { AnonymService } from './_services/anonym.service';
 import { GameQuestionComponent } from './game-question/game-question.component';
+import {GameResultComponent} from './game-result/game-result.component';
 
 const appRoutes: Routes = [];
 
@@ -89,7 +90,9 @@ const appRoutes: Routes = [];
     GameConnectorComponent,
     AnonymInitComponent,
     MessageModalComponent,
-    GameQuestionComponent],
+    GameQuestionComponent,
+    GameResultComponent
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
