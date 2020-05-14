@@ -24,12 +24,12 @@ export class ProfileComponent implements OnInit {
 
 
   constructor(private router: Router,
-              private route: ActivatedRoute,
-              private getProfileService: GetProfileService,
-              private privilegedService: PrivilegedService,
-              private sanitizer: DomSanitizer,
-              private quizService: QuizService,
-              private authenticationService: AuthenticationService,
+    private route: ActivatedRoute,
+    private getProfileService: GetProfileService,
+    private privilegedService: PrivilegedService,
+    private sanitizer: DomSanitizer,
+    private quizService: QuizService,
+    private authenticationService: AuthenticationService,
   ) {
     this.role = authenticationService.currentUserValue.role;
   }
@@ -71,7 +71,7 @@ export class ProfileComponent implements OnInit {
 
   edit() {
     this.router.navigate(['/editprofile'],
-        { state: { data: this.profile.username } });
+      { state: { data: this.profile.username } });
   }
 
   editAdmin(isAnUpgrade: boolean) {
@@ -107,8 +107,8 @@ export class ProfileComponent implements OnInit {
           if (input['imageContent'] !== null) {
             input['imageContent'] =
               this.sanitizer.bypassSecurityTrustUrl
-              ('data:image\/(png|jpg|jpeg);base64,'
-                + input['imageContent']);
+                ('data:image\/(png|jpg|jpeg);base64,'
+                  + input['imageContent']);
           }
           return input;
         });
@@ -125,13 +125,23 @@ export class ProfileComponent implements OnInit {
   }
 
   markQuizFavourite(quiz: any) {
-    quiz.favourite =  !quiz.favourite;
+    quiz.favourite = !quiz.favourite;
     this.quizService.markAsFavorite(quiz.id).subscribe();
   }
 
+  sendFriendRequest() {
+    this.getProfileService.sendFriendRequest(this.profile.id).subscribe(
+      () => this.profile.outgoingRequest = true
+    );
+  }
 
-  sendFriendRequest(profile: Profile) {
-    this.getProfileService.sendFriendRequest(profile.id).subscribe()
+  processFriendRequest(value: boolean) {
+    this.getProfileService.processFriendRequest(this.profile.id, value.toString()).subscribe(
+      () => {
+        this.profile.friend = value;
+        this.profile.incomingRequest = false;
+      }
+    );
   }
 
 

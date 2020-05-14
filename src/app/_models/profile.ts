@@ -9,7 +9,9 @@ export class Profile {
   online: boolean;
   activated: boolean;
   lastTimeOnline: Date;
-
+  friend: boolean;
+  outgoingRequest: boolean;
+  incomingRequest: boolean;
 
   static deserialize(input: any, sanitizer: DomSanitizer): Profile {
 

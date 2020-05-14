@@ -93,6 +93,13 @@ export class GetProfileService {
   }
 
 
+  public processFriendRequest(targetId: string, toAccept: string): Observable<Profile> {
+    return this.http.post<Profile>(this.profilesUrl + 'friends/proceed',
+    null, { headers: this.httpOptions.headers,  params: { targetId, toAccept }}
+    ).pipe(catchError(this.handleError<any>('sendFriendRequest')));
+  }
+
+
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
 
