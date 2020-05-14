@@ -1,5 +1,5 @@
 
-<div style="position: fixed; right: 0;">
+<div class="toastpos">
     <ngb-toast
     *ngFor="let toast of toasts"
     [class]="toast.classname"
@@ -15,6 +15,28 @@
     <ng-template #text>{{ toast.textOrTpl }}</ng-template>
 </ngb-toast>
 </div>
+<!-- <div class="questionpos">
+    <h3>Questions:</h3>
+    <div class="overflow-auto">
+        <div *ngIf="isQuizCreated()" class="row m-4">
+            <div class="col-sm-3">
+                
+                <div *ngFor="let question of questions; let i = index">
+                    <button class="btn mr-1 mt-1 rounded" (click)="showQuestion(i)"
+                        [ngClass]="{'buttonpn': question.id === '', 'buttonpr': question.id !== ''}">
+                        <div *ngIf="question.title !== ''">{{question.title}}</div>
+                        <div *ngIf="question.title === ''">New question</div>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <button class="btn buttonpr rounded mt-1" (click)="addNewQuestion()">+</button>
+</div> -->
+
+
+
 <div role="main">
     <div class="container-sm mt-2 p-3">
         <div *ngIf="!quizLoading">
@@ -87,21 +109,21 @@
 
         
             <!-- THIS THING MUST BE ON THE LEFT-->
-
-        <div *ngIf="isQuizCreated()" class="row m-4">
+        <h3>Questions:</h3>
+        <div *ngIf="isQuizCreated()" class="row m-4 questionpos">
             <div class="col-sm-3">
-                <h3>Questions:</h3>
+               
                 <div *ngFor="let question of questions; let i = index">
-                    <button class="btn mr-1 mt-1 rounded" (click)="showQuestion(i)"
+                    <button class="btn mr-1 mt-1 rounded" (click)="showQuestion(i)" 
                         [ngClass]="{'buttonpn': question.id === '', 'buttonpr': question.id !== ''}">
                         <div *ngIf="question.title !== ''">{{question.title}}</div>
                         <div *ngIf="question.title === ''">New question</div>
                     </button>
                 </div>
-                <button class="btn buttonpr rounded mt-1" (click)="addNewQuestion()">+</button>
+                
             </div>
         </div>
-
+        <button class="btn buttonpr rounded mt-1 ml-2" (click)="addNewQuestion()">+</button>
 
         <!-- THIS THING END-->
         

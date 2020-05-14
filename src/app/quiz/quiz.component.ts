@@ -19,7 +19,7 @@ export class QuizComponent implements OnInit {
   categoryLabel: string = "Categories";
 
   quiz: ExtendedQuiz;
-  questions: ExtendedQuestion[] = [];
+  questions: ExtendedQuestion[];
 
   questionSelector: ExtendedQuestion;
 
@@ -28,22 +28,23 @@ export class QuizComponent implements OnInit {
 
 
   quizLoading: boolean;
+  questionLoading: boolean;
   faSpinner = faSpinner;
 
-  questionAlerts: Alert[] = [];
+  questionAlerts: Alert[];
 
-  toasts: any[] = [];
+  toasts: any[];
 
-
-    // TODO : validation QUIZ AND QUESTION (LINE LENGTH etc.)
 
   constructor(private quizService: QuizService, private questionService: QuestionService,
      private activateRoute: ActivatedRoute, private router: Router,private sanitizer: DomSanitizer) { 
-       
+       this.questionAlerts = [];
+       this.toasts = [];
+       this.quizLoading = true;
+       this.questions = [];
   }
 
   ngOnInit(): void {
-    this.quizLoading = true;
       const id = this.activateRoute.snapshot.params.id;
       if(id === undefined){
         this.initCreateQuiz();

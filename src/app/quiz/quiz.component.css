@@ -32,29 +32,6 @@ button.removeb {
     line-height: 24px;
 }
 
-.left {
-    float: left;
-    width:30%;
-    margin: 0px;
-}
-
-.right {
-    width: 65%;
-    float: left;
-}
-
-.inline { 
-    width: 50%;
-    float: left;
-    margin :10px;
-}
-
-.block { 
-    float:none;
-    display: block;  
-}
-
-
 .button{
     border: none;
     padding: 5px;
@@ -78,20 +55,21 @@ button.removeb {
     height: 20px;
   }
 
-  
-  .grid {
-    display: grid;
-    grid-template-columns: 25% 75%;
-    padding: 10px;
-  }
-  .grid-item {
-    padding: 20px;
-    font-size: 14px;
-  }
-
   .badge{
     font-size: 12px;
   }
 
+  .toastpos{
+    position: fixed;
+    right: 0;
+    width: 20%;
+    z-index:1000
+  }
+
+  .questionpos{
+    max-height: 250px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
 
 
