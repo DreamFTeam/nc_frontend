@@ -89,22 +89,25 @@
             </div>
 
         
-        <h3>Questions:</h3>
-        <div *ngIf="isQuizCreated()" class="row m-4 p-3 questionpos">
-            <div class="col-sm-3">
-               
-                <div *ngFor="let question of questions; let i = index">
-                    <button class="btn mr-1 mt-1 rounded" (click)="showQuestion(i)" 
-                        [ngClass]="{'buttonpn': question.id === '', 'buttonpr': question.id !== ''}">
-                        <div *ngIf="question.title !== ''">{{question.title}}</div>
-                        <div *ngIf="question.title === ''">New question</div>
-                    </button>
+            <div *ngIf="isQuizCreated()">
+                <h3>Questions:</h3>
+                <div  class="row m-4 p-3 questionpos">
+                    <div class="col-sm-3">
+            
+                        <div *ngFor="let question of questions; let i = index">
+                            <button class="btn mr-1 mt-1 rounded" (click)="showQuestion(i)"
+                                [ngClass]="{'buttonpn': question.id === '', 'buttonpr': question.id !== ''}">
+                                <div *ngIf="question.title !== ''">{{question.title}}</div>
+                                <div *ngIf="question.title === ''">New question</div>
+                            </button>
+                        </div>
+            
+                    </div>
                 </div>
-                
             </div>
-        </div>
-        <button class="btn buttonpr rounded mt-1 ml-2" (click)="addNewQuestion()">Add question</button>
-        
+            
+            <button *ngIf="isQuestionCreatorAvailable()" class="btn buttonpr rounded mt-1 ml-2" (click)="addNewQuestion()">Add
+                question</button>
     </div>
 
     <div style="text-align: center;" *ngIf="quizLoading">
