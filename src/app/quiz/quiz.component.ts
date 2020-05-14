@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { QuizService } from '../_services/quiz.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { QuestionService } from '../_services/question.service';
@@ -32,6 +32,8 @@ export class QuizComponent implements OnInit {
 
   questionAlerts: Alert[] = [];
 
+  toasts: any[] = [];
+
 
     // TODO : validation QUIZ AND QUESTION (LINE LENGTH etc.)
 
@@ -42,15 +44,15 @@ export class QuizComponent implements OnInit {
 
   ngOnInit(): void {
     this.quizLoading = true;
-
       const id = this.activateRoute.snapshot.params.id;
       if(id === undefined){
         this.initCreateQuiz();
       }else{
         this.getAllQuiz(id)
       }
-
   }
+
+  
 
 
   initCreateQuiz() {
@@ -104,7 +106,7 @@ export class QuizComponent implements OnInit {
         ans => this.mapGettedQuestions(ans),
         err => {
           console.log(err);
-          alert("Couldn`t get questions :(");
+          this.toastAdd('Couldn`t get questions :(', { classname: 'bg-danger text-light'});
         });
 
     //Find quiz
@@ -113,7 +115,7 @@ export class QuizComponent implements OnInit {
         ans => this.setGettedQuiz(ans),
         err => {
           console.log(err);
-          alert("Couldn`t get this quiz :(");
+          this.toastAdd('Couldn`t get this quiz :(', { classname: 'bg-danger text-light'});
         });
 
   }
@@ -176,7 +178,7 @@ export class QuizComponent implements OnInit {
     this.questions[index] = ans;
     
     console.log(this.questions);
-    alert("Question edited!");
+    this.toastAdd('Question edited!', { classname: 'bg-success text-light'});
 
   }
 
@@ -191,6 +193,7 @@ export class QuizComponent implements OnInit {
       }
       
     } else {
+      //TODO : FOR TAGS AND CATEGS
       alert("Title and description must be provided");
     }
   }
@@ -199,14 +202,14 @@ export class QuizComponent implements OnInit {
     this.quizService.createQuiz(this.quiz, this.file).subscribe(
 
       ans => {
-        alert("Created!");
+        this.toastAdd('Created!', { classname: 'bg-success text-light'});
         this.quizLoading = false;
         this.router.navigate(['/quizedit/' + ans.id])
       },
 
       err => {
         console.log(err);
-        alert("Sorry, couldn`t create your quiz :(")
+        this.toastAdd('Sorry, couldn`t create your quiz :(', { classname: 'bg-danger text-light'});
       });
   }
 
@@ -214,7 +217,7 @@ export class QuizComponent implements OnInit {
     this.quizService.saveQuiz(this.quiz, this.file).subscribe(
 
       ans => {
-        alert("Saved!");
+        this.toastAdd('Saved!', { classname: 'bg-success text-light'});
         this.quiz = ans;
         this.quizLoading = false;
         console.log(this.quiz.published);
@@ -226,7 +229,7 @@ export class QuizComponent implements OnInit {
 
       err => {
         console.log(err);
-        alert("Sorry, couldn`t save your quiz :(")
+        this.toastAdd('Sorry, couldn`t save your quiz :(', { classname: 'bg-danger text-light'});
       });
   }
 
@@ -235,12 +238,12 @@ export class QuizComponent implements OnInit {
     this.quizService.publishQuiz(this.quiz.id)
       .subscribe(
         ans => {
-          alert("Published!")
+          this.toastAdd('Published!', { classname: 'bg-success text-light'});
           this.quiz.published = true;
         },
         err => {
           console.log(err)
-          alert("Sorry, couldn`t publish your quiz :(")
+          this.toastAdd('Sorry, couldn`t publish your quiz :(', { classname: 'bg-danger text-light'});
         });
   }
 
@@ -253,7 +256,7 @@ export class QuizComponent implements OnInit {
           ans => this.removeQuestionFromList(),
           err => {
             console.log(err);
-            alert("Sorry, Couldn`t delete this question :(");
+            this.toastAdd('Sorry, Couldn`t delete this question :(', { classname: 'bg-danger text-light'});
           });
     }
   }
@@ -262,7 +265,7 @@ export class QuizComponent implements OnInit {
     const index = this.questions.findIndex( el => el === this.questionSelector);
     this.questions.splice(index, 1);
     this.questionSelector = undefined
-    alert("Question removed");
+    this.toastAdd('Question removed', { classname: 'bg-success text-light'});
   }
 
   quizImage(e){
@@ -286,6 +289,13 @@ export class QuizComponent implements OnInit {
     this.thumbnail = null;
   }
 
+  toastAdd(textOrTpl: string | TemplateRef<any>, options: any = {}) {
+    this.toasts.push({ textOrTpl, ...options });
+  }
+
+  removeToast(toast) {
+    this.toasts = this.toasts.filter(t => t !== toast);
+  }
 
 
   //close alert
@@ -298,5 +308,6 @@ export class QuizComponent implements OnInit {
   isPublishAvailable(){ return this.questions.filter(q => q.id.length > 0).length > 0 && !this.quiz.published }
   isQuestionCreatorAvailable(){ return !this.quizLoading && !this.quiz.published && this.isQuizCreated() }
   isPlusActive(){ return this.questionSelector.id !== ""}
+  isTemplate(toast){return toast.textOrTpl instanceof TemplateRef}
 
 }
