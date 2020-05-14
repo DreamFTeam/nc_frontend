@@ -31,16 +31,15 @@ export class QuizComponent implements OnInit {
   questionLoading: boolean;
   faSpinner = faSpinner;
 
-  questionAlerts: Alert[];
 
   toasts: any[];
 
 
   constructor(private quizService: QuizService, private questionService: QuestionService,
      private activateRoute: ActivatedRoute, private router: Router,private sanitizer: DomSanitizer) { 
-       this.questionAlerts = [];
        this.toasts = [];
        this.quizLoading = true;
+       this.questionLoading=false;
        this.questions = [];
   }
 
@@ -153,21 +152,26 @@ export class QuizComponent implements OnInit {
 
 
   saveQuestion() {
-    const alert = this.questionService.questionValidator(this.questionSelector);
-    if (alert === undefined) {
+    const validated = this.questionService.questionValidator(this.questionSelector);
+
+    console.log(validated);
+    if (validated.length == 0) {
+      this.questionLoading = true;
       if (this.questionSelector.id === "") {
         this.questionService.sendQuestion(this.questionSelector, true).subscribe(
           ans => this.setSavedQuestion(ans),
-          err => console.log(err));
+          err => this.setSavedQuestionError(err));
 
       } else {
         this.questionService.sendQuestion(this.questionSelector, false).subscribe(
           ans => this.setSavedQuestion(ans),
-          err => console.log(err));
+          err => this.setSavedQuestionError(err));
       }
-      this.questionAlerts = [];
+
     }else{
-      this.questionAlerts.push(alert);
+      this.toasts = [];
+      validated.forEach( x => 
+        this.toastAdd(x, { classname: 'bg-danger text-light'}));
     }
   }
 
@@ -179,12 +183,20 @@ export class QuizComponent implements OnInit {
     this.questions[index] = ans;
     
     console.log(this.questions);
-    this.toastAdd('Question edited!', { classname: 'bg-success text-light'});
+    this.toastAdd('Question saved!', { classname: 'bg-success text-light'});
+    this.questionLoading = false;
+  }
 
+  setSavedQuestionError(err){
+    console.log(err)
+    this.toastAdd("Question could not be saved :(", { classname: 'bg-danger text-light'});
+    this.questionLoading = false;
   }
 
   saveQuiz() {
-    if (this.quiz.title !== "" && this.quiz.description !== "") {
+    const validated = this.quizService.quizValidator(this.quiz);
+
+    if (validated.length == 0) {
       this.quizLoading = true;
 
       if (this.quiz.id === "") {
@@ -194,8 +206,9 @@ export class QuizComponent implements OnInit {
       }
       
     } else {
-      //TODO : FOR TAGS AND CATEGS
-      alert("Title and description must be provided");
+      this.toasts = [];
+      validated.forEach( x => 
+        this.toastAdd(x, { classname: 'bg-danger text-light'}))
     }
   }
 
@@ -298,11 +311,6 @@ export class QuizComponent implements OnInit {
     this.toasts = this.toasts.filter(t => t !== toast);
   }
 
-
-  //close alert
-  close(alert: Alert) {
-    this.questionAlerts.splice(this.questionAlerts.indexOf(alert), 1);
-  }
 
   
   isQuizCreated(){ return this.quiz !== undefined && this.quiz.id !== ""; }
