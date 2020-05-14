@@ -7,6 +7,7 @@ import {SseService} from './sse.service';
 import {GameSession} from '../_models/game-session';
 import {catchError} from 'rxjs/operators';
 import {HandleErrorsService} from './handle-errors.service';
+import {AnonymService} from './anonym.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,8 @@ export class GameSettingsService {
 
   constructor(private http: HttpClient,
               private sseService: SseService,
-              private errorsService: HandleErrorsService) {
+              private errorsService: HandleErrorsService,
+              private anonymService: AnonymService) {
   }
 
   createGame(settings: any): Observable<Game> {
@@ -42,12 +44,13 @@ export class GameSettingsService {
   }
 
   // TODO Set images
-  getUsers(gameId: string): Observable<any> {
+  getSessions(gameId: string): Observable<any> {
     return this.http.get<any>(this.gameUrl + `sessions/${gameId}`, this.httpOptions);
   }
 
-  setReady(gameId: string) {
-    return this.http.post(this.gameUrl + `game/${gameId}/ready`, this.httpOptions)
+  setReady(gameId: string, sessionId: string) {
+    return this.http.post(this.gameUrl + `game/${gameId}/ready`, {},
+      {headers: this.httpOptions.headers, params: {sessionId}})
       .pipe(catchError(this.errorsService.handleError('setReady')));
   }
 
@@ -57,4 +60,10 @@ export class GameSettingsService {
       .pipe(catchError(this.errorsService.handleError('startGame')));
   }
 
+  quitGame(sessionId: string) {
+    this.anonymService.removeAnonym();
+    return this.http.post(this.gameUrl + `quit`, null,
+      {headers: this.httpOptions.headers, params: {sessionId}})
+      .pipe(catchError(this.errorsService.handleError('quitGame')));
+  }
 }

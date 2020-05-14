@@ -2,7 +2,7 @@
   <div class="container">
         <div class="row">
           <div class="col-3">
-            <div class="input-group">
+            <div *ngIf="!admin" class="input-group">
                           <input type="text"
                                  class="rounded-left form-control"
                                  [(ngModel)]="accessCode"
@@ -11,7 +11,7 @@
                                  placeholder="Enter access code"
                                  aria-label="Enter access code"
                                  aria-describedby="button-addon">
-              <div class="input-group-append">
+              <div *ngIf="!admin" class="input-group-append">
                 <button
                   (click)="join()"
                   class="btn btn-light border-0 btn-outline-secondary"

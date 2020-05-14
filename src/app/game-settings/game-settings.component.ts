@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import {NgForm} from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {QuestionService} from '../_services/question.service';
 import {GameSettingsService} from '../_services/game-settings.service';
+import {AuthenticationService} from '../_services/authentication.service';
+import {Role} from '../_models/role';
+import {ModalMessageService} from '../_services/modal-message.service';
 
 @Component({
   selector: 'app-game-settings',
@@ -24,9 +26,16 @@ export class GameSettingsComponent implements OnInit {
   constructor(private activateRoute: ActivatedRoute,
               private questionService: QuestionService,
               private gameSettingsService: GameSettingsService,
-              private router: Router) { }
+              private router: Router,
+              private authenticationService: AuthenticationService,
+              private modalMessageService: ModalMessageService) {
+  }
 
   ngOnInit(): void {
+    if (this.authenticationService.currentUserValue && this.authenticationService.currentUserValue.role !== Role.User) {
+      this.modalMessageService.show('Access denied.', 'You cannot play on this account.');
+      this.router.navigateByUrl('/');
+    }
     this.quizId = this.activateRoute.snapshot.paramMap.get('id');
     this.questionService.questionsTotalSize(this.quizId).subscribe(
       data => this.questionsAmount = data);
@@ -48,10 +57,9 @@ export class GameSettingsComponent implements OnInit {
     this.gameSettingsService.createGame(settings).subscribe(
       game => {
         console.log(game);
-        this.gameSettingsService.join(game.accessId).subscribe();
-        this.router.navigateByUrl(`game/${game.id}/lobby`);
+        this.router.navigateByUrl(`join/${game.accessId}`);
       }
-      );
+    );
     this.loading = true;
   }
 }

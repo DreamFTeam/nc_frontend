@@ -6,6 +6,7 @@ import {ModalMessageService} from '../_services/modal-message.service';
 import {GameSettingsService} from '../_services/game-settings.service';
 import {Router} from '@angular/router';
 import {AuthenticationService} from '../_services/authentication.service';
+import {Role} from '../_models/role';
 
 
 const PAGE_SIZE = 16;
@@ -24,8 +25,9 @@ export class QuizListComponent implements OnInit {
   totalSize$: Observable<number>;
   quizList$: Observable<ExtendedQuizPreview[]>;
   mockImageUrl = '../../assets/img/quiz.jpg';
-  private accessCodeLoading: boolean;
+  accessCodeLoading: boolean;
   canCreate: boolean;
+  admin: boolean;
 
   constructor(private quizListService: QuizListService,
               private modalMessageService: ModalMessageService,
@@ -40,6 +42,8 @@ export class QuizListComponent implements OnInit {
     this.getTotalSize();
     this.getQuizzes(this.page);
     this.canCreate = this.authenticationService.currentUserValue != null;
+    this.admin = this.authenticationService.currentUserValue
+      && this.authenticationService.currentUserValue.role !== Role.User;
   }
 
   getQuizzes(p: number): void {
