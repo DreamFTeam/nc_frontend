@@ -5,6 +5,7 @@ import {LogInComponent} from '../log-in/log-in.component';
 import {SignUpComponent} from '../sign-up/sign-up.component';
 import {AuthenticationService} from '../_services/authentication.service';
 import {GameSettingsService} from '../_services/game-settings.service';
+import {Role} from '../_models/role';
 
 @Component({
   selector: 'app-nav-bar',
@@ -15,6 +16,7 @@ export class NavBarComponent implements OnInit {
   public isMenuCollapsed = true;
   public signedIn: boolean;
   public privileged;
+  notification: boolean = true;
   constructor(private modalService: NgbModal,
               private authenticationService: AuthenticationService) {
   }
@@ -22,7 +24,7 @@ export class NavBarComponent implements OnInit {
   ngOnInit(): void {
     this.signedIn = (this.authenticationService.currentUserValue === undefined) ? false : true;
     this.privileged = (this.signedIn &&
-      this.authenticationService.currentUserValue.role !== 'ROLE_USER');
+      this.authenticationService.currentUserValue.role !== Role.User);
   }
 
 

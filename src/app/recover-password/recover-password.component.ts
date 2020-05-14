@@ -26,11 +26,11 @@ export class RecoverPasswordComponent implements OnInit {
 
   requestPasswordChange() {
     if (this.email == '' || this.email == null) {
-      alert('Enter the email!');
+      this.message = ('Enter the email!');
       return;
     }
     if (!this.email.match(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/)) {
-      alert('You wrote an incorrect email!');
+      this.message = ('You wrote an incorrect email!');
       return;
     }
     this.authenticationService.recoverPassword(this.email).subscribe(n => {
@@ -38,11 +38,7 @@ export class RecoverPasswordComponent implements OnInit {
         this.loading = false;
       },
       error => {
-        if (error.error) {
-          this.message = error.error.message;
-        } else {
-          this.message = 'An error occurred';
-        }
+        this.message = error;
         this.loading = false;
       });
     this.loading = true;

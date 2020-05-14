@@ -1,6 +1,5 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {QuestionService} from '../_services/question.service';
 import {GameSettingsService} from '../_services/game-settings.service';
 import {Game} from '../_models/game';
 import {SseService} from '../_services/sse.service';
@@ -15,17 +14,20 @@ import {ModalMessageService} from '../_services/modal-message.service';
   templateUrl: './game-connector.component.html',
   styleUrls: ['./game-connector.component.css']
 })
-export class GameConnectorComponent implements OnInit {
+export class GameConnectorComponent implements OnInit, OnDestroy {
   connectUrl = `${location.origin}/join/`;
   mockImageUrl = '../../assets/img/nopicture.jpg';
   sseGameConnectorUrl = `${environment.apiUrl}sse/stream/`;
 
   game: Game;
   // TODO add type
-  users = [];
-  usersIdReady: string[] = [];
+  sessions = [];
+  usersSessionsReady: string[] = [];
   creator: boolean;
   ready: boolean;
+  sessionId: string;
+
+  started: boolean;
 
   constructor(private activateRoute: ActivatedRoute,
               private gameSettingsService: GameSettingsService,
@@ -36,7 +38,10 @@ export class GameConnectorComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.authenticationService.currentUserValue.role !== Role.User) {
+    this.sessionId = localStorage.getItem('sessionid');
+    if (this.authenticationService.currentUserValue
+      && this.authenticationService.currentUserValue.role !== Role.User
+      && this.sessionId) {
       this.messageModal.show('Access denied', 'You don\'t have permissions.');
       this.router.navigateByUrl('/');
     }
@@ -56,27 +61,37 @@ export class GameConnectorComponent implements OnInit {
     this.subscribeOnUsersJoining(gameId);
     this.subscribeToUsersReady(gameId);
     this.subscribeToGameStart(gameId);
+    this.getSessions(gameId);
   }
 
-  getUsers(gameId: string) {
-    this.gameSettingsService.getUsers(gameId)
-      .subscribe(us => {
-        Object.assign(this.users, us);
-        for (const user of this.users) {
-          this.creator = user.is_creator
-            && this.authenticationService.currentUserValue.id === user.user_id;
-        }
-        console.log(this.users);
-      });
+  getSessions(gameId: string) {
+    this.gameSettingsService.getSessions(gameId)
+      .subscribe(ses => {
+          Object.assign(this.sessions, ses);
+          for (const session of this.sessions) {
+            if (this.sessionId === session.game_session_id) {
+              this.creator = session.is_creator;
+            }
+          }
+          console.log(this.creator);
+          console.log(this.sessions);
+          console.log(this.sessionId);
+        },
+        error => {
+          console.log(error)
+        });
   }
 
   setReady() {
     this.ready = true;
-    this.gameSettingsService.setReady(this.game.id).subscribe();
+    console.log(this.sessionId);
+    this.gameSettingsService.setReady(this.game.id, this.sessionId).subscribe();
   }
 
   startGame() {
+    this.started = true;
     this.gameSettingsService.startGame(this.game.id).subscribe(next => {
+      console.log(next);
     });
   }
 
@@ -84,16 +99,17 @@ export class GameConnectorComponent implements OnInit {
     this.sseService.getServerSentEvent(this.sseGameConnectorUrl + gameId, 'ready')
       .subscribe(next => {
           console.log('Ready ' + next.data);
-          if (!this.usersIdReady.includes(next.data)) {
-            this.usersIdReady.push(next.data);
-            console.log(this.usersIdReady);
+          if (!this.usersSessionsReady.includes(next.data)) {
+            this.usersSessionsReady.push(next.data);
+            console.log(this.usersSessionsReady);
           }
-          this.ready = this.usersIdReady.includes(this.authenticationService.currentUserValue.id);
+          this.ready = this.usersSessionsReady.includes(this.sessionId);
         }
       );
   }
 
   private subscribeToGameStart(gameId: string) {
+    console.log('GAME ID ' + gameId);
     this.sseService.getServerSentEvent(this.sseGameConnectorUrl + gameId, 'start')
       .subscribe(next => {
           console.log(next);
@@ -106,11 +122,17 @@ export class GameConnectorComponent implements OnInit {
     this.sseService.getServerSentEvent(this.sseGameConnectorUrl + gameId, 'join')
       .subscribe(() => {
         console.log('Join');
-        // Get user when they not added to db yet
-        // TODO
-        this.getUsers(gameId);
+        this.getSessions(gameId);
       });
   }
 
+  @HostListener('window:beforeunload', ['$event'])
+  beforeunloadHandler(event) {
+    // this.gameSettingsService.quitGame(this.sessionId);
+  }
+
+  ngOnDestroy(): void {
+    // this.gameSettingsService.quitGame(this.sessionId);
+  }
 
 }

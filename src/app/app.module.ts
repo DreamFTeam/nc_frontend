@@ -46,8 +46,9 @@ import {ErrorInterceptor} from './_helpers/error.interceptor';
 import {GameSettingsComponent} from './game-settings/game-settings.component';
 import {GameConnectorComponent} from './game-connector/game-connector.component';
 import {QRCodeModule} from 'angularx-qrcode';
-import { AnonimInitComponent } from './anonim-init/anonim-init.component';
+import { AnonymInitComponent } from './anonym-init/anonym-init.component';
 import { MessageModalComponent } from './message-modal/message-modal.component';
+import {AnonymService} from './_services/anonym.service';
 
 const appRoutes: Routes = [];
 
@@ -85,7 +86,7 @@ const appRoutes: Routes = [];
     QuestionEditorSelectorComponent,
     GameSettingsComponent,
     GameConnectorComponent,
-    AnonimInitComponent,
+    AnonymInitComponent,
     MessageModalComponent],
   imports: [
     BrowserModule,
@@ -101,7 +102,7 @@ const appRoutes: Routes = [];
     QRCodeModule
   ],
   entryComponents: [LogInComponent, SignUpComponent, RecoverPasswordComponent],
-  providers: [AuthenticationService, QuizListService, QuestionService, QuizService, QuizValidationListService,
+  providers: [AuthenticationService, QuizListService, QuestionService, QuizService, QuizValidationListService, AnonymService,
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
   ],

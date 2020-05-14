@@ -17,7 +17,8 @@ import { Role } from './_models/role';
 import {GameSettingsComponent} from './game-settings/game-settings.component';
 import {GameConnectorComponent} from './game-connector/game-connector.component';
 import {GameConnectionGuard} from './guards/game-connection.guard';
-import {AnonimInitComponent} from './anonim-init/anonim-init.component';
+import {AnonymInitComponent} from './anonym-init/anonym-init.component';
+import {GameCreatorGuard} from './guards/game-creator.guard';
 
 
 const routes: Routes = [
@@ -35,9 +36,9 @@ const routes: Routes = [
   { path: 'validation', component: ValidationPageComponent},
   { path: 'validation/:id', component: QuizValidationComponent},
   { path: 'editannouncements', component: AnnouncementEditComponent},
-  { path: 'quiz/:id/newgame', component: GameSettingsComponent },
+  { path: 'quiz/:id/newgame', canActivate: [GameCreatorGuard], component: GameSettingsComponent },
   { path: 'game/:id/lobby', component: GameConnectorComponent },
-  { path: 'join/:accessId', canActivate: [GameConnectionGuard], component: AnonimInitComponent },
+  { path: 'join/:accessId', canActivate: [GameConnectionGuard], component: AnonymInitComponent },
   { path: '**', redirectTo: ''}
 ];
 
