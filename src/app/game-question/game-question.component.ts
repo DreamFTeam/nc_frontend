@@ -1,14 +1,13 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { QuestionService } from '../_services/question.service';
-import { GameQuestionService } from '../_services/game-question.service';
-import { Question } from '../_models/question/question';
-import { OneToFour } from '../_models/question/onetofour';
-import { TrueFalse } from '../_models/question/truefalse';
-import { OpenAnswer } from '../_models/question/openanswer';
-import { SequenceAnswer } from '../_models/question/sequenceanswer';
-import { switchMap } from 'rxjs/operators';
-import { Game } from '../_models/game';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {QuestionService} from '../_services/question.service';
+import {GameQuestionService} from '../_services/game-question.service';
+import {OneToFour} from '../_models/question/onetofour';
+import {TrueFalse} from '../_models/question/truefalse';
+import {OpenAnswer} from '../_models/question/openanswer';
+import {SequenceAnswer} from '../_models/question/sequenceanswer';
+import {switchMap} from 'rxjs/operators';
+import {Game} from '../_models/game';
 
 @Component({
   selector: 'app-game-question',
@@ -17,20 +16,20 @@ import { Game } from '../_models/game';
 })
 export class GameQuestionComponent implements OnInit {
   game: Game = {
-    id: "",
+    id: '',
     startDatetime: new Date(),
     maxUsersCount: 0,
     numberOfQuestions: 0,
     roundDuration: 60,
     additionalPoints: false,
     breakTime: 30,
-    accessId: "",
-    quizId: ""
+    accessId: '',
+    quizId: ''
   };
   timeLeft: number = 100;
   interval;
   subscribeTimer: any;
-  questions: (OneToFour|TrueFalse|OpenAnswer|SequenceAnswer)[] = [];
+  questions: (OneToFour | TrueFalse | OpenAnswer | SequenceAnswer)[] = [];
   currQuestNumb: number = 0;
   curq;
   curq_image;
@@ -41,10 +40,13 @@ export class GameQuestionComponent implements OnInit {
 
   answf: string;
 
-  constructor(private gameQuestionService: GameQuestionService, private questionService: QuestionService, private activateRoute: ActivatedRoute, private router: Router) {
+  constructor(private gameQuestionService: GameQuestionService,
+              private questionService: QuestionService,
+              private activateRoute: ActivatedRoute,
+              private router: Router) {
     this.activateRoute.paramMap.pipe(
       switchMap(params => params.getAll('gameid')))
-     .subscribe(data => this.loadGameData(data));
+      .subscribe(data => this.loadGameData(data));
   }
 
   ngOnInit(): void {
@@ -55,22 +57,22 @@ export class GameQuestionComponent implements OnInit {
   }
 
   loadGameData(data) {
-    this.gameQuestionService.getGameData(data).subscribe(ans =>this.mapGettedGameData(ans));
+    this.gameQuestionService.getGameData(data).subscribe(ans => this.mapGettedGameData(ans));
   }
 
   loadQuestionData() {
-    this.questionService.getAllQuestions(this.game.quizId).subscribe(ans =>this.mapGettedQuestions(ans),err => this.getQuestionsErr(err));
+    this.questionService.getAllQuestions(this.game.quizId).subscribe(ans => this.mapGettedQuestions(ans), err => this.getQuestionsErr(err));
   }
 
   timer() {
     this.interval = setInterval(() => {
-      if(this.timeLeft > 0) {
+      if (this.timeLeft > 0) {
         this.timeLeft--;
       } else {
         this.nextQuestion();
         this.timeLeft = 100;
       }
-    }, this.game.roundDuration/100*1000)
+    }, this.game.roundDuration / 100 * 1000);
   }
 
   mapGettedGameData(ans) {
@@ -84,13 +86,13 @@ export class GameQuestionComponent implements OnInit {
     this.game.accessId = ans.accessId;
     this.game.quizId = ans.quizId;
     this.loadQuestionData();
-    console.log("Mapped game data: quizId - " + this.game.quizId + " startTime - " + this.game.startDatetime);
+    console.log('Mapped game data: quizId - ' + this.game.quizId + ' startTime - ' + this.game.startDatetime);
   }
 
-  mapGettedQuestions(ans){
+  mapGettedQuestions(ans) {
     console.log(ans);
-    for (let question of ans){
-      if(question.typeId === 1){
+    for (let question of ans) {
+      if (question.typeId === 1) {
         let rightAnswers: boolean[] = [];
         for (let i = 0; i < question.otherOptions.length; i++) {
           rightAnswers.push(false);
@@ -99,36 +101,36 @@ export class GameQuestionComponent implements OnInit {
           rightAnswers.push(true);
         }
 
-        this.questions.push(new OneToFour(question.id,question.title,question.content,
-          question.imageContent, question.points,question.quizId,question.typeId,
-          question.otherOptions.concat(question.rightOptions),rightAnswers));
+        this.questions.push(new OneToFour(question.id, question.title, question.content,
+          question.imageContent, question.points, question.quizId, question.typeId,
+          question.otherOptions.concat(question.rightOptions), rightAnswers));
       }
-      if(question.typeId === 2){
+      if (question.typeId === 2) {
         let otherOption: string;
-        if(question.rightOptions[0]){
-          otherOption = "false";
-        }else{
-          otherOption = "true";
+        if (question.rightOptions[0]) {
+          otherOption = 'false';
+        } else {
+          otherOption = 'true';
         }
 
-        this.questions.push(new TrueFalse(question.id,question.title,question.content,
-          question.imageContent, question.points,question.quizId,question.typeId,
-          otherOption,question.rightOptions[0]));
+        this.questions.push(new TrueFalse(question.id, question.title, question.content,
+          question.imageContent, question.points, question.quizId, question.typeId,
+          otherOption, question.rightOptions[0]));
       }
-      if(question.typeId === 3){
-        this.questions.push(new OpenAnswer(question.id,question.title,question.content,
-          question.imageContent, question.points,question.quizId,question.typeId,
+      if (question.typeId === 3) {
+        this.questions.push(new OpenAnswer(question.id, question.title, question.content,
+          question.imageContent, question.points, question.quizId, question.typeId,
           question.rightOptions[0]));
       }
-      if(question.typeId === 4){
-        this.questions.push(new SequenceAnswer(question.id,question.title,question.content,
-          question.imageContent, question.points,question.quizId,question.typeId,
+      if (question.typeId === 4) {
+        this.questions.push(new SequenceAnswer(question.id, question.title, question.content,
+          question.imageContent, question.points, question.quizId, question.typeId,
           question.rightOptions));
       }
     }
     this.curq = this.questions[this.currQuestNumb];
     this.curq_image = this.questions[this.currQuestNumb].image;
-    if(this.curq.typeId == 4) {
+    if (this.curq.typeId == 4) {
       let sqq: SequenceAnswer = this.curq;
       this.shuffled = sqq.rightAnswers.map((a) => ({sort: Math.random(), value: a})).sort((a, b) => a.sort - b.sort).map((a) => a.value);
     }
@@ -136,12 +138,12 @@ export class GameQuestionComponent implements OnInit {
     this.timer();
   }
 
-  nextQuestion(){
-    if(this.currQuestNumb < this.questions.length - 1 && this.currQuestNumb < this.game.numberOfQuestions - 1) {
+  nextQuestion() {
+    if (this.currQuestNumb < this.questions.length - 1 && this.currQuestNumb < this.game.numberOfQuestions - 1) {
       this.currQuestNumb++;
       this.curq = this.questions[this.currQuestNumb];
       this.curq_image = this.questions[this.currQuestNumb].image;
-      if(this.curq.typeId == 4) {
+      if (this.curq.typeId == 4) {
         let sqq: SequenceAnswer = this.curq;
         this.shuffled = sqq.rightAnswers.map((a) => ({sort: Math.random(), value: a})).sort((a, b) => a.sort - b.sort).map((a) => a.value);
       }
@@ -149,18 +151,20 @@ export class GameQuestionComponent implements OnInit {
     } else {
       this.sendResults();
       clearInterval(this.interval);
-      this.router.navigate(['/quiz-list']) // CHANGE TO RESULT COMPONENT ROUTING
+      this.router.navigate(['/quiz-list']); // CHANGE TO RESULT COMPONENT ROUTING
     }
   }
 
   oneToFourAns(answ: String) {
     let otf: OneToFour = this.curq;
-    this.timeSpend = this.timeSpend + Math.round((100 - this.timeLeft)*this.game.roundDuration/100);
-    for(let i = 0; i < otf.answers.length; i++) {
-      if(answ == otf.answers[i] && otf.rightAnswers[i] == true) {
-        if(this.game.additionalPoints == true && this.timeSpend < this.timeLeft) {
+    this.timeSpend = this.timeSpend + Math.round((100 - this.timeLeft) * this.game.roundDuration / 100);
+    for (let i = 0; i < otf.answers.length; i++) {
+      if (answ == otf.answers[i] && otf.rightAnswers[i] == true) {
+        if (this.game.additionalPoints == true && this.timeSpend < this.timeLeft) {
           this.playerRating = this.playerRating + otf.points * 2;
-        } else {this.playerRating = this.playerRating + otf.points; }
+        } else {
+          this.playerRating = this.playerRating + otf.points;
+        }
       }
     }
     this.nextQuestion();
@@ -169,11 +173,13 @@ export class GameQuestionComponent implements OnInit {
 
   trueFalseAns(answ: String) {
     let tf: TrueFalse = this.curq;
-    this.timeSpend = this.timeSpend + Math.round((100 - this.timeLeft)*this.game.roundDuration/100);
-    if(answ == tf.rightAnswer) {
-      if(this.game.additionalPoints == true && this.timeSpend < this.timeLeft) {
+    this.timeSpend = this.timeSpend + Math.round((100 - this.timeLeft) * this.game.roundDuration / 100);
+    if (answ == tf.rightAnswer) {
+      if (this.game.additionalPoints == true && this.timeSpend < this.timeLeft) {
         this.playerRating = this.playerRating + tf.points * 2;
-      } else {this.playerRating = this.playerRating + tf.points; }
+      } else {
+        this.playerRating = this.playerRating + tf.points;
+      }
     }
     this.nextQuestion();
     this.timeLeft = 100;
@@ -181,43 +187,49 @@ export class GameQuestionComponent implements OnInit {
 
   manualAns() {
     let oa: OpenAnswer = this.curq;
-    this.timeSpend = this.timeSpend + Math.round((100 - this.timeLeft)*this.game.roundDuration/100);
-    if(oa.rightAnswer == this.answf) {
-      if(this.game.additionalPoints == true && this.timeSpend < this.timeLeft) {
+    this.timeSpend = this.timeSpend + Math.round((100 - this.timeLeft) * this.game.roundDuration / 100);
+    if (oa.rightAnswer == this.answf) {
+      if (this.game.additionalPoints == true && this.timeSpend < this.timeLeft) {
         this.playerRating = this.playerRating + oa.points * 2;
-      } else {this.playerRating = this.playerRating + oa.points; }
+      } else {
+        this.playerRating = this.playerRating + oa.points;
+      }
     }
     this.nextQuestion();
     this.timeLeft = 100;
   }
 
   addSeq(ans: string) {
-    if(this.seqanswers.indexOf(ans) != -1) {
+    if (this.seqanswers.indexOf(ans) != -1) {
       this.seqanswers.splice(this.seqanswers.indexOf(ans), 1);
-    } else { this.seqanswers.push(ans); }
+    } else {
+      this.seqanswers.push(ans);
+    }
     console.log(this.seqanswers);
   }
 
   seqAns() {
     let sq: SequenceAnswer = this.curq;
     let check: boolean = true;
-    this.timeSpend = this.timeSpend + Math.round((100 - this.timeLeft)*this.game.roundDuration/100);
-    for(let i = 0; i < sq.rightAnswers.length; i++) {
-      if(this.seqanswers[i] != sq.rightAnswers[i]) {
+    this.timeSpend = this.timeSpend + Math.round((100 - this.timeLeft) * this.game.roundDuration / 100);
+    for (let i = 0; i < sq.rightAnswers.length; i++) {
+      if (this.seqanswers[i] != sq.rightAnswers[i]) {
         check = false;
       }
     }
-    if(check == true) {
-      if(this.game.additionalPoints == true && this.timeSpend < this.timeLeft) {
+    if (check == true) {
+      if (this.game.additionalPoints == true && this.timeSpend < this.timeLeft) {
         this.playerRating = this.playerRating + sq.points * 2;
-      } else {this.playerRating = this.playerRating + sq.points; }
-    } 
+      } else {
+        this.playerRating = this.playerRating + sq.points;
+      }
+    }
     this.nextQuestion();
     this.timeLeft = 100;
   }
 
-  getQuestionsErr(err){
+  getQuestionsErr(err) {
     console.log(err);
-    alert("Questions could not be retrieved: "+err.error.message);
+    alert('Questions could not be retrieved: ' + err.error.message);
   }
 }

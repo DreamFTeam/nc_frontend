@@ -3,12 +3,10 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "node server.js",
+    "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "preinstall": "npm install -g angular-cli",
-    "postinstall": "ng build --output-path angularapp  --aot --prod",
     "e2e": "ng e2e"
   },
   "engines": {

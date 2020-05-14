@@ -113,7 +113,7 @@ export class GameConnectorComponent implements OnInit, OnDestroy {
     this.sseService.getServerSentEvent(this.sseGameConnectorUrl + gameId, 'start')
       .subscribe(next => {
           console.log(next);
-          alert('Game started');
+          this.router.navigateByUrl(`/play/${gameId}`);
         }
       );
   }
