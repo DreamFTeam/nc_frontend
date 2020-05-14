@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {GameSession} from "../_models/game-session";
-import {GameResultService} from "../_services/game-result.service";
-import {ActivatedRoute} from "@angular/router";
+import {GameSession} from '../_models/game-session';
+import {GameResultService} from '../_services/game-result.service';
+import {ActivatedRoute} from '@angular/router';
 
 
 @Component({
@@ -18,7 +18,7 @@ export class GameResultComponent implements OnInit {
   maxPoints: number;
   winner: string;
   view = [600, 400];
-  gameResults: GameSession[];
+  gameResults = [];
 
 
   // colorScheme = {
@@ -26,7 +26,7 @@ export class GameResultComponent implements OnInit {
   // };
 
   constructor(private gameResultService: GameResultService, private router: ActivatedRoute) {
-    this.gameId = this.router.snapshot.paramMap.get("id");
+    this.gameId = this.router.snapshot.paramMap.get('id');
   }
 
   onSelect(event) {
@@ -35,16 +35,21 @@ export class GameResultComponent implements OnInit {
 
   ngOnInit(): void {
     this.gameResultService.getResults(this.gameId).subscribe(gameSessions => {
-      this.gameResults = gameSessions;
+      console.log(gameSessions)
+      Object.assign(this.gameResults, gameSessions);
       this.findWinner(this.gameResults);
-      this.results = gameSessions.map(gameSessions => {
-        gameSessions.username, gameSessions.score;
-      })
+      this.results = this.gameResults.map(gameSession => {
+        return {
+          username: gameSession.username ? gameSession.username : 'anonym',
+          value: gameSession.score
+        };
+      });
+      console.log(this.results);
     });
   }
 
-  findWinner(gameSessions: GameSession[]): void {
-    this.winner = gameSessions.filter(gameSessions => gameSessions.winner)[0].username;
+  findWinner(gameSessions): void {
+    this.winner = gameSessions.filter(gameSession => gameSession.is_winner)[0].username;
   }
 
 }

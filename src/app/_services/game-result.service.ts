@@ -8,7 +8,7 @@ import {GameSession} from "../_models/game-session";
 })
 export class GameResultService {
 
-  url = `${environment.apiUrl}/sessions/`;
+  url = `${environment.apiUrl}games/sessions/`;
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'
@@ -21,6 +21,6 @@ export class GameResultService {
   }
 
   getResults(gameId: string) {
-    return this.http.get<GameSession[]>(this.url + gameId, this.httpOptions);
+    return this.http.get(this.url + gameId, this.httpOptions);
   }
 }
