@@ -51,6 +51,7 @@ import { MessageModalComponent } from './message-modal/message-modal.component';
 import { AnonymService } from './_services/anonym.service';
 import { GameQuestionComponent } from './game-question/game-question.component';
 import {GameResultComponent} from './game-result/game-result.component';
+import {NgxChartsModule} from "@swimlane/ngx-charts";
 
 const appRoutes: Routes = [];
 
@@ -104,7 +105,8 @@ const appRoutes: Routes = [];
     FormsModule,
     NgbModule,
     FontAwesomeModule,
-    QRCodeModule
+    QRCodeModule,
+    NgxChartsModule
   ],
   entryComponents: [LogInComponent, SignUpComponent, RecoverPasswordComponent],
   providers: [AuthenticationService, QuizListService, QuestionService, QuizService, QuizValidationListService, AnonymService,
