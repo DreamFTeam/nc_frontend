@@ -1,0 +1,14 @@
+<div *ngIf="suggestions.length > 0" class="container mt-2">
+    <div class="card-group">
+        <div class="row">
+            <div *ngFor="let suggestion of suggestions" class="col">
+                <div routerLink="/viewquiz/{{suggestion.id}}">
+                    <img *ngIf="suggestion.imageContent !== null" [src]='suggestion.imageContent' class="img-thumbnail">
+                    <img *ngIf="suggestion.imageContent === null" src="../assets/img/quiz.jpg" class="img-thumbnail">
+        
+                    <p style="text-align: center; font-size: 15px;">{{ suggestion.title }}</p>
+                </div>   
+            </div>
+        </div>
+    </div>
+</div>
