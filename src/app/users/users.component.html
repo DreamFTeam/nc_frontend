@@ -1,26 +1,26 @@
-<div class="content" role="main">
-  <div id=search>
-   <input type="text" name="username" [(ngModel)]="username"   #nameref="ngModel" size=40px pattern="[a-zA-Z]+" />
-    <button type="button" class="btn btn-primary" (click)="Search()"></button>
+<div class="container" role="main">
+   <input class="col-xs-5 col-sm-7 col-md-8 col-lg-10 p-2 p-2" type="text" name="username" [(ngModel)]="username" #nameref="ngModel" pattern="[a-zA-Z]+" />
+      <button class="btn btn-info btn-lg col-xs-2 col-sm-4 col-md-4 col-lg-2 p-2 border" type="button"  (click)="search()"> Search</button>
+   <div class="w-100"></div>
+    <div class="container-sm mt-3 p-3" *ngIf="this.searchResults;">
+      <h1 style="font-size: larger; font-weight: bolder;">Found  {{searchResults.length}} users </h1>
+        <div *ngFor="let user of this.searchResults" style='font-size: larger;'>
+          <div class="row p-2 m-2 border" *ngIf="user.username!= currentUsername">
+            <img  routerLink="/profile/{{user.username}}"  class="img-thumbnail col-xs-5 col-sm-5 col-md-4 col-lg-3  float-left" [src]="user.imageContent ? user.imageContent : '../../assets/img/nopicture.jpg'" style="background-color:rgba(243, 202, 165, 0.863);">
+            <div class="col-xs-5 col-sm-7 col-md-8 col-lg-9 p-2 p-2">
+              <a  routerLink="/profile/{{user.username}}" style="font-weight: bolder;">{{user.username}}</a>
+              <span *ngIf="user.role!='ROLE_USER'" class="blue"> {{user.role.substr(5).toLowerCase()}}</span> 
+              <h3 *ngIf="!user.activated" style="color: red; font-size: smaller;">deactivated</h3>
+                <h2 *ngIf="user.online==true; else lastseen" class="blue" style="font-weight: lighter;">
+                   online 
+                </h2>
+                <ng-template #lastseen>
+                  <h2 class="blue" >
+                    Last seen on {{user.lastTimeOnline |  date:'medium'}} 
+                  </h2> 
+                </ng-template>
+              </div>  
+          </div>  
+      </div>
   </div>
-    <div id="users" *ngIf="this.searchResults;">
-    Found  {{searchResults.length}} users
-      <div class="user" *ngFor="let user of this.searchResults">
-        <div id="pic">
-        <div id="picture" >
-          <img *ngIf="user.imageContent" id="img" [src]="user.imageContent">
-          <img *ngIf="!user.imageContent" id="img" style= "background: url('../../assets/img/nopicture.jpg')center no-repeat; object-fit: contain;">
-        <div id="online" *ngIf="user.online==true;"></div>
-      </div>
-      <div class="info">
-      <a   routerLink="/profile/{{user.username}}">{{user.username}}</a>
-      <h3 *ngIf="!user.activated" style="color: red; font-size: smaller;">deactivated</h3>
-      <span *ngIf="user.role!='ROLE_USER'"  style="color:#31708E; margin-left: 10px;"> {{user.role.substr(5).toLowerCase()}}</span> 
-      <h3 *ngIf="user.online==true; else lastseen" style="color:#31708E; font-size: smaller;"> online </h3>
-        <ng-template #lastseen> <h3 style="color:#31708E; font-size: smaller;">
-          Last seen on {{user.lastTimeOnline |  date:'medium'}} </h3> </ng-template>
-      </div>
-      </div>
-  </div>
-</div>
 </div>

@@ -1,46 +1,56 @@
-<div class="content" role="main" *ngIf="ready">
-    <div id="profile"  >
-      <div id="block" *ngIf="profile">
-      <div id="picture" >
-        <img *ngIf="profile.imageContent" id="image" [src]="profile.imageContent">
-        <img *ngIf="!profile.imageContent" id="image" style= "background: url('../../assets/img/nopicture.jpg')center no-repeat; object-fit: contain;">
-      <div id="online" *ngIf="profile.online==true;" >
+
+<div role="main" class="container " *ngIf="ready">
+    <div class="container-sm row mb-2 h-100">
+      <div class="col-xs-2 col-sm-4 col-md-4 col-lg-3 p-2">
+        <div>
+          <img class="col p-3"[src]="profile.imageContent ? profile.imageContent : '../../assets/img/nopicture.jpg'" style="background-color:rgba(243, 202, 165, 0.863);">
+          <a *ngIf="owner && profile.activated" (click)="edit()" class="btn btn-outline-secondary mt-2 w-100">Edit profile</a>
+          <a *ngIf="!owner && this.role=='ROLE_USER' && !profile.friend && !profile.outgoingRequest && !profile.incomingRequest" class="btn btn-outline-secondary mt-2 w-100" (click)="sendFriendRequest()"> Add friend </a>
+          <a *ngIf="!owner && this.role=='ROLE_USER' && !profile.friend && profile.outgoingRequest " class="btn btn-outline-secondary mt-2 w-100 disabled" > Friend request sent</a>
+          <a *ngIf="!owner && this.role=='ROLE_USER' && !profile.friend && profile.incomingRequest " class="btn btn-outline-success mt-2 w-100"  (click)="processFriendRequest(true)"> Accept request</a>
+          <a *ngIf="!owner && this.role=='ROLE_USER' && !profile.friend && profile.incomingRequest " class="btn btn-outline-danger mt-2 w-100"  (click)="processFriendRequest(false)"> Reject request</a>
+          <a *ngIf="!owner && this.role=='ROLE_USER' && profile.friend" class="btn btn-outline-secondary mt-2 w-100 disabled" > Friends</a> 
+
+        </div>
       </div>
-        <a *ngIf="owner && profile.role!='ROLE_SUPERADMIN' && profile.activated" class="btn btn-users" (click)="edit()">Edit profile</a>
-
-  </div>
+      <div class="col p-3">
+        <b>{{profile.username}}</b>
+        <span *ngIf="profile.role!='ROLE_USER'" class="blue"> {{profile.role.substr(5).toLowerCase()}}</span>
+        <h5 *ngIf="!profile.activated" style="color: red;"> deactivated </h5>
+        <h3 *ngIf="profile.online; else lastseen" class="blue"> online </h3>
+        <ng-template #lastseen> <h3 class="blue" *ngIf="profile.lastTimeOnline"> Last seen on {{profile.lastTimeOnline  |  date:'medium'}} </h3> </ng-template>
+        <h3>{{profile.aboutMe}}</h3>
       </div>
-      <div id="info">
-      <h3><b>{{profile?.username}}</b> <span *ngIf="profile.role!='ROLE_USER'"  style="color:#31708E; margin-left: 10px;"> {{profile.role.substr(5).toLowerCase()}}</span></h3>
-      <h5 *ngIf="!profile?.activated" style="color: red;">deactivated</h5>
-
-      <h3 *ngIf="profile && profile?.online==true; else lastseen" style="color:#31708E;"> online </h3>
-      <ng-template #lastseen > <h3 style="color:#31708E;" *ngIf="profile?.lastTimeOnline"> Last seen on {{profile?.lastTimeOnline  |  date:'medium'}} </h3> </ng-template>
-      <h3 *ngIf="profile?.aboutMe">{{profile?.aboutMe}}
-        </h3>
+      <div *ngIf= "this.role!='ROLE_USER' && owner && profile.activated" class="col-3 ">
+        <a class="btn btn-outline-secondary mt-2" (click)="deactivate(false)"> Deactivate </a>
+        <div class="w-100"></div>
+        <a class="btn btn-outline-secondary mt-2" *ngIf="role=='ROLE_SUPERADMIN' && this.profile.role=='ROLE_ADMIN'" (click)="editAdmin(false)">Downgrade to Moderator </a>
+        <a *ngIf="role=='ROLE_SUPERADMIN' && this.profile.role=='ROLE_MODERATOR'"  class="btn btn-outline-secondary mt-2"  (click)="editAdmin(true)" >Upgrade to Admin </a>
       </div>
     </div>
 
-    <div id="pr" *ngIf= "owner && privileged && profile.activated &&  role!= this.profile.role" > 
-      <a id="bt" class="btn btn-users"  (click)="deactivate(false)">Deactivate </a>
-      <a id="btupgr"  *ngIf="role=='ROLE_SUPERADMIN' && this.profile.role!='ROLE_ADMIN' " class="btn btn-users"  (click)="editAdmin(true)">Upgrade to Admin </a>
-      <a id="btdowngr" *ngIf="role=='ROLE_SUPERADMIN' && this.profile.role!='ROLE_MODERATOR' " class="btn btn-users"  (click)="editAdmin(false)">Downgrade to Moderator </a>
-    </div>
-  <div id="quizlist" *ngIf="profile?.role=='ROLE_USER'">{{profile?.username}}'s quizzes <span style="display: block;"></span>
+  <div class="container-sm row p-4" *ngIf="profile.role=='ROLE_USER'">
 
-    <div class="quizblocks" *ngFor="let quiz of quizzes">
-      <div class="indquiz">
-        <img *ngIf = "quiz.imageContent" id="quizimage" [src]="quiz.imageContent">
-        <img *ngIf = "!quiz.imageContent" id="quizimage" style="background: url('../../assets/img/quiz.jpg');background-size: contain;">
-        <div class="quizinfo">
-        <a (click)="goToQuiz(quiz.id)" style="text-decoration: underline; user-select: none;"><b>{{quiz.title}}</b></a> <br>
-      Description: {{quiz.description}}<br>
-      Date: {{quiz.creationDate}}<br>
-      Rating: {{quiz.rating}}
+    <b><span style="font-size: larger;">{{profile?.username}}'s quizzes</span></b>
+    <div *ngFor="let quiz of quizzes" >
+      <div *ngIf="owner || quiz.published" class="row m-2 border p-2 " >
+          <img class="col-xs-5 col-sm-5 col-md-4 col-lg-3 p-2" style="background-color:rgba(243, 202, 165, 0.863);" [src]="quiz.imageContent ? quiz.imageContent : '../../assets/img/quiz.jpg'" (click)="goToQuiz(quiz.id)" >
+          <div class="col-xs-5 col-sm-7 col-md-8 col-lg-9 p-2 p-2">  
+        <a (click)="goToQuiz(quiz.id)" class="blue" style="user-select: none; font-size: larger;">
+         {{quiz.title}}
+        </a> 
+      <span>
+          <h5 *ngIf="quiz.description" > <b>Description: {{quiz.description}}</b></h5>
+          <h5> <b>Date:</b> {{quiz.creationDate}}</h5> 
+          <h5 *ngIf="owner" > <b>Status:</b> {{quiz.published ? "published" : quiz.validated ? "not published" : "not validated"}}</h5> 
+          <h5> <b>Rating:</b> {{quiz.rating}} </h5>
+  </span> 
+  <img class="col-xs-2 col-sm-3 col-md-2 col-lg-1 p-2 float-right" [src]='quiz.favourite ? "../../assets/img/liked.png" : "../../assets/img/notliked.png"' (click)="markQuizFavourite(quiz)">
+</div>
+</div>
     </div>
-  </div>
-    </div>
-    <div *ngIf="ready && (quizzes == undefined || !quizzes.length)" style="font-size: smaller; color: #31708E;" > No quizzes </div>
+    <div class="w-100"></div>
+    <div *ngIf="!quizzes?.length" class="blue"> No quizzes </div>
   </div>
   </div>
 
