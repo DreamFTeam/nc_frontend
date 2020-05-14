@@ -7,7 +7,7 @@
         <div *ngIf="!loading">
         
             <div class="row">
-                <div class="col">
+                <div class="col-sm-6">
                     <div class="" (click)="markAsFavorite()">
                         <svg *ngIf="quiz.favourite" class="bi bi-star-fill" width="1.5em" height="1.5em" viewBox="0 0 16 16"
                             fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -23,14 +23,10 @@
                         </svg>
                     </div>
             
-                    <label class="mt-2">{{quiz.title}}</label>
-            
-                    <div>
-                        <a routerLink="/profile/{{quiz.author}}">{{quiz.author}}</a>
-                    </div>
+                    <label style="word-wrap: break-word;" class="mt-2">{{quiz.title}}</label>
             
                 </div>
-                <div class="col">
+                <div class="col-sm-6">
                     <div class="float-right">
                         Updated
                         <div style="font-style: italic;">{{quiz.creationDate}}</div>
@@ -48,6 +44,11 @@
                 </div>
                 <div class="col-sm-8">
                     <div>
+                        <label>Author: </label>
+                        <a class="ml-2" routerLink="/profile/{{quiz.author}}">{{quiz.author}}</a>
+                    </div>
+
+                    <div class="mt-2">
                         <span *ngFor="let tag of quiz.tags; let i = index" class="badge badge-primary mr-1 ">
                             {{tag.description}}
                         </span>
@@ -67,6 +68,7 @@
             </div>
         
             <div id="buttons">
+                <div class="btn buttonpr ml-1" routerLink="/quiz/{{quiz.id}}/newgame">Play quiz</div>
                 <div *ngIf="isMyQuiz()" class="btn buttonsec ml-1" routerLink="/quizedit/{{quiz.id}}">Edit quiz</div>
             </div>
         </div>

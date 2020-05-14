@@ -32,8 +32,6 @@ export class QuestionEditorSelectorComponent implements OnInit {
   }
 
   ngOnChanges() {
-    console.log("change");
-
     this.temp = [];
 
     this.temp.push({
