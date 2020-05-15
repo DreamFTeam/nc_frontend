@@ -225,35 +225,3 @@ export class AnnouncementEditComponent implements OnInit {
 
   }
 }
-
-
-//Modal to accept deletion
-@Component({
-  selector: 'ngbd-modal-content',
-  template: `
-    <div class="modal-header">
-      <h4 class="modal-title">Warning</h4>
-      <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <p>{{text}}</p>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-danger" (click)="trueResult()">Yes</button>
-      <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">No</button>
-    </div>
-  `
-})
-export class NgbdModalContent {
-  @Output() passEntry: EventEmitter<any> = new EventEmitter();
-  @Input() text: string;
-
-  constructor(public activeModal: NgbActiveModal) { }
-
-  trueResult() {
-    this.passEntry.emit(true);
-    this.activeModal.close('Close click');
-  }
-}
