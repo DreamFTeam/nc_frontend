@@ -15,23 +15,25 @@ import { QuizService } from '../_services/quiz.service';
 })
 
 export class ProfileComponent implements OnInit {
-
+  activeTab: number;
   role: string; // role of the current user
   ready: boolean; // indicates the profile was loaded (doesn't include quizzes)
   owner: boolean; // indicates which rights the user has concerning this profile
   quizzes;
   profile: Profile;
+  quizReady: boolean;
 
 
   constructor(private router: Router,
-    private route: ActivatedRoute,
-    private getProfileService: GetProfileService,
-    private privilegedService: PrivilegedService,
-    private sanitizer: DomSanitizer,
-    private quizService: QuizService,
-    private authenticationService: AuthenticationService,
+              private route: ActivatedRoute,
+              private getProfileService: GetProfileService,
+              private privilegedService: PrivilegedService,
+              private sanitizer: DomSanitizer,
+              private quizService: QuizService,
+              private authenticationService: AuthenticationService,
   ) {
     this.role = authenticationService.currentUserValue.role;
+    this.activeTab = 1;
   }
 
   ngOnInit(): void {
@@ -113,6 +115,7 @@ export class ProfileComponent implements OnInit {
           return input;
         });
         this.quizzes = result;
+        this.quizReady = true;
       },
       error => {
         console.error(error.error);
@@ -145,5 +148,9 @@ export class ProfileComponent implements OnInit {
   }
 
 
-}
+  changeTab(event): void {
+    this.activeTab = event;
+  }
 
+
+}

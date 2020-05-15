@@ -1,4 +1,3 @@
-
 <div role="main" class="container " *ngIf="ready">
     <div class="container-sm row mb-2 h-100">
       <div class="col-xs-2 col-sm-4 col-md-4 col-lg-3 p-2">
@@ -9,8 +8,7 @@
           <a *ngIf="!owner && this.role=='ROLE_USER' && !profile.friend && profile.outgoingRequest " class="btn btn-outline-secondary mt-2 w-100 disabled" > Friend request sent</a>
           <a *ngIf="!owner && this.role=='ROLE_USER' && !profile.friend && profile.incomingRequest " class="btn btn-outline-success mt-2 w-100"  (click)="processFriendRequest(true)"> Accept request</a>
           <a *ngIf="!owner && this.role=='ROLE_USER' && !profile.friend && profile.incomingRequest " class="btn btn-outline-danger mt-2 w-100"  (click)="processFriendRequest(false)"> Reject request</a>
-          <a *ngIf="!owner && this.role=='ROLE_USER' && profile.friend" class="btn btn-outline-secondary mt-2 w-100 disabled" > Friends</a> 
-
+          <a *ngIf="!owner && this.role=='ROLE_USER' && profile.friend" class="btn btn-outline-secondary mt-2 w-100 disabled"> Friends</a> 
         </div>
       </div>
       <div class="col p-3">
@@ -29,29 +27,47 @@
       </div>
     </div>
 
-  <div class="container-sm row p-4" *ngIf="profile.role=='ROLE_USER'">
-
-    <b><span style="font-size: larger;">{{profile?.username}}'s quizzes</span></b>
-    <div *ngFor="let quiz of quizzes" >
-      <div *ngIf="owner || quiz.published" class="row m-2 border p-2 " >
-          <img class="col-xs-5 col-sm-5 col-md-4 col-lg-3 p-2" style="background-color:rgba(243, 202, 165, 0.863);" [src]="quiz.imageContent ? quiz.imageContent : '../../assets/img/quiz.jpg'" (click)="goToQuiz(quiz.id)" >
-          <div class="col-xs-5 col-sm-7 col-md-8 col-lg-9 p-2 p-2">  
-        <a (click)="goToQuiz(quiz.id)" class="blue" style="user-select: none; font-size: larger;">
-         {{quiz.title}}
-        </a> 
-      <span>
-          <h5 *ngIf="quiz.description" > <b>Description: {{quiz.description}}</b></h5>
-          <h5> <b>Date:</b> {{quiz.creationDate}}</h5> 
-          <h5 *ngIf="owner" > <b>Status:</b> {{quiz.published ? "published" : quiz.validated ? "not published" : "not validated"}}</h5> 
-          <h5> <b>Rating:</b> {{quiz.rating}} </h5>
-  </span> 
-  <img class="col-xs-2 col-sm-3 col-md-2 col-lg-1 p-2 float-right" [src]='quiz.favourite ? "../../assets/img/liked.png" : "../../assets/img/notliked.png"' (click)="markQuizFavourite(quiz)">
+  <div class="container-sm row p-4" *ngIf="profile.role=='ROLE_USER' && quizReady">
+    <ul ngbNav #nav="ngbNav" [(activeId)]="activeTab" (navChange)="changeTab($event)" class="nav-tabs w-100 m-2 p-2 border">
+      <li [ngbNavItem]="1">
+        <a ngbNavLink class="blue p-2 mr-2">{{profile.username}}'s quizzes</a>
+        <ng-template ngbNavContent>
+          <p *ngIf="!quizzes.length"  style="font-style: large; font-weight: bold;" class="ml-5 mt-2 ">
+            No quizzes yet
+          </p>
+          <div *ngFor="let quiz of quizzes">
+            <div *ngIf="owner || quiz.published" class="row m-2 border p-2 w-100 " >
+                <img class="col-xs-5 col-sm-5 col-md-4 col-lg-3 p-2" style="background-color:rgba(243, 202, 165, 0.863);" [src]="quiz.imageContent ? quiz.imageContent : '../../assets/img/quiz.jpg'" (click)="goToQuiz(quiz.id)" >
+                <div class="col-xs-5 col-sm-7 col-md-8 col-lg-9 p-2 p-2">  
+              <a (click)="goToQuiz(quiz.id)" class="blue" style="user-select: none; font-size: larger;">
+              {{quiz.title}}
+              </a> 
+            <span>
+                <h5 *ngIf="quiz.description"> <b>Description:</b> {{quiz.description}}
+                <h5> <b>Date:</b> {{quiz.creationDate}}</h5> 
+                <h5 *ngIf="owner" > <b>Status:</b> {{quiz.published ? "published" : quiz.validated ? "not published" : "not validated"}}</h5> 
+                <h5> <b>Rating:</b> {{quiz.rating}} </h5>
+              </h5>
+        </span> 
+        <img class="col-xs-2 col-sm-3 col-md-2 col-lg-1 p-2 float-right" [src]='quiz.favourite ? "../../assets/img/liked.png" : "../../assets/img/notliked.png"' (click)="markQuizFavourite(quiz)">
+        </div>
+        </div>
+        </div>
+ 
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="2">
+        <a ngbNavLink class="blue p-2 mr-2" >{{profile.username}}'s achievements</a>
+        <ng-template ngbNavContent class="blue">
+          <p *ngIf="true"  style="font-style: large; font-weight: bold;" class="ml-5 mt-2 ">
+            No achievements yet
+          </p>
+        </ng-template>
+      </li>
+     
+    </ul>
+    <div [ngbNavOutlet]="nav" class="mt-2"></div>
 </div>
 </div>
-    </div>
-    <div class="w-100"></div>
-    <div *ngIf="!quizzes?.length" class="blue"> No quizzes </div>
-  </div>
-  </div>
 
   
