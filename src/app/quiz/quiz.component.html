@@ -44,7 +44,8 @@
 
                 <div class="col-sm-8"> 
 
-                    <label>Title:</label>
+                    <label>Title <span *ngIf="!quiz.published" style="color: red;">*</span></label>
+
                     <input [disabled]="quiz.published" class="form-control" type="text" maxlength="50"
                     [(ngModel)]="quiz.title" placeholder="Title of quiz">
 
@@ -69,7 +70,7 @@
                     </select>
 
                     
-                    <label>Description:</label >
+                    <label>Description <span *ngIf="!quiz.published" style="color: red;">*</span></label>
                     <textarea class="form-control" rows="5" [disabled]="quiz.published" maxlength="250"
                     [(ngModel)]="quiz.description" placeholder="Description of quiz"></textarea>
                 </div>
@@ -96,7 +97,8 @@
             
                         <div *ngFor="let question of questions; let i = index">
                             <button class="btn mr-1 mt-1 rounded" (click)="showQuestion(i)"
-                                [ngClass]="{'buttonpn': question.id === '', 'buttonpr': question.id !== ''}">
+                                [ngClass]="{'buttonpn': question.id === '', 'buttonpr': question.id !== '',
+                                 'selected': questionSelector === questions[i]}">
                                 <div *ngIf="question.title !== ''">{{question.title}}</div>
                                 <div *ngIf="question.title === ''">New question</div>
                             </button>
@@ -118,11 +120,11 @@
 
     <div *ngIf="isQuizCreated() && questionSelector !== undefined" class="container-sm mt-2 mb-2 p-4">
         <div *ngIf="!questionLoading">
-            <div>
-                <button class="removeb" (click)="removeQuestion()">
-                    <img class="bttnimg" src="../assets/img/close-button.png">
+            <div *ngIf="!quiz.published">
+                <button class="btn buttondel" (click)="removeQuestion()">
+                    Remove question
                 </button>
-                <label>Remove question</label>
+                
             </div>
     
             <div class="mb-2">

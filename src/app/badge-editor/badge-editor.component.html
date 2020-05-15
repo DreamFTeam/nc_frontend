@@ -1,4 +1,4 @@
-<div><label>{{label}}:</label></div>
+<div><label>{{label}} <span *ngIf="available" style="color: red;">*</span></label></div>
 <span *ngFor="let item of tagCateg; let i = index" 
 [ngClass]="{'badge-primary': isTag(), 'badge-success': !isTag()}" 
 class="badge mr-1">

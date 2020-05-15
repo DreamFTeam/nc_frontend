@@ -45,6 +45,7 @@ import {JwtInterceptor} from './_helpers/jwt.interceptor';
 import {ErrorInterceptor} from './_helpers/error.interceptor';
 import { SuggestionsComponent } from './suggestions/suggestions.component';
 import { ActivitiesComponent } from './activities/activities.component';
+import { YesNoModalComponent } from './yes-no-modal/yes-no-modal.component';
 
 const appRoutes: Routes = [];
 
@@ -82,7 +83,8 @@ const appRoutes: Routes = [];
     QuestionEditorSelectorComponent,
     BadgeEditorComponent,
     SuggestionsComponent,
-    ActivitiesComponent],
+    ActivitiesComponent,
+    YesNoModalComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
