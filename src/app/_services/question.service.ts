@@ -98,26 +98,28 @@ export class QuestionService {
     return this.http.post<Question>(this.url + 'question-image', data);
   }
 
-  questionValidator(question: ExtendedQuestion): Alert {
+  questionValidator(question: ExtendedQuestion): string[] {
+    let res: string[] = [];
 
-    if (question.title === '') {
-      return {type: 'warning', message: 'No title provided'};
+
+    if (question.title.trim().length < 2) {
+      res.push("Question title must be at least 2 symbol length");
     }
 
-    if (question.content === '') {
-      return {type: 'warning', message: 'No content provided'};
+    if (question.content.trim().length < 2) {
+      res.push("Content must be at least 2 symbol length");
     }
 
     if (question.rightOptions.includes('') || question.otherOptions.includes('')) {
-      return {type: 'warning', message: 'One of answers is empty'};
+      res.push("One of answers is empty");
     }
 
     if (!(question.points > 0)) {
-      return {type: 'warning', message: 'Points are < 0 or has text value'};
+      res.push("Points has value < 0 or has text value");
     }
 
 
-    return undefined;
+    return res;
   }
 
   questionsTotalSize(quizId: string): Observable<number> {

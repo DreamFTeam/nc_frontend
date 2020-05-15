@@ -40,12 +40,13 @@ export class ExtendedQuestion implements DesearizableWImage {
       }
     }
 
-    const img = this.imageContent;
-    if (img !== null) {
+    if (this.imageContent !== null && this.imageContent != "") {
       const objUrl = 'data:image/jpeg;base64,' + this.imageContent;
       this.imageContent = sanitizer.bypassSecurityTrustUrl(objUrl);
 
       this.unsanitizedImage = this.dataURLtoFile(objUrl);
+    }else{
+      this.imageContent = null;
     }
     return this;
   }

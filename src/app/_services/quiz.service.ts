@@ -134,18 +134,26 @@ export class QuizService {
   }
 
 
-  quizValidator(quiz: ExtendedQuiz): Alert{
-    if(!quiz.title.trim().match("/^[a-z0-9]+$/i")){
-      return {type: 'warning', message: 'Title can contain only numbers and letters'};
+  quizValidator(quiz: ExtendedQuiz) : string[] {
+    let res: string[] = [];
+
+    if (quiz.title.trim().length < 2) {
+      res.push("Quiz title must be at least 2 symbol length");
     }
 
-    if((quiz.title.trim().length < 2)){
-      return {type: 'warning', message: 'Title must contain at least 3 symbols'};
+    if (quiz.description.trim().length < 2) {
+      res.push("Description must be at least 2 symbol length");
     }
 
-    if((quiz.description.trim().length < 2)){
-      return {type: 'warning', message: 'Description must contain at least 3 symbols'};
+    if (quiz.tags.length == 0){
+      res.push("You must add at least one tag");
     }
+
+    if (quiz.categories.length == 0){
+      res.push("You must add at least one category");
+    }
+
+    return res;
   }
 
   canIEditQuiz(id: string){
