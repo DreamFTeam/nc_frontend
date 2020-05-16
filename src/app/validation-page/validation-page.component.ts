@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { QuizValidationPreview } from '../_models/quiz-validation-preview';
 import { QuizValidationListService} from '../_services/quiz-validation-list.service';
 
 @Component({

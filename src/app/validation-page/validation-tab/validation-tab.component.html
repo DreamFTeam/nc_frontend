@@ -1,5 +1,5 @@
 <div class="container">
-    <div *ngFor="let item of quizList$ | async" class="row media">
+    <div *ngFor="let item of quizList$ | async" class="row media border rounded-lg shadow-sm p-2 mb-4">
         <div class="media-left media-middle pic">
             <img class="media-object" [src]="item.imageContent ? item.imageContent : this.mockImageUrl" alt="Quiz icon">
         </div>
@@ -7,8 +7,9 @@
             <a routerLink="/viewquiz/{{item.id}}">
                 <h4>{{item.title}}</h4>
             </a>
-            <p class="fnt-size"><strong>Description: </strong>{{item.description}}</p>
-            <p class="fnt-size"><strong>Author: </strong><a routerLink="">{{item.username}}</a></p>
+            <p *ngIf="!showButtons && !item.published && !item.activated" class="badge badge-danger">Rejected</p>
+            <p class="fnt-size"><strong>Description: </strong>>{{item.description}}</p>
+            <p class="fnt-size"><strong>Author: </strong><a routerLink=""><u>{{item.username}}</u></a></p>
             <p class="fnt-size"><strong>Date of creation: </strong>{{item.creationDate}}</p>
             <p class="fnt-size"><strong>Language: </strong>{{item.language}}</p>
             <p *ngIf="showButtons">
