@@ -1,10 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Observable, merge, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
 import { QuizService } from '../_services/quiz.service';
 import { TagCatg } from '../_models/tagcateg';
 import { Tag } from '../_models/tag';
 import { Category } from '../_models/category';
+import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-badge-editor',
@@ -71,15 +72,20 @@ export class BadgeEditorComponent implements OnInit {
     return this.label === "Tags";
   }
 
-
   formatter = (object: any) => object.description;
 
-  search = (text$: Observable<string>) => text$.pipe(
-    debounceTime(200),
-    distinctUntilChanged(),
-    filter(term => term.length >= 1),
-    map(term => this.allObjects.filter(x => new RegExp(term, 'mi').test(x.description)).slice(0, 10))
-  )
+  focus$ = new Subject<string>();
+  click$ = new Subject<string>();
+
+  search = (text$: Observable<string>) => {
+    const debouncedText$ = text$.pipe(debounceTime(200), distinctUntilChanged());
+    const inputFocus$ = this.focus$;
+
+    return merge(debouncedText$, inputFocus$).pipe(
+      map(term => (term === '' ? this.allObjects
+      : this.allObjects.filter(v => v.description.toLowerCase().indexOf(term.toLowerCase()) > -1)).slice(0, 10))
+    );
+  }
 
 
 }
