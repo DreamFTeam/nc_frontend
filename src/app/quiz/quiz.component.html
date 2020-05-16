@@ -1,19 +1,13 @@
-
 <div class="toastpos">
-    <ngb-toast
-    *ngFor="let toast of toasts"
-    [class]="toast.classname"
-    [autohide]="true"
-    [delay]="5000"
-    (hide)="removeToast(toast)"
-    >
+    <ngb-toast *ngFor="let toast of toasts" [class]="toast.classname" [autohide]="true" [delay]="5000"
+        (hide)="removeToast(toast)">
 
-    <ng-template [ngIf]="isTemplate(toast)" [ngIfElse]="text">
-      <ng-template [ngTemplateOutlet]="toast.textOrTpl"></ng-template>
-    </ng-template>
+        <ng-template [ngIf]="isTemplate(toast)" [ngIfElse]="text">
+            <ng-template [ngTemplateOutlet]="toast.textOrTpl"></ng-template>
+        </ng-template>
 
-    <ng-template #text>{{ toast.textOrTpl }}</ng-template>
-</ngb-toast>
+        <ng-template #text>{{ toast.textOrTpl }}</ng-template>
+    </ngb-toast>
 </div>
 
 
@@ -21,45 +15,47 @@
 <div role="main">
     <div class="container-sm mt-2 mb-2 p-3">
         <div *ngIf="!quizLoading">
-            <h1 class="title font-base" >Create quiz</h1>
+            <h1 class="title font-base">Create quiz</h1>
             <div class="row ml-2 mt-3">
 
-                <div  class="col-sm-3 ">
+                <div class="col-sm-3 ">
                     <div *ngIf="!quiz.published; else elseBlock">
-                        <img [src]='thumbnail' alt="Upload" class="img-thumbnail" (click)="imageInput.click()">
-                    <input style="display: none" #imageInput type="file" accept="image/*" (change)="quizImage($event)">
-                    <button *ngIf="thumbnail !== null && thumbnail !== undefined" class="btn buttondel mt-2 text-center"
-                        (click)="removeImage()">Remove image</button>
+                        <img [src]= "thumbnail ? thumbnail : '../assets/img/quizupl.jpg'" class="img-thumbnail" (click)="imageInput.click()">
+
+                        <input style="display: none" #imageInput type="file" accept="image/*"
+                            (change)="quizImage($event)">
+
+                        <button *ngIf="thumbnail !== null && thumbnail !== undefined"
+                            class="btn buttondel mt-2 text-center" (click)="removeImage()">Remove image</button>
                     </div>
 
                     <ng-template #elseBlock>
-                        <img *ngIf="thumbnail !== undefined && thumbnail !== null
-                                            ; else elseImg" [src]='thumbnail' alt="Upload" class="img-thumbnail">
-                        <ng-template #elseImg>
-                            <img class="img-thumbnail" src="../assets/img/quiz.jpg">
-                        </ng-template>
+                        <img [src]="thumbnail ? thumbnail : '../assets/img/quiz.jpg'" alt="Upload"
+                            class="img-thumbnail">
                     </ng-template>
+
                 </div>
-                
 
-                <div class="col-sm-8"> 
 
-                    <label>Title:</label>
+                <div class="col-sm-8">
+
+                    <label>Title <span *ngIf="!quiz.published" style="color: red;">*</span></label>
+
                     <input [disabled]="quiz.published" class="form-control" type="text" maxlength="50"
-                    [(ngModel)]="quiz.title" placeholder="Title of quiz">
+                        [(ngModel)]="quiz.title" placeholder="Title of quiz">
 
-                    
-                    <div class="mt-2">
-                        <app-badge-editor [available]="!quiz.published"  [label]="tagLabel" 
-                        [tagCateg]="quiz.tags" ></app-badge-editor>
-                    </div>
-                    
 
                     <div class="mt-2">
-                        <app-badge-editor [available]="!quiz.published" [label]="categoryLabel" 
-                        [tagCateg]="quiz.categories"></app-badge-editor>
+                        <app-badge-editor [available]="!quiz.published" [label]="tagLabel" [tagCateg]="quiz.tags">
+                        </app-badge-editor>
                     </div>
-                    
+
+
+                    <div class="mt-2">
+                        <app-badge-editor [available]="!quiz.published" [label]="categoryLabel"
+                            [tagCateg]="quiz.categories"></app-badge-editor>
+                    </div>
+
 
 
                     <label class="mt-2">Language:</label>
@@ -68,17 +64,17 @@
                         <option value="ukr">Ukrainian</option>
                     </select>
 
-                    
-                    <label>Description:</label >
+
+                    <label>Description <span *ngIf="!quiz.published" style="color: red;">*</span></label>
                     <textarea class="form-control" rows="5" [disabled]="quiz.published" maxlength="250"
-                    [(ngModel)]="quiz.description" placeholder="Description of quiz"></textarea>
+                        [(ngModel)]="quiz.description" placeholder="Description of quiz"></textarea>
                 </div>
             </div>
-        
-        
 
-            <div class="m-3">    
-                <button class="btn buttonpr mr-4" (click)="saveQuiz()" >
+
+
+            <div class="m-3">
+                <button class="btn buttonpr mr-4" (click)="saveQuiz()">
                     <div *ngIf="!quiz.published">Save</div>
                     <div *ngIf="quiz.published">
                         Save as new quiz
@@ -88,59 +84,60 @@
                 <button *ngIf="isPublishAvailable()" class="btn buttonsec" (click)="publish()">Publish quiz</button>
             </div>
 
-        
+
             <div *ngIf="isQuizCreated()">
                 <h3>Questions:</h3>
-                <div  class="row m-4 p-3 questionpos">
-                    <div class="col-sm-3">
-            
+                <div class="m-2 p-3 questionpos">
+                    <div class="">
+
                         <div *ngFor="let question of questions; let i = index">
-                            <button class="btn mr-1 mt-1 rounded" (click)="showQuestion(i)"
-                                [ngClass]="{'buttonpn': question.id === '', 'buttonpr': question.id !== ''}">
-                                <div *ngIf="question.title !== ''">{{question.title}}</div>
-                                <div *ngIf="question.title === ''">New question</div>
-                            </button>
+                            <div class="btn-group">
+                                <button class="removeb" (click)="removeQuestionIndex(i, false)">
+                                    <img class="bttnimg" src="../assets/img/close-button.png">
+                                </button>
+                                <button class="btn mr-1 mt-1 rounded" (click)="showQuestion(i)" [ngClass]="{'buttonpn': question.id === '', 
+                                    'buttonpr': question.id !== '','selected': questionSelector === questions[i]}">
+                                    <div style="overflow-wrap: break-word;" *ngIf="question.title !== ''">
+                                        {{question.title}}</div>
+                                    <div *ngIf="question.title === ''">New question</div>
+                                </button>
+                            </div>
                         </div>
-            
                     </div>
                 </div>
             </div>
-            
-            <button *ngIf="isQuestionCreatorAvailable()" class="btn buttonpr rounded mt-1 ml-2" (click)="addNewQuestion()">Add
-                question</button>
-    </div>
 
-    <div style="text-align: center;" *ngIf="quizLoading">
-        <fa-icon [icon]="faSpinner" [spin]="true"  size="6x" ></fa-icon>
-    </div>
-        
+            <button *ngIf="isQuestionCreatorAvailable()" class="btn buttonpr rounded mt-1 ml-2"
+                (click)="addNewQuestion()">Add
+                question</button>
+        </div>
+
+        <div style="text-align: center;" *ngIf="quizLoading">
+            <fa-icon [icon]="faSpinner" [spin]="true" size="6x"></fa-icon>
+        </div>
+
     </div>
 
     <div *ngIf="isQuizCreated() && questionSelector !== undefined" class="container-sm mt-2 mb-2 p-4">
         <div *ngIf="!questionLoading">
-            <div>
-                <button class="removeb" (click)="removeQuestion()">
-                    <img class="bttnimg" src="../assets/img/close-button.png">
+            <div *ngIf="!quiz.published">
+                <button class="btn buttondel" (click)="removeQuestion()">
+                    Remove question
                 </button>
-                <label>Remove question</label>
+
             </div>
-    
+
             <div class="mb-2">
                 <app-question-editor-selector [available]="!quiz.published" [question]="questionSelector"
                     [thumbnail]="questionSelector.imageContent"></app-question-editor-selector>
             </div>
-    
+
             <button *ngIf="isQuestionCreatorAvailable()" class="btn buttonpr mt-2" (click)="saveQuestion()">Save
                 question</button>
         </div>
         <div style="text-align: center;" *ngIf="questionLoading">
-            <fa-icon [icon]="faSpinner" [spin]="true"  size="6x" ></fa-icon>
+            <fa-icon [icon]="faSpinner" [spin]="true" size="6x"></fa-icon>
         </div>
-        
+
     </div>
 </div>
-
-
-
-  
-  

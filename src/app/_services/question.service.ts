@@ -110,7 +110,7 @@ export class QuestionService {
       res.push("Content must be at least 2 symbol length");
     }
 
-    if (question.rightOptions.includes('') || question.otherOptions.includes('')) {
+    if (question.rightOptions.includes('') || (question.typeId === 1 && question.otherOptions.includes(''))) {
       res.push("One of answers is empty");
     }
 

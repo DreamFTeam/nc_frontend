@@ -2,7 +2,6 @@ import {Component} from '@angular/core';
 import {AuthenticationService} from '../_services/authentication.service';
 import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {RecoverPasswordComponent} from '../recover-password/recover-password.component';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-log-in',
@@ -12,7 +11,7 @@ import { Router } from '@angular/router';
 export class LogInComponent {
   constructor(private authenticationService: AuthenticationService,
               public activeModal: NgbActiveModal,
-              private modalService: NgbModal, private _router: Router) {
+              private modalService: NgbModal) {
   }
 
   email = '';

@@ -1,6 +1,6 @@
 <div>
     <div class="mt-4">
-        <label>Question title</label>
+        <label>Question title <span *ngIf="available" style="color: red;">*</span></label>
         <div class="row">
             <div class="col-sm-8">
                 
@@ -46,7 +46,7 @@
         <div class="row">
             <div class="col-sm-8">
                 <div class="m-3">
-                    <label>Content:</label>
+                    <label>Content <span *ngIf="available" style="color: red;">*</span></label>
                     <textarea [disabled]="!available" maxlength="250"
                      class="form-control" rows="3" [(ngModel)]="question.content" placeholder="Content of question"></textarea>
                 </div>
@@ -77,10 +77,10 @@
     </div>
 </div>
 
-<label class="mt-4">Points:</label>
+<label class="mt-4">Points <span *ngIf="available" style="color: red;">*</span></label>
 <div class="row">
     <div class="col-sm-6">
-        <input [disabled]="!available" class="form-control" style="max-width: 20%;" maxlength="6"
+        <input [disabled]="!available" class="form-control" style="max-width: 20%;" maxlength="3"
         type="text" [(ngModel)]="question.points"
             placeholder="Points">
     </div>
