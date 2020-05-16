@@ -7,6 +7,7 @@ import { Profile } from '../_models/profile';
 import { catchError, map } from 'rxjs/operators';
 import { User } from '../_models/user';
 import { Quiz } from '../_models/quiz';
+import { HandleErrorsService} from '../_services/handle-errors.service';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +30,8 @@ export class GetProfileService {
 
   private user: User;
 
-  constructor(private http: HttpClient, private sanitizer: DomSanitizer) {
+  constructor(private http: HttpClient, private sanitizer: DomSanitizer,
+              private errorHandler: HandleErrorsService) {
   }
 
 
@@ -68,14 +70,14 @@ export class GetProfileService {
   public editProfile(field: string, value: string): Observable<Profile> {
     return this.http.post<Profile>(this.profilesUrl + 'edit/' + field,
       null, { params: { key: value } }
-    ).pipe(catchError(this.handleError<any>('EditProfile')));
+    ).pipe(catchError(this.errorHandler.handleError<any>('EditProfile')));
 
   }
 
   public uploadPicture(value: FormData) {
 
     return this.http.post<Profile>(this.profilesUrl + 'edit/image', value)
-      .pipe(catchError(this.handleError<any>('uploadPicture')));
+      .pipe(catchError(this.errorHandler.handleError<any>('uploadPicture')));
   }
 
 
@@ -85,25 +87,35 @@ export class GetProfileService {
 
   }
 
+  public getProfileFavQuiz(): Observable<Quiz[]> {
+    return this.http.get<Quiz[]>(`${environment.apiUrl}quizzes/user-fav-list`,
+      this.httpOptions).pipe();
+
+  }
+
 
   public sendFriendRequest(targetId: string): Observable<Profile> {
     return this.http.post<Profile>(this.profilesUrl + 'friends/invite',
-    null, { headers: this.httpOptions.headers,  params: { targetId }}
-    ).pipe(catchError(this.handleError<any>('sendFriendRequest')));
+      null, { headers: this.httpOptions.headers, params: { targetId } }
+    ).pipe(catchError(this.errorHandler.handleError<any>('sendFriendRequest')));
   }
 
 
   public processFriendRequest(targetId: string, toAccept: string): Observable<Profile> {
     return this.http.post<Profile>(this.profilesUrl + 'friends/proceed',
-    null, { headers: this.httpOptions.headers,  params: { targetId, toAccept }}
-    ).pipe(catchError(this.handleError<any>('sendFriendRequest')));
+      null, { headers: this.httpOptions.headers, params: { targetId, toAccept } }
+    ).pipe(catchError(this.errorHandler.handleError<any>('processFriendRequest')));
   }
 
 
-  private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
 
-      return of(result as T);
-    };
+  public getUsersFriends(targetId: string, toAccept: string): Observable<Profile> {
+    return null; // TODO
+  }
+
+  public removeFriend(targetId: string): Observable<Profile> {
+    return this.http.post<Profile>(this.profilesUrl + 'friends/remove',
+      null, { headers: this.httpOptions.headers, params: { targetId} }
+    ).pipe(catchError(this.errorHandler.handleError<any>('removeFriend')));
   }
 }
