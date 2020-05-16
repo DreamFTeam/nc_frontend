@@ -43,7 +43,7 @@ export class GetProfileService {
 
     const options = {
       headers: this.httpOptions.headers,
-    };
+    }; //TODO
 
 
     return this.http.get<Profile>(this.profilesUrl + profile,
@@ -94,15 +94,15 @@ export class GetProfileService {
   }
 
 
-  public sendFriendRequest(targetId: string): Observable<Profile> {
+  public sendFriendRequest(targetId: string, toInvite: string): Observable<Profile> {
     return this.http.post<Profile>(this.profilesUrl + 'friends/invite',
-      null, { headers: this.httpOptions.headers, params: { targetId } }
+      null, { headers: this.httpOptions.headers, params: { targetId, toInvite } }
     ).pipe(catchError(this.errorHandler.handleError<any>('sendFriendRequest')));
   }
 
 
   public processFriendRequest(targetId: string, toAccept: string): Observable<Profile> {
-    return this.http.post<Profile>(this.profilesUrl + 'friends/proceed',
+    return this.http.post<Profile>(this.profilesUrl + 'friends/process',
       null, { headers: this.httpOptions.headers, params: { targetId, toAccept } }
     ).pipe(catchError(this.errorHandler.handleError<any>('processFriendRequest')));
   }

@@ -153,13 +153,13 @@ export class ProfileComponent implements OnInit {
     quiz.favourite = !quiz.favourite;
     this.quizService.markAsFavorite(quiz.id).subscribe();
     if (this.activeTab === 2) {
-      this.quizzes = this.quizzes.filter(item => item !== quiz)
+      this.quizzes = this.quizzes.filter(item => item !== quiz);
     }
   }
 
-  sendFriendRequest() {
-    this.getProfileService.sendFriendRequest(this.profile.id).subscribe(
-      () => this.profile.outgoingRequest = true
+  sendFriendRequest(value: boolean) {
+    this.getProfileService.sendFriendRequest(this.profile.id, value.toString()).subscribe(
+      () => this.profile.outgoingRequest = value
     );
   }
 
