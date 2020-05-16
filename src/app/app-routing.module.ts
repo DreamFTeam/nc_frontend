@@ -12,7 +12,7 @@ import { PrivilegedProfileComponent } from './privileged-profile/privileged-prof
 import { ValidationPageComponent } from './validation-page/validation-page.component';
 import { QuizValidationComponent } from './quiz-validation/quiz-validation.component';
 import { AnnouncementEditComponent } from './announcement-edit/announcement-edit.component';
-import { AuthGuard } from './guards/editor.guard';
+import { AuthGuard } from './_helpers/auth.guard';
 import { Role } from './_models/role';
 import { ActivitiesComponent } from './activities/activities.component';
 
@@ -20,19 +20,22 @@ import { ActivitiesComponent } from './activities/activities.component';
 const routes: Routes = [
   { path: '', component: LandingPageComponent},
   { path: 'recovery', component: ChangePasswordComponent},
-  { path: 'quizedit/:id', component: QuizComponent},
+  { path: 'quizedit/:id', component: QuizComponent, canActivate: [AuthGuard], data: { roles: [Role.User] }},
   { path: 'profile/:username', component: ProfileComponent },
   { path: 'profile', component: ProfileComponent },
   { path: 'editprofile', component: EditProfileComponent},
   { path: 'users', component: UsersComponent },
   { path: 'privileged/main', component:PrivilegedProfileComponent },
   { path: 'quizcreate', component: QuizComponent, canActivate: [AuthGuard], data: { roles: [Role.User] }},
-  { path: 'viewquiz/:id', component: ViewQuizComponent, canActivate: [AuthGuard], data: { roles: [Role.User] }},
+  { path: 'viewquiz/:id', component: ViewQuizComponent},
   { path: 'quiz-list', component: QuizListComponent},
   { path: 'validation', component: ValidationPageComponent},
   { path: 'validation/:id', component: QuizValidationComponent},
-  { path: 'editannouncements', component: AnnouncementEditComponent},
-  { path: 'activities', component: ActivitiesComponent},
+
+  { path: 'editannouncements', component: AnnouncementEditComponent, 
+  canActivate: [AuthGuard], data: { roles: [Role.Admin,Role.Moderator,Role.SuperAdmin] }},
+
+  { path: 'activities', component: ActivitiesComponent, canActivate: [AuthGuard], data: { roles: [Role.User] }},
   { path: '**', redirectTo: ''}
 ];
 
