@@ -172,6 +172,15 @@ export class ProfileComponent implements OnInit {
     );
   }
 
+  removeFriend() {
+    this.getProfileService.removeFriend(this.profile.id).subscribe(
+      () => {
+        this.profile.friend = false;
+        this.profile.incomingRequest = true;
+      }
+    );
+  }
+
 
   changeTab(event): void {
     this.activeTab = event;

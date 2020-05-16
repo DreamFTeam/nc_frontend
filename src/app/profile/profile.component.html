@@ -9,7 +9,7 @@
              <a *ngIf="!owner && this.role=='ROLE_USER' && !profile.friend && profile.incomingRequest " class="btn btn-outline-success mt-2 w-100"  (click)="processFriendRequest(true)"> Accept request</a>
              <a *ngIf="!owner && this.role=='ROLE_USER' && !profile.friend && profile.incomingRequest " class="btn btn-outline-danger mt-2 w-100"  (click)="processFriendRequest(false)"> Reject request</a>
              <a *ngIf="!owner && this.role=='ROLE_USER' && profile.friend" class="btn btn-outline-secondary mt-2 w-100"> Message </a> 
-             <a *ngIf="!owner && this.role=='ROLE_USER' && profile.friend" class="btn btn-outline-danger mt-2 w-100"> Unfriend </a> 
+             <a *ngIf="!owner && this.role=='ROLE_USER' && profile.friend" class="btn btn-outline-danger mt-2 w-100" (click)="removeFriend()"> Unfriend </a> 
             </div>
           <div class="col p-3">
              <b>{{profile.username}}</b>
@@ -37,7 +37,13 @@
              <p *ngIf="tabReady && !quizzes.length"  style="font-style: large; font-weight: bold;" class="ml-5 mt-3 ">
                 No quizzes yet
              </p>
+             <div *ngIf="owner" >
+               <a class="row btn btn-outline-secondary m-2 w-100 justify-content-center p-3" [routerLink]="'/quizcreate/'" >
+                 NEW QUIZ 
+               </a>
+               </div>
              <div *ngIf="tabReady">
+
              <div *ngFor="let quiz of quizzes">
                 <div *ngIf="owner || quiz.published" class="row container-fluid m-2 border p-2" style="word-wrap: break-word;">
                    <img class="col-xs-5 col-sm-5 col-md-4 col-lg-3 p-2" style="background-color:rgba(243, 202, 165, 0.863);" [src]="quiz.imageContent ? quiz.imageContent : '../../assets/img/quiz.jpg'" (click)="goToQuiz(quiz.id)" >
@@ -49,7 +55,7 @@
                          </a> 
                          <b>Description:</b> {{quiz.description}}  <br />
                          <b>Last time modified:</b> {{quiz.creationDate}} <br />
-                         <div *ngIf="owner" > <b>Status:</b> {{quiz.published ? "published" : quiz.validated ? "not published" : "not validated"}} <br/></div>
+                         <div *ngIf="owner"> <b>Status:</b> {{quiz.published ? "published" : quiz.validated ? "not published" : "not validated"}} <br/></div>
                          <b>Rating:</b> {{quiz.rating}}  <br />
                          <div  class="col-xs-2 col-sm-3 col-md-2 col-lg-1 p-2 float-right" (click)="markQuizFavourite(quiz)">
                             <svg *ngIf="quiz.favourite" class="bi bi-star-fill" width="1.5em" height="1.5em" viewBox="0 0 16 16"
@@ -74,9 +80,13 @@
        <li [ngbNavItem]="2" *ngIf="owner">
          <a ngbNavLink class="blue p-2 mr-2" >{{owner ? "your" : profile.username + "'s" }} favourite quizzes</a>
          <ng-template ngbNavContent class="blue">
-            <p *ngIf="tabReady && !quizzes.length"  style="font-style: large; font-weight: bold;" class="ml-5 mt-2 ">
-                  No favourite quizzes yet
+            <p *ngIf="tabReady && !quizzes.length" style="font-style: large; font-weight: bold;" class="ml-5 mt-3">
+                No favourite quizzes yet, 
+                <a  [routerLink]="'/quiz-list/'" class="blue" >
+                  explore quizzes
+                </a>
             </p>
+            
             <div *ngIf="tabReady">
                <div *ngFor="let quiz of quizzes">
                <div *ngIf="owner || quiz.published" class="row container-fluid m-2 border p-2" style="word-wrap: break-word;">
@@ -89,7 +99,6 @@
                         </a> 
                         <b>Description:</b> {{quiz.description}}  <br />
                         <b>Last time modified:</b> {{quiz.creationDate}} <br />
-                        <div *ngIf="owner" > <b>Status:</b> {{quiz.published ? "published" : quiz.validated ? "not published" : "not validated"}} <br/></div>
                         <b>Rating:</b> {{quiz.rating}}  <br />
                         <div  class="col-xs-2 col-sm-3 col-md-2 col-lg-1 p-2 float-right" (click)="markQuizFavourite(quiz)">
                            <svg *ngIf="quiz.favourite" class="bi bi-star-fill" width="1.5em" height="1.5em" viewBox="0 0 16 16"
@@ -116,15 +125,22 @@
           <ng-template ngbNavContent class="blue">
              <p *ngIf="true"  style="font-style: large; font-weight: bold;" class="ml-5 mt-3 ">
                 No achievements yet
+                <a *ngIf="owner" [routerLink]="'/quiz-list/'" class="blue" >
+                , play quizzes to get them
+                </a>
              </p>
           </ng-template>
        </li>
        <li [ngbNavItem]="4">
          <a ngbNavLink class="blue p-2 mr-2" >{{owner ? "your" : profile.username + "'s" }} friends</a>
          <ng-template ngbNavContent class="blue">
-            <p *ngIf="true"  style="font-style: large; font-weight: bold;" class="ml-5 mt-2 ">
+            <p *ngIf="true"  style="font-style: large; font-weight: bold;" class="ml-5 mt-3 ">
                No friends yet 
+               <a *ngIf="owner" [routerLink]="'/users/'" class="blue" >
+                  , find friends
+                  </a>
             </p>
+          
          </ng-template>
       </li>
 
