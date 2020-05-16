@@ -85,17 +85,23 @@ export class GetProfileService {
 
   }
 
+  public getProfileFavQuiz(): Observable<Quiz[]> {
+    return this.http.get<Quiz[]>(`${environment.apiUrl}quizzes/user-fav-list`,
+      this.httpOptions).pipe();
+
+  }
+
 
   public sendFriendRequest(targetId: string): Observable<Profile> {
     return this.http.post<Profile>(this.profilesUrl + 'friends/invite',
-    null, { headers: this.httpOptions.headers,  params: { targetId }}
+      null, { headers: this.httpOptions.headers, params: { targetId } }
     ).pipe(catchError(this.handleError<any>('sendFriendRequest')));
   }
 
 
   public processFriendRequest(targetId: string, toAccept: string): Observable<Profile> {
     return this.http.post<Profile>(this.profilesUrl + 'friends/proceed',
-    null, { headers: this.httpOptions.headers,  params: { targetId, toAccept }}
+      null, { headers: this.httpOptions.headers, params: { targetId, toAccept } }
     ).pipe(catchError(this.handleError<any>('sendFriendRequest')));
   }
 

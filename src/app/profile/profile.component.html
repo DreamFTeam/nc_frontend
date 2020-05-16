@@ -29,14 +29,15 @@
           </div>
        </div>
     </div>
-    <div class="container-sm mt-2 p-4" *ngIf="profile.role=='ROLE_USER' && quizReady">
+    <div class="container-sm mt-2 p-4" *ngIf="profile.role=='ROLE_USER'">
        <ul ngbNav #nav="ngbNav" [(activeId)]="activeTab" (navChange)="changeTab($event)" class="nav-tabs w-100 m-2 p-2 border">
        <li [ngbNavItem]="1">
-          <a ngbNavLink class="blue p-2 mr-2">{{profile.username}}'s quizzes</a>
+          <a ngbNavLink class="blue p-2 mr-2">{{owner ? "your" : profile.username + "'s" }} quizzes</a>
           <ng-template ngbNavContent>
-             <p *ngIf="!quizzes.length"  style="font-style: large; font-weight: bold;" class="ml-5 mt-2 ">
+             <p *ngIf="tabReady && !quizzes.length"  style="font-style: large; font-weight: bold;" class="ml-5 mt-3 ">
                 No quizzes yet
              </p>
+             <div *ngIf="tabReady">
              <div *ngFor="let quiz of quizzes">
                 <div *ngIf="owner || quiz.published" class="row container-fluid m-2 border p-2" style="word-wrap: break-word;">
                    <img class="col-xs-5 col-sm-5 col-md-4 col-lg-3 p-2" style="background-color:rgba(243, 202, 165, 0.863);" [src]="quiz.imageContent ? quiz.imageContent : '../../assets/img/quiz.jpg'" (click)="goToQuiz(quiz.id)" >
@@ -64,19 +65,69 @@
                             </svg>
                          </div>
                       </div>
+                     </div>
                    </div>
                 </div>
              </div>
           </ng-template>
        </li>
-       <li [ngbNavItem]="2">
-          <a ngbNavLink class="blue p-2 mr-2" >{{profile.username}}'s achievements</a>
+       <li [ngbNavItem]="2" *ngIf="owner">
+         <a ngbNavLink class="blue p-2 mr-2" >{{owner ? "your" : profile.username + "'s" }} favourite quizzes</a>
+         <ng-template ngbNavContent class="blue">
+            <p *ngIf="tabReady && !quizzes.length"  style="font-style: large; font-weight: bold;" class="ml-5 mt-2 ">
+                  No favourite quizzes yet
+            </p>
+            <div *ngIf="tabReady">
+               <div *ngFor="let quiz of quizzes">
+               <div *ngIf="owner || quiz.published" class="row container-fluid m-2 border p-2" style="word-wrap: break-word;">
+                  <img class="col-xs-5 col-sm-5 col-md-4 col-lg-3 p-2" style="background-color:rgba(243, 202, 165, 0.863);" [src]="quiz.imageContent ? quiz.imageContent : '../../assets/img/quiz.jpg'" (click)="goToQuiz(quiz.id)" >
+                  <div class="col-xs-5 col-sm-7 col-md-8 col-lg-9 p-1 ">
+                     <div class="ml-2">
+                        <a (click)="goToQuiz(quiz.id)" class="blue" style="user-select: none; font-size: larger;">
+                        {{quiz.title}}
+                        <br />
+                        </a> 
+                        <b>Description:</b> {{quiz.description}}  <br />
+                        <b>Last time modified:</b> {{quiz.creationDate}} <br />
+                        <div *ngIf="owner" > <b>Status:</b> {{quiz.published ? "published" : quiz.validated ? "not published" : "not validated"}} <br/></div>
+                        <b>Rating:</b> {{quiz.rating}}  <br />
+                        <div  class="col-xs-2 col-sm-3 col-md-2 col-lg-1 p-2 float-right" (click)="markQuizFavourite(quiz)">
+                           <svg *ngIf="quiz.favourite" class="bi bi-star-fill" width="1.5em" height="1.5em" viewBox="0 0 16 16"
+                              fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                              <path
+                                 d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                           </svg>
+                           <svg *ngIf="!quiz.favourite" class="bi bi-star" width="1.5em" height="1.5em" viewBox="0 0 16 16"
+                              fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                              <path fill-rule="evenodd"
+                                 d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.523-3.356c.329-.314.158-.888-.283-.95l-4.898-.696L8.465.792a.513.513 0 00-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767l-3.686 1.894.694-3.957a.565.565 0 00-.163-.505L1.71 6.745l4.052-.576a.525.525 0 00.393-.288l1.847-3.658 1.846 3.658a.525.525 0 00.393.288l4.052.575-2.906 2.77a.564.564 0 00-.163.506l.694 3.957-3.686-1.894a.503.503 0 00-.461 0z"
+                                 clip-rule="evenodd" />
+                           </svg>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            </div>
+         </ng-template>
+      </li>
+       <li [ngbNavItem]="3">
+          <a ngbNavLink class="blue p-2 mr-2" >{{owner ? "your" : profile.username + "'s" }} achievements</a>
           <ng-template ngbNavContent class="blue">
-             <p *ngIf="true"  style="font-style: large; font-weight: bold;" class="ml-5 mt-2 ">
+             <p *ngIf="true"  style="font-style: large; font-weight: bold;" class="ml-5 mt-3 ">
                 No achievements yet
              </p>
           </ng-template>
        </li>
+       <li [ngbNavItem]="4">
+         <a ngbNavLink class="blue p-2 mr-2" >{{owner ? "your" : profile.username + "'s" }} friends</a>
+         <ng-template ngbNavContent class="blue">
+            <p *ngIf="true"  style="font-style: large; font-weight: bold;" class="ml-5 mt-2 ">
+               No friends yet 
+            </p>
+         </ng-template>
+      </li>
+
        </ul>
        <div [ngbNavOutlet]="nav" class="mt-2"></div>
     </div>

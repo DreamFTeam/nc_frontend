@@ -21,7 +21,7 @@ export class ProfileComponent implements OnInit {
   owner: boolean; // indicates which rights the user has concerning this profile
   quizzes;
   profile: Profile;
-  quizReady: boolean;
+  tabReady: boolean;
 
 
   constructor(private router: Router,
@@ -115,7 +115,29 @@ export class ProfileComponent implements OnInit {
           return input;
         });
         this.quizzes = result;
-        this.quizReady = true;
+        this.tabReady = true;
+      },
+      error => {
+        console.error(error.error);
+      });
+  }
+
+
+  getFavQuizzes() {
+
+    this.getProfileService.getProfileFavQuiz().subscribe(
+      result => {
+        result.forEach(input => {
+          if (input['imageContent'] !== null) {
+            input['imageContent'] =
+              this.sanitizer.bypassSecurityTrustUrl
+                ('data:image\/(png|jpg|jpeg);base64,'
+                  + input['imageContent']);
+          }
+          return input;
+        });
+        this.quizzes = result;
+        this.tabReady = true;
       },
       error => {
         console.error(error.error);
@@ -130,6 +152,9 @@ export class ProfileComponent implements OnInit {
   markQuizFavourite(quiz: any) {
     quiz.favourite = !quiz.favourite;
     this.quizService.markAsFavorite(quiz.id).subscribe();
+    if (this.activeTab === 2) {
+      this.quizzes = this.quizzes.filter(item => item !== quiz)
+    }
   }
 
   sendFriendRequest() {
@@ -150,7 +175,16 @@ export class ProfileComponent implements OnInit {
 
   changeTab(event): void {
     this.activeTab = event;
+    if (event.nextId === 2) {
+      this.tabReady = false;
+      this.getFavQuizzes();
+
+    } else if (event.nextId === 1) {
+      this.tabReady = false;
+      this.getQuizzes();
+
+    }
+
+
   }
-
-
 }
