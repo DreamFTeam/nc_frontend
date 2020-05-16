@@ -7,6 +7,8 @@ import { ExtendedQuiz } from '../_models/extended-quiz';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { ExtendedQuestion } from '../_models/question/extendedquestion';
 import { Alert } from '../_models/alert';
+import { YesNoModalComponent } from '../yes-no-modal/yes-no-modal.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-quiz',
@@ -36,7 +38,8 @@ export class QuizComponent implements OnInit {
 
 
   constructor(private quizService: QuizService, private questionService: QuestionService,
-     private activateRoute: ActivatedRoute, private router: Router,private sanitizer: DomSanitizer) { 
+     private activateRoute: ActivatedRoute, private router: Router,private sanitizer: DomSanitizer,
+     private modalService: NgbModal) { 
        this.toasts = [];
        this.quizLoading = true;
        this.questionLoading=false;
@@ -249,37 +252,61 @@ export class QuizComponent implements OnInit {
 
 
   publish() {
-    this.quizService.publishQuiz(this.quiz.id)
-      .subscribe(
-        ans => {
-          this.toastAdd('Published!', { classname: 'bg-success text-light'});
-          this.quiz.published = true;
-        },
-        err => {
-          console.log(err)
-          this.toastAdd('Sorry, couldn`t publish your quiz :(', { classname: 'bg-danger text-light'});
-        });
+    this.modal("Are you sure you want to publish this quiz?",  "warning")
+    .subscribe((receivedEntry) => {
+      if (receivedEntry) {
+        this.quizService.publishQuiz(this.quiz.id)
+          .subscribe(
+            ans => {
+              this.toastAdd('Published!', { classname: 'bg-success text-light' });
+              this.quiz.published = true;
+            },
+            err => {
+              console.log(err)
+              this.toastAdd('Sorry, couldn`t publish your quiz :(', { classname: 'bg-danger text-light' });
+            });
+      }
+    })
+  }
+
+
+  removeQuestionIndex(i, onCreatorDelete){
+    this.modal("Are you sure you want to delete this question?",  "danger")
+    .subscribe((receivedEntry) => {
+      if (receivedEntry) {
+         if(this.questions[i].id === ""){
+           this.removeQuestionFromList(i, onCreatorDelete);
+         }else{
+          this.questionService.deleteQuestion(this.questions[i].id)
+          .subscribe(
+            () => this.removeQuestionFromList(i, onCreatorDelete),
+            err => {
+              console.log(err);
+              this.toastAdd('Sorry, Couldn`t delete this question :(', { classname: 'bg-danger text-light' });
+            });
+         }
+      }
+    });
   }
 
   removeQuestion() {
-    if (this.questionSelector.id === "") {
-      this.removeQuestionFromList();
-    } else {
-      this.questionService.deleteQuestion(this.questionSelector.id)
-        .subscribe(
-          ans => this.removeQuestionFromList(),
-          err => {
-            console.log(err);
-            this.toastAdd('Sorry, Couldn`t delete this question :(', { classname: 'bg-danger text-light'});
-          });
-    }
+    this.removeQuestionIndex(this.questions.findIndex( el => el === this.questionSelector), true);
   }
 
-  removeQuestionFromList() {
-    const index = this.questions.findIndex( el => el === this.questionSelector);
+  removeQuestionFromList(index, onCreatorDelete) {
     this.questions.splice(index, 1);
-    this.questionSelector = undefined
-    this.toastAdd('Question removed', { classname: 'bg-success text-light'});
+    if (onCreatorDelete) {
+      this.questionSelector = undefined
+    }
+    this.toastAdd('Question removed', { classname: 'bg-success text-light' });
+  }
+
+  modal(text, style): any{
+    const modalRef = this.modalService.open(YesNoModalComponent);
+    modalRef.componentInstance.text = text;
+    modalRef.componentInstance.style =style;
+
+    return modalRef.componentInstance.passEntry;
   }
 
   quizImage(e){

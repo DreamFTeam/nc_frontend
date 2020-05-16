@@ -5,6 +5,7 @@ import { AnnouncementService } from '../_services/announcement.service';
 import { Alert } from '../_models/alert'
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { DomSanitizer } from '@angular/platform-browser';
+import { YesNoModalComponent } from '../yes-no-modal/yes-no-modal.component';
 
 
 const PAGE_SIZE: number = 5;
@@ -83,8 +84,9 @@ export class AnnouncementEditComponent implements OnInit {
 
   //deleting announcement
   delete(i) {
-    const modalRef = this.modalService.open(NgbdModalContent);
+    const modalRef = this.modalService.open(YesNoModalComponent);
     modalRef.componentInstance.text = "Are you sure you want to delete announcement?";
+    modalRef.componentInstance.style = "danger";
 
 
     modalRef.componentInstance.passEntry.subscribe((receivedEntry) => {
@@ -101,9 +103,9 @@ export class AnnouncementEditComponent implements OnInit {
   //saving edited announcement
   saveEdit(i) {
     if (this.announcementService.validateAnnouncement(this.currentAnnouncement)) {
-      const modalRef = this.modalService.open(NgbdModalContent);
-
+      const modalRef = this.modalService.open(YesNoModalComponent);
       modalRef.componentInstance.text = "Are you sure you want to save this announcement?";
+      modalRef.componentInstance.style = "warning";
 
       modalRef.componentInstance.passEntry.subscribe((receivedEntry) => {
         console.log(receivedEntry);
@@ -152,8 +154,9 @@ export class AnnouncementEditComponent implements OnInit {
   //saving added announcement   
   saveAdd() {
     if (this.announcementService.validateAnnouncement(this.currentAnnouncement)) {
-      const modalRef = this.modalService.open(NgbdModalContent);
+      const modalRef = this.modalService.open(YesNoModalComponent);
       modalRef.componentInstance.text = "Are you sure you want to add this announcement?";
+      modalRef.componentInstance.style = "success";
 
       modalRef.componentInstance.passEntry.subscribe((receivedEntry) => {
         if (receivedEntry) {
@@ -220,37 +223,5 @@ export class AnnouncementEditComponent implements OnInit {
       this.img = null;
     }
 
-  }
-}
-
-
-//Modal to accept deletion
-@Component({
-  selector: 'ngbd-modal-content',
-  template: `
-    <div class="modal-header">
-      <h4 class="modal-title">Warning</h4>
-      <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <p>{{text}}</p>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-danger" (click)="trueResult()">Yes</button>
-      <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">No</button>
-    </div>
-  `
-})
-export class NgbdModalContent {
-  @Output() passEntry: EventEmitter<any> = new EventEmitter();
-  @Input() text: string;
-
-  constructor(public activeModal: NgbActiveModal) { }
-
-  trueResult() {
-    this.passEntry.emit(true);
-    this.activeModal.close('Close click');
   }
 }

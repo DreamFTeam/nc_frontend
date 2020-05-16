@@ -13,7 +13,7 @@
             <div *ngIf="inEdit[0] && !saveLoading">
                 <div><label>Adding announcement</label></div>
                 <label class="mt-4">Title:</label>
-                <input class="form-control" [(ngModel)]="currentAnnouncement.title">
+                <input class="form-control" [(ngModel)]="currentAnnouncement.title" placeholder="Title">
                 <label>Content:</label>
                 <textarea class="form-control" rows="5" [(ngModel)]="currentAnnouncement.textContent"
                     placeholder="Content of announcement"></textarea>
@@ -83,7 +83,7 @@
                         <p style="font-style: italic;">{{announcement.creationDate | date}}</p>
                     </div>
                     <label>Title:</label>
-                    <input class="form-control" [(ngModel)]="currentAnnouncement.title">
+                    <input class="form-control" [(ngModel)]="currentAnnouncement.title" placeholder="Title">
                     <label>Content:</label>
                     <textarea class="form-control" rows="5" [(ngModel)]="currentAnnouncement.textContent"
                         placeholder="Content of announcement"></textarea>
