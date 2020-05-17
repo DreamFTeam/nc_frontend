@@ -113,7 +113,7 @@ export class QuizComponent implements OnInit {
         });
 
     //Find quiz
-    this.quizService.getQuizNew(data)
+    this.quizService.getQuiz(data)
       .subscribe(
         ans => this.setGettedQuiz(ans),
         err => {
@@ -341,7 +341,7 @@ export class QuizComponent implements OnInit {
 
   
   isQuizCreated(){ return this.quiz !== undefined && this.quiz.id !== ""; }
-  isPublishAvailable(){ return this.questions.filter(q => q.id.length > 0).length > 0 && !this.quiz.published }
+  isPublishAvailable(){ return this.questions.filter(q => q.id.length > 0).length > 3 && !this.quiz.published }
   isQuestionCreatorAvailable(){ return !this.questionLoading && !this.quizLoading && !this.quiz.published && this.isQuizCreated() }
   isPlusActive(){ return this.questionSelector.id !== ""}
   isTemplate(toast){return toast.textOrTpl instanceof TemplateRef}

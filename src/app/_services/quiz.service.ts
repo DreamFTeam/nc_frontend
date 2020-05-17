@@ -16,18 +16,12 @@ import { Alert } from '../_models/alert';
   providedIn: 'root'
 })
 export class QuizService {
-  url = `${environment.apiUrl}quizzes/`;
-  httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json'
-    })
-  };
+  url = `${environment.apiUrl}quizzes`;
 
   user: User;
 
   constructor(private http: HttpClient, private sanitizer: DomSanitizer,
               private authenticationService: AuthenticationService) {
-                console.log(authenticationService.currentUserValue);
     this.user = authenticationService.currentUserValue;
   }
 
@@ -51,7 +45,7 @@ export class QuizService {
     }
 
     console.log(quizInfo);
-    return this.http.post<ExtendedQuiz>(this.url + 'edit', formData)
+    return this.http.post<ExtendedQuiz>(this.url + '/edit', formData)
       .pipe(map(data => {
         return new ExtendedQuiz().deserialize(data, this.sanitizer);
       }));
@@ -79,11 +73,15 @@ export class QuizService {
   }
 
 
-  getQuizNew(quizId: string): Observable<ExtendedQuiz> {
-    const options = {
-      headers: this.httpOptions.headers,
-      params: new HttpParams().set('quizId', quizId).set('userId',this.user.id)
+  getQuiz(quizId: string): Observable<ExtendedQuiz> {
+    let params = new HttpParams().set('quizId', quizId);
 
+    if(this.user){
+      params.set('userId',this.user.id);
+    }
+
+    const options = {
+      params: params
     };
 
     return this.http.get<ExtendedQuiz>(this.url, options)
@@ -99,7 +97,7 @@ export class QuizService {
       userId: this.user.id,
     };
 
-    return this.http.post<Quiz>(this.url + 'markasfavourite', JSON.stringify(favoriteInfo), this.httpOptions);
+    return this.http.post<Quiz>(this.url + '/markasfavourite', JSON.stringify(favoriteInfo));
   }
 
 
@@ -108,26 +106,28 @@ export class QuizService {
       quizId: id
     };
 
-    return this.http.post<ExtendedQuiz>(this.url + 'markaspublished', JSON.stringify(quizInfo), this.httpOptions);
+    return this.http.post<ExtendedQuiz>(this.url + '/markaspublished', JSON.stringify(quizInfo));
+  }
+
+  delete(id: string){
+    return this.http.delete(this.url+"/"+id);
+  }
+
+  deactivate(id: string){
+    return this.http.post(this.url + '/deactivate/'+id, null);
   }
 
   getTagsList(): Observable<Tag[]>{
-    const options = {
-      headers: this.httpOptions.headers,
-    }
 
-    return this.http.get<any[]>(this.url+"tags", options)
+    return this.http.get<any[]>(this.url+"/tags")
     .pipe(map(data => data.map(x => {
       return new Tag(x.tag_id, x.description);
     })));
   }
 
   getCategoriesList() : Observable<Category[]>{
-    const options = {
-      headers: this.httpOptions.headers,
-    }
 
-    return this.http.get<any[]>(this.url+"categories", options)
+    return this.http.get<any[]>(this.url+"/categories")
     .pipe(map(data => data.map(x => {
       return new Category(x.category_id, x.title);
     })));;
@@ -155,15 +155,4 @@ export class QuizService {
 
     return res;
   }
-
-  canIEditQuiz(id: string){
-    return id === this.user.id;
-  }
-
-
-  uploadImage(data: FormData) {
-    console.log(data);
-    return this.http.post(this.url + 'quiz-image', data);
-  }
-
 }
