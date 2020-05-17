@@ -55,7 +55,7 @@ export class ValidationTabComponent implements OnInit {
     this.openModal("Are you sure you want to reject this quiz?", 'warning')
     .subscribe((receivedEntry) => {
       if (receivedEntry) {
-        this.quizValidationService.validateQuiz(id,false,"")
+        this.quizValidationService.validateQuiz(id,false,"This quiz was instantly rejected without validation",null,null)
           .subscribe(next => {
             alert("The quiz was rejected successfully");
             this.page = 1;
