@@ -113,7 +113,7 @@ export class QuizComponent implements OnInit {
         });
 
     //Find quiz
-    this.quizService.getQuizNew(data)
+    this.quizService.getQuiz(data)
       .subscribe(
         ans => this.setGettedQuiz(ans),
         err => {
