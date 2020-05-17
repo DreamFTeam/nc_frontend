@@ -105,7 +105,7 @@ export class EditProfileComponent implements OnInit {
       this.profilePictureFile = event.target.files[0];
 
       reader.onload = (value) => { // called once readAsDataURL is completed
-        this.profile.imageContent = value.target.result;
+        this.profile.image = value.target.result;
       };
     }
   }

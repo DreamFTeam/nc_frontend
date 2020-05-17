@@ -5,7 +5,7 @@ export class Profile {
   username: string;
   role: string;
   aboutMe: string;
-  imageContent: any;
+  image: any;
   online: boolean;
   activated: boolean;
   lastTimeOnline: Date;
@@ -15,11 +15,11 @@ export class Profile {
 
   static deserialize(input: any, sanitizer: DomSanitizer): Profile {
 
-    if (input.imageContent !== null) {
-      input.imageContent =
+    if (input.image !== null) {
+      input.image =
         sanitizer.bypassSecurityTrustUrl
           ('data:image\/(png|jpg|jpeg);base64,'
-            + input.imageContent);
+            + input.image);
     }
     return input;
   }
