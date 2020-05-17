@@ -43,6 +43,7 @@ export class ProfileComponent implements OnInit {
 
     this.getProfileService.getProfile(this.getUsername()).subscribe(
       result => {
+        console.log(JSON.stringify(result))
         this.profile = result;
         this.setRights();
 
@@ -177,6 +178,8 @@ export class ProfileComponent implements OnInit {
       () => {
         this.profile.friend = false;
         this.profile.incomingRequest = true;
+        this.profile.outgoingRequest = false;
+
       }
     );
   }
