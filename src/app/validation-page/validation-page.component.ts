@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { QuizValidationPreview } from '../_models/quiz-validation-preview';
 import { QuizValidationListService} from '../_services/quiz-validation-list.service';
 
 @Component({
@@ -9,12 +7,16 @@ import { QuizValidationListService} from '../_services/quiz-validation-list.serv
   styleUrls: ['./validation-page.component.css']
 })
 export class ValidationPageComponent implements OnInit {
+  //active tab id
   active: number;
+
   currentUsername: string;
+  
+  //True, when type of list is Unvalidated
   showButtons: boolean = true;
 
   constructor(private quizValidationService: QuizValidationListService) {
-    this.active = 1;
+    this.active = quizValidationService.listType;
   }
 
   ngOnInit(): void {

@@ -29,8 +29,8 @@ const routes: Routes = [
   { path: 'quizcreate', component: QuizComponent, canActivate: [AuthGuard], data: { roles: [Role.User] }},
   { path: 'viewquiz/:id', component: ViewQuizComponent},
   { path: 'quiz-list', component: QuizListComponent},
-  { path: 'validation', component: ValidationPageComponent},
-  { path: 'validation/:id', component: QuizValidationComponent},
+  { path: 'validation', component: ValidationPageComponent, canActivate: [AuthGuard], data: { roles: [Role.Admin, Role.Moderator, Role.SuperAdmin]}},
+  { path: 'validation/:id', component: QuizValidationComponent, canActivate: [AuthGuard], data: { roles: [Role.Admin, Role.Moderator, Role.SuperAdmin]}},
 
   { path: 'editannouncements', component: AnnouncementEditComponent, 
   canActivate: [AuthGuard], data: { roles: [Role.Admin,Role.Moderator,Role.SuperAdmin] }},
