@@ -26,15 +26,18 @@ export class NotificationsService {
               private sseService: SseService) {
     this.notificationsSubject = new BehaviorSubject<Notification[]>([]);
     this.notifications = this.notificationsSubject.asObservable();
-    this.sseService.getServerSentEvent(this.authenticationService.currentUserValue.id, 'sent')
-      .subscribe(next => this.getUnseen().subscribe());
+    if (authenticationService.currentUserValue) {
+      this.sseService.getServerSentEvent(this.authenticationService.currentUserValue.id, 'sent')
+        .subscribe(next => {
+          this.getUnseen().subscribe();
+        });
+    }
   }
 
   getUnseen(): Observable<Notification[]> {
-    return this.http.get<Notification[]>(this.notificationsUrl + this.authenticationService.currentUserValue.id, this.httpOptions).pipe(
+    return this.http.get<Notification[]>(this.notificationsUrl, this.httpOptions).pipe(
       map(nots => {
         this.notificationsSubject.next(nots);
-        console.log(nots);
         return nots;
       })
     );
@@ -47,5 +50,10 @@ export class NotificationsService {
 
   sendNot() {
     return this.http.get(this.notificationsUrl + 'new', this.httpOptions);
+  }
+
+  getById(notificationId: string): Observable<Notification> {
+    return this.http.get<Notification>(this.notificationsUrl +
+      `notification/${notificationId}`, this.httpOptions);
   }
 }

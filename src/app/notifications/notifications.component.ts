@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {Notification} from '../_models/notification';
 import {NotificationsService} from '../_services/notifications.service';
 
@@ -22,9 +22,9 @@ export class NotificationsComponent implements OnInit, OnDestroy {
       });
   }
 
+  @HostListener('window:beforeunload', ['$event'])
   ngOnDestroy(): void {
-    this.notificationsService.setSeen().subscribe(() =>
-      this.notificationsService.getUnseen().subscribe());
+    this.notificationsService.setSeen().subscribe();
   }
 
 }
