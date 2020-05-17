@@ -35,7 +35,6 @@ export class QuizListComponent implements OnInit {
 
   getTotalSize(): void{
     this.totalSize$ = this.quizListService.getTotalSize();
-    this.totalSize$.subscribe(ans => console.log(ans));
   }
 
   loadPage(event){
