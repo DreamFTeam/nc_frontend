@@ -67,7 +67,7 @@
             </div>
         
             <div class="mt-3">
-                <div class="btn buttonpr ml-1" routerLink="/quiz/{{quiz.id}}/newgame">Play quiz</div>
+                <div *ngIf="!isPrivileged()" class="btn buttonpr ml-1" routerLink="/quiz/{{quiz.id}}/newgame">Play quiz</div>
                 <div *ngIf="isMyQuiz()" class="btn buttonsec ml-1" routerLink="/quizedit/{{quiz.id}}">Edit quiz</div>
                 
             </div>

@@ -99,6 +99,6 @@ export class ViewQuizComponent implements OnInit {
 
   isPrivileged(){
     const user = this.authenticationService.currentUserValue;
-    return user && (user.role === Role.Admin || user.role === Role.SuperAdmin || user.role === Role.Moderator); 
+    return user && (user.role !== Role.User); 
   }
 }
