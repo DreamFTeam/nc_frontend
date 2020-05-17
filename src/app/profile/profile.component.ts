@@ -7,6 +7,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { AuthenticationService } from '../_services/authentication.service';
 import { QuizService } from '../_services/quiz.service';
 import { FriendsService } from '../_services/friends-service.service';
+import { Achievement } from '../_models/achievement';
 
 
 @Component({
@@ -24,6 +25,7 @@ export class ProfileComponent implements OnInit {
   profile: Profile;
   tabReady: boolean;
   friends: Profile[];
+  achievements: Achievement[];
   friendsSize: number;
   friendsPage: number;
 
@@ -216,12 +218,12 @@ export class ProfileComponent implements OnInit {
   getAchievements(): void {
     this.tabReady = true;
 
-   /* this.getProfileService.processFriendRequest(this.profile.id, value.toString()).subscribe(
-      () => {
-        this.profile.friend = value;
-        this.profile.incomingRequest = false;
+    this.getProfileService.getProfileAchievement(this.profile.id).subscribe(
+      (result) => {
+        this.achievements = result;
+        this.tabReady = true;
       }
-    );*/
+    );
   }
 
 

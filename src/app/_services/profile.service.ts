@@ -7,6 +7,7 @@ import { Profile } from '../_models/profile';
 import { catchError, map } from 'rxjs/operators';
 import { Quiz } from '../_models/quiz';
 import { HandleErrorsService } from './handle-errors.service';
+import { Achievement } from '../_models/achievement';
 
 @Injectable({
   providedIn: 'root'
@@ -86,5 +87,17 @@ export class ProfileService {
       this.httpOptions).pipe();
 
   }
+
+
+  public getProfileAchievement(targetId: string): Observable<Achievement[]> {
+    return this.http.get<Achievement[]>(this.profilesUrl + targetId + '/achievements',
+      this.httpOptions).pipe(
+        map((data) => data.map(achievement => {
+          return new Achievement().deserialize(achievement, this.sanitizer);
+        }
+        )));
+
+  }
+
 
 }

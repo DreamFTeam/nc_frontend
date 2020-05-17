@@ -60,10 +60,17 @@ export class FriendsService {
 
   public getUsersInvitationsSize(direction: string): Observable<number> {
     if (direction === 'outgoing' || direction === 'incoming') {
-      return this.http.get<number>(this.profilesUrl + 'friends/invitations' + direction + 'totalsize',
+      return this.http.get<number>(this.profilesUrl + 'friends/invitations/' + direction + '/totalsize',
         this.httpOptions).pipe();
     }
   }
 
+
+  public getUsersInvitationsPage(direction: string, page: number): Observable<Profile[]> {
+    if (direction === 'outgoing' || direction === 'incoming') {
+      return this.http.get<Profile[]>(this.profilesUrl + 'friends/invitations/' + direction + '/page/' + page,
+        this.httpOptions).pipe();
+    }
+  }
 
 }
