@@ -5,7 +5,7 @@
   <div class="container-sm mt-3 p-3" *ngIf="this.searchResults;">
      <h1 style="font-size: larger; font-weight: bolder;">Found  {{searchResults.length }}  {{searchResults.length == 1 ? "user" : "users" }} </h1>
      <div *ngFor="let profile of this.searchResults" style='font-size: larger;'>
-        <div class="row p-2 m-2 border" *ngIf="profile.username!= currentUsername">
+        <div class="row p-2 m-2 border" >
            <img  routerLink="/profile/{{profile.username}}"  class="img-thumbnail col-xs-5 col-sm-5 col-md-4 col-lg-3  float-left" [src]="profile.image ? profile.image : '../../assets/img/nopicture.jpg'" style="background-color:rgba(243, 202, 165, 0.863);">
            <div class="col-xs-5 col-sm-7 col-md-8 col-lg-9 p-2 p-2">
               <a  routerLink="/profile/{{profile.username}}" style="font-weight: bolder;">{{profile.username}}</a>
