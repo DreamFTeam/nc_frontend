@@ -4,6 +4,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {LogInComponent} from '../log-in/log-in.component';
 import {SignUpComponent} from '../sign-up/sign-up.component';
 import {AuthenticationService} from '../_services/authentication.service';
+import { Role } from '../_models/role';
 
 @Component({
   selector: 'app-nav-bar',
@@ -22,7 +23,7 @@ export class NavBarComponent implements OnInit {
   ngOnInit(): void {
     this.signedIn = (this.authenticationService.currentUserValue === undefined) ? false : true;
     this.privileged = (this.signedIn &&
-      this.authenticationService.currentUserValue.role !== 'ROLE_USER');
+      this.authenticationService.currentUserValue.role !== Role.User);
   }
 
 
@@ -45,7 +46,7 @@ export class NavBarComponent implements OnInit {
   logout() {
     this.isMenuCollapsed = true;
     this.authenticationService.signoutUser();
+    this.router.navigate(['/']);
     window.location.reload();
-    this.router.navigate(['/'])
   }
 }

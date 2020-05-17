@@ -28,6 +28,11 @@ a:active {
     margin-right: 10px;
 }
 
+.btn:focus{
+    outline: none!important;
+    box-shadow: none;
+  }
+
 .buttonpr {
     background: #74BDE6;
 }

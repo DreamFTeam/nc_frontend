@@ -46,7 +46,6 @@ export class ViewQuizComponent implements OnInit {
     
     this.thumbnail = this.quiz.imageContent;
     this.loading = false;
-    console.log(this.quiz);
   }
 
   markAsFavorite() {
@@ -94,11 +93,12 @@ export class ViewQuizComponent implements OnInit {
   }
 
   isMyQuiz(){
-    return this.creatorId === this.authenticationService.currentUserValue.id;
+    const user = this.authenticationService.currentUserValue;
+    return user && this.creatorId === user.id;
   }
 
   isPrivileged(){
-    let role = this.authenticationService.currentUserValue.role;
-    return role === Role.Admin || role === Role.SuperAdmin || role === Role.Moderator; 
+    const user = this.authenticationService.currentUserValue;
+    return user && (user.role !== Role.User); 
   }
 }

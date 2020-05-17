@@ -38,10 +38,8 @@
 
             <div class="row mt-4">
                 <div class="col-sm-4 mb-3">
-                    <img *ngIf="quiz.imageContent !== null; else elseBlock" class="img-thumbnail" [src]='thumbnail' alt="../assets/img/quiz.jpg">
-                    <ng-template #elseBlock>
-                        <img  class="img-thumbnail"  src="../assets/img/quiz.jpg">
-                    </ng-template>
+                    <img
+                    class="img-thumbnail" [src]='thumbnail ? thumbnail : "../assets/img/quiz.jpg"'>
                 </div>
                 <div class="col-sm-8">
                     <div>
@@ -69,7 +67,7 @@
             </div>
         
             <div class="mt-3">
-                <div class="btn buttonpr ml-1" routerLink="/quiz/{{quiz.id}}/newgame">Play quiz</div>
+                <div *ngIf="!isPrivileged()" class="btn buttonpr ml-1" routerLink="/quiz/{{quiz.id}}/newgame">Play quiz</div>
                 <div *ngIf="isMyQuiz()" class="btn buttonsec ml-1" routerLink="/quizedit/{{quiz.id}}">Edit quiz</div>
                 
             </div>

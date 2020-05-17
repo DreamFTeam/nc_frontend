@@ -1,97 +1,56 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light mb-3" *ngIf="signedIn== false">
-
+<nav class="navbar navbar-light bg-light navbar-expand-lg justify-content-center mb-3">
+  <a class="navbar-brand d-flex w-50 mr-auto" [routerLink]="'/'">QUIZ-NET</a>
   <button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">
-    &#9776;
+    <span class="navbar-toggler-icon"></span>
   </button>
 
-  <a class="navbar-brand" [routerLink]="'/'">QUIZ-NET</a>
+  <div class="navbar-collapse collapse w-100" [ngbCollapse]="isMenuCollapsed">
+    <ul class="navbar-nav w-100 justify-content-center">
+      
+      <ng-template [ngIf]="privileged">
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="'/privileged/main'" (click)="isMenuCollapsed = true">MAIN</a>
+        </li>
+         <li class="nav-item">
+          <a class="nav-link" [routerLink]="'/validation'" (click)="isMenuCollapsed = true">VALIDATION</a>
+        </li>
+      </ng-template>
+      <ng-template [ngIf]="!privileged">
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="'/activities'" (click)="isMenuCollapsed = true">ACTIVITIES</a>
+        </li>
+      </ng-template>
+      <ng-template [ngIf]="signedIn">
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="'/profile'" (click)="isMenuCollapsed = true">PROFILE</a>
+        </li>
+      </ng-template>
 
-  <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
-    <ul class="navbar-nav mx-auto">
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="'/'" (click)="isMenuCollapsed = true">MAIN PAGE</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="'/quiz-list'" (click)="isMenuCollapsed = true">QUIZZES</a>
-      </li>
-      <li class="nav-item">
-        <input class="form-control mr-sm-2" type="text" placeholder="Search">
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" (click)="openLogin()">LOG IN</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" (click)="openReg()">SIGN UP</a>
-      </li>
-    </ul>
-  </div>
-</nav>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light mb-3" *ngIf="signedIn && !privileged">
+      
 
-  <button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">
-    &#9776;
-  </button>
-
-  <a class="navbar-brand" [routerLink]="'/'">QUIZ-NET</a>
-
-  <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
-    <ul class="navbar-nav mx-auto">
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="'/profile'" (click)="isMenuCollapsed = true">PROFILE</a>
-      </li>
       <li class="nav-item">
         <a class="nav-link" [routerLink]="'/quiz-list'" (click)="isMenuCollapsed = true">QUIZZES</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" [routerLink]="'/users'" (click)="isMenuCollapsed = true">USERS</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="'/activities'" (click)="isMenuCollapsed = true">ACTIVITIES</a>
-      </li>
-      <li class="nav-item">
-        <input class="form-control mr-sm-2" type="text" placeholder="Search">
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="'/'" (click)="logout()">LOG OUT</a>
-      </li>
+    </ul>
+    <ul class="nav navbar-nav ml-auto w-100 justify-content-end">
+      <ng-template [ngIf]="signedIn" [ngIfElse]="loggedOut">
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="'/'" (click)="logout()">LOG OUT</a>
+        </li>
+      </ng-template>
+      <ng-template #loggedOut>
+        <li class="nav-item">
+          <a class="nav-link clickable" (click)="openLogin()">LOG IN</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link clickable" (click)="openReg()">SIGN UP</a>
+        </li>
+      </ng-template>
     </ul>
   </div>
-</nav>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light mb-3" *ngIf="signedIn == true  && privileged == true">
-
-  <button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">
-    &#9776;
-  </button>
-  <a class="navbar-brand" [routerLink]="'/'">QUIZ-NET</a>
-
-  <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
-    <ul class="navbar-nav mx-auto">
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="'/privileged/main'" (click)="isMenuCollapsed = true">MAIN</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="'/validation'" (click)="isMenuCollapsed = true">VALIDATION</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="'/editannouncements'" (click)="isMenuCollapsed = true">ANNOUNCEMENTS</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="'/profile'" (click)="isMenuCollapsed = true">PROFILE</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="'/quiz-list'" (click)="isMenuCollapsed = true">QUIZZES</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="'/users'" (click)="isMenuCollapsed = true">USERS</a>
-      </li>
-      <li class="nav-item">
-        <input class="form-control mr-sm-2" type="text" placeholder="Search">
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="'/'" (click)="logout()">LOG OUT</a>
-      </li>
-    </ul>
-  </div>
 </nav>

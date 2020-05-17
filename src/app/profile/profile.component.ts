@@ -22,18 +22,22 @@ export class ProfileComponent implements OnInit {
   quizzes;
   profile: Profile;
   tabReady: boolean;
+  friends: Profile[];
+  friendsSize: number;
+  friendsPage: number;
 
-
-  constructor(private router: Router,
-              private route: ActivatedRoute,
-              private getProfileService: GetProfileService,
-              private privilegedService: PrivilegedService,
-              private sanitizer: DomSanitizer,
-              private quizService: QuizService,
-              private authenticationService: AuthenticationService,
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private getProfileService: GetProfileService,
+    private privilegedService: PrivilegedService,
+    private sanitizer: DomSanitizer,
+    private quizService: QuizService,
+    private authenticationService: AuthenticationService,
   ) {
     this.role = authenticationService.currentUserValue.role;
     this.activeTab = 1;
+    this.friendsPage = 1;
   }
 
   ngOnInit(): void {
@@ -177,23 +181,75 @@ export class ProfileComponent implements OnInit {
       () => {
         this.profile.friend = false;
         this.profile.incomingRequest = true;
+        this.profile.outgoingRequest = false;
+
       }
     );
   }
 
 
-  changeTab(event): void {
-    this.activeTab = event;
-    if (event.nextId === 2) {
-      this.tabReady = false;
-      this.getFavQuizzes();
+  getFriends(page: number): void {
 
-    } else if (event.nextId === 1) {
-      this.tabReady = false;
-      this.getQuizzes();
+    this.getProfileService.getUsersFriends(this.profile.id, page.toString()).subscribe(
+      (friends) => {
+        this.friends = friends;
+      }
+    );
 
-    }
-
+    this.tabReady = true;
 
   }
+
+  getFriendsSize(): void {
+
+    this.getProfileService.getUsersFriendsSize(this.profile.id).subscribe(
+      (size) => {
+        this.friendsSize = size;
+      }
+    );
+
+  }
+
+
+  getAchievements(): void {
+    this.tabReady = true;
+
+   /* this.getProfileService.processFriendRequest(this.profile.id, value.toString()).subscribe(
+      () => {
+        this.profile.friend = value;
+        this.profile.incomingRequest = false;
+      }
+    );*/
+  }
+
+
+  changeTab(event): void {
+    this.activeTab = event;
+    this.tabReady = false;
+
+    switch (event.nextId) {
+      case 1:
+        this.getQuizzes();
+        break;
+      case 2:
+        this.getFavQuizzes();
+        break;
+      case 3:
+        this.getAchievements();
+        break;
+      case 4:
+        this.getFriendsSize();
+        this.getFriends(1);
+    }
+  }
+
+  load(event): void {
+    this.tabReady = false;
+    this.getFriendsSize();
+    this.getFriends(event);
+    window.scrollTo(0, 250);
+
+  }
+
 }
+
