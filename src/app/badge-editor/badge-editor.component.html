@@ -22,7 +22,7 @@ class="badge mr-1">
 <input id="typeahead-focus" type="text" class="form-control" [(ngModel)]="model" [ngbTypeahead]="search"
     [inputFormatter]="formatter" [resultFormatter]="formatter" [editable]='false'
     (focus)="focus$.next($any($event).target.value)" (click)="click$.next($any($event).target.value)"
-    placeholder="{{label}}"/>
+    placeholder="{{label}}" (keyup.enter)="add()"/>
 
 
 <button class="btn buttonpr mr-1 mt-1 rounded" (click)="add()">

@@ -17,6 +17,11 @@ import { Alert } from '../_models/alert';
 })
 export class QuizService {
   url = `${environment.apiUrl}quizzes`;
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+  };
 
   user: User;
 
@@ -97,7 +102,7 @@ export class QuizService {
       userId: this.user.id,
     };
 
-    return this.http.post<Quiz>(this.url + '/markasfavourite', JSON.stringify(favoriteInfo));
+    return this.http.post<Quiz>(this.url + '/markasfavourite', JSON.stringify(favoriteInfo), this.httpOptions);
   }
 
 
@@ -105,8 +110,9 @@ export class QuizService {
     const quizInfo = {
       quizId: id
     };
+    console.log(quizInfo);
 
-    return this.http.post<ExtendedQuiz>(this.url + '/markaspublished', JSON.stringify(quizInfo));
+    return this.http.post<ExtendedQuiz>(this.url + '/markaspublished', JSON.stringify(quizInfo), this.httpOptions);
   }
 
   delete(id: string){
