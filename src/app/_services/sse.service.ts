@@ -1,10 +1,12 @@
 import {Injectable, NgZone} from '@angular/core';
 import {Observable} from 'rxjs';
+import {environment} from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SseService {
+  private sseConnectorUrl = `${environment.apiUrl}sse/stream/`;
 
   constructor(private zone: NgZone) {
   }
@@ -13,9 +15,9 @@ export class SseService {
     return new EventSource(url);
   }
 
-  getServerSentEvent(url: string, type: string): Observable<any> {
+  getServerSentEvent(key: string, type: string): Observable<any> {
     return Observable.create(observer => {
-      const eventSource = this.getEventSource(url);
+      const eventSource = this.getEventSource(this.sseConnectorUrl + key);
 
       eventSource.addEventListener(type, event => {
         this.zone.run(() => {

@@ -49,6 +49,7 @@ import {QRCodeModule} from 'angularx-qrcode';
 import { AnonymInitComponent } from './anonym-init/anonym-init.component';
 import { MessageModalComponent } from './message-modal/message-modal.component';
 import {AnonymService} from './_services/anonym.service';
+import { NotificationsComponent } from './notifications/notifications.component';
 
 const appRoutes: Routes = [];
 
@@ -87,7 +88,8 @@ const appRoutes: Routes = [];
     GameSettingsComponent,
     GameConnectorComponent,
     AnonymInitComponent,
-    MessageModalComponent],
+    MessageModalComponent,
+    NotificationsComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
