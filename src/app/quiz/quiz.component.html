@@ -92,7 +92,7 @@
 
                         <div *ngFor="let question of questions; let i = index">
                             <div class="btn-group">
-                                <button class="removeb" (click)="removeQuestionIndex(i, false)">
+                                <button *ngIf="!quiz.published" class="removeb" (click)="removeQuestionIndex(i, false)">
                                     <img class="bttnimg" src="../assets/img/close-button.png">
                                 </button>
                                 <button class="btn mr-1 mt-1 rounded" (click)="showQuestion(i)" [ngClass]="{'buttonpn': question.id === '', 

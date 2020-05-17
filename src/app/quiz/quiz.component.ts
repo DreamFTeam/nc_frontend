@@ -181,9 +181,11 @@ export class QuizComponent implements OnInit {
 
 
   setSavedQuestion(ans){
+    
     const index = this.questions.findIndex( el => el === this.questionSelector);
 
     this.questions[index] = ans;
+    this.questionSelector = this.questions[index];
     
     console.log(this.questions);
     this.toastAdd('Question saved!', { classname: 'bg-success text-light'});
@@ -203,9 +205,9 @@ export class QuizComponent implements OnInit {
       this.quizLoading = true;
 
       if (this.quiz.id === "") {
-        this.create();
+        this.createQuiz();
       }else{
-        this.edit();
+        this.editQuiz();
       }
       
     } else {
@@ -215,7 +217,7 @@ export class QuizComponent implements OnInit {
     }
   }
 
-  create(){
+  createQuiz(){
     this.quizService.createQuiz(this.quiz, this.file).subscribe(
 
       ans => {
@@ -230,7 +232,7 @@ export class QuizComponent implements OnInit {
       });
   }
 
-  edit(){
+  editQuiz(){
     this.quizService.saveQuiz(this.quiz, this.file).subscribe(
 
       ans => {
@@ -252,41 +254,41 @@ export class QuizComponent implements OnInit {
 
 
   publish() {
-    this.modal("Are you sure you want to publish this quiz?",  "warning")
-    .subscribe((receivedEntry) => {
-      if (receivedEntry) {
-        this.quizService.publishQuiz(this.quiz.id)
-          .subscribe(
-            ans => {
-              this.toastAdd('Published!', { classname: 'bg-success text-light' });
-              this.quiz.published = true;
-            },
-            err => {
-              console.log(err)
-              this.toastAdd('Sorry, couldn`t publish your quiz :(', { classname: 'bg-danger text-light' });
-            });
-      }
-    })
+    this.modal("Are you sure you want to publish this quiz?", "warning")
+      .subscribe((receivedEntry) => {
+        if (receivedEntry) {
+          this.quizService.publishQuiz(this.quiz.id)
+            .subscribe(
+              ans => {
+                this.toastAdd('Published!', { classname: 'bg-success text-light' });
+                this.quiz.published = true;
+              },
+              err => {
+                console.log(err)
+                this.toastAdd('Sorry, couldn`t publish your quiz :(', { classname: 'bg-danger text-light' });
+              });
+        }
+      })
   }
 
 
-  removeQuestionIndex(i, onCreatorDelete){
-    this.modal("Are you sure you want to delete this question?",  "danger")
-    .subscribe((receivedEntry) => {
-      if (receivedEntry) {
-         if(this.questions[i].id === ""){
-           this.removeQuestionFromList(i, onCreatorDelete);
-         }else{
-          this.questionService.deleteQuestion(this.questions[i].id)
-          .subscribe(
-            () => this.removeQuestionFromList(i, onCreatorDelete),
-            err => {
-              console.log(err);
-              this.toastAdd('Sorry, Couldn`t delete this question :(', { classname: 'bg-danger text-light' });
-            });
-         }
-      }
-    });
+  removeQuestionIndex(i, onCreatorDelete) {
+    this.modal("Are you sure you want to delete this question?", "danger")
+      .subscribe((receivedEntry) => {
+        if (receivedEntry) {
+          if (this.questions[i].id === "") {
+            this.removeQuestionFromList(i, onCreatorDelete);
+          } else {
+            this.questionService.deleteQuestion(this.questions[i].id)
+              .subscribe(
+                () => this.removeQuestionFromList(i, onCreatorDelete),
+                err => {
+                  console.log(err);
+                  this.toastAdd('Sorry, Couldn`t delete this question :(', { classname: 'bg-danger text-light' });
+                });
+          }
+        }
+      });
   }
 
   removeQuestion() {
