@@ -109,9 +109,16 @@ export class GetProfileService {
 
 
 
-  public getUsersFriends(targetId: string, toAccept: string): Observable<Profile> {
-    return null; // TODO
+  public getUsersFriends(targetId: string, page: string): Observable<Profile[]> {
+      return this.http.get<Profile[]>(this.profilesUrl + targetId + `/friends/page/` + page,
+    this.httpOptions).pipe();
   }
+
+
+  public getUsersFriendsSize(targetId: string): Observable<number> {
+    return this.http.get<number>(this.profilesUrl + targetId + `/friendstotalsize`,
+  this.httpOptions).pipe();
+}
 
   public removeFriend(targetId: string): Observable<Profile> {
     return this.http.post<Profile>(this.profilesUrl + 'friends/remove',
