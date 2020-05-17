@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { GetProfileService } from '../_services/get-profile.service';
+import { ProfileService } from '../_services/profile.service';
 import { PrivilegedService } from '../_services/privileged.service';
 import { Profile } from '../_models/profile';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AuthenticationService } from '../_services/authentication.service';
 import { QuizService } from '../_services/quiz.service';
+import { FriendsService } from '../_services/friends-service.service';
 
 
 @Component({
@@ -29,7 +30,8 @@ export class ProfileComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private getProfileService: GetProfileService,
+    private friendService: FriendsService,
+    private getProfileService: ProfileService,
     private privilegedService: PrivilegedService,
     private sanitizer: DomSanitizer,
     private quizService: QuizService,
@@ -162,13 +164,13 @@ export class ProfileComponent implements OnInit {
   }
 
   sendFriendRequest(value: boolean) {
-    this.getProfileService.sendFriendRequest(this.profile.id, value.toString()).subscribe(
+    this.friendService.sendFriendRequest(this.profile.id, value.toString()).subscribe(
       () => this.profile.outgoingRequest = value
     );
   }
 
   processFriendRequest(value: boolean) {
-    this.getProfileService.processFriendRequest(this.profile.id, value.toString()).subscribe(
+    this.friendService.processFriendRequest(this.profile.id, value.toString()).subscribe(
       () => {
         this.profile.friend = value;
         this.profile.incomingRequest = false;
@@ -177,7 +179,7 @@ export class ProfileComponent implements OnInit {
   }
 
   removeFriend() {
-    this.getProfileService.removeFriend(this.profile.id).subscribe(
+    this.friendService.removeFriend(this.profile.id).subscribe(
       () => {
         this.profile.friend = false;
         this.profile.incomingRequest = true;
@@ -190,19 +192,19 @@ export class ProfileComponent implements OnInit {
 
   getFriends(page: number): void {
 
-    this.getProfileService.getUsersFriends(this.profile.id, page.toString()).subscribe(
+    this.friendService.getUsersFriends(this.profile.id, page.toString()).subscribe(
       (friends) => {
         this.friends = friends;
+        this.tabReady = true;
       }
     );
 
-    this.tabReady = true;
 
   }
 
   getFriendsSize(): void {
 
-    this.getProfileService.getUsersFriendsSize(this.profile.id).subscribe(
+    this.friendService.getUsersFriendsSize(this.profile.id).subscribe(
       (size) => {
         this.friendsSize = size;
       }

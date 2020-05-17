@@ -21,6 +21,10 @@
              </ng-template>
              <h3>{{profile.aboutMe}}</h3>
           </div>
+          <div *ngIf= "this.role=='ROLE_USER'" class="col-3 ">
+            <a *ngIf="owner" [routerLink]="'/invitations'" class="btn btn-outline-info mt-2 w-100"> Incoming Requests </a>
+            <a *ngIf="owner" [routerLink]="'/invitations'" class="btn btn-outline-info mt-2 w-100"> Outgoing Requests </a>
+         </div>
           <div *ngIf= "this.role!='ROLE_USER' && owner && profile.activated" class="col-3 ">
              <a class="btn btn-outline-secondary mt-2" (click)="deactivate(false)"> Deactivate </a>
              <div class="w-100"></div>
@@ -55,7 +59,7 @@
                          </a> 
                          <b>Description:</b> {{quiz.description}}  <br />
                          <b>Last time modified:</b> {{quiz.creationDate}} <br />
-                         <div *ngIf="owner"> <b>Status:</b> {{quiz.published ? "published" : quiz.validated ? "not published" : "not validated"}} <br/></div>
+                         <div *ngIf="owner"> <b>Status:</b> {{(quiz.published && quiz.activated) ? "published" : !quiz.validated ? "not validated yet" : (!quiz.activated) ? "deactivated" : "not published" }} <br/></div>
                          <b>Rating:</b> {{quiz.rating}}  <br />
                          <div  class="col-xs-2 col-sm-3 col-md-2 col-lg-1 p-2 float-right" (click)="markQuizFavourite(quiz)">
                             <svg *ngIf="quiz.favourite" class="bi bi-star-fill" width="1.5em" height="1.5em" viewBox="0 0 16 16"
