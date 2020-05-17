@@ -1,10 +1,9 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { GetProfileService } from '../_services/get-profile.service';
+import { ProfileService } from '../_services/profile.service';
 import { PrivilegedService } from '../_services/privileged.service';
 import { Profile } from '../_models/profile';
 import { AuthenticationService } from '../_services/authentication.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-edit-profile',
@@ -24,7 +23,7 @@ export class EditProfileComponent implements OnInit {
 
 
   constructor(private router: Router,
-              private getProfileService: GetProfileService,
+              private getProfileService: ProfileService,
               private priviligedService: PrivilegedService,
               private authenticationService: AuthenticationService) {
 

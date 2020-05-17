@@ -45,6 +45,7 @@ import {ErrorInterceptor} from './_helpers/error.interceptor';
 import { SuggestionsComponent } from './suggestions/suggestions.component';
 import { ActivitiesComponent } from './activities/activities.component';
 import { YesNoModalComponent } from './yes-no-modal/yes-no-modal.component';
+import { UserInvitationsComponent } from './user-invitations/user-invitations.component';
 
 const appRoutes: Routes = [];
 
@@ -82,7 +83,8 @@ const appRoutes: Routes = [];
     BadgeEditorComponent,
     SuggestionsComponent,
     ActivitiesComponent,
-    YesNoModalComponent],
+    YesNoModalComponent,
+    UserInvitationsComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

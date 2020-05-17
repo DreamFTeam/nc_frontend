@@ -1,0 +1,45 @@
+<div role="main" class="container" *ngIf="ready" style="word-wrap: break-word;">
+    <div class="container-sm mt-2 p-4" *ngIf="true">
+       <ul ngbNav #nav="ngbNav" [(activeId)]="activeTab" (navChange)="changeTab($event)" class="nav-tabs w-100 m-2 p-2 border">
+       <li [ngbNavItem]="1">
+          <a ngbNavLink class="blue p-2 mr-2"> Incoming requests </a>
+          <ng-template ngbNavContent>
+            <div *ngIf="tabReady">
+               <h1 class="m-3" style="font-size: larger; font-weight: bolder;">Found  {{invitationsSize}}  {{invitationsSize == 1 ? "request" : "requests" }} </h1>
+                <ngb-pagination  *ngIf="invitationsSize > 8" class="d-flex justify-content-center"  [collectionSize]="invitationsSize" [(page)]="invitationsPage"  [pageSize]="8" [rotate]="true" (pageChange)="load($event)"></ngb-pagination>
+                <div *ngFor="let profile of this.invitations" style='font-size: larger;' class="row p-2 border m-2">
+                      <img  routerLink="/profile/{{profile.username}}"  class="img-thumbnail col-xs-5 col-sm-5 col-md-4 col-lg-3 float-left" [src]="profile.image ? profile.image : '../../assets/img/nopicture.jpg'" style="background-color:rgba(243, 202, 165, 0.863);">
+                      <div class="col-xs-5 col-sm-7 col-md-8 col-lg-9">
+                           <a routerLink="/profile/{{profile.username}}" style="font-weight: bolder;">{{profile.username}}</a>
+                           <div class="mw-100 m-2"></div>                        
+                           <a class="btn btn-outline-success m-2 w-50 col"  (click)="processFriendRequest(profile, true)"> Accept request</a>
+                           <a class="btn btn-outline-danger m-2 w-50 col"  (click)="processFriendRequest(profile, false)"> Reject request</a>
+                      </div>
+                   </div>
+                <ngb-pagination class="d-flex justify-content-center"  [collectionSize]="invitationsSize" [(page)]="invitationsPage"  [pageSize]="8" [rotate]="true" (pageChange)="load($event)"></ngb-pagination>
+             </div>
+          </ng-template>
+       </li>
+       <li [ngbNavItem]="2">
+         <a ngbNavLink class="blue p-2 mr-2" > Outgoing requests </a>
+         <ng-template ngbNavContent>
+            <div *ngIf="tabReady ">
+               <h1 class="m-3" style="font-size: larger; font-weight: bolder;">Found  {{invitationsSize}}  {{invitationsSize == 1 ? "request" : "requests" }} </h1>
+                <ngb-pagination  *ngIf="invitationsSize > 8"  class="d-flex justify-content-center"  [collectionSize]="invitationsSize" [(page)]="invitationsPage"  [pageSize]="8" [rotate]="true" (pageChange)="load($event)"></ngb-pagination>
+                <div *ngFor="let profile of this.invitations" class="row p-2 m-2 border" style='font-size: larger;'>
+                      <img  routerLink="/profile/{{profile.username}}"  class="img-thumbnail col-xs-5 col-sm-5 col-md-4 col-lg-3  float-left" [src]="profile.image ? profile.image : '../../assets/img/nopicture.jpg'" style="background-color:rgba(243, 202, 165, 0.863);">
+                      <div class="col-xs-5 col-sm-7 col-md-8 col-lg-9 p-2 p-2">
+                         <a  routerLink="/profile/{{profile.username}}" style="font-weight: bolder;">{{profile.username}}</a>
+                         <div class="mw-100 m-2"></div>                        
+                         <a class="btn btn-outline-danger mt-2 w-50 col" (click)="sendFriendRequest(profile, false)"> Cancel friend request</a>
+                   </div>
+                   </div>
+                   <ngb-pagination class="d-flex justify-content-center"  [collectionSize]="invitationsSize" [(page)]="invitationsPage"  [pageSize]="8" [rotate]="true" (pageChange)="load($event)"></ngb-pagination>
+                </div>
+         </ng-template>
+      </li>
+
+       </ul>
+       <div [ngbNavOutlet]="nav" class="mt-2"></div>
+    </div>
+ </div>

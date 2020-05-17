@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { GetProfileService } from '../_services/get-profile.service'
+import { ProfileService } from '../_services/profile.service'
 import { Profile } from '../_models/profile';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AuthenticationService } from '../_services/authentication.service';
@@ -14,7 +14,7 @@ export class UsersComponent implements OnInit {
   username: string;
   currentUsername: string;
 
-  constructor(private getProfileService: GetProfileService,
+  constructor(private getProfileService: ProfileService,
               private sanitizer: DomSanitizer,
               private authenticationService: AuthenticationService,
 

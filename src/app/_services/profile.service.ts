@@ -5,15 +5,15 @@ import { Observable, of } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Profile } from '../_models/profile';
 import { catchError, map } from 'rxjs/operators';
-import { User } from '../_models/user';
 import { Quiz } from '../_models/quiz';
-import { HandleErrorsService} from '../_services/handle-errors.service';
+import { HandleErrorsService } from './handle-errors.service';
+import { Achievement } from '../_models/achievement';
 
 @Injectable({
   providedIn: 'root'
 })
 
-export class GetProfileService {
+export class ProfileService {
   private rolesHierarchy = {
     ROLE_USER: 10,
     ROLE_MODERATOR: 0,
@@ -28,10 +28,10 @@ export class GetProfileService {
     })
   };
 
-  private user: User;
-
-  constructor(private http: HttpClient, private sanitizer: DomSanitizer,
-              private errorHandler: HandleErrorsService) {
+  constructor(
+    private http: HttpClient,
+    private sanitizer: DomSanitizer,
+    private errorHandler: HandleErrorsService) {
   }
 
 
@@ -41,13 +41,8 @@ export class GetProfileService {
 
   public getProfile(profile: string): Observable<Profile> {
 
-    const options = {
-      headers: this.httpOptions.headers,
-    }; //TODO
-
-
     return this.http.get<Profile>(this.profilesUrl + profile,
-      options).pipe(
+      { headers: this.httpOptions.headers }).pipe(
         map(data => {
           return Profile.deserialize(data, this.sanitizer);
         })
@@ -94,35 +89,15 @@ export class GetProfileService {
   }
 
 
-  public sendFriendRequest(targetId: string, toInvite: string): Observable<Profile> {
-    return this.http.post<Profile>(this.profilesUrl + 'friends/invite',
-      null, { headers: this.httpOptions.headers, params: { targetId, toInvite } }
-    ).pipe(catchError(this.errorHandler.handleError<any>('sendFriendRequest')));
+  public getProfileAchievement(targetId: string): Observable<Achievement[]> {
+    return this.http.get<Achievement[]>(this.profilesUrl + targetId + '/achievements',
+      this.httpOptions).pipe(
+        map((data) => data.map(achievement => {
+          return new Achievement().deserialize(achievement, this.sanitizer);
+        }
+        )));
+
   }
 
 
-  public processFriendRequest(targetId: string, toAccept: string): Observable<Profile> {
-    return this.http.post<Profile>(this.profilesUrl + 'friends/process',
-      null, { headers: this.httpOptions.headers, params: { targetId, toAccept } }
-    ).pipe(catchError(this.errorHandler.handleError<any>('processFriendRequest')));
-  }
-
-
-
-  public getUsersFriends(targetId: string, page: string): Observable<Profile[]> {
-      return this.http.get<Profile[]>(this.profilesUrl + targetId + `/friends/page/` + page,
-    this.httpOptions).pipe();
-  }
-
-
-  public getUsersFriendsSize(targetId: string): Observable<number> {
-    return this.http.get<number>(this.profilesUrl + targetId + `/friendstotalsize`,
-  this.httpOptions).pipe();
-}
-
-  public removeFriend(targetId: string): Observable<Profile> {
-    return this.http.post<Profile>(this.profilesUrl + 'friends/remove',
-      null, { headers: this.httpOptions.headers, params: { targetId} }
-    ).pipe(catchError(this.errorHandler.handleError<any>('removeFriend')));
-  }
 }
