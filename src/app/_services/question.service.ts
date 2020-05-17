@@ -15,11 +15,6 @@ import {AuthenticationService} from './authentication.service';
 })
 export class QuestionService {
   url = `${environment.apiUrl}quizzes/`;
-  httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json'
-    })
-  };
 
   user: User;
 
@@ -31,7 +26,6 @@ export class QuestionService {
 
   getAllQuestionsNew(quizId: string): Observable<ExtendedQuestion[]> {
     const options = {
-      headers: this.httpOptions.headers,
       params: new HttpParams().set('quizId', quizId)
 
     };
@@ -45,7 +39,6 @@ export class QuestionService {
   getAllQuestions(quizId: string) {
 
     const options = {
-      headers: this.httpOptions.headers,
       params: new HttpParams().set('quizId', quizId)
 
     };
@@ -85,7 +78,7 @@ export class QuestionService {
 
   deleteQuestion(id: string) {
     const options = {
-      headers: this.httpOptions.headers,
+      headers: new HttpHeaders(),
       body: {
         id
       },

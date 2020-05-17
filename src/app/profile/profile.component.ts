@@ -15,23 +15,25 @@ import { QuizService } from '../_services/quiz.service';
 })
 
 export class ProfileComponent implements OnInit {
-
+  activeTab: number;
   role: string; // role of the current user
   ready: boolean; // indicates the profile was loaded (doesn't include quizzes)
   owner: boolean; // indicates which rights the user has concerning this profile
   quizzes;
   profile: Profile;
+  tabReady: boolean;
 
 
   constructor(private router: Router,
-    private route: ActivatedRoute,
-    private getProfileService: GetProfileService,
-    private privilegedService: PrivilegedService,
-    private sanitizer: DomSanitizer,
-    private quizService: QuizService,
-    private authenticationService: AuthenticationService,
+              private route: ActivatedRoute,
+              private getProfileService: GetProfileService,
+              private privilegedService: PrivilegedService,
+              private sanitizer: DomSanitizer,
+              private quizService: QuizService,
+              private authenticationService: AuthenticationService,
   ) {
     this.role = authenticationService.currentUserValue.role;
+    this.activeTab = 1;
   }
 
   ngOnInit(): void {
@@ -113,6 +115,29 @@ export class ProfileComponent implements OnInit {
           return input;
         });
         this.quizzes = result;
+        this.tabReady = true;
+      },
+      error => {
+        console.error(error.error);
+      });
+  }
+
+
+  getFavQuizzes() {
+
+    this.getProfileService.getProfileFavQuiz().subscribe(
+      result => {
+        result.forEach(input => {
+          if (input['imageContent'] !== null) {
+            input['imageContent'] =
+              this.sanitizer.bypassSecurityTrustUrl
+                ('data:image\/(png|jpg|jpeg);base64,'
+                  + input['imageContent']);
+          }
+          return input;
+        });
+        this.quizzes = result;
+        this.tabReady = true;
       },
       error => {
         console.error(error.error);
@@ -127,11 +152,14 @@ export class ProfileComponent implements OnInit {
   markQuizFavourite(quiz: any) {
     quiz.favourite = !quiz.favourite;
     this.quizService.markAsFavorite(quiz.id).subscribe();
+    if (this.activeTab === 2) {
+      this.quizzes = this.quizzes.filter(item => item !== quiz);
+    }
   }
 
-  sendFriendRequest() {
-    this.getProfileService.sendFriendRequest(this.profile.id).subscribe(
-      () => this.profile.outgoingRequest = true
+  sendFriendRequest(value: boolean) {
+    this.getProfileService.sendFriendRequest(this.profile.id, value.toString()).subscribe(
+      () => this.profile.outgoingRequest = value
     );
   }
 
@@ -144,6 +172,28 @@ export class ProfileComponent implements OnInit {
     );
   }
 
+  removeFriend() {
+    this.getProfileService.removeFriend(this.profile.id).subscribe(
+      () => {
+        this.profile.friend = false;
+        this.profile.incomingRequest = true;
+      }
+    );
+  }
 
+
+  changeTab(event): void {
+    this.activeTab = event;
+    if (event.nextId === 2) {
+      this.tabReady = false;
+      this.getFavQuizzes();
+
+    } else if (event.nextId === 1) {
+      this.tabReady = false;
+      this.getQuizzes();
+
+    }
+
+
+  }
 }
-
