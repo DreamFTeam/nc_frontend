@@ -4,7 +4,6 @@ import { ProfileService } from '../_services/profile.service';
 import { PrivilegedService } from '../_services/privileged.service';
 import { Profile } from '../_models/profile';
 import { AuthenticationService } from '../_services/authentication.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-edit-profile',

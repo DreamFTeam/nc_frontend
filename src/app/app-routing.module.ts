@@ -35,7 +35,7 @@ const routes: Routes = [
 
   { path: 'editannouncements', component: AnnouncementEditComponent, 
   canActivate: [AuthGuard], data: { roles: [Role.Admin,Role.Moderator,Role.SuperAdmin] }},
-  { path: 'invitations', component: UserInvitationsComponent},
+  { path: 'requests', component: UserInvitationsComponent},
 
   { path: 'activities', component: ActivitiesComponent, canActivate: [AuthGuard], data: { roles: [Role.User] }},
   { path: '**', redirectTo: ''}

@@ -84,6 +84,11 @@ export class ProfileComponent implements OnInit {
       { state: { data: this.profile.username } });
   }
 
+  seeeRequests(type: string) {
+    this.router.navigate(['/requests'],
+      { state: { data: type } });
+  }
+
   editAdmin(isAnUpgrade: boolean) {
     this.privilegedService.edit(this.profile.id, 'role', isAnUpgrade).subscribe(result => {
       alert('Privileges have been changed');
@@ -216,7 +221,6 @@ export class ProfileComponent implements OnInit {
 
 
   getAchievements(): void {
-    this.tabReady = true;
 
     this.getProfileService.getProfileAchievement(this.profile.id).subscribe(
       (result) => {
