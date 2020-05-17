@@ -23,11 +23,11 @@ export class LogInComponent {
 
   logIn() {
     if (this.email === '' || this.email == null) {
-      alert('Enter the email or username!');
+      this.message = ('Enter the username!');
       return;
     }
     if (this.password === '' || this.password == null) {
-      alert('Enter the password!');
+      this.message = ('Enter the password!');
       return;
     }
 
@@ -38,11 +38,7 @@ export class LogInComponent {
         this.loading = false;
       },
         error => {
-          if (error.error) {
-            this.message = error.error.message;
-          } else {
-            this.message = 'An error occurred';
-          }
+          this.message = error;
           console.log(error);
           this.loading = false;
         }

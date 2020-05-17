@@ -1,160 +1,128 @@
-import { Injectable } from '@angular/core';
-import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import { User } from '../_models/user';
-import { OneToFour } from '../_models/question/onetofour';
-import { Question } from '../_models/question/question';
-import { TrueFalse } from '../_models/question/truefalse';
-import { OpenAnswer } from '../_models/question/openanswer';
-import { SequenceAnswer } from '../_models/question/sequenceanswer';
+import {User} from '../_models/user';
+import {Question} from '../_models/question/question';
+import {ExtendedQuestion} from '../_models/question/extendedquestion';
+import {DomSanitizer} from '@angular/platform-browser';
+import {map} from 'rxjs/operators';
+import {Alert} from '../_models/alert';
+import {environment} from '../../environments/environment';
+import {AuthenticationService} from './authentication.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class QuestionService {
-  url = `https://qznetbc.herokuapp.com/api/quizzes/`;
+  url = `${environment.apiUrl}quizzes/`;
   httpOptions = {
     headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-       Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('userData')).token
+      'Content-Type': 'application/json'
     })
   };
-  httpOptions2 = {
-    headers: new HttpHeaders({
-      Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('userData')).token
-    })
-  };
+
   user: User;
 
-  constructor(private http: HttpClient) {
-    this.user = JSON.parse(localStorage.getItem('userData'));
-    
+  constructor(private http: HttpClient, private sanitizer: DomSanitizer,
+              private authenticationService: AuthenticationService) {
+    this.user = authenticationService.currentUserValue;
+
+  }
+
+  // REFACTORED
+
+  getAllQuestionsNew(quizId: string): Observable<ExtendedQuestion[]> {
+    const options = {
+      headers: this.httpOptions.headers,
+      params: new HttpParams().set('quizId', quizId)
+
+    };
+
+    return this.http.get<ExtendedQuestion[]>(this.url + 'questions', options)
+      .pipe(map(data => data.map(x => {
+        return new ExtendedQuestion().deserialize(x, this.sanitizer);
+      })));
   }
 
 
+  // END OF REFACTORED
 
-  getAllQuestions(quizId: string){
+
+  getAllQuestions(quizId: string) {
 
     const options = {
       headers: this.httpOptions.headers,
       params: new HttpParams().set('quizId', quizId)
 
-    }
+    };
 
     return this.http.get<Question[]>(this.url + 'questions', options);
   }
 
+  sendQuestion(question: ExtendedQuestion, createEdit: boolean) {
 
+    const questionInfo = Object.assign({}, question);
+    delete questionInfo.imageContent;
 
-  firstType(question: OneToFour, quizId: string, createEdit: boolean){
-    const ans = this.firstTypeRightAnswers(question.answers,question.rightAnswers);
-    const quizInfo = {
-      id: question.id,
-      title: question.title,
-      quizId: quizId,
-      content: question.content, 
-      points: question.points,  
-      typeId: "1",
-      rightOptions: ans.rightAnswers,
-      otherOptions: ans.answers
-    };
-    console.log(quizInfo);
-    if(createEdit){
-      return this.http.post<Question>(this.url + 'questions', JSON.stringify(quizInfo), this.httpOptions);
-    }else{
-      console.log("edit");
-      return this.http.post<Question>(this.url + 'questions/edit', JSON.stringify(quizInfo), this.httpOptions);
+    if (question.typeId === 3 || question.typeId === 4) {
+      questionInfo.otherOptions = [];
     }
-    
-  }
 
+    console.log(questionInfo);
 
-  secondType(question: TrueFalse, quizId: string, createEdit: boolean){
-    const quizInfo = {
-      id: question.id,
-      title: question.title,
-      quizId: quizId,
-      content: question.content, 
-      points: question.points,  
-      typeId: "2",
-      rightOptions: [question.rightAnswer],
-      otherOptions: [question.answer]
-    };
-    console.log(quizInfo);
-    if(createEdit){
-      return this.http.post<Question>(this.url + 'questions', JSON.stringify(quizInfo), this.httpOptions);
-    }else{
-      return this.http.post<Question>(this.url + 'questions/edit', JSON.stringify(quizInfo), this.httpOptions);
+    if (createEdit) {
+      return this.http.post<ExtendedQuestion>(this.url + 'questions', JSON.stringify(questionInfo), this.httpOptions)
+        .pipe(map(data => {
+          return new ExtendedQuestion().deserialize(data, this.sanitizer);
+        }));
+    } else {
+      return this.http.post<ExtendedQuestion>(this.url + 'questions/edit', JSON.stringify(questionInfo), this.httpOptions)
+        .pipe(map(data => {
+          return new ExtendedQuestion().deserialize(data, this.sanitizer);
+        }));
     }
   }
 
-  thirdType(question: OpenAnswer, quizId: string, createEdit: boolean){
-    const quizInfo = {
-      id: question.id,
-      title: question.title,
-      quizId: quizId,
-      content: question.content, 
-      points: question.points,  
-      typeId: "3",
-      rightOptions: [question.rightAnswer],
-      otherOptions: []
-    };
-    console.log(quizInfo);
-    if(createEdit){
-      return this.http.post<Question>(this.url + 'questions', JSON.stringify(quizInfo), this.httpOptions);
-    }else{
-      return this.http.post<Question>(this.url + 'questions/edit', JSON.stringify(quizInfo), this.httpOptions);
-    }
-  }
 
-  fourthType(question: SequenceAnswer, quizId: string, createEdit: boolean){
-    const quizInfo = {
-      id: question.id,
-      title: question.title,
-      quizId: quizId,
-      content: question.content, 
-      points: question.points,  
-      typeId: "4",
-      rightOptions: question.rightAnswers,
-      otherOptions: []
-    };
-    console.log(quizInfo);
-    if(createEdit){
-      return this.http.post<Question>(this.url + 'questions', JSON.stringify(quizInfo), this.httpOptions);
-    }else{
-      return this.http.post<Question>(this.url + 'questions/edit', JSON.stringify(quizInfo), this.httpOptions);
-    }
-  }
-
-  firstTypeRightAnswers(answers: string[], rAnswers: boolean[]){
-    let rightAnswers: string[] = [];
-    let answ : string[] = [];
-    for (let i = 0; i < answers.length; i++) {
-      if(rAnswers[i]){
-        rightAnswers.push(answers[i]);
-      }else{
-        answ.push(answers[i]);
-      }
-    }
-
-    return {answers: answ, rightAnswers: rightAnswers};
-  }
-
-  deleteQuestion(id: string){
+  deleteQuestion(id: string) {
     const options = {
       headers: this.httpOptions.headers,
       body: {
-        id: id
+        id
       },
     };
-    
-      return this.http.delete<Question>(this.url + 'questions',options);
+
+    return this.http.delete<Question>(this.url + 'questions', options);
   }
 
-  uploadImage(data : FormData) {
-
-    return this.http.post<Question>(this.url+"question-image", data, this.httpOptions2);
+  uploadImage(data: FormData) {
+    return this.http.post<Question>(this.url + 'question-image', data);
   }
 
-  
+  questionValidator(question: ExtendedQuestion): Alert {
+
+    if (question.title === '') {
+      return {type: 'warning', message: 'No title provided'};
+    }
+
+    if (question.content === '') {
+      return {type: 'warning', message: 'No content provided'};
+    }
+
+    if (question.rightOptions.includes('') || question.otherOptions.includes('')) {
+      return {type: 'warning', message: 'One of answers is empty'};
+    }
+
+    if (!(question.points > 0)) {
+      return {type: 'warning', message: 'Points are < 0 or has text value'};
+    }
+
+
+    return undefined;
+  }
+
+  questionsTotalSize(quizId: string): Observable<number> {
+    return this.http.get<number>(this.url + quizId + '/questions/amount');
+  }
+
 }

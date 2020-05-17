@@ -1,13 +1,12 @@
-import {Component, OnInit} from '@angular/core';
-import {Router, RouterModule} from '@angular/router';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {LogInComponent} from '../log-in/log-in.component';
-import {SignUpComponent} from '../sign-up/sign-up.component';
-import {User} from '../_models/user';
-import {Quiz} from '../_models/quiz';
-import {Observable} from 'rxjs';
-import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
-import {SearchFilterQuizService} from '../_services/search-filter-quiz.service';
+import { Component, OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { LogInComponent } from '../log-in/log-in.component';
+import { SignUpComponent } from '../sign-up/sign-up.component';
+import { AuthenticationService } from '../_services/authentication.service';
+import { Role } from '../_models/role';
+import { SseService } from '../_services/sse.service';
+import { NotificationsService } from '../_services/notifications.service';
+import { SearchFilterQuizService } from '../_services/search-filter-quiz.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -16,19 +15,24 @@ import {SearchFilterQuizService} from '../_services/search-filter-quiz.service';
 })
 export class NavBarComponent implements OnInit {
   public isMenuCollapsed = true;
-  public signedIn;
+  public signedIn: boolean;
   public privileged;
-  searchArea = '';
+  notification: boolean;
 
   constructor(private modalService: NgbModal,
-              private searchFilterQuizService: SearchFilterQuizService,
-              private router: Router) {
+    private authenticationService: AuthenticationService,
+    private searchFilterQuizService: SearchFilterQuizService,
+    private sseService: SseService,
+    private notificationsService: NotificationsService) {
   }
 
   ngOnInit(): void {
-    this.signedIn = (localStorage.getItem('userData') == null) ? false : true;
+    this.signedIn = (this.authenticationService.currentUserValue === undefined) ? false : true;
     this.privileged = (this.signedIn &&
-      JSON.parse(localStorage.getItem('userData')).role !== 'ROLE_USER') ? true : false;
+      this.authenticationService.currentUserValue.role !== Role.User);
+    if (this.signedIn) {
+      this.subscribeNotifications();
+    }
   }
 
   search() {
@@ -50,5 +54,17 @@ export class NavBarComponent implements OnInit {
   openReg() {
     this.isMenuCollapsed = true;
     const modalRef = this.modalService.open(SignUpComponent, { size: 'lg' });
+
+  }
+
+  logout() {
+    this.isMenuCollapsed = true;
+    this.authenticationService.signoutUser();
+    window.location.reload();
+  }
+
+  subscribeNotifications() {
+    this.notificationsService.notifications
+      .subscribe(n => this.notification = n && n.length > 0);
   }
 }

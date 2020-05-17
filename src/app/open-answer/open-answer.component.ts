@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { OpenAnswer } from '../_models/question/openanswer';
+import { ExtendedQuestion } from '../_models/question/extendedquestion';
 
 @Component({
   selector: 'app-open-answer',
@@ -7,7 +8,7 @@ import { OpenAnswer } from '../_models/question/openanswer';
   styleUrls: ['./open-answer.component.css']
 })
 export class OpenAnswerComponent implements OnInit {
-  @Input() question: OpenAnswer;
+  @Input() question: ExtendedQuestion;
 
   constructor() { }
 

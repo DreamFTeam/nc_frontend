@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { OneToFour } from '../_models/question/onetofour';
+import { ExtendedQuestion } from '../_models/question/extendedquestion';
 
 @Component({
   selector: 'app-one-of-four',
@@ -7,7 +7,7 @@ import { OneToFour } from '../_models/question/onetofour';
   styleUrls: ['./one-of-four.component.css']
 })
 export class OneOfFourComponent implements OnInit {
-  @Input() question: OneToFour;
+  @Input() question: ExtendedQuestion;
 
   constructor() {
   }
@@ -15,30 +15,39 @@ export class OneOfFourComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  addAnswer(){
-    this.question.answers.push("");
-    this.question.rightAnswers.push(false);
+  addRight(){
+    this.question.rightOptions.push("");
   }
 
-  removeAnswer(i){
-    this.question.answers.splice(i,1);
-    this.question.rightAnswers.splice(i,1);
+  addOther(){
+    this.question.otherOptions.push("");
   }
 
-  isLimitReached(){
-    return this.question.answers.length!=4;
+
+  removeRight(i){
+    this.question.rightOptions.splice(i,1);
   }
 
-  isRemovable(){
-    return this.question.answers.length>2;
+  removeOther(i){
+    this.question.otherOptions.splice(i,1);
   }
 
   trackByFn(index: any, item: any) {
     return index;
-   } 
+  } 
 
-   onChange(event, answer){
+  onChange(event, answer){
     console.log(event+" "+answer);
-   }
+  }
+
+
+  isLimitReached(){
+    return this.question.rightOptions.length + this.question.otherOptions.length !=4;
+  }
+
+  isRemovableRight(){ return this.question.rightOptions.length > 1; }
+  isRemovableOther(){ return this.question.otherOptions.length > 1; }
+
+
 
 }

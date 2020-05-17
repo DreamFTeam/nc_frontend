@@ -1,0 +1,20 @@
+<div class="container">
+  <div class="row form-group">
+    <div class="col"></div>
+    <div class="col-sm-4 p-4 bg-white rounded ">
+      <input class="form-control mb-3"
+             [(ngModel)]="anonymName"
+             required
+             name="anonimName"
+             id="anonimName"
+             type="text"
+             placeholder="Your name"
+             >
+      <button [disabled]="loading" (click)="joinGame()" class="btn btn-success btn-block">
+        <span *ngIf="!loading">OK</span>
+        <span *ngIf="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+      </button>
+    </div>
+    <div class="col"></div>
+  </div>
+</div>

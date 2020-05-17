@@ -2,16 +2,18 @@
     <div id="profile"  >
       <div id="block" *ngIf="profile">
       <div id="picture" >
-        <img id="image">
+        <img *ngIf="profile.imageContent" id="image" [src]="profile.imageContent">
+        <img *ngIf="!profile.imageContent" id="image" style= "background: url('../../assets/img/nopicture.jpg')center no-repeat; object-fit: contain;">
       <div id="online" *ngIf="profile.online==true;" >
-
-    </div>
-    <a *ngIf="owner" class="btn btn-users" (click)="edit()">Edit profile</a>
+      </div>
+        <a *ngIf="owner && profile.role!='ROLE_SUPERADMIN' && profile.activated" class="btn btn-users" (click)="edit()">Edit profile</a>
 
   </div>
       </div>
       <div id="info">
-      <h3><b>{{profile?.username}}</b></h3>
+      <h3><b>{{profile?.username}}</b> <span *ngIf="profile.role!='ROLE_USER'"  style="color:#31708E; margin-left: 10px;"> {{profile.role.substr(5).toLowerCase()}}</span></h3>
+      <h5 *ngIf="!profile?.activated" style="color: red;">deactivated</h5>
+
       <h3 *ngIf="profile && profile?.online==true; else lastseen" style="color:#31708E;"> online </h3>
       <ng-template #lastseen > <h3 style="color:#31708E;" *ngIf="profile?.lastTimeOnline"> Last seen on {{profile?.lastTimeOnline  |  date:'medium'}} </h3> </ng-template>
       <h3 *ngIf="profile?.aboutMe">{{profile?.aboutMe}}
@@ -19,16 +21,17 @@
       </div>
     </div>
 
-    <div id="pr" *ngIf="owner && privileged && profile.activated &&  role!= this.profile.role" > 
+    <div id="pr" *ngIf= "owner && privileged && profile.activated &&  role!= this.profile.role" > 
       <a id="bt" class="btn btn-users"  (click)="deactivate(false)">Deactivate </a>
-      <a id="btupgr"  *ngIf="this.profile.role!='ROLE_ADMIN'" class="btn btn-users"  (click)="editAdmin(true)">Upgrade to Admin </a>
-      <a id="btdowngr" *ngIf="this.profile.role!='ROLE_MODERATOR'" class="btn btn-users"  (click)="editAdmin(false)">Downgrade to Moderator </a>
+      <a id="btupgr"  *ngIf="role=='ROLE_SUPERADMIN' && this.profile.role!='ROLE_ADMIN' " class="btn btn-users"  (click)="editAdmin(true)">Upgrade to Admin </a>
+      <a id="btdowngr" *ngIf="role=='ROLE_SUPERADMIN' && this.profile.role!='ROLE_MODERATOR' " class="btn btn-users"  (click)="editAdmin(false)">Downgrade to Moderator </a>
     </div>
   <div id="quizlist" *ngIf="profile?.role=='ROLE_USER'">{{profile?.username}}'s quizzes <span style="display: block;"></span>
 
     <div class="quizblocks" *ngFor="let quiz of quizzes">
       <div class="indquiz">
-        <img id="quizimage">
+        <img *ngIf = "quiz.imageContent" id="quizimage" [src]="quiz.imageContent">
+        <img *ngIf = "!quiz.imageContent" id="quizimage" style="background: url('../../assets/img/quiz.jpg');background-size: contain;">
         <div class="quizinfo">
         <a (click)="goToQuiz(quiz.id)" style="text-decoration: underline; user-select: none;"><b>{{quiz.title}}</b></a> <br>
       Description: {{quiz.description}}<br>

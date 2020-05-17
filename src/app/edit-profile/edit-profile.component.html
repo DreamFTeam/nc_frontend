@@ -1,13 +1,14 @@
 <div class="content" role="main" *ngIf="ready">
     <div id="profile"  >
       <div id="picture" >
-        <img id="image">
-    <a class="btn btn-users" (click)="upload()"> Upload</a>
+        <img *ngIf="profile.imageContent" id="image" [src]="profile.imageContent">
+        <img *ngIf="!profile.imageContent" id="image" style= "background: url('../../assets/img/nopicture.jpg')center no-repeat; object-fit: contain;">
+        <input id= "upload" type='file' (change)="onSelectFile($event)" content="Upload">
 
       </div>
       <div id="info">
          <h3> <b>{{profile?.username}}</b></h3>
-          <b>About me:</b>
+          <b>About me:     </b>
         <input type="text" name="newAboutMe" size=30px [(ngModel)]="newAboutMe" value="{{profile.aboutMe}}"  pattern=".{0,300}" #nameref="ngModel" /><br> 
     </div>
     <a class="btn btn-users btn-edit" (click)="saveProfile()"> Save</a>

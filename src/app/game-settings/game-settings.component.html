@@ -1,0 +1,72 @@
+<div class="container bg-white rounded p-2">
+  <form #settingsForm="ngForm">
+  <div class="form-group row">
+    <label for="roundDuration" class="col text-right col-form-label">Time for one question</label>
+    <div class="col">
+      <select name="roundDuration" required ngModel class="form-control" id="roundDuration">
+        <option *ngFor="let time of roundDurations" value="{{time}}">{{time}} seconds</option>
+      </select>
+    </div>
+  </div>
+  <div class="row form-group">
+    <label for="numberOfQuestions" class="col text-right col-form-label">Questions amount</label>
+    <div class="col">
+      <input class="form-control"
+             ngModel
+             required
+             name="numberOfQuestions"
+             id="numberOfQuestions"
+             type="text"
+             pattern="\d{1,2}"
+             placeholder="Min: {{minQuestion}}">
+    </div>
+  </div>
+   <div class="row form-group">
+    <label for="maxUsersCount" class="col text-right col-form-label">Users amount</label>
+    <div class="col">
+      <input class="form-control"
+             ngModel
+             required
+             name="maxUsersCount"
+             id="maxUsersCount"
+             pattern="\d{1,2}"
+             type="text"
+             placeholder="Max: {{maxUser}}">
+    </div>
+  </div>
+    <div class="row form-group">
+      <label for="breakTime" class="col text-right col-form-label">Break time</label>
+      <div class="col">
+        <select name="breakTime" required ngModel class="form-control" id="breakTime">
+          <option *ngFor="let time of breaks" value="{{time}}">{{time}} seconds</option>
+        </select>
+      </div>
+    </div>
+    <div class="row form-group">
+      <label for="additionalPoints" class="col text-right col-form-label">Extra points for speed</label>
+      <div class="col">
+        <input class="form-control"
+               ngModel
+               name="additionalPoints"
+               id="additionalPoints"
+               type="checkbox">
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="mt-4 container bg-white rounded p-3">
+  <div class="row">
+    <div class="col"><button routerLink="/viewquiz/{{quizId}}" class="btn btn-block btn-warning">Back to quiz page</button></div>
+    <div class="col"><button
+      [disabled]="settingsForm.invalid || loading"
+      class="btn btn-block btn-success"
+      (click)="applySettings(settingsForm.value)">
+      <span *ngIf="!loading">Start game</span>
+    <span *ngIf="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+    <span *ngIf="loading" class="sr-only">Loading...</span></button></div>
+  </div>
+  <div *ngIf="error" class="mt-4 alert alert-danger font-weight-bolder text-center" role="alert">
+    {{errorMessage}}
+  </div>
+</div>

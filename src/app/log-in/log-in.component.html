@@ -1,15 +1,34 @@
-<div>
-  <button class="close-btn" type="button" name="button" (click)="activeModal.dismiss('Cross click')"><img src="../assets/img/close-button.jpg"></button>
-  <span class="header-text">Log In</span><br>
-  <span class="text">Email or username</span><br>
-  <input type="email" name="email" size=30px [(ngModel)]="email"/><br>
-  <span class="text">Password</span><br>
-  <input type="password" name="password" size=30px [(ngModel)]="password"/><br><br>
-  <span class="link"><a (click)="openRecover()">Forgot your password?</a></span><br><br>
-  <button type="button" [disabled]="loading" class="btn btn-primary" (click)="logIn()">
-    <span class="text">Log In</span>
-    <span *ngIf="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-    <span *ngIf="loading" class="sr-only">Loading...</span>
-  </button><br><br>
-  <p class="m-3 alert-danger">{{message}}</p>
+<div class="modal-header">
+    <h4 class="modal-title">LogIn</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="container p-3">
+  <div class="form-group form-row">
+    <input type="text"
+           class="form-control rounded"
+           placeholder="Username"
+           name="username"
+           [(ngModel)]="email">
+  </div>
+  <div class="form-group form-row">
+    <input type="password"
+           name="password"
+           class="form-control rounded"
+           placeholder="Password"
+           [(ngModel)]="password"/>
+  </div>
+  <div class="row">
+    <div class="col">
+      <p class="btn btn-link"><a (click)="openRecover()">Forgot your password?</a></p>
+    </div>
+    <div class="col text-right">
+      <button type="button" [disabled]="loading" class="btn btn-primary ml-3" (click)="logIn()">
+        <span *ngIf="!loading" class="text">Log In</span>
+        <span *ngIf="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+      </button>
+    </div>
+  </div>
+  <p *ngIf="message" class="m-2 alert alert-danger">{{message}}</p>
 </div>
