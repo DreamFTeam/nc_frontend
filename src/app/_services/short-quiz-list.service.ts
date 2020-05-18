@@ -5,9 +5,8 @@ import {HandleErrorsService} from './handle-errors.service';
 import {ExtendedQuiz} from '../_models/extended-quiz';
 import {Observable} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
-import {AuthenticationService} from './authentication.service';
-import {User} from '../_models/user';
 import {environment} from '../../environments/environment';
+import { ExtendedQuizPreview } from '../_models/extendedquiz-preview';
 
 @Injectable({
   providedIn: 'root'
@@ -28,11 +27,11 @@ export class ShortQuizListService {
     };
   }
 
-  getShortQuizList(): Observable<ExtendedQuiz[]> {
+  getShortQuizList(): Observable<ExtendedQuizPreview[]> {
     console.log(this.baseUrl + this.shortListUrl);
-    return this.http.get<ExtendedQuiz[]>(this.baseUrl + this.shortListUrl, this.httpOptions)
+    return this.http.get<ExtendedQuizPreview[]>(this.baseUrl + this.shortListUrl, this.httpOptions)
       .pipe(map(data => data.map(x => {
-        return new ExtendedQuiz().deserialize(x, this.sanitizer);
+        return new ExtendedQuizPreview().deserialize(x, this.sanitizer);
       }), catchError(this.handleErrorsService.handleError<ExtendedQuiz[]>('getShortQuizList', []))));
   }
 
