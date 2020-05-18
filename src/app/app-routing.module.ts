@@ -16,6 +16,7 @@ import { AuthGuard } from './_helpers/auth.guard';
 import { Role } from './_models/role';
 import { ActivitiesComponent } from './activities/activities.component';
 import { UserInvitationsComponent } from './user-invitations/user-invitations.component';
+import { UserSettingsComponent } from './user-settings/user-settings.component';
 
 
 const routes: Routes = [
@@ -36,6 +37,8 @@ const routes: Routes = [
   { path: 'editannouncements', component: AnnouncementEditComponent, 
   canActivate: [AuthGuard], data: { roles: [Role.Admin,Role.Moderator,Role.SuperAdmin] }},
   { path: 'requests', component: UserInvitationsComponent},
+
+  { path: 'settings', component: UserSettingsComponent, canActivate: [AuthGuard], data: { roles: [Role.User] }},
 
   { path: 'activities', component: ActivitiesComponent, canActivate: [AuthGuard], data: { roles: [Role.User] }},
   { path: '**', redirectTo: ''}
