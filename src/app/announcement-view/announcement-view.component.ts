@@ -3,6 +3,8 @@ import { Announcement } from '../_models/announcement';
 import { AnnouncementService } from '../_services/announcement.service';
 
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { AuthenticationService } from '../_services/authentication.service';
+import { Role } from '../_models/role';
 
 const PAGE_SIZE: number = 5;
 
@@ -23,7 +25,8 @@ export class AnnouncementViewComponent implements OnInit {
 
   faSpinner = faSpinner;
 
-  constructor(private announcementService: AnnouncementService) { 
+  constructor(private authenticationService: AuthenticationService, 
+    private announcementService: AnnouncementService) { 
     this.announcementService.getAmount().subscribe(ans => this.collectionSize = ans, err => console.log(err));
     this.announcementService.getAnnouncements(0,5).subscribe(ans => 
       this.setAnnouncements(ans)
@@ -46,6 +49,11 @@ export class AnnouncementViewComponent implements OnInit {
     this.announcementService.getAnnouncements((this.page-1) * 5 ,5).subscribe(ans => 
       this.setAnnouncements(ans)
       , err => console.log(err));
+  }
+
+  isPrivileged(){
+    const user = this.authenticationService.currentUserValue;
+    return user && (user.role !== Role.User); 
   }
 
 }

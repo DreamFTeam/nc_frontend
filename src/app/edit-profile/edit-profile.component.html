@@ -1,17 +1,19 @@
-<div class="content" role="main" *ngIf="ready">
-    <div id="profile"  >
-      <div id="picture" >
-        <img *ngIf="profile.imageContent" id="image" [src]="profile.imageContent">
-        <img *ngIf="!profile.imageContent" id="image" style= "background: url('../../assets/img/nopicture.jpg')center no-repeat; object-fit: contain;">
-        <input id= "upload" type='file' (change)="onSelectFile($event)" content="Upload">
-
-      </div>
-      <div id="info">
-         <h3> <b>{{profile?.username}}</b></h3>
-          <b>About me:     </b>
-        <input type="text" name="newAboutMe" size=30px [(ngModel)]="newAboutMe" value="{{profile.aboutMe}}"  pattern=".{0,300}" #nameref="ngModel" /><br> 
-    </div>
-    <a class="btn btn-users btn-edit" (click)="saveProfile()"> Save</a>
-    <a class="btn btn-users btn-edit"  (click)="cancel()" > Cancel</a>
-</div>
+<div class="container" role="main" *ngIf="ready">
+  <div class="row p-3">
+     <div class="col-xs-2 col-sm-4 col-md-4 col-lg-3 ">
+        <img class="col p-3"  style="background-color:rgba(243, 202, 165, 0.863);" [src]="profile.image ? profile.image : '../../assets/img/nopicture.jpg'">
+        <input #fileinput class="mt-2 mw-100 btn-secondary p-3" type='file' name='file'  (change)="onSelectFile($event)">
+     </div>
+     <div class="col-xs-5 col-sm-7 col-md-8 col-lg-9 p-2" >
+        <h1 style="font-weight: bolder; font-size: larger;">
+           {{profile?.username}}
+        </h1>
+        <h3 style="font-size: larger;">
+           About me:
+           <input type="text" class="form-control input-lg mt-3"  name="profile.aboutMe" [(ngModel)]="profile.aboutMe" value="{{profile.aboutMe}}"  pattern=".{0,300}" #nameref="ngModel" />
+        </h3>
+        <a class="btn btn-outline-success p-2 mt-5 mr-4" (click)="saveProfile()"> Save</a>
+        <a class="btn btn-outline-secondary p-2 mt-5" (click)="goBackToProfile()" > Cancel</a>
+     </div>
+  </div>
 </div>

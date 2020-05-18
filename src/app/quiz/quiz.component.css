@@ -19,11 +19,6 @@ label{
     font-weight: 400;
 }
 
-button.removeb {
-    margin-top: 2px;
-    border: 0px;
-    background-color: transparent;
-  }
 
 .title{
     position: relative;  
@@ -32,44 +27,35 @@ button.removeb {
     line-height: 24px;
 }
 
-.left {
-    float: left;
-    width:30%;
-    margin: 0px;
-}
-
-.right {
-    width: 65%;
-    float: left;
-}
-
-.inline { 
-    width: 50%;
-    float: left;
-    margin :10px;
-}
-
-.block { 
-    float:none;
-    display: block;  
+.btn{
+  border: none;
+  outline:0;
 }
 
 
 .button{
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
     padding: 5px;
     line-height: 13px;
     font-size: 20px;
     text-align: center;
+    border: none;
+    outline:0;
 }
 
 .button:hover{
     cursor: pointer;
 }
 
-.btn{
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
-    border-radius: 0px;
+button.removeb {
+  margin-top: 2px;
+  border: 0px;
+  background-color: transparent;
+  border-radius: 0px;
+}
+
+button.removeb:focus{
+  outline: none!important;
+  box-shadow: none;
 }
 
 
@@ -78,8 +64,25 @@ button.removeb {
     height: 20px;
   }
 
-  
+  .badge{
+    font-size: 12px;
+  }
 
+  .toastpos{
+    position: fixed;
+    right: 0;
+    min-width: 20%;
+    z-index:1000
+  }
 
+  .questionpos{
+    max-height: 250px;
+    overflow-y: scroll;
+    overflow-wrap: break-word;
+  }
+
+  .selected{
+    border: solid gold;
+  }
 
 

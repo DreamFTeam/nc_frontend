@@ -3,10 +3,11 @@
         {{ (i+1) }}
     </div>
     <div class="grid-item">
-      <input class="form-control" style="width: 100%;"  [(ngModel)]="question.rightOptions[i]">
+      <input maxlength="50" [disabled]="!available" class="form-control"
+       style="width: 100%;"  [(ngModel)]="question.rightOptions[i]">
     </div>
     <div class="grid-item">
-        <button *ngIf="isRemovable()" class="remb" (click)="removeAnswer(i)">
+        <button *ngIf="isRemovable() && available" class="remb" (click)="removeAnswer(i)">
           <img src="../assets/img/close-button.png">
         </button>
       </div>
@@ -14,6 +15,6 @@
 
   <div class="container-fluid">
     <div class="col-sm-12 text-center">
-      <button *ngIf="isLimitReached()" class="btn addb" (click)="addAnswer()"><img src="../assets/img/plus.png"></button>
+      <button *ngIf="isLimitReached() && available" class="btn addb" (click)="addAnswer()"><img src="../assets/img/plus.png"></button>
     </div>
   </div>

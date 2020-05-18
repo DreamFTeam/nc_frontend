@@ -1,9 +1,11 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Announcement} from '../_models/announcement';
-import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {AnnouncementService} from '../_services/announcement.service';
-import {Alert} from '../_models/alert';
-import {faSpinner} from '@fortawesome/free-solid-svg-icons';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Announcement } from '../_models/announcement';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { AnnouncementService } from '../_services/announcement.service';
+import { Alert } from '../_models/alert'
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { DomSanitizer } from '@angular/platform-browser';
+import { YesNoModalComponent } from '../yes-no-modal/yes-no-modal.component';
 
 
 const PAGE_SIZE: number = 5;
@@ -27,14 +29,21 @@ export class AnnouncementEditComponent implements OnInit {
 
   loading: boolean = true;
 
+  saveLoading: boolean = false;
+
   faSpinner = faSpinner;
+
+  img: File;
+
+  thumbnail: any;
+
 
 
   constructor(private modalService: NgbModal,
-              private announcementService: AnnouncementService) {
+    private announcementService: AnnouncementService, private sanitizer: DomSanitizer) {
     this.announcementService.getAmount().subscribe(ans => this.collectionSize = ans, err => console.log(err));
     this.announcementService.getAnnouncements(0, 5).subscribe(ans =>
-        this.setAnnouncements(ans)
+      this.setAnnouncements(ans)
       , err => console.log(err));
   }
 
@@ -52,7 +61,7 @@ export class AnnouncementEditComponent implements OnInit {
     this.announcements = ans;
     this.isCollapsed = [];
 
-    for (const key in this.announcements) {
+    for (const _key in this.announcements) {
       this.isCollapsed.push(true);
       this.inEdit.push(false);
     }
@@ -61,15 +70,23 @@ export class AnnouncementEditComponent implements OnInit {
 
   //start editing announcement
   edit(i) {
+    this.img = undefined;
     this.editorEnabled = true;
     this.inEdit[i + 1] = true;
-    this.currentAnnouncement = this.announcements[i];
+    this.currentAnnouncement = Object.assign({},this.announcements[i]);
+
+    if(this.currentAnnouncement.image !== null){
+      this.thumbnail = this.currentAnnouncement.image;
+    }else{
+      this.thumbnail = null;
+    }
   }
 
   //deleting announcement
   delete(i) {
-    const modalRef = this.modalService.open(NgbdModalContent);
-    modalRef.componentInstance.text = 'Are you sure you want to delete announcement?';
+    const modalRef = this.modalService.open(YesNoModalComponent);
+    modalRef.componentInstance.text = "Are you sure you want to delete announcement?";
+    modalRef.componentInstance.style = "danger";
 
 
     modalRef.componentInstance.passEntry.subscribe((receivedEntry) => {
@@ -80,29 +97,38 @@ export class AnnouncementEditComponent implements OnInit {
 
         this.announcements.splice(i, 1);
       }
-    });
+    })
   }
 
   //saving edited announcement
-  save(i) {
+  saveEdit(i) {
     if (this.announcementService.validateAnnouncement(this.currentAnnouncement)) {
-      const modalRef = this.modalService.open(NgbdModalContent);
-
-      modalRef.componentInstance.text = 'Are you sure you want to save this announcement?';
+      const modalRef = this.modalService.open(YesNoModalComponent);
+      modalRef.componentInstance.text = "Are you sure you want to save this announcement?";
+      modalRef.componentInstance.style = "warning";
 
       modalRef.componentInstance.passEntry.subscribe((receivedEntry) => {
         console.log(receivedEntry);
         if (receivedEntry) {
+          this.saveLoading = true;
+          this.announcementService.editAnnouncement(this.currentAnnouncement, this.img)
+            .subscribe(ans => {
+              this.announcements[i] = ans;
+              this.announcements[i]. creatorId = this.announcementService.getAdminName();
+              this.cancel(i);
+              this.saveLoading = false;
+            }, 
+            err => {
+              console.log(err);
+              this.alerts.push({ type: 'danger', message: 'Sorry, announcement upload failed :(', });
+              this.saveLoading = false;
+            });
 
-          this.announcementService.editAnnouncement(this.currentAnnouncement)
-            .subscribe(ans => console.log(ans), err => console.log(err));
-
-          Object.assign(this.announcements[i], this.currentAnnouncement);
-          this.cancel(i);
+          
         }
-      });
+      })
     } else {
-      this.alerts.push({type: 'warning', message: 'No title or description',});
+      this.alerts.push({ type: 'warning', message: 'No title or description', });
     }
   }
 
@@ -115,33 +141,46 @@ export class AnnouncementEditComponent implements OnInit {
 
   //start adding announcement
   add() {
+    this.img = undefined;
     this.editorEnabled = true;
     this.inEdit[0] = true;
+    this.thumbnail = null;
     this.currentAnnouncement = new Announcement().deserialize({
-      'announcementId': '', 'creatorId': '',
-      'title': '', 'textContent': '', 'creationDate': new Date(), 'image': 'image'
-    });
+      "announcementId": "", "creatorId": "",
+      "title": "", "textContent": "", "creationDate": new Date(), "image": null
+    }, this.sanitizer);
   }
 
-  //saving adding announcement
+  //saving added announcement   
   saveAdd() {
     if (this.announcementService.validateAnnouncement(this.currentAnnouncement)) {
-      const modalRef = this.modalService.open(NgbdModalContent);
-      modalRef.componentInstance.text = 'Are you sure you want to add this announcement?';
+      const modalRef = this.modalService.open(YesNoModalComponent);
+      modalRef.componentInstance.text = "Are you sure you want to add this announcement?";
+      modalRef.componentInstance.style = "success";
 
       modalRef.componentInstance.passEntry.subscribe((receivedEntry) => {
         if (receivedEntry) {
+          this.saveLoading = true;
+          this.announcementService.addAnnouncement(this.currentAnnouncement, this.img)
+            .subscribe(
+              ans => {
+                this.announcements.unshift(ans);
+                this.announcements[0].creatorId = this.announcementService.getAdminName();
+                this.cancel(-1);
+                this.saveLoading = false;
+              },
+
+              err => {
+                console.log(err);
+                this.alerts.push({ type: 'danger', message: 'Sorry, announcement upload failed :(', });
+                this.saveLoading = false;
+              });
 
 
-          this.announcementService.addAnnouncement(this.currentAnnouncement)
-            .subscribe(ans => console.log(ans), err => console.log(err));
-
-          this.announcements.unshift(new Announcement().deserialize(Object.assign({}, this.currentAnnouncement)));
-          this.cancel(-1);
         }
-      });
+      })
     } else {
-      this.alerts.push({type: 'warning', message: 'No title or description',});
+      this.alerts.push({ type: 'warning', message: 'No title or description', });
     }
   }
 
@@ -152,53 +191,37 @@ export class AnnouncementEditComponent implements OnInit {
 
 
   //get announcements on page change
-  loadPage(e) {
+  loadPage(_e) {
     this.loading = true;
     this.announcementService.getAnnouncements((this.page - 1) * 5, 5).subscribe(ans =>
-        this.setAnnouncements(ans)
+      this.setAnnouncements(ans)
       , err => console.log(err));
   }
 
-  getFormData(file: File): FormData {
+  //upload image click
+  uploadImage(e) {
+    this.img = e.target.files[0];
 
-    const formData = new FormData();
-    formData.append('img', file);
+    let reader = new FileReader();
+    if (this.img !== null && this.img !== undefined) {
+      reader.readAsDataURL(this.img);
+      reader.onload = () => {
+        this.thumbnail = reader.result;
+      }
+    }
 
 
-    return formData;
   }
 
-}
 
+  removeImage(){
+    this.thumbnail = null;
+    
+    if(this.currentAnnouncement.announcementId === ""){
+      this.img = undefined;
+    }else{
+      this.img = null;
+    }
 
-//Modal to accept deletion
-@Component({
-  selector: 'ngbd-modal-content',
-  template: `
-    <div class="modal-header">
-      <h4 class="modal-title">Warning</h4>
-      <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <p>{{text}}</p>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-danger" (click)="trueResult()">Yes</button>
-      <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">No</button>
-    </div>
-  `
-})
-export class NgbdModalContent {
-  @Output() passEntry: EventEmitter<any> = new EventEmitter();
-  @Input() text: string;
-
-  constructor(public activeModal: NgbActiveModal) {
-  }
-
-  trueResult() {
-    this.passEntry.emit(true);
-    this.activeModal.close('Close click');
   }
 }

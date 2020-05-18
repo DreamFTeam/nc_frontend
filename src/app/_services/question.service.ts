@@ -15,11 +15,6 @@ import {AuthenticationService} from './authentication.service';
 })
 export class QuestionService {
   url = `${environment.apiUrl}quizzes/`;
-  httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json'
-    })
-  };
 
   user: User;
 
@@ -29,11 +24,8 @@ export class QuestionService {
 
   }
 
-  // REFACTORED
-
   getAllQuestionsNew(quizId: string): Observable<ExtendedQuestion[]> {
     const options = {
-      headers: this.httpOptions.headers,
       params: new HttpParams().set('quizId', quizId)
 
     };
@@ -44,14 +36,9 @@ export class QuestionService {
       })));
   }
 
-
-  // END OF REFACTORED
-
-
   getAllQuestions(quizId: string) {
 
     const options = {
-      headers: this.httpOptions.headers,
       params: new HttpParams().set('quizId', quizId)
 
     };
@@ -59,8 +46,7 @@ export class QuestionService {
     return this.http.get<Question[]>(this.url + 'questions', options);
   }
 
-  sendQuestion(question: ExtendedQuestion, createEdit: boolean) {
-
+  sendQuestion(question: ExtendedQuestion, createEdit: boolean) : Observable<ExtendedQuestion>{
     const questionInfo = Object.assign({}, question);
     delete questionInfo.imageContent;
 
@@ -68,15 +54,20 @@ export class QuestionService {
       questionInfo.otherOptions = [];
     }
 
-    console.log(questionInfo);
+    const formData = new FormData();
+    formData.append("obj", JSON.stringify(questionInfo));
+    if(questionInfo.unsanitizedImage !== undefined && questionInfo.unsanitizedImage !== null){
+      formData.append("img", questionInfo.unsanitizedImage, questionInfo.unsanitizedImage.name);
+    }
+
 
     if (createEdit) {
-      return this.http.post<ExtendedQuestion>(this.url + 'questions', JSON.stringify(questionInfo), this.httpOptions)
+      return this.http.post<ExtendedQuestion>(this.url + 'questions', formData)
         .pipe(map(data => {
           return new ExtendedQuestion().deserialize(data, this.sanitizer);
         }));
     } else {
-      return this.http.post<ExtendedQuestion>(this.url + 'questions/edit', JSON.stringify(questionInfo), this.httpOptions)
+      return this.http.post<ExtendedQuestion>(this.url + 'questions/edit', formData)
         .pipe(map(data => {
           return new ExtendedQuestion().deserialize(data, this.sanitizer);
         }));
@@ -84,9 +75,10 @@ export class QuestionService {
   }
 
 
+
   deleteQuestion(id: string) {
     const options = {
-      headers: this.httpOptions.headers,
+      headers: new HttpHeaders(),
       body: {
         id
       },
@@ -99,26 +91,28 @@ export class QuestionService {
     return this.http.post<Question>(this.url + 'question-image', data);
   }
 
-  questionValidator(question: ExtendedQuestion): Alert {
+  questionValidator(question: ExtendedQuestion): string[] {
+    let res: string[] = [];
 
-    if (question.title === '') {
-      return {type: 'warning', message: 'No title provided'};
+
+    if (question.title.trim().length < 2) {
+      res.push("Question title must be at least 2 symbol length");
     }
 
-    if (question.content === '') {
-      return {type: 'warning', message: 'No content provided'};
+    if (question.content.trim().length < 2) {
+      res.push("Content must be at least 2 symbol length");
     }
 
-    if (question.rightOptions.includes('') || question.otherOptions.includes('')) {
-      return {type: 'warning', message: 'One of answers is empty'};
+    if (question.rightOptions.includes('') || (question.typeId === 1 && question.otherOptions.includes(''))) {
+      res.push("One of answers is empty");
     }
 
     if (!(question.points > 0)) {
-      return {type: 'warning', message: 'Points are < 0 or has text value'};
+      res.push("Points has value < 0 or has text value");
     }
 
 
-    return undefined;
+    return res;
   }
 
   questionsTotalSize(quizId: string): Observable<number> {

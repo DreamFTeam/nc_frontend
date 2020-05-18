@@ -12,7 +12,8 @@ import { Router } from '@angular/router';
 export class LogInComponent {
   constructor(private authenticationService: AuthenticationService,
     public activeModal: NgbActiveModal,
-    private modalService: NgbModal, private _router: Router) {
+    private modalService: NgbModal,
+    private _router: Router) {
   }
 
   email = '';

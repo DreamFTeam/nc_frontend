@@ -1,7 +1,7 @@
 <div class="content container" role="main">
     <div class="col mainstyle container">
         <div class="row jumbotron">
-            <h1>{{currentUsername}}'s quiz validation list</h1>
+            <p class="page-heading page-heading-font-size lead">{{currentUsername}}'s quiz validation list</p>
         </div>
         <ul ngbNav #nav="ngbNav" [(activeId)]="active" (activeIdChange)="changeList($event)" class="nav-tabs">
             <li [ngbNavItem]="1" [destroyOnHide]="true">

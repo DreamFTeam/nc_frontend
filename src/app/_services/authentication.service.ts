@@ -23,6 +23,7 @@ export class AuthenticationService {
 
   constructor(private http: HttpClient) {
     this.currentUserSubject = new BehaviorSubject<User>(
+      
       localStorage.getItem('userData') ? jwt_decode(localStorage.getItem('userData')) : undefined);
     this.currentUser = this.currentUserSubject.asObservable();
   }

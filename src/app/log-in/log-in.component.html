@@ -1,23 +1,15 @@
 <div class="modal-header">
-    <h4 class="modal-title">LogIn</h4>
-    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
+  <h4 class="modal-title">LogIn</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
 </div>
 <div class="container p-3">
   <div class="form-group form-row">
-    <input type="text"
-           class="form-control rounded"
-           placeholder="Username"
-           name="username"
-           [(ngModel)]="email">
+    <input type="text" class="form-control rounded" placeholder="Username" name="username" [(ngModel)]="email">
   </div>
   <div class="form-group form-row">
-    <input type="password"
-           name="password"
-           class="form-control rounded"
-           placeholder="Password"
-           [(ngModel)]="password"/>
+    <input type="password" name="password" class="form-control rounded" placeholder="Password" [(ngModel)]="password" />
   </div>
   <div class="row">
     <div class="col">

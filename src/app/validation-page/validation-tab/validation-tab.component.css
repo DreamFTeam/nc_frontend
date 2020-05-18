@@ -33,3 +33,8 @@
 .pdng {
     padding: 0.5em;
 }
+
+.badge{
+    font-size: large;
+    margin-bottom: 0;
+}

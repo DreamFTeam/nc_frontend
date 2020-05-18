@@ -56,7 +56,7 @@ export class PrivilegedService {
     const userInfo = {
       id
     };
-    userInfo[field] = (field !== 'role') ? value : value !== 0 ? 'ROLE_ADMIN' : 'ROLE_MODERATOR';
+    userInfo[field] = (field !== 'role') ? value : value === true ? 'ROLE_ADMIN' : 'ROLE_MODERATOR';
 
     return this.http.post<User>(this.url + '/edit/' + field, JSON.stringify(userInfo), this.httpOptions).pipe(
       catchError(err => {

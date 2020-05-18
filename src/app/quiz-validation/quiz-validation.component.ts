@@ -81,7 +81,7 @@ export class QuizValidationComponent implements OnInit {
   reject(id: string):void{
     this._modalService.open(MODALS['autofocus']).result.then((result) => {
       if(result === "Ok"){
-        this.quizValidationService.validateQuiz(id,false,this.adminComment)
+        this.quizValidationService.validateQuiz(id,false,this.adminComment,null,null)
           .subscribe(next => {
             alert("The quiz was rejected successfully");
             this.router.navigateByUrl('/validation');      
@@ -98,7 +98,7 @@ export class QuizValidationComponent implements OnInit {
 
   
   accept(id: string):void{
-    this.quizValidationService.validateQuiz(id,true,this.adminComment)
+    this.quizValidationService.validateQuiz(id,true,this.adminComment,this.quiz.creatorId,this.quiz.title)
           .subscribe(next => {
             
         console.log(this.adminComment);

@@ -1,6 +1,6 @@
  <div class="answer">
-     <span>Right answer: </span>
-     <select class="form-control" style="max-width: 100px;" 
+     <span>Right answer</span>
+     <select [disabled]="!available" class="form-control" style="max-width: 100px;" 
      (change)="onChange($event.target.value)" [(ngModel)]="question.rightOptions[0]" >
         <option value="false">False</option>
         <option value="true">True</option>

@@ -1,0 +1,20 @@
+<div *ngIf="suggestions.length > 0" class="container mt-2">
+    <label class="mt-2">
+        Quizzes you may like!
+    </label>
+
+    <div class="p-3">
+        <div class="row">
+            <div class="col d-flex align-items-stretch" style="padding: 0;" *ngFor="let suggestion of suggestions">
+                <div class="card flex-fill pointer text-center p-2" routerLink="/viewquiz/{{suggestion.id}}">
+                    <img [src]="suggestion.imageContent !== null ? suggestion.imageContent : '../assets/img/quiz.jpg'"
+                        class="img-fluid card-img-top">
+                    <div class="card-body p-2">
+                        <p class="card-title">{{ suggestion.title }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

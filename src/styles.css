@@ -28,6 +28,11 @@ a:active {
     margin-right: 10px;
 }
 
+.btn:focus{
+    outline: none!important;
+    box-shadow: none;
+  }
+
 .buttonpr {
     background: #74BDE6;
 }
@@ -58,4 +63,8 @@ a:active {
 
 .buttondel:hover {
     background-color: #d94e5c;
+}
+
+.newlines {
+    white-space: pre-wrap;
 }

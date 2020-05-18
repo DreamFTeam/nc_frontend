@@ -1,7 +1,11 @@
+import { TagCatg } from './tagcateg';
 
-export interface Category {
-  category_id: string;
-  title: string;
+export class Category implements TagCatg {
+  id: string;
   description: string;
-  image: string;
+
+  constructor(id: string, description: string) {
+    this.id = id;
+    this.description = description;
+  }
 }
