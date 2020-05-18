@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Setting } from '../_models/setting';
 import { SettingsService } from '../_services/settings.service';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { ToastsService } from '../_services/toasts.service';
 
 
 
@@ -24,14 +25,16 @@ export class UserSettingsComponent implements OnInit {
 
   faSpinner = faSpinner;
 
-  constructor(private settingsService: SettingsService) { 
+  constructor(private settingsService: SettingsService,
+     public toastService: ToastsService) { 
     
   }
 
   ngOnInit(): void {
     this.loading = true;
     this.settingsService.getSettings()
-      .subscribe(ans => this.setSettings(ans), err => console.log(err));
+      .subscribe(ans => this.setSettings(ans), 
+      err => err => this.errHandler("Couldn`t load your settings :(",err),);
   }
 
   setSettings(ans) {
@@ -60,10 +63,17 @@ export class UserSettingsComponent implements OnInit {
 
     this.loading = true;
     this.settingsService.saveSettings(saved).subscribe(
-      () => alert("Saved"),
-      err => console.log(err),
+      () => this.toastService.toastAddSuccess("Saved"),
+      err => this.errHandler("Couldn`t save your settings :(",err),
       () => this.loading = false
     )
   }
+
+  errHandler(text,err){
+    console.log(err);
+    this.toastService.toastAddDanger(text)
+  }
+
+
 
 }
