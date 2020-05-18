@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { LogInComponent } from '../log-in/log-in.component';
-import { SignUpComponent } from '../sign-up/sign-up.component';
-import { AuthenticationService } from '../_services/authentication.service';
-import { Role } from '../_models/role';
-import { SseService } from '../_services/sse.service';
-import { NotificationsService } from '../_services/notifications.service';
-import { SearchFilterQuizService } from '../_services/search-filter-quiz.service';
+import {Component, OnInit} from '@angular/core';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {LogInComponent} from '../log-in/log-in.component';
+import {SignUpComponent} from '../sign-up/sign-up.component';
+import {AuthenticationService} from '../_services/authentication.service';
+import {Role} from '../_models/role';
+import {SseService} from '../_services/sse.service';
+import {NotificationsService} from '../_services/notifications.service';
+import {SearchFilterQuizService} from '../_services/search-filter-quiz.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-nav-bar',
@@ -14,16 +15,19 @@ import { SearchFilterQuizService } from '../_services/search-filter-quiz.service
   styleUrls: ['./nav-bar.component.css']
 })
 export class NavBarComponent implements OnInit {
+  private readonly NEW_FILTER_SETTINGS = true;
   public isMenuCollapsed = true;
   public signedIn: boolean;
   public privileged;
   notification: boolean;
+  searchArea: string;
 
   constructor(private modalService: NgbModal,
-    private authenticationService: AuthenticationService,
-    private searchFilterQuizService: SearchFilterQuizService,
-    private sseService: SseService,
-    private notificationsService: NotificationsService) {
+              private authenticationService: AuthenticationService,
+              private searchFilterQuizService: SearchFilterQuizService,
+              private sseService: SseService,
+              private notificationsService: NotificationsService,
+              private router: Router) {
   }
 
   ngOnInit(): void {
@@ -36,7 +40,7 @@ export class NavBarComponent implements OnInit {
   }
 
   search() {
-    this.searchFilterQuizService.searchQuiz(this.searchArea);
+    this.searchFilterQuizService.search(this.searchArea, this.NEW_FILTER_SETTINGS);
     this.router.navigateByUrl('/quiz-list');
   }
 
@@ -53,7 +57,7 @@ export class NavBarComponent implements OnInit {
 
   openReg() {
     this.isMenuCollapsed = true;
-    const modalRef = this.modalService.open(SignUpComponent, { size: 'lg' });
+    const modalRef = this.modalService.open(SignUpComponent, {size: 'lg'});
 
   }
 

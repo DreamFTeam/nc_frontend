@@ -50,6 +50,7 @@ import { AnonymInitComponent } from './anonym-init/anonym-init.component';
 import { MessageModalComponent } from './message-modal/message-modal.component';
 import { AnonymService } from './_services/anonym.service';
 import { NotificationsComponent } from './notifications/notifications.component';
+import {QuizFilterComponent} from './quiz-filter/quiz-filter.component';
 
 const appRoutes: Routes = [];
 

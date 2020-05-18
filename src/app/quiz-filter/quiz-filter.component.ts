@@ -1,9 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {Observable} from 'rxjs';
-import {debounceTime, distinctUntilChanged, map, switchMap} from 'rxjs/operators';
-import {QuizFilterSettings, SearchFilterQuizService} from '../_services/search-filter-quiz.service';
+import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
+import {SearchFilterQuizService} from '../_services/search-filter-quiz.service';
 import {Tag} from '../_models/tag';
 import {Category} from '../_models/category';
+import {QuizFilterSettings} from '../_models/quiz-filter-settings';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -17,22 +19,14 @@ export class QuizFilterComponent implements OnInit {
   settings: QuizFilterSettings;
   readonly RESULTS_SEARCH_AMOUNT = '5';
 
-  rating = ['0', '1', '2', '3', '4', '5'];
-  constructor(private searchFilterQuizService: SearchFilterQuizService) {
+  readonly rating = ['0', '1', '2', '3', '4', '5'];
+  readonly languages = ['All', 'Ukrainian', 'English'];
+
+  constructor(private searchFilterQuizService: SearchFilterQuizService,
+              private activeModal: NgbActiveModal) {
   }
 
   ngOnInit(): void {
-    if (!this.searchFilterQuizService.getSettings()) {
-      this.searchFilterQuizService.saveSettings({
-        quizName: null,
-        userName: null,
-        categories: [],
-        tags: [],
-        orderByRating: true,
-        lessThanRating: '5',
-        moreThanRating: '0'
-      });
-    }
     this.settings = this.searchFilterQuizService.getSettings();
   }
 
@@ -82,7 +76,9 @@ export class QuizFilterComponent implements OnInit {
   }
 
   filter() {
-    this.searchFilterQuizService.saveSettings(this.settings);
-    this.searchFilterQuizService.filterQuiz().subscribe()
+    this.activeModal.close();
+    this.searchFilterQuizService.setSettings(this.settings);
+    this.searchFilterQuizService.filterQuiz().subscribe();
+    this.searchFilterQuizService.filterTotalSize().subscribe(n => console.log(n));
   }
 }

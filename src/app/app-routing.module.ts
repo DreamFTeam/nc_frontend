@@ -20,6 +20,7 @@ import { GameConnectionGuard } from './guards/game-connection.guard';
 import { AnonymInitComponent } from './anonym-init/anonym-init.component';
 import { GameCreatorGuard } from './guards/game-creator.guard';
 import { NotificationsComponent } from './notifications/notifications.component';
+import {QuizFilterComponent} from './quiz-filter/quiz-filter.component';
 
 
 const routes: Routes = [

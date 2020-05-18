@@ -1,4 +1,4 @@
-<div class="content" role="main">
+<div class="content mb-4" role="main">
   <div class="container">
     <div class="row">
       <div class="col-3">
@@ -45,15 +45,15 @@
   <div class="container mt-4 p-2 bg-white rounded">
     <div class="row m-2 justify-content-center">
       <button *ngIf="canCreate" class="btn col-8 btn-primary m-2 p-2" routerLink="/quizcreate">Create quiz</button>
-      <button class="btn col-3 btn-info m-2 p-2">Filter</button>
+      <button (click)="showFilter()" class="btn col-3 btn-info m-2 p-2">Filter</button>
     </div>
     <div class="row">
       <div class="container">
         <div class="row">
-          <div *ngFor="let item of quizList$ | async" class="col-lg-3 col-md-4 col-sm-6 card text-center cards">
-            <a routerLink="/viewquiz/{{item.quiz_id}}">
+          <div *ngFor="let item of quizList" class="col-lg-3 col-md-4 col-sm-6 card text-center cards">
+            <a routerLink="/viewquiz/{{item.id}}">
               <img class="img-fluid card-img-top thumbn"
-                [src]="item.image_content ? item.image_content : this.mockImageUrl" alt="Quiz icon">
+                [src]="item.imageContent ? item.imageContent : this.mockImageUrl" alt="Quiz icon">
               <h5 class="card-title">{{item.title}}</h5>
             </a>
           </div>
@@ -62,7 +62,7 @@
     </div>
     <div class="pagination-container">
       <ngb-pagination class="d-flex justify-content-center" size="lg" [pageSize]="pageSize"
-        [collectionSize]="totalSize$ | async" [(page)]="page" [maxSize]="7" [rotate]="true"
+        [collectionSize]="totalSize" [(page)]="page" [maxSize]="7" [rotate]="true"
         (pageChange)="loadPage($event)"></ngb-pagination>
     </div>
   </div>

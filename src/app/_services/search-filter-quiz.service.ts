@@ -3,146 +3,140 @@ import {Quiz} from '../_models/quiz';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {Tag} from '../_models/tag';
-import {Category} from '../_models/category';
-import {distinctUntilChanged, map} from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 import {ExtendedQuizPreview} from '../_models/extendedquiz-preview';
 import {DomSanitizer} from '@angular/platform-browser';
-
-export interface QuizFilterSettings {
-  quizName: string;
-  userName: string;
-  moreThanRating: string;
-  lessThanRating: string;
-  orderByRating: boolean;
-  tags: Tag[];
-  categories: Category[];
-}
+import {QuizFilterSettings} from '../_models/quiz-filter-settings';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class SearchFilterQuizService {
 
-  readonly filterUrl = `${environment.apiUrl}quizzes/filter-quiz-list/page`;
-  readonly searchUrl = `${environment.apiUrl}quizzes/search`;
-  httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-      observe: 'response',
-      Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('userData')).token
+    readonly filterUrl = `${environment.apiUrl}quizzes/filter-quiz-list/page`;
+    readonly filterUrlTotalSize = `${environment.apiUrl}quizzes/filter-quiz-list/size`;
+    readonly searchUrl = `${environment.apiUrl}quizzes/search`;
 
-    })
-    , params: new HttpParams()
-  };
-
-  page = 1;
-
-  sett = {
-    quizName: null,
-    userName: null,
-    moreThanRating: '0',
-    lessThanRating: '5',
-    orderByRating: true,
-    tags: null,
-    categories: null
-  };
-  private currentQuizzesSubject = new BehaviorSubject<ExtendedQuizPreview[]>({} as ExtendedQuizPreview[]);
-  public currentQuizzes = this.currentQuizzesSubject.asObservable().pipe(distinctUntilChanged());
-
-  constructor(private http: HttpClient, private sanitizer: DomSanitizer) {
-
-  }
-
-  searchQuiz(quizName: string): void {
-    // this.httpOptions.params = new HttpParams().set('quizName', quizName);
-    // return this.http.get<Quiz[]>(this.filterUrl, this.httpOptions);
-    const settings = this.getSettings();
-    settings.quizName = quizName;
-    this.saveSettings(settings);
-    this.sett.quizName = quizName;
-    this.sendReq(this.sett);
-  }
-
-  filterQuiz(): Observable<ExtendedQuizPreview[]> {
-    // const params = new HttpParams()
-    //   .set('quizName', quizName)
-    //   .set('userName', userName)
-    //   .set('moreThanRating', moreThanRating)
-    //   .set('lessThanRating', lessThanRating)
-    //   .set('orderByRating', String(orderByRating))
-    //   .set('tags', tags.join(','))
-    //   .set('categories', categories.join(','));
-    // this.httpOptions.params = params;
-    // return this.http.get<Quiz[]>(this.filterUrl, this.httpOptions);
-    const settings = this.getSettings();
-    this.sett = {
-      quizName: settings.quizName,
-      userName: settings.userName,
-      moreThanRating: settings.moreThanRating,
-      lessThanRating: settings.lessThanRating,
-      orderByRating: settings.orderByRating,
-      tags: settings.tags.length ? settings.tags.map(x => x.tag_id) : null,
-      categories: settings.categories.length ? settings.categories.map(x => x.category_id) : null
+    httpOptions = {
+        headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+            observe: 'response'
+        })
     };
-    console.log(this.sett);
-    return this.sendReq(this.sett);
-  }
 
-  updPage(page: number) {
-    this.page = page;
-    this.filterQuiz().subscribe();
-  }
+    private settings: QuizFilterSettings;
+    private currentQuizzesSubject: BehaviorSubject<ExtendedQuizPreview[]>;
+    public currentQuizzes: Observable<ExtendedQuizPreview[]>;
+    private currentQuizzesSizeSubject: BehaviorSubject<number>;
+    public currentQuizzesSize: Observable<number>;
 
-  saveSettings(quizInfo: QuizFilterSettings) {
-    localStorage.setItem('quiz-filter', JSON.stringify(quizInfo));
-    this.filterQuiz();
-  }
+    constructor(private http: HttpClient, private sanitizer: DomSanitizer) {
+        this.currentQuizzesSubject = new BehaviorSubject<ExtendedQuizPreview[]>([]);
+        this.currentQuizzes = this.currentQuizzesSubject.asObservable();
 
-  getSettings(): QuizFilterSettings {
-    return JSON.parse(localStorage.getItem('quiz-filter'));
-  }
+        this.currentQuizzesSizeSubject = new BehaviorSubject<number>(0);
+        this.currentQuizzesSize = this.currentQuizzesSizeSubject.asObservable();
 
-
-  searchTags(term: string, amount: string) {
-    if (!term.trim()) {
-      return of([]);
+        this.initSettings();
     }
-    const params = new HttpParams().set('term', term).set('amount', amount);
-    this.httpOptions.params = params;
-    return this.http.get<Quiz[]>(this.searchUrl + '/tags', this.httpOptions);
-  }
 
-  searchCategories(term: string, amount: string) {
-    if (!term.trim()) {
-      return of([]);
-    }
-    const params = new HttpParams().set('term', term).set('amount', amount);
-    this.httpOptions.params = params;
-    return this.http.get<Quiz[]>(this.searchUrl + '/categories', this.httpOptions);
-  }
-
-  private sendReq(settings): Observable<ExtendedQuizPreview[]> {
-    let s = this.http.post<ExtendedQuizPreview[]>(this.filterUrl + '/' + this.page, JSON.stringify(settings), this.httpOptions).pipe(
-      map(data => {
-        const quizzes =  data.map(x => {
-          console.log(x);
-          return new ExtendedQuizPreview().deserialize(x, this.sanitizer);
-          });
-        this.currentQuizzesSubject.next(quizzes);
-        console.log(this.getCurrentQuizzes());
-        return quizzes;
+    search(term: string, newSettings?: boolean) {
+        if (newSettings) {
+            this.initSettings();
         }
-      ));
+        this.settings.quizName = term;
+        this.filterQuiz().subscribe();
+    }
 
-    return s;
-  }
+    filterQuiz(page?: number): Observable<ExtendedQuizPreview[]> {
+        this.filterTotalSize().subscribe(n => this.currentQuizzesSizeSubject.next(n));
+        return this.sendReq(this.settings, page ? page : 1);
+    }
 
-  setQuizzes(quizzes: ExtendedQuizPreview[]) {
-    this.currentQuizzesSubject.next(quizzes);
-  }
+    filterTotalSize(): Observable<number> {
+        const sett = {
+            quizName: this.settings.quizName,
+            userName: this.settings.userName,
+            moreThanRating: this.settings.moreThanRating,
+            lessThanRating: this.settings.lessThanRating,
+            orderByRating: this.settings.orderByRating,
+            tags: this.settings.tags ? this.settings.tags.map(x => x.tag_id) : null,
+            categories: this.settings.categories ? this.settings.categories.map(x => x.category_id) : null,
+            quizLang: this.settings.quizLang === 'All' ? null : this.languageEditor(this.settings.quizLang)
+        };
+        return this.http.post<number>(this.filterUrlTotalSize, sett, this.httpOptions);
+    }
 
-  getCurrentQuizzes(): ExtendedQuizPreview[] {
-    return this.currentQuizzesSubject.value;
-  }
+    getSettings(): QuizFilterSettings {
+        return this.settings;
+    }
+
+    setSettings(settings: QuizFilterSettings): void {
+        this.settings = settings;
+    }
+
+    searchTags(term: string, amount: string) {
+        if (!term.trim()) {
+            return of([]);
+        }
+        const params = new HttpParams().set('term', term).set('amount', amount);
+        return this.http.get<Quiz[]>(this.searchUrl + '/tags', {headers: this.httpOptions.headers, params});
+    }
+
+    searchCategories(term: string, amount: string) {
+        if (!term.trim()) {
+            return of([]);
+        }
+        const params = new HttpParams().set('term', term).set('amount', amount);
+        return this.http.get<Quiz[]>(this.searchUrl + '/categories', {headers: this.httpOptions.headers, params});
+    }
+
+    initSettings() {
+        this.settings = {
+            quizName: null,
+            userName: null,
+            moreThanRating: '0',
+            lessThanRating: '5',
+            orderByRating: null,
+            tags: null,
+            categories: null,
+            quizLang: 'All'
+        };
+    }
+
+    private sendReq(settings: QuizFilterSettings, page: number): Observable<ExtendedQuizPreview[]> {
+        const sett = {
+            quizName: settings.quizName,
+            userName: settings.userName,
+            moreThanRating: settings.moreThanRating,
+            lessThanRating: settings.lessThanRating,
+            orderByRating: settings.orderByRating,
+            tags: settings.tags ? settings.tags.map(x => x.tag_id) : null,
+            categories: settings.categories ? settings.categories.map(x => x.category_id) : null,
+            quizLang: settings.quizLang === 'All' ? null : this.languageEditor(settings.quizLang)
+        };
+        console.log(sett);
+        return this.http.post<ExtendedQuizPreview[]>(`${this.filterUrl}/${page}`, JSON.stringify(sett),
+            this.httpOptions).pipe(map(data => {
+                    const quizzes = data.map(x => {
+                        return new ExtendedQuizPreview().deserialize(x, this.sanitizer);
+                    });
+                    this.currentQuizzesSubject.next(quizzes);
+                    console.log(this.currentQuizzesSubject.value);
+                    return quizzes;
+                }
+            ));
+    }
+
+    private languageEditor(lang: string) {
+        console.log(lang);
+        switch (lang) {
+            case 'English':
+                return 'eng';
+            case 'Ukrainian':
+                return 'ukr';
+            default:
+                return lang;
+        }
+    }
 }
