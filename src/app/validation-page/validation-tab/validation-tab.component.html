@@ -1,22 +1,10 @@
-<div class="toastpos">
-    <ngb-toast *ngFor="let toast of toasts" [class]="toast.classname" [autohide]="true" [delay]="5000"
-        (hide)="removeToast(toast)">
-
-        <ng-template [ngIf]="isTemplate(toast)" [ngIfElse]="text">
-            <ng-template [ngTemplateOutlet]="toast.textOrTpl"></ng-template>
-        </ng-template>
-
-        <ng-template #text>{{ toast.textOrTpl }}</ng-template>
-    </ngb-toast>
-</div>
-
 <div class="container">
     <div *ngIf="(!isEmpty && !isLoading) ; else ((isLoading) ? loading : empty)">
         <div *ngFor="let item of quizList$ | async" class="row media border rounded-lg shadow-sm p-2 mb-4">
-            <div class="media-left media-middle pic">
+            <div class="media-left media-middle pic col-lg-3 col-md-4">
                 <img class="media-object" [src]="item.imageContent ? item.imageContent : this.mockImageUrl" alt="Quiz icon">
             </div>
-            <div class="media-body w-100">
+            <div class="media-body w-100 col-lg-9 col-md-8">
                 <a routerLink="/viewquiz/{{item.id}}">
                     <h4 class="wrap">{{item.title}}</h4>
                 </a>
@@ -25,10 +13,14 @@
                 <p class="fnt-size wrap"><strong>Author: </strong><a routerLink="/profile/{{item.username}}"><u>{{item.username}}</u></a></p>
                 <p class="fnt-size wrap"><strong>Date of creation: </strong>{{item.creationDate}}</p>
                 <p class="fnt-size wrap"><strong>Language: </strong>{{item.language}}</p>
-                <p *ngIf="showButtons">
-                    <button class="btn btn-lg buttonsec float-none" type="button" (click)="reject(item.id)">Reject now</button>
-                    <button class="btn btn-lg buttonpr float-right mrgn-right" (click)="validate(item.id)" type="button">Validate</button>
-                </p>
+                <div *ngIf="showButtons" class="row">
+                    <div class="col">
+                        <button class="btn btn-lg buttonsec float-none" type="button" (click)="reject(item.id)">Reject now</button>
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-lg buttonpr float-right mr-1" (click)="validate(item.id)" type="button">Validate</button>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="pagination-container">

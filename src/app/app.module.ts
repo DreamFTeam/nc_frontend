@@ -46,7 +46,8 @@ import { SuggestionsComponent } from './suggestions/suggestions.component';
 import { ActivitiesComponent } from './activities/activities.component';
 import { YesNoModalComponent } from './yes-no-modal/yes-no-modal.component';
 import { UserInvitationsComponent } from './user-invitations/user-invitations.component';
-import { ToastComponent } from './toast/toast.component';
+import { ToastsComponent } from './toasts/toasts.component';
+import { ToastsService } from './_services/toasts.service';
 
 const appRoutes: Routes = [];
 
@@ -86,7 +87,7 @@ const appRoutes: Routes = [];
     ActivitiesComponent,
     YesNoModalComponent,
     UserInvitationsComponent,
-    ToastComponent],
+    ToastsComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

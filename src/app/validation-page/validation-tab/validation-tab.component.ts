@@ -7,6 +7,8 @@ import { QuizValidationService } from 'src/app/_services/quiz-validation.service
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {YesNoModalComponent} from '../../yes-no-modal/yes-no-modal.component';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { ToastsService } from 'src/app/_services/toasts.service';
+import { ModalService } from 'src/app/_services/modal.service';
 
 
 @Component({
@@ -36,7 +38,8 @@ export class ValidationTabComponent implements OnInit {
   constructor(private quizValidationListService: QuizValidationListService,
               private quizValidationService: QuizValidationService,
               private router: Router,
-              private modalService: NgbModal) { 
+              private modalService: ModalService,
+              public toastsService: ToastsService) { 
                 this.isLoading = true;
                 this.isEmpty = false;
                 this.toasts = [];
@@ -54,8 +57,7 @@ export class ValidationTabComponent implements OnInit {
       this.isLoading = false;
     },
     error => {
-      this.toastAdd('An error occured while fetching the total size of a list.',
-       { classname: 'bg-danger text-light' });
+      this.toastsService.toastAddDanger('An error occured while fetching the total size of a list.');
     });
   }
 
@@ -66,8 +68,7 @@ export class ValidationTabComponent implements OnInit {
         this.isEmpty = true;
       }
     },error => {
-      this.toastAdd('An error occured while fetching the list of quizzes.',
-       { classname: 'bg-danger text-light' });
+      this.toastsService.toastAddDanger('An error occured while fetching the list of quizzes.');
     });
   }
 
@@ -80,41 +81,20 @@ export class ValidationTabComponent implements OnInit {
   }
 
   reject(id: string):void{
-    this.openModal("Are you sure you want to reject this quiz?", 'warning')
+    this.modalService.openModal("Are you sure you want to reject this quiz?", 'warning')
     .subscribe((receivedEntry) => {
       if (receivedEntry) {
         this.quizValidationService.validateQuiz(id,false,"This quiz was instantly rejected without validation",null,null)
           .subscribe(next => {
-            this.toastAdd('The quiz was rejected successfully.',
-            { classname: 'bg-success text-light' });
+            this.toastsService.toastAddSuccess('The quiz was rejected successfully.');
             this.page = 1;
             this.getTotalSize();
             this.getQuizList(this.page);        
           },
             error => {
-              this.toastAdd('An error occured while rejecting the quiz.',
-              { classname: 'bg-danger text-light' });
+              this.toastsService.toastAddDanger('An error occured while rejecting the quiz.');
             });
-          };
-        });
+           };
+         });
   }
-
-  openModal(text, style): any{
-    const modalRef = this.modalService.open(YesNoModalComponent);
-    modalRef.componentInstance.text = text;
-    modalRef.componentInstance.style =style;
-
-    return modalRef.componentInstance.passEntry;
-  }
-
-  
-  toastAdd(textOrTpl: string | TemplateRef<any>, options: any = {}) {
-    this.toasts.push({ textOrTpl, ...options });
-  }
-
-  removeToast(toast) {
-    this.toasts = this.toasts.filter(t => t !== toast);
-  }
-
-  isTemplate(toast){return toast.textOrTpl instanceof TemplateRef}
 }
