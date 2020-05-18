@@ -1,84 +1,97 @@
-import {Component, OnInit} from '@angular/core';
-import {Observable} from 'rxjs';
-import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {merge, Observable, Subject} from 'rxjs';
+import {debounceTime, distinctUntilChanged, map, filter} from 'rxjs/operators';
 import {SearchFilterQuizService} from '../_services/search-filter-quiz.service';
 import {Tag} from '../_models/tag';
 import {Category} from '../_models/category';
 import {QuizFilterSettings} from '../_models/quiz-filter-settings';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgbActiveModal, NgbTypeahead} from '@ng-bootstrap/ng-bootstrap';
+import {TagCatg} from '../_models/tagcateg';
+import {QuizService} from '../_services/quiz.service';
 
 
 @Component({
-  selector: 'app-quiz-filter',
-  templateUrl: './quiz-filter.component.html',
-  styleUrls: ['./quiz-filter.component.css']
+    selector: 'app-quiz-filter',
+    templateUrl: './quiz-filter.component.html',
+    styleUrls: ['./quiz-filter.component.css']
 })
 export class QuizFilterComponent implements OnInit {
-  newTag: Tag;
-  newCateg: Category;
-  settings: QuizFilterSettings;
-  readonly RESULTS_SEARCH_AMOUNT = '5';
 
-  readonly rating = ['0', '1', '2', '3', '4', '5'];
-  readonly languages = ['All', 'Ukrainian', 'English'];
+    readonly RESULTS_SEARCH_AMOUNT = '5';
+    readonly rating = ['0', '1', '2', '3', '4', '5'];
+    readonly languages = ['All', 'Ukrainian', 'English'];
+    tags: Tag[] = [];
+    categories: Category[] = [];
 
-  constructor(private searchFilterQuizService: SearchFilterQuizService,
-              private activeModal: NgbActiveModal) {
-  }
+    focusCat$ = new Subject<string>();
+    clickCat$ = new Subject<string>();
+    focusTag$ = new Subject<string>();
+    clickTag$ = new Subject<string>();
 
-  ngOnInit(): void {
-    this.settings = this.searchFilterQuizService.getSettings();
-  }
+    newTag: Tag;
+    newCateg: Category;
+    settings: QuizFilterSettings;
 
-  formatterTags = (tag: Tag) => tag.description;
-  formatterCateg = (cat: Category) => cat.title;
-
-  searchTag = (text: Observable<string>) =>
-    text.pipe(
-      debounceTime(200),
-      distinctUntilChanged(),
-      // map(term => term.length < 2 ? []
-      //   : this.tempTags.filter(x => x.description.includes(term)))
-      switchMap(term => term.length < 2 ? []
-        : this.searchFilterQuizService.searchTags(term, this.RESULTS_SEARCH_AMOUNT))
-    );
-
-  searchCat = (text: Observable<string>) =>
-    text.pipe(
-      debounceTime(200),
-      distinctUntilChanged(),
-      // map(term => term.length < 2 ? []
-      //   : this.tempCat.filter(x => x.title.includes(term)))
-      switchMap(term => term.length < 2 ? []
-        : this.searchFilterQuizService.searchCategories(term, this.RESULTS_SEARCH_AMOUNT))
-    );
-
-  deleteTag(id: string) {
-    this.settings.tags = this.settings.tags.filter(x => x.tag_id !== id);
-  }
-
-  deleteCategor(id: string) {
-    this.settings.categories = this.settings.categories.filter(x => x.category_id !== id);
-  }
-
-  addCateg() {
-    if (this.newCateg && !this.settings.categories.map(x => x.category_id).includes(this.newCateg.category_id)) {
-      this.settings.categories.push(this.newCateg);
-      this.newCateg = null;
+    constructor(private searchFilterQuizService: SearchFilterQuizService,
+                private activeModal: NgbActiveModal,
+                private quizService: QuizService) {
     }
-  }
 
-  addTag() {
-    if (this.newTag && !this.settings.tags.map(x => x.tag_id).includes(this.newTag.tag_id)) {
-      this.settings.tags.push(this.newTag);
-      this.newTag = null;
+    ngOnInit(): void {
+        this.settings = this.searchFilterQuizService.getSettings();
+        this.quizService.getTagsList().subscribe(next => this.tags = next);
+        this.quizService.getCategoriesList().subscribe(next => this.categories = next);
     }
-  }
 
-  filter() {
-    this.activeModal.close();
-    this.searchFilterQuizService.setSettings(this.settings);
-    this.searchFilterQuizService.filterQuiz().subscribe();
-    this.searchFilterQuizService.filterTotalSize().subscribe(n => console.log(n));
-  }
+    formatter = (tagCat: TagCatg) => tagCat.description;
+
+    searchTag = (text$: Observable<string>) => {
+        const debouncedText$ = text$.pipe(debounceTime(200), distinctUntilChanged());
+        const inputFocus$ = this.focusTag$;
+
+        return merge(debouncedText$, inputFocus$).pipe(
+            map(term => (term === '' ? this.tags
+                : this.tags.filter(x => x.description.toLowerCase().indexOf(term.toLowerCase()) > -1)).slice(0, 10))
+        );
+    };
+
+    searchCat = (text$: Observable<string>) => {
+        const debouncedText$ = text$.pipe(debounceTime(200), distinctUntilChanged());
+        const inputFocus$ = this.focusCat$;
+
+        return merge(debouncedText$, inputFocus$).pipe(
+            map(term => (term === '' ? this.categories
+                : this.categories.filter(x => x.description.toLowerCase().indexOf(term.toLowerCase()) > -1)).slice(0, 10))
+        );
+    };
+
+
+    deleteTag(id: string) {
+        this.settings.tags = this.settings.tags.filter(x => x.id !== id);
+    }
+
+    deleteCategor(id: string) {
+        this.settings.categories = this.settings.categories.filter(x => x.id !== id);
+    }
+
+    addCateg() {
+        if (this.newCateg && !this.settings.categories.map(x => x.id).includes(this.newCateg.id)) {
+            this.settings.categories.push(this.newCateg);
+            this.newCateg = null;
+        }
+    }
+
+    addTag() {
+        if (this.newTag && !this.settings.tags.map(x => x.id).includes(this.newTag.id)) {
+            this.settings.tags.push(this.newTag);
+            this.newTag = null;
+        }
+    }
+
+    filter() {
+        this.activeModal.close();
+        this.searchFilterQuizService.setSettings(this.settings);
+        this.searchFilterQuizService.filterQuiz().subscribe();
+        this.searchFilterQuizService.filterTotalSize().subscribe(n => console.log(n));
+    }
 }

@@ -40,6 +40,7 @@ export class NavBarComponent implements OnInit {
 
   search() {
     this.searchFilterQuizService.search(this.searchArea, this.NEW_FILTER_SETTINGS);
+    this.searchArea = '';
     this.router.navigateByUrl('/quiz-list');
   }
 

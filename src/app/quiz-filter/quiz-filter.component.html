@@ -4,11 +4,11 @@
   <input type="text" [(ngModel)]="settings.userName" class="form-control" id="username">
 </div>
 <div *ngIf="settings.tags" class="form-group">
-  <label for="tags-list">Tag</label>
+  <label for="tags-list">Tags</label>
   <div id="tags-list">
       <span class="mr-1" *ngFor="let tag of settings.tags">
         <span class="badge badge-primary p-1">
-            <svg (click)="deleteTag(tag.tag_id)"
+            <svg (click)="deleteTag(tag.id)"
                  class="bi bi-x-circle"
                  width="1em"
                  height="1em"
@@ -31,23 +31,33 @@
   </div>
 </div>
       <div class="form-group">
-          <label for="tag-input">Add tag</label>
-          <input type="text" [ngbTypeahead]="searchTag"
-                 [inputFormatter]="formatterTags"
-                 [resultFormatter]="formatterTags"
-                 [editable]='false'
+         <div class="input-group">
+              <input type="text" [ngbTypeahead]="searchTag"
+                 [inputFormatter]="formatter"
+                 [resultFormatter]="formatter"
+                 (focus)="focusTag$.next($any($event).target.value)"
+                 (click)="clickTag$.next($any($event).target.value)"
                  [(ngModel)]="newTag"
                  (keydown.enter)="addTag()"
                  class="form-control"
-                 id="tag-input">
+                 id="tag-input"
+                 aria-describedby="button-add-tag">
+              <div class="input-group-append">
+                <button (click)="addTag()" class="btn btn-light btn-outline-secondary" type="button"
+                        id="button-add-tag">
+                  Add
+                </button>
+              </div>
+         </div>
       </div>
+
 
       <div *ngIf="settings.categories" class="form-group">
         <label for="categories-list">Categories</label>
         <div id="categories-list">
         <span class="mr-1" *ngFor="let categ of settings.categories">
-          <span class="badge badge-danger p-1">
-          <svg (click)="deleteCategor(categ.category_id)"
+          <span class="badge badge-success p-1">
+          <svg (click)="deleteCategor(categ.id)"
                class="bi bi-x-circle"
                width="1em"
                height="1em"
@@ -64,22 +74,32 @@
               d="M4.146 4.146a.5.5 0 000 .708l7 7a.5.5 0 00.708-.708l-7-7a.5.5 0 00-.708 0z"
               clip-rule="evenodd"/>
       </svg>
-            <span class="ml-1">{{categ.title}}</span>
+            <span class="ml-1">{{categ.description}}</span>
         </span>
         </span>
       </div>
       </div>
 
       <div class="form-group">
-          <label for="category-input">Add category</label>
-          <input type="text"
-                 [ngbTypeahead]="searchCat"
-                 [inputFormatter]="formatterCateg"
-                 [resultFormatter]="formatterCateg"
-                 [(ngModel)]="newCateg"
-                 [editable]='false'
-                 (keydown.enter)="addCateg()"
-                 class="form-control" id="category-input">
+          <div class="input-group">
+              <input type="text"
+                     [ngbTypeahead]="searchCat"
+                     [inputFormatter]="formatter"
+                     [resultFormatter]="formatter"
+                     [(ngModel)]="newCateg"
+                     (focus)="focusCat$.next($any($event).target.value)"
+                     (click)="clickCat$.next($any($event).target.value)"
+                     (keydown.enter)="addCateg()"
+                     class="form-control"
+                     id="category-input"
+                     aria-describedby="button-add-cat">
+              <div class="input-group-append">
+                <button (click)="addCateg()" class="btn btn-light btn-outline-secondary" type="button"
+                        id="button-add-cat">
+                  Add
+                </button>
+              </div>
+         </div>
       </div>
 
 

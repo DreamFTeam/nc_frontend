@@ -15,7 +15,6 @@ export class SearchFilterQuizService {
 
     readonly filterUrl = `${environment.apiUrl}quizzes/filter-quiz-list/page`;
     readonly filterUrlTotalSize = `${environment.apiUrl}quizzes/filter-quiz-list/size`;
-    readonly searchUrl = `${environment.apiUrl}quizzes/search`;
 
     httpOptions = {
         headers: new HttpHeaders({
@@ -60,8 +59,8 @@ export class SearchFilterQuizService {
             moreThanRating: this.settings.moreThanRating,
             lessThanRating: this.settings.lessThanRating,
             orderByRating: this.settings.orderByRating,
-            tags: this.settings.tags ? this.settings.tags.map(x => x.tag_id) : null,
-            categories: this.settings.categories ? this.settings.categories.map(x => x.category_id) : null,
+            tags: this.settings.tags.length > 0 ? this.settings.tags.map(x => x.id) : null,
+            categories: this.settings.categories.length > 0  ? this.settings.categories.map(x => x.id) : null,
             quizLang: this.settings.quizLang === 'All' ? null : this.languageEditor(this.settings.quizLang)
         };
         return this.http.post<number>(this.filterUrlTotalSize, sett, this.httpOptions);
@@ -75,22 +74,6 @@ export class SearchFilterQuizService {
         this.settings = settings;
     }
 
-    searchTags(term: string, amount: string) {
-        if (!term.trim()) {
-            return of([]);
-        }
-        const params = new HttpParams().set('term', term).set('amount', amount);
-        return this.http.get<Quiz[]>(this.searchUrl + '/tags', {headers: this.httpOptions.headers, params});
-    }
-
-    searchCategories(term: string, amount: string) {
-        if (!term.trim()) {
-            return of([]);
-        }
-        const params = new HttpParams().set('term', term).set('amount', amount);
-        return this.http.get<Quiz[]>(this.searchUrl + '/categories', {headers: this.httpOptions.headers, params});
-    }
-
     initSettings() {
         this.settings = {
             quizName: null,
@@ -98,8 +81,8 @@ export class SearchFilterQuizService {
             moreThanRating: '0',
             lessThanRating: '5',
             orderByRating: null,
-            tags: null,
-            categories: null,
+            tags: [],
+            categories: [],
             quizLang: 'All'
         };
     }
@@ -111,8 +94,8 @@ export class SearchFilterQuizService {
             moreThanRating: settings.moreThanRating,
             lessThanRating: settings.lessThanRating,
             orderByRating: settings.orderByRating,
-            tags: settings.tags ? settings.tags.map(x => x.tag_id) : null,
-            categories: settings.categories ? settings.categories.map(x => x.category_id) : null,
+            tags: settings.tags.length > 0  ? settings.tags.map(x => x.id) : null,
+            categories: settings.categories.length > 0  ? settings.categories.map(x => x.id) : null,
             quizLang: settings.quizLang === 'All' ? null : this.languageEditor(settings.quizLang)
         };
         console.log(sett);
