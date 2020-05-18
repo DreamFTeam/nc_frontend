@@ -38,3 +38,22 @@
     font-size: large;
     margin-bottom: 0;
 }
+
+.emptylabel {
+    width: 100%;
+    padding: 2em;
+    text-align: center;
+    font-size: x-large;
+}
+
+.wrap {
+    word-wrap: break-word;
+    width: 100%;
+}
+
+.toastpos{
+    position: fixed;
+    right: 0;
+    min-width: 20%;
+    z-index:1000
+}

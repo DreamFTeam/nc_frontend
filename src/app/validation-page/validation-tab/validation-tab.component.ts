@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Type } from '@angular/core';
+import { Component, OnInit, Input, Type, TemplateRef } from '@angular/core';
 import { Observable } from 'rxjs';
 import { QuizValidationPreview } from 'src/app/_models/quiz-validation-preview';
 import { QuizValidationListService } from 'src/app/_services/quiz-validation-list.service';
@@ -6,10 +6,8 @@ import { Router } from '@angular/router';
 import { QuizValidationService } from 'src/app/_services/quiz-validation.service';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {YesNoModalComponent} from '../../yes-no-modal/yes-no-modal.component';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
-
-//Pagination: number of items per page
-const PAGE_SIZE: number = 6;
 
 @Component({
   selector: 'app-validation-tab',
@@ -17,17 +15,32 @@ const PAGE_SIZE: number = 6;
   styleUrls: ['./validation-tab.component.css']
 })
 export class ValidationTabComponent implements OnInit {
+  //Pagination: number of items per page
+  pageSize:number = 6;
+
+  //src of mock image
   mockImageUrl:string = "../../assets/img/quiz.jpg";
-  pageSize:number = PAGE_SIZE;
-  page: number;
+  //Async - total size of quiz list. Used for pagination.
   totalSize$: Observable<number>;
   quizList$: Observable<QuizValidationPreview[]>;
+  page: number;
   @Input() showButtons: boolean;
+  faSpinner = faSpinner;
+  isLoading: boolean;
+  //Used to show message about empty list
+  //Must use it because using length in condition doesn't work properly
+  isEmpty: boolean;
+
+  toasts: any[];
 
   constructor(private quizValidationListService: QuizValidationListService,
               private quizValidationService: QuizValidationService,
               private router: Router,
-              private modalService: NgbModal) { }
+              private modalService: NgbModal) { 
+                this.isLoading = true;
+                this.isEmpty = false;
+                this.toasts = [];
+              }
 
   ngOnInit(): void {
     this.page = 1;
@@ -37,10 +50,25 @@ export class ValidationTabComponent implements OnInit {
 
   getTotalSize(): void{
     this.totalSize$ = this.quizValidationListService.getTotalSize();
+    this.totalSize$.subscribe(val => {
+      this.isLoading = false;
+    },
+    error => {
+      this.toastAdd('An error occured while fetching the total size of a list.',
+       { classname: 'bg-danger text-light' });
+    });
   }
 
   getQuizList(page): void{
     this.quizList$ = this.quizValidationListService.getQuizListByPage(page);
+    this.quizList$.subscribe(val => {
+      if(val.length == 0){
+        this.isEmpty = true;
+      }
+    },error => {
+      this.toastAdd('An error occured while fetching the list of quizzes.',
+       { classname: 'bg-danger text-light' });
+    });
   }
 
   loadPage(event):void{
@@ -57,14 +85,15 @@ export class ValidationTabComponent implements OnInit {
       if (receivedEntry) {
         this.quizValidationService.validateQuiz(id,false,"This quiz was instantly rejected without validation",null,null)
           .subscribe(next => {
-            alert("The quiz was rejected successfully");
+            this.toastAdd('The quiz was rejected successfully.',
+            { classname: 'bg-success text-light' });
             this.page = 1;
             this.getTotalSize();
             this.getQuizList(this.page);        
           },
             error => {
-              alert("Something went wrong with the rejection: "+ 
-                error.message);
+              this.toastAdd('An error occured while rejecting the quiz.',
+              { classname: 'bg-danger text-light' });
             });
           };
         });
@@ -77,8 +106,15 @@ export class ValidationTabComponent implements OnInit {
 
     return modalRef.componentInstance.passEntry;
   }
-}
 
-export class NgbdModalConfirmAutofocus {
-  constructor(public modal: NgbActiveModal) {}
+  
+  toastAdd(textOrTpl: string | TemplateRef<any>, options: any = {}) {
+    this.toasts.push({ textOrTpl, ...options });
+  }
+
+  removeToast(toast) {
+    this.toasts = this.toasts.filter(t => t !== toast);
+  }
+
+  isTemplate(toast){return toast.textOrTpl instanceof TemplateRef}
 }
