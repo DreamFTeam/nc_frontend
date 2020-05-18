@@ -46,6 +46,8 @@ import { SuggestionsComponent } from './suggestions/suggestions.component';
 import { ActivitiesComponent } from './activities/activities.component';
 import { YesNoModalComponent } from './yes-no-modal/yes-no-modal.component';
 import { UserInvitationsComponent } from './user-invitations/user-invitations.component';
+import { ToastsComponent } from './toasts/toasts.component';
+import { ToastsService } from './_services/toasts.service';
 import { UserSettingsComponent } from './user-settings/user-settings.component';
 import { UserChangePasswordComponent } from './user-change-password/user-change-password.component';
 
@@ -87,6 +89,7 @@ const appRoutes: Routes = [];
     ActivitiesComponent,
     YesNoModalComponent,
     UserInvitationsComponent,
+    ToastsComponent,
     UserSettingsComponent,
     UserChangePasswordComponent],
   imports: [

@@ -17,13 +17,6 @@
     padding: 1em;
 }
 
-.pic img {
-    max-width: 15em;
-}
-
-.mrgn-right {
-    margin-right: 1em;
-}
 
 .fnt-size {
     font-size: large;
@@ -37,4 +30,16 @@
 .badge{
     font-size: large;
     margin-bottom: 0;
+}
+
+.emptylabel {
+    width: 100%;
+    padding: 2em;
+    text-align: center;
+    font-size: x-large;
+}
+
+.wrap {
+    word-wrap: break-word;
+    width: 100%;
 }
