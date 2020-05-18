@@ -4,8 +4,8 @@ export interface Game {
   maxUsersCount: number;
   numberOfQuestions: number;
   roundDuration: number;
-  breakTime: number;
   additionalPoints: boolean;
+  breakTime: number;
   accessId: string;
   quizId: string;
 }

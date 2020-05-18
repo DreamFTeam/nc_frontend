@@ -13,7 +13,7 @@ import {ModalMessageService} from '../_services/modal-message.service';
 })
 export class GameSettingsComponent implements OnInit {
   readonly roundDurations = ['10', '30', '60', '90', '120'];
-  readonly minQuestion = 5;
+  readonly minQuestion = 4;
   readonly maxUser = 10;
   readonly breaks = ['0', '3', '5', '10', '30'];
 
@@ -43,6 +43,11 @@ export class GameSettingsComponent implements OnInit {
   }
 
   applySettings(settings: any): void {
+    if (settings.numberOfQuestions <  this.minQuestion || settings.maxUsersCount < 1) {
+      this.error = true;
+      this.errorMessage =  'Incorrect data';
+      return;
+    }
     if (settings.numberOfQuestions > this.questionsAmount) {
       this.error = true;
       this.errorMessage = `Too many questions. There are only ${this.questionsAmount} questions in this quiz. `;
