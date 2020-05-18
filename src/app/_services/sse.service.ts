@@ -12,7 +12,7 @@ export class SseService {
   }
 
   getEventSource(url: string): EventSource {
-    return new EventSource(url, {withCredentials: true});
+    return new EventSource(url);
   }
 
   getServerSentEvent(key: string, type: string): Observable<any> {
