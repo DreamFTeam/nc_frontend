@@ -1,17 +1,3 @@
-<div class="toastpos">
-    <ngb-toast *ngFor="let toast of toasts" [class]="toast.classname" [autohide]="true" [delay]="5000"
-        (hide)="removeToast(toast)">
-
-        <ng-template [ngIf]="isTemplate(toast)" [ngIfElse]="text">
-            <ng-template [ngTemplateOutlet]="toast.textOrTpl"></ng-template>
-        </ng-template>
-
-        <ng-template #text>{{ toast.textOrTpl }}</ng-template>
-    </ngb-toast>
-</div>
-
-
-
 <div role="main">
     <div class="container-sm mt-2 mb-2 p-3">
         <div *ngIf="!quizLoading">

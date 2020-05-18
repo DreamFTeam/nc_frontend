@@ -1,0 +1,6 @@
+.toastpos{
+    position: fixed;
+    right: 0;
+    min-width: 20%;
+    z-index:1000;
+}

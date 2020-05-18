@@ -58,6 +58,9 @@ import { UserInvitationsComponent } from './user-invitations/user-invitations.co
 import { GameQuestionComponent } from './game-question/game-question.component';
 import { GameResultComponent } from './game-result/game-result.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { ToastsComponent } from './toasts/toasts.component';
+import { ToastsService } from './_services/toasts.service';
+import { UserSettingsComponent } from './user-settings/user-settings.component';
 import { UserChangePasswordComponent } from './user-change-password/user-change-password.component';
 
 const appRoutes: Routes = [];
@@ -106,7 +109,9 @@ const appRoutes: Routes = [];
     QuizFilterComponent,
     NotificationsComponent,
     GameQuestionComponent,
-    GameResultComponent],
+    GameResultComponent,
+    ToastsComponent,
+    UserSettingsComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

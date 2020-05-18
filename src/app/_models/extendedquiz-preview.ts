@@ -1,11 +1,12 @@
 import { DesearizableWImage } from './deserializable-w-image';
+import { DomSanitizer } from '@angular/platform-browser';
 
 export class ExtendedQuizPreview implements DesearizableWImage {
   id: string;
   title: string;
   imageContent: any;
 
-  deserialize(input: any, sanitizer: import('@angular/platform-browser').DomSanitizer): this {
+  deserialize(input: any, sanitizer: DomSanitizer): this {
     Object.assign(this, input);
     const img = this.imageContent;
     if (img !== null) {
