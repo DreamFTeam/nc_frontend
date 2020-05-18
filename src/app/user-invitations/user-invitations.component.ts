@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Profile } from '../_models/profile';
 import { FriendsService } from '../_services/friends-service.service';
+import { Router } from '@angular/router';
+import { AuthenticationService } from '../_services/authentication.service';
 
 @Component({
   selector: 'app-user-invitations',
@@ -8,6 +10,7 @@ import { FriendsService } from '../_services/friends-service.service';
   styleUrls: ['./user-invitations.component.css']
 })
 export class UserInvitationsComponent implements OnInit {
+  MAX_AMOUNT: number;
   activeTab: number;
   role: string; // role of the current user
   ready: boolean; // indicates the profile was loaded (doesn't include quizzes)
@@ -18,8 +21,11 @@ export class UserInvitationsComponent implements OnInit {
 
   constructor(
     private friendService: FriendsService,
+    private router: Router,
+    private authenticationService: AuthenticationService,
   ) {
     this.ready = true;
+    this.MAX_AMOUNT = friendService.AMOUNT_OF_USERS;
     this.activeTab = history.state.data === 'outgoing' ? 2 : 1;
     this.invitationsPage = 1;
     this.getInvitationsSize(history.state.data || 'incoming');
@@ -27,6 +33,10 @@ export class UserInvitationsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.authenticationService.currentUserValue == null) {
+      this.router.navigate(['/']);
+    }
+
   }
 
   changeTab(event): void {

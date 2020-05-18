@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Setting } from '../_models/setting';
 import { SettingsService } from '../_services/settings.service';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 
 
@@ -17,11 +18,18 @@ export class UserSettingsComponent implements OnInit {
 
   language: Setting;
 
+  loading: boolean;
+
   settings: Setting[];
 
-  constructor(private settingsService: SettingsService) { }
+  faSpinner = faSpinner;
+
+  constructor(private settingsService: SettingsService) { 
+    
+  }
 
   ngOnInit(): void {
+    this.loading = true;
     this.settingsService.getSettings()
       .subscribe(ans => this.setSettings(ans), err => console.log(err));
   }
@@ -35,6 +43,8 @@ export class UserSettingsComponent implements OnInit {
     temp.sort(function(a, b){
       return b.title.length - a.title.length;
     });
+
+    this.loading = false;
   }
 
 
@@ -48,9 +58,11 @@ export class UserSettingsComponent implements OnInit {
     console.log(this.settings);
     console.log(saved);
 
+    this.loading = true;
     this.settingsService.saveSettings(saved).subscribe(
-      ans => alert("Saved"),
-      err => console.log(err)
+      () => alert("Saved"),
+      err => console.log(err),
+      () => this.loading = false
     )
   }
 

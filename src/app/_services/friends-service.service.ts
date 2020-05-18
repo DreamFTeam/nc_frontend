@@ -11,6 +11,8 @@ import { catchError } from 'rxjs/internal/operators/catchError';
 })
 export class FriendsService {
 
+  public AMOUNT_OF_USERS = 8;
+
   profilesUrl = `${environment.apiUrl}profiles/`;
 
   httpOptions = {
