@@ -84,6 +84,15 @@ export class AuthenticationService {
     this.currentUserSubject.next(null);
   }
 
+  /* PATCH: change user password (using current password) */
+  changeUserPassword(currentPassword: string, newPassword: string): Observable<any> {
+    const userInfo = {
+      currentPassword,
+      newPassword
+    };
+    return this.http.patch(this.url + 'account/changePassword', JSON.stringify(userInfo), this.httpOptions);
+  }
+
 
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {

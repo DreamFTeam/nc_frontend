@@ -18,6 +18,7 @@ import { Achievement } from '../_models/achievement';
 
 export class ProfileComponent implements OnInit {
   activeTab: number;
+  MAX_AMOUNT: number; // amount of friends per page
   role: string; // role of the current user
   ready: boolean; // indicates the profile was loaded (doesn't include quizzes)
   owner: boolean; // indicates which rights the user has concerning this profile
@@ -42,6 +43,7 @@ export class ProfileComponent implements OnInit {
     this.role = authenticationService.currentUserValue.role;
     this.activeTab = 1;
     this.friendsPage = 1;
+    this.MAX_AMOUNT = getProfileService.AMOUNT_OF_USERS;
   }
 
   ngOnInit(): void {
