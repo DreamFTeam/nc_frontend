@@ -14,6 +14,8 @@ import { Achievement } from '../_models/achievement';
 })
 
 export class ProfileService {
+  public AMOUNT_OF_USERS = 8;
+
   private rolesHierarchy = {
     ROLE_USER: 10,
     ROLE_MODERATOR: 0,
