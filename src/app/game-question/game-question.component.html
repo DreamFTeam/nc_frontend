@@ -1,0 +1,123 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
+<div *ngIf="curq.typeId == 1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><p>Question: {{curq.content}}</p></h3>
+            </div>
+            <div *ngIf="curq_image != null" class="modal-header">
+                <img [src]="'data:image/jpeg;base64,'+curq_image" />
+            </div>
+        <div class="modal-body">
+            <div class="quiz" id="quiz" data-toggle="buttons">
+                <label class="btn btn-lg btn-primary btn-block" *ngFor="let answer of curq.answers"><span class="btn-label"></span> <button name="button1id" class="btn btn-primary" (click)="oneToFourAns(answer)">{{answer}}</button></label>
+                <label class="btn btn-lg btn-block"> 
+                    <div class="progress">
+                        <div id="cnt" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="60" style="width:{{timeLeft}}%"></div>
+                    </div>
+                </label>
+            </div>
+        </div>
+            <div class="modal-footer text-muted">
+                <span id="answer"></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="curq.typeId == 2">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><p>Question: {{curq.content}}</p></h3>
+            </div>
+            <div *ngIf="curq_image != null" class="modal-header">
+                <img [src]="'data:image/jpeg;base64,'+curq_image" />
+            </div>
+        <div class="modal-body">
+            <div class="quiz" id="quiz" data-toggle="buttons">
+                <label class="btn btn-lg btn-primary btn-block"><span class="btn-label"></span> <button name="button1id" class="btn btn-primary" (click)="trueFalseAns('true')">True</button></label>
+                <label class="btn btn-lg btn-primary btn-block"><span class="btn-label"></span> <button name="button1id" class="btn btn-primary" (click)="trueFalseAns('false')">False</button></label>
+                <label class="btn btn-lg btn-block"> 
+                    <div class="progress">
+                        <div id="cnt" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="60" style="width:{{timeLeft}}%"></div>
+                    </div>
+                </label>
+            </div>
+        </div>
+            <div class="modal-footer text-muted">
+                <span id="answer"></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="curq.typeId == 3">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><p>Question: {{curq.content}}</p></h3>
+            </div>
+            <div *ngIf="curq_image != null" class="modal-header">
+                <img [src]="'data:image/jpeg;base64,'+curq_image" />
+            </div>
+        <div class="modal-body">
+            <div class="quiz" id="quiz" data-toggle="buttons">
+                <input type="text" name="username" [(ngModel)]="answf" #nameref="ngModel" size=40px pattern="[a-zA-Z]+" />
+                <label class="btn btn-lg btn-primary btn-block"><span class="btn-label"></span> <button name="button1id" class="btn btn-primary" (click)="manualAns()">Apply</button></label>
+                <label class="btn btn-lg btn-block"> 
+                    <div class="progress">
+                        <div id="cnt" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="60" style="width:{{timeLeft}}%"></div>
+                    </div>
+                </label>
+            </div>
+        </div>
+            <div class="modal-footer text-muted">
+                <span id="answer"></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="curq.typeId == 4">            
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><p>Question: {{curq.content}}</p></h3>
+            </div>
+            <div *ngIf="curq_image != null" class="modal-header">
+                <img [src]="'data:image/jpeg;base64,'+curq_image" />
+            </div>
+        <div class="modal-body">
+            <div class="quiz" id="quiz" data-toggle="buttons">
+                <form>
+                    <div class="form-group" *ngFor="let answer of shuffled">
+                      <input type="checkbox" id="{{answer}}" (change)="addSeq(answer)">
+                      <label for="{{answer}}">{{answer}}</label>
+                    </div>
+                </form>
+                <label class="btn btn-lg btn-primary btn-block"><span class="btn-label"></span> <button name="button1id" class="btn btn-primary" (click)="seqAns()">Apply</button></label>
+                <label class="btn btn-lg btn-block"> 
+                    <div class="progress">
+                        <div id="cnt" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="60" style="width:{{timeLeft}}%"></div>
+                    </div>
+                </label>
+            </div>
+        </div>
+            <div class="modal-footer text-muted">
+                <span id="answer"></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><p>Your score: {{playerRating}}; Total quiz time: {{timeSpend}}s</p></h3>
+            </div>
+        </div>
+    </div>
+</div>

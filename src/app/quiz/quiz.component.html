@@ -6,7 +6,8 @@
 
                 <div class="col-sm-3 ">
                     <div *ngIf="!quiz.published; else elseBlock">
-                        <img [src]= "thumbnail ? thumbnail : '../assets/img/quizupl.jpg'" class="img-thumbnail" (click)="imageInput.click()">
+                        <img [src]="thumbnail ? thumbnail : '../assets/img/quizupl.jpg'" class="img-thumbnail"
+                            (click)="imageInput.click()">
 
                         <input style="display: none" #imageInput type="file" accept="image/*"
                             (change)="quizImage($event)">

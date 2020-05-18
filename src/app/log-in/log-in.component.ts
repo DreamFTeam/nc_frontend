@@ -1,7 +1,8 @@
-import {Component} from '@angular/core';
-import {AuthenticationService} from '../_services/authentication.service';
-import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {RecoverPasswordComponent} from '../recover-password/recover-password.component';
+import { Component } from '@angular/core';
+import { AuthenticationService } from '../_services/authentication.service';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { RecoverPasswordComponent } from '../recover-password/recover-password.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-log-in',
@@ -10,8 +11,9 @@ import {RecoverPasswordComponent} from '../recover-password/recover-password.com
 })
 export class LogInComponent {
   constructor(private authenticationService: AuthenticationService,
-              public activeModal: NgbActiveModal,
-              private modalService: NgbModal) {
+    public activeModal: NgbActiveModal,
+    private modalService: NgbModal,
+    private _router: Router) {
   }
 
   email = '';
@@ -22,31 +24,27 @@ export class LogInComponent {
 
   logIn() {
     if (this.email === '' || this.email == null) {
-      alert('Enter the email or username!');
+      this.message = ('Enter the username!');
       return;
     }
     if (this.password === '' || this.password == null) {
-      alert('Enter the password!');
+      this.message = ('Enter the password!');
       return;
     }
 
     /*Code for comunication with back-end*/
     this.authenticationService.loginUser(this.email, this.password)
       .subscribe(n => {
-          location.reload();
-          this.loading = false;
-        },
+        location.reload();
+        this.loading = false;
+      },
         error => {
-          if (error.error) {
-            this.message = error.error.message;
-          } else {
-            this.message = 'An error occurred';
-          }
+          this.message = error;
           console.log(error);
           this.loading = false;
         }
       )
-    ;
+      ;
     this.loading = true;
   }
 
