@@ -60,7 +60,10 @@
                          </a> 
                          <b>Description:</b> {{quiz.description}}  <br />
                          <b>Last time modified:</b> {{quiz.creationDate}} <br />
-                         <div *ngIf="owner"> <b>Status:</b> {{(quiz.published && quiz.activated) ? "published" : !quiz.validated ? "not validated yet" : (!quiz.activated) ? "deactivated" : "not published" }} <br/></div>
+                         <div *ngIf="owner">
+                             <b>Status:</b> {{(quiz.published && quiz.activated) ? "published" : !quiz.validated ? "not validated yet" : "deactivated"  }} <br/>
+                              <div *ngIf="owner && quiz.adminComment"> <b>Admin's comment: </b> {{quiz.adminComment}} </div>
+                           </div>
                          <b>Rating:</b> {{quiz.rating}}  <br />
                          <div  class="col-xs-2 col-sm-3 col-md-2 col-lg-1 p-2 float-right" (click)="markQuizFavourite(quiz)">
                             <svg *ngIf="quiz.favourite" class="bi bi-star-fill" width="1.5em" height="1.5em" viewBox="0 0 16 16"
