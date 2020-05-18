@@ -4,7 +4,7 @@
           <div class="col-xs-2 col-sm-4 col-md-4 col-lg-3 p-2">
              <img class="col p-3"[src]="profile.image ? profile.image : '../../assets/img/nopicture.jpg'" style="background-color:rgba(243, 202, 165, 0.863);">
              <a *ngIf="owner && profile.activated" (click)="edit()" class="btn btn-outline-secondary mt-2 w-100">Edit profile</a>
-             <a *ngIf="owner && profile.activated"  class="btn btn-outline-secondary mt-2 w-100"> Settings </a>
+             <a *ngIf="owner || this.role!='ROLE_USER'" routerLink="/settings" class="btn btn-outline-secondary mt-2 w-100" style="color: black;"> Settings </a>
              <a *ngIf="!owner && this.role=='ROLE_USER' && !profile.friend && !profile.outgoingRequest && !profile.incomingRequest" class="btn btn-outline-secondary mt-2 w-100" (click)="sendFriendRequest(true)"> Add friend </a>
              <a *ngIf="!owner && this.role=='ROLE_USER' && !profile.friend && profile.outgoingRequest " class="btn btn-outline-danger mt-2 w-100" (click)="sendFriendRequest(false)"> Cancel friend request</a>
              <a *ngIf="!owner && this.role=='ROLE_USER' && !profile.friend && profile.incomingRequest " class="btn btn-outline-success mt-2 w-100"  (click)="processFriendRequest(true)"> Accept request</a>
@@ -22,7 +22,7 @@
              </ng-template>
              <h3>{{profile.aboutMe}}</h3>
           </div>
-          <div *ngIf= "this.role=='ROLE_USER'" class="col-3 ">
+          <div *ngIf= "this.role=='ROLE_USER'" class="col-xs-2 col-sm-3 col-md-3 col-lg-3 p-2 ">
             <a *ngIf="owner" (click)="seeeRequests('incoming')" class="btn btn-outline-info mt-2 w-100"> Incoming Friend Requests </a>
             <a *ngIf="owner" (click)="seeeRequests('outgoing')" class="btn btn-outline-info mt-2 w-100"> Outgoing Friend Requests </a>
          </div>
@@ -154,7 +154,7 @@
             </p>
             <div *ngIf="friends?.length">
                <h1 class="m-2" style="font-size: larger; font-weight: bolder;">Found  {{friendsSize}}  {{friendsSize == 1 ? "friend" : "friends" }} </h1>
-               <ngb-pagination  class="d-flex justify-content-center"  [collectionSize]="friendsSize" [(page)]="friendsPage"  [pageSize]="8" [rotate]="true" (pageChange)="load($event)"></ngb-pagination>
+               <ngb-pagination  class="d-flex justify-content-center"  [collectionSize]="friendsSize" [(page)]="friendsPage"  [pageSize]="MAX_AMOUNT" [rotate]="true" (pageChange)="load($event)"></ngb-pagination>
                <div *ngFor="let profile of this.friends" style='font-size: larger;'>
                   <div class="row p-2 m-2 border" >
                      <img  routerLink="/profile/{{profile.username}}"  class="img-thumbnail col-xs-5 col-sm-5 col-md-4 col-lg-3  float-left" [src]="profile.image ? profile.image : '../../assets/img/nopicture.jpg'" style="background-color:rgba(243, 202, 165, 0.863);">
@@ -171,7 +171,7 @@
                      </div>
                   </div>
                   </div>
-                  <ngb-pagination  class="d-flex justify-content-center"  [collectionSize]="friendsSize" [(page)]="friendsPage"  [pageSize]="8" [rotate]="true" (pageChange)="load($event)"></ngb-pagination>
+                  <ngb-pagination  class="d-flex justify-content-center"  [collectionSize]="friendsSize" [(page)]="friendsPage"  [pageSize]="MAX_AMOUNT" [rotate]="true" (pageChange)="load($event)"></ngb-pagination>
             </div>
          </ng-template>
       </li>
