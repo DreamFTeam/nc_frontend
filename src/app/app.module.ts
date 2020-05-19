@@ -10,7 +10,7 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthenticationService } from './_services/authentication.service';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule, HttpClient } from '@angular/common/http';
 import { QuizComponent } from './quiz/quiz.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -36,7 +36,6 @@ import { QuizValidationListService } from './_services/quiz-validation-list.serv
 import { QuizValidationComponent } from './quiz-validation/quiz-validation.component';
 import { AnnouncementViewComponent } from './announcement-view/announcement-view.component';
 import { AnnouncementEditComponent } from './announcement-edit/announcement-edit.component';
-
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ShortQuizListComponent } from './short-quiz-list/short-quiz-list.component';
 import { QuestionEditorSelectorComponent } from './question-editor-selector/question-editor-selector.component';
@@ -62,10 +61,15 @@ import { ToastsComponent } from './toasts/toasts.component';
 import { ToastsService } from './_services/toasts.service';
 import { UserSettingsComponent } from './user-settings/user-settings.component';
 import { UserChangePasswordComponent } from './user-change-password/user-change-password.component';
+import { TranslateModule, TranslateLoader, MissingTranslationHandler } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { MissingTranslationService } from './_translation/missing';
 
 const appRoutes: Routes = [];
 
-
+export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
+  return new TranslateHttpLoader(http, './assets/locale/', '.json');
+}
 @NgModule({
   declarations: [
     AppComponent,
@@ -123,7 +127,16 @@ const appRoutes: Routes = [];
     NgbModule,
     FontAwesomeModule,
     QRCodeModule,
-    NgxChartsModule
+    NgxChartsModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient],
+      },
+      missingTranslationHandler: { provide: MissingTranslationHandler, useClass: MissingTranslationService },
+      useDefaultLang: false,
+    })
   ],
   entryComponents: [LogInComponent, SignUpComponent, RecoverPasswordComponent],
   providers: [AuthenticationService, QuizListService, QuestionService, QuizService, QuizValidationListService, AnonymService,
