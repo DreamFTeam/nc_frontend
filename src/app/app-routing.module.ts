@@ -42,7 +42,7 @@ const routes: Routes = [
   {path: 'game/:id/lobby', component: GameConnectorComponent},
   {path: 'join/:accessId', canActivate: [GameConnectionGuard], component: AnonymInitComponent},
   {path: 'play/:gameid', component: GameQuestionComponent},
-  {path: 'result', component: GameResultComponent},
+  {path: 'game/result/:id', component: GameResultComponent},
   {path: '**', redirectTo: ''}
 ];
 

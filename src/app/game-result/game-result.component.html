@@ -14,7 +14,7 @@
       [barPadding]="4"
       [view]=view
       [showDataLabel]=true
-      [results]="results"
+      [results]="resultsForGraphic"
       [xAxis]=true
       [yAxis]=true
       [legend]=true
@@ -28,8 +28,8 @@
 
     <div class="btn-group" role="group">
       <button type="button" class="btn btn-secondary">Play again</button>
-      <button type="button" class="btn btn-secondary">Statistic</button>
-      <button type="button" class="btn btn-secondary">More info</button>
+      <button type="button" class="btn btn-secondary">Other quizzes</button>
+      <button type="button" class="btn btn-secondary" (click)="goHome()">Quit</button>
     </div>
   </div>
 </div>

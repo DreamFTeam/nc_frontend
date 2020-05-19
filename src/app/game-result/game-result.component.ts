@@ -1,8 +1,7 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {GameSession} from "../_models/game-session";
 import {GameResultService} from "../_services/game-result.service";
-import {ActivatedRoute} from "@angular/router";
-
+import {ActivatedRoute, Router} from "@angular/router";
+import {GameResult} from "../_models/game-result";
 
 @Component({
   selector: 'app-game-result',
@@ -13,20 +12,19 @@ import {ActivatedRoute} from "@angular/router";
 
 export class GameResultComponent implements OnInit {
 
-  results: any[];
+  results: GameResult[];
   gameId: string;
   maxPoints: number;
   winner: string;
   view = [600, 400];
-  gameResults: GameSession[];
-
+  resultsForGraphic: any[];
 
   // colorScheme = {
   //   domain: ['#e5de09', '#9e0505', '#05b4ff', '#FF5005']
   // };
 
-  constructor(private gameResultService: GameResultService, private router: ActivatedRoute) {
-    this.gameId = this.router.snapshot.paramMap.get("id");
+  constructor(private gameResultService: GameResultService, private activatedRoute: ActivatedRoute, private router: Router) {
+    this.gameId = this.activatedRoute.snapshot.paramMap.get("id");
   }
 
   onSelect(event) {
@@ -34,17 +32,37 @@ export class GameResultComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.gameResultService.getResults(this.gameId).subscribe(gameSessions => {
-      this.gameResults = gameSessions;
-      this.findWinner(this.gameResults);
-      this.results = gameSessions.map(gameSessions => {
-        gameSessions.username, gameSessions.score;
-      })
+
+    this.gameResultService.getResults(this.gameId)
+      .subscribe(ses => {
+        this.results = ses;
+        this.setResultsForGraphic(ses);
+        this.findWinner(ses);
+      });
+
+  }
+
+  findWinner(gameResults: GameResult[]): void {
+    this.winner = gameResults.filter(result => result.is_winner)[0].username;
+  }
+
+  setResultsForGraphic(gameResults: GameResult[]) {
+    this.resultsForGraphic = [];
+    gameResults.forEach(result => {
+      this.resultsForGraphic.push({name: result.username, value: result.score});
     });
   }
 
-  findWinner(gameSessions: GameSession[]): void {
-    this.winner = gameSessions.filter(gameSessions => gameSessions.winner)[0].username;
+  goHome() {
+    this.router.navigate(['/']);
+  }
+
+  goToOtherQuizzes() {
+    this.router.navigate(['/']);
+  }
+
+  playAgain() {
+    this.router.navigate(['/']);
   }
 
 }

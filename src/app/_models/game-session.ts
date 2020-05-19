@@ -1,5 +1,8 @@
+import {DomSanitizer} from "@angular/platform-browser";
+
 export interface GameSession {
   id: string;
+  username: string;
   userId: string;
   gameId: string;
   score: number;
@@ -7,4 +10,5 @@ export interface GameSession {
   creator: boolean;
   savedByUser: boolean;
   durationTime: number;
+
 }
