@@ -8,9 +8,8 @@ export class ExtendedQuizPreview implements DesearizableWImage {
 
   deserialize(input: any, sanitizer: DomSanitizer): this {
     Object.assign(this, input);
-    const img = this.imageContent;
-    if (img !== null) {
-      const objUrl = 'data:image/jpeg;base64,' + img;
+    if (this.imageContent !== null && this.imageContent !== undefined && this.imageContent !== "") {
+      const objUrl = 'data:image/jpeg;base64,' + this.imageContent;
       this.imageContent = sanitizer.bypassSecurityTrustUrl(objUrl);
     }
     return this;
