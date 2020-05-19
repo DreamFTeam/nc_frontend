@@ -1,12 +1,14 @@
-<div *ngIf="suggestions.length > 0" class="container card mt-2">
-    <div class="mt-2 lead card-header">
+<div *ngIf="suggestions.length > 0" class="card">
+    <div class="lead card-header">
         Quizzes you may like
     </div>
-    <div class="p-3 card-body row">
-        <div class="col d-flex align-items-stretch" style="padding: 0;" *ngFor="let suggestion of suggestions">
-            <div class="card flex-fill pointer text-center p-2" routerLink="/viewquiz/{{suggestion.id}}">
-                <img [src]="suggestion.imageContent !== null ? suggestion.imageContent : mockImgUrl" class="img-fluid card-img-top">
-                <div class="card-body p-2">
+    <div class="card-body card-group row">
+        <div class="col mb-3 mb-md-0 px-0" *ngFor="let suggestion of suggestions">
+            <div class="card pointer h-100" routerLink="/viewquiz/{{suggestion.id}}">
+                <div class="embed-responsive embed-responsive-4by3">
+                    <img class="card-img-top embed-responsive-item p-1" [src]="suggestion.imageContent !== null ? suggestion.imageContent : mockImgUrl">
+                </div>
+                <div class="card-body text-center">
                     <p class="card-title">{{ suggestion.title }}</p>
                 </div>
             </div>
