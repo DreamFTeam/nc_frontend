@@ -3,23 +3,23 @@
     <div class="col-2"></div>
       <div class="col-8">
         <div class="row bg-white rounded">
-          <div class="col-4 text-center pb-3">
-            <p class="mt-4 h4">{{game.accessId}}</p>
-            <qrcode [margin]="3"
+          <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 text-center">
+            <p class="mt-4 h4 text-center">{{game.accessId}}</p>
+            <qrcode [margin]="0"
                     [qrdata]="connectUrl + game.accessId"
                     [width]="256"
                     [errorCorrectionLevel]="'M'"
                     [elementType]="'url'"></qrcode>
-            <button [disabled]="started" *ngIf="creator && ready" (click)="startGame()" class="btn ml-3 btn-primary btn-block">
+            <button [disabled]="started" *ngIf="creator && ready" (click)="startGame()" class="btn mx-3 btn-primary btn-lg">
               <span *ngIf="!started">Start game</span>
               <span *ngIf="started" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
             </button>
-            <button *ngIf="!ready" class="btn ml-3 btn-success btn-block" (click)="setReady()">Ready</button>
+            <button *ngIf="!ready" class="btn m-3 btn-success btn-lg" (click)="setReady()">Ready</button>
           </div>
-          <div class="col-8 overflow-auto">
+          <div class="col-xl-8 col-lg-12 col-md-12 col-sm-12 overflow-auto">
             <div class="container mb-4 mt-4">
               <div *ngFor="let session of sessions"
-                   class="border border-secondary rounded ml-3 m-1 p-2"
+                   class="border border-secondary rounded mx-3 my-1 p-2"
                    [ngClass]="{'border-success': session.is_creator, 'alert-success': usersSessionsReady.includes(session.game_session_id)}">
                 <img class="rounded-circle"
                      width="35px"
