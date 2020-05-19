@@ -4,6 +4,7 @@ export interface GameSession {
   id: string;
   username: string;
   userId: string;
+  username: string;
   gameId: string;
   score: number;
   winner: boolean;

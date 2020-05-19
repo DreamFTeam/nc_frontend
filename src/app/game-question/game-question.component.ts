@@ -151,7 +151,7 @@ export class GameQuestionComponent implements OnInit {
     } else {
       this.sendResults();
       clearInterval(this.interval);
-      this.router.navigate(['/quiz-list']); // CHANGE TO RESULT COMPONENT ROUTING
+      this.router.navigate([`/game/result/${this.game.id}`]); // CHANGE TO RESULT COMPONENT ROUTING
     }
   }
 

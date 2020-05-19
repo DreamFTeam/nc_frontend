@@ -3,7 +3,6 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {GameSettingsService} from '../_services/game-settings.service';
 import {Game} from '../_models/game';
 import {SseService} from '../_services/sse.service';
-import {environment} from '../../environments/environment';
 import {AuthenticationService} from '../_services/authentication.service';
 import {Role} from '../_models/role';
 import {ModalMessageService} from '../_services/modal-message.service';
@@ -17,7 +16,6 @@ import {ModalMessageService} from '../_services/modal-message.service';
 export class GameConnectorComponent implements OnInit, OnDestroy {
   connectUrl = `${location.origin}/join/`;
   mockImageUrl = '../../assets/img/nopicture.jpg';
-  sseGameConnectorUrl = `${environment.apiUrl}sse/stream/`;
 
   game: Game;
   // TODO add type
@@ -57,29 +55,21 @@ export class GameConnectorComponent implements OnInit, OnDestroy {
           this.game = game;
         }
       );
-
-    this.subscribeOnUsersJoining(gameId);
-    this.subscribeToUsersReady(gameId);
-    this.subscribeToGameStart(gameId);
-    this.getSessions(gameId);
-  }
-
-  getSessions(gameId: string) {
-    this.gameSettingsService.getSessions(gameId)
-      .subscribe(ses => {
-          Object.assign(this.sessions, ses);
-          for (const session of this.sessions) {
-            if (this.sessionId === session.game_session_id) {
-              this.creator = session.is_creator;
-            }
-          }
-          console.log(this.creator);
-          console.log(this.sessions);
-          console.log(this.sessionId);
-        },
-        error => {
-          console.log(error)
-        });
+    this.gameSettingsService.getSseForGame(gameId);
+    this.gameSettingsService.setSubjSessions(gameId);
+    this.gameSettingsService.sessions.subscribe(ses => {
+      Object.assign(this.sessions, ses);
+      for (const session of this.sessions) {
+        if (this.sessionId === session.game_session_id) {
+          this.creator = session.is_creator;
+        }
+      }
+    });
+    this.gameSettingsService.readyList.subscribe(ls => {
+      Object.assign(this.usersSessionsReady, ls);
+      console.log(ls);
+      this.ready = this.usersSessionsReady.includes(this.sessionId);
+    });
   }
 
   setReady() {
@@ -93,37 +83,6 @@ export class GameConnectorComponent implements OnInit, OnDestroy {
     this.gameSettingsService.startGame(this.game.id).subscribe(next => {
       console.log(next);
     });
-  }
-
-  private subscribeToUsersReady(gameId: string) {
-    this.sseService.getServerSentEvent(this.sseGameConnectorUrl + gameId, 'ready')
-      .subscribe(next => {
-          console.log('Ready ' + next.data);
-          if (!this.usersSessionsReady.includes(next.data)) {
-            this.usersSessionsReady.push(next.data);
-            console.log(this.usersSessionsReady);
-          }
-          this.ready = this.usersSessionsReady.includes(this.sessionId);
-        }
-      );
-  }
-
-  private subscribeToGameStart(gameId: string) {
-    console.log('GAME ID ' + gameId);
-    this.sseService.getServerSentEvent(this.sseGameConnectorUrl + gameId, 'start')
-      .subscribe(next => {
-          console.log(next);
-          this.router.navigateByUrl(`/play/${gameId}`);
-        }
-      );
-  }
-
-  private subscribeOnUsersJoining(gameId: string) {
-    this.sseService.getServerSentEvent(this.sseGameConnectorUrl + gameId, 'join')
-      .subscribe(() => {
-        console.log('Join');
-        this.getSessions(gameId);
-      });
   }
 
   @HostListener('window:beforeunload', ['$event'])

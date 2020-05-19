@@ -1,7 +1,8 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {GameSession} from "../_models/game-session";
 import {GameResultService} from "../_services/game-result.service";
-import {ActivatedRoute, Router} from "@angular/router";
-import {GameResult} from "../_models/game-result";
+import {ActivatedRoute} from "@angular/router";
+
 
 @Component({
   selector: 'app-game-result',
