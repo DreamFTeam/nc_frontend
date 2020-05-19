@@ -135,12 +135,16 @@
             </div>
         <div class="modal-body">
             <div class="quiz" id="quiz" data-toggle="buttons">
-                <form>
+                <p><i>Place answers in right order: </i></p>
+                <div cdkDropList class="e-list" (cdkDropListDropped)="drop($event)">
+                    <div class="e-box" *ngFor="let answer of shuffled" cdkDrag>{{answer}}</div>
+                </div>
+                <!-- <form>
                     <div class="form-group" *ngFor="let answer of shuffled">
                       <input type="checkbox" id="{{answer}}" (change)="addSeq(answer)">
                       <label for="{{answer}}">{{answer}}</label>
                     </div>
-                </form>
+                </form> -->
                 <label class="btn btn-lg btn-primary btn-block"><span class="btn-label"></span> <button name="button1id"
                                                                                                         class="btn btn-primary"
                                                                                                         (click)="seqAns()">Apply</button></label>
