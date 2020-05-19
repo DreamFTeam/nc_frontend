@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ShortQuizListService } from '../_services/short-quiz-list.service';
 import { Observable, of } from 'rxjs';
-import { ExtendedQuiz } from '../_models/extended-quiz';
+import { ExtendedQuizPreview } from '../_models/extendedquiz-preview';
 
 @Component({
   selector: 'app-short-quiz-list',
@@ -10,20 +10,12 @@ import { ExtendedQuiz } from '../_models/extended-quiz';
 })
 export class ShortQuizListComponent implements OnInit {
 
-  pageSize: number = 4;
-
-  startIndex: number;
-  endIndex: number;
-  shortQuizList$: Observable<ExtendedQuiz[]>;
-  //listToShow$: Observable<ExtendedQuiz[]>;
+  shortQuizList$: Observable<ExtendedQuizPreview[]>;
   mockImgUrl = "../../assets/img/quiz.jpg";
-
 
   constructor(private shortQuizListService: ShortQuizListService) { }
 
   ngOnInit(): void {
-    this.startIndex = 0;
-    this.endIndex = this.startIndex + this.pageSize;
     this.getShortQuizList();
   }
 
@@ -31,23 +23,5 @@ export class ShortQuizListComponent implements OnInit {
     this.shortQuizList$ = this.shortQuizListService.getShortQuizList();
   }
 
-  slideRight():void{
-    if((this.endIndex + 1) >= 9){
-      this.startIndex = 0;
-      this.endIndex = this.startIndex + this.pageSize;
-    }else{
-      this.startIndex += 1;
-      this.endIndex += 1;
-    }
-  }
 
-  slideLeft():void{
-    if((this.startIndex - 1) <= 0){
-      this.endIndex = 9;
-      this.startIndex = this.endIndex - this.pageSize;
-    }else{
-      this.startIndex -= 1;
-      this.endIndex -= 1;
-    }
-  }
 }

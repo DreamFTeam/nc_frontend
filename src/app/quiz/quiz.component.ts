@@ -27,8 +27,8 @@ export class QuizComponent implements OnInit {
 
   questionSelector: ExtendedQuestion;
 
-  thumbnail: any; 
-  file: File; 
+  thumbnail: any;
+  file: File;
 
 
   quizLoading: boolean;
@@ -37,24 +37,24 @@ export class QuizComponent implements OnInit {
 
 
   constructor(private quizService: QuizService, private questionService: QuestionService,
-     private activateRoute: ActivatedRoute, private router: Router,private sanitizer: DomSanitizer,
-     private modalService: ModalService, public toastsService: ToastsService) { 
-       this.quizLoading = true;
-       this.questionLoading=false;
-       this.questions = [];
+    private activateRoute: ActivatedRoute, private router: Router, private sanitizer: DomSanitizer,
+    private modalService: ModalService, public toastsService: ToastsService) {
+    this.quizLoading = true;
+    this.questionLoading = false;
+    this.questions = [];
   }
 
   ngOnInit(): void {
     this.toastsService.removeAll();
-      const id = this.activateRoute.snapshot.params.id;
-      if(id === undefined){
-        this.initCreateQuiz();
-      }else{
-        this.getAllQuiz(id)
-      }
+    const id = this.activateRoute.snapshot.params.id;
+    if (id === undefined) {
+      this.initCreateQuiz();
+    } else {
+      this.getAllQuiz(id)
+    }
   }
 
-  
+
 
 
   initCreateQuiz() {
@@ -83,7 +83,7 @@ export class QuizComponent implements OnInit {
     this.quizLoading = false;
   }
 
-  initQuestion(): ExtendedQuestion{
+  initQuestion(): ExtendedQuestion {
 
     const res = new ExtendedQuestion().deserialize({
       id: "",
@@ -97,11 +97,11 @@ export class QuizComponent implements OnInit {
       rightOptions: [""],
       otherOptions: [""]
 
-    }, this.sanitizer); 
+    }, this.sanitizer);
     return res;
   }
 
-  getAllQuiz(data){
+  getAllQuiz(data) {
     //Find questions
     this.questionService.getAllQuestionsNew(data)
       .subscribe(
@@ -123,7 +123,7 @@ export class QuizComponent implements OnInit {
   }
 
   //Gettig quiz by id in url
-  setGettedQuiz(answer){    
+  setGettedQuiz(answer) {
     this.quiz = answer;
     this.file = this.quiz.unsanitizedImage;
     this.thumbnail = this.quiz.imageContent;
@@ -134,19 +134,19 @@ export class QuizComponent implements OnInit {
   }
 
   //Getting questions of quiz in url 
-  mapGettedQuestions(ans){
+  mapGettedQuestions(ans) {
     this.questions = ans;
   }
 
 
   //Clicked on already saved questions TODO : show image
-  showQuestion(i){
+  showQuestion(i) {
     this.questionSelector = this.questions[i];
     console.log(this.questionSelector);
   }
 
 
-  addNewQuestion(){
+  addNewQuestion() {
     this.questionSelector = this.initQuestion();
     this.questions.push(this.questionSelector)
   }
@@ -170,28 +170,28 @@ export class QuizComponent implements OnInit {
           err => this.setSavedQuestionError(err));
       }
 
-    }else{
+    } else {
       this.toastsService.removeAll();
-      validated.forEach( x => 
+      validated.forEach(x =>
         this.toastsService.toastAddDanger(x));
     }
   }
 
 
 
-  setSavedQuestion(ans){
-    
-    const index = this.questions.findIndex( el => el === this.questionSelector);
+  setSavedQuestion(ans) {
+
+    const index = this.questions.findIndex(el => el === this.questionSelector);
 
     this.questions[index] = ans;
     this.questionSelector = this.questions[index];
-    
+
     console.log(this.questions);
     this.toastsService.toastAddSuccess('Question saved!');
     this.questionLoading = false;
   }
 
-  setSavedQuestionError(err){
+  setSavedQuestionError(err) {
     console.log(err)
     this.toastsService.toastAddDanger("Question could not be saved :(");
     this.questionLoading = false;
@@ -205,18 +205,18 @@ export class QuizComponent implements OnInit {
 
       if (this.quiz.id === "") {
         this.createQuiz();
-      }else{
+      } else {
         this.editQuiz();
       }
-      
+
     } else {
       this.toastsService.removeAll();
-      validated.forEach( x => 
+      validated.forEach(x =>
         this.toastsService.toastAddDanger(x))
     }
   }
 
-  createQuiz(){
+  createQuiz() {
     this.quizService.createQuiz(this.quiz, this.file).subscribe(
 
       ans => {
@@ -231,7 +231,7 @@ export class QuizComponent implements OnInit {
       });
   }
 
-  editQuiz(){
+  editQuiz() {
     this.quizService.saveQuiz(this.quiz, this.file).subscribe(
 
       ans => {
@@ -239,10 +239,10 @@ export class QuizComponent implements OnInit {
         this.quiz = ans;
         this.quizLoading = false;
         console.log(this.quiz.published);
-        if(this.quiz.published === true){
+        if (this.quiz.published === true) {
           this.router.navigate(['/quizedit/' + ans.id])
         }
-        
+
       },
 
       err => {
@@ -291,7 +291,7 @@ export class QuizComponent implements OnInit {
   }
 
   removeQuestion() {
-    this.removeQuestionIndex(this.questions.findIndex( el => el === this.questionSelector), true);
+    this.removeQuestionIndex(this.questions.findIndex(el => el === this.questionSelector), true);
   }
 
   removeQuestionFromList(index, onCreatorDelete) {
@@ -302,15 +302,15 @@ export class QuizComponent implements OnInit {
     this.toastsService.toastAddDanger('Question removed');
   }
 
-  quizImage(e){
-    if(e.target.files[0] !== null && e.target.files[0] !== undefined){
+  quizImage(e) {
+    if (e.target.files[0] !== null && e.target.files[0] !== undefined) {
       this.file = e.target.files[0];
       this.setImage();
     }
   }
 
 
-  setImage(){
+  setImage() {
     let reader = new FileReader();
     reader.readAsDataURL(this.file);
     reader.onload = () => {
@@ -318,16 +318,16 @@ export class QuizComponent implements OnInit {
     }
   }
 
-  removeImage(){
+  removeImage() {
     this.file = null;
     this.thumbnail = null;
   }
 
-  
-  isQuizCreated(){ return this.quiz !== undefined && this.quiz.id !== ""; }
-  isPublishAvailable(){ return this.questions.filter(q => q.id.length > 0).length > 3 && !this.quiz.published }
-  isQuestionCreatorAvailable(){ return !this.questionLoading && !this.quizLoading && !this.quiz.published && this.isQuizCreated() }
-  isPlusActive(){ return this.questionSelector.id !== ""}
-  isTemplate(toast){return toast.textOrTpl instanceof TemplateRef}
+
+  isQuizCreated() { return this.quiz !== undefined && this.quiz.id !== ""; }
+  isPublishAvailable() { return this.questions.filter(q => q.id.length > 0).length > 3 && !this.quiz.published }
+  isQuestionCreatorAvailable() { return !this.questionLoading && !this.quizLoading && !this.quiz.published && this.isQuizCreated() }
+  isPlusActive() { return this.questionSelector.id !== "" }
+  isTemplate(toast) { return toast.textOrTpl instanceof TemplateRef }
 
 }

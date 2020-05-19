@@ -8,36 +8,11 @@
                  class="form-control" type="text" [(ngModel)]="question.title" placeholder="Title of question">
             </div>
             <div class="col-sm-3">
-                <select [disabled]="!available" (change)="onChange($event.target.value)" class="form-control">
-
-                    <option *ngIf="isOneToFour(); else elseBlock" selected="selected" value="1">
-                        Select option
+                <select [disabled]="!available" (change)="onChange($event.target.value)" class="form-control"
+                [(ngModel)]="typeTemp">
+                    <option *ngFor="let type of types" [value]="type.value">
+                        {{type.name}}
                     </option>
-                    <ng-template #elseBlock>
-                        <option value="1">Select option</option>
-                    </ng-template>
-
-                    <option *ngIf="isTrueFalse(); else elseBlock1" selected="selected" value="2">
-                        True\False
-                    </option>
-                    <ng-template #elseBlock1>
-                        <option value="2">True\False</option>
-                    </ng-template>
-
-                    <option *ngIf="isOpenAnswer(); else elseBlock2" selected="selected" value="3">
-                        Type answer
-                    </option>
-                    <ng-template #elseBlock2>
-                        <option value="3">Type answer</option>
-                    </ng-template>
-
-                    <option *ngIf="isSequenceAnswer(); else elseBlock3" selected="selected" value="4">
-                        Select sequence
-                    </option>
-                    <ng-template #elseBlock3>
-                        <option value="4">Select sequence</option>
-                    </ng-template>
-
                 </select>
             </div>
         </div>

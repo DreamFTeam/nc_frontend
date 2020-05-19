@@ -1,11 +1,10 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
+import {BehaviorSubject, Observable, of} from 'rxjs';
 import {User} from '../_models/user';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {catchError, map} from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 import {environment} from '../../environments/environment';
 import * as jwt_decode from 'jwt-decode';
-
 
 
 @Injectable({
@@ -18,7 +17,7 @@ export class AuthenticationService {
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
-      observe : 'response'
+      observe: 'response'
     })
   };
 
@@ -63,13 +62,11 @@ export class AuthenticationService {
   }
 
   /* POST: recover password */
-  recoverPassword( email: string): Observable<any> {
+  recoverPassword(email: string): Observable<any> {
     const userInfo = {
       email
     };
-    return this.http.post<User>(this.url + 'recovery/send', JSON.stringify(userInfo), this.httpOptions).pipe(
-      catchError(this.handleError<User>('recoverPassword'))
-    );
+    return this.http.post<User>(this.url + 'recovery/send', JSON.stringify(userInfo), this.httpOptions);
   }
 
   /* POST: change password */
@@ -82,7 +79,6 @@ export class AuthenticationService {
   }
 
 
-  /* POST: logout */
   signoutUser(): void {
     localStorage.removeItem('userData');
     this.currentUserSubject.next(null);
@@ -108,6 +104,6 @@ export class AuthenticationService {
   }
 
   private extractData(res: Response) {
-    return res || { };
+    return res || {};
   }
 }

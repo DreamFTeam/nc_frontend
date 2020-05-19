@@ -125,5 +125,8 @@
       }
     }
   },
-  "defaultProject": "quizApp"
+  "defaultProject": "quizApp",
+  "cli": {
+    "analytics": false
+  }
 }
