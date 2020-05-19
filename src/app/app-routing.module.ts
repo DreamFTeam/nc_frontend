@@ -38,7 +38,7 @@ const routes: Routes = [
   canActivate: [AuthGuard], data: { roles: [Role.Admin,Role.Moderator,Role.SuperAdmin] }},
   { path: 'requests', component: UserInvitationsComponent},
 
-  { path: 'settings', component: UserSettingsComponent, canActivate: [AuthGuard], data: { roles: [Role.User] }},
+  { path: 'settings', component: UserSettingsComponent},
 
   { path: 'activities', component: ActivitiesComponent, canActivate: [AuthGuard], data: { roles: [Role.User] }},
   { path: '**', redirectTo: ''}
