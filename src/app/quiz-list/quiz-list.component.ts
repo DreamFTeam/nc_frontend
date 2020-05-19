@@ -1,55 +1,85 @@
-import {Observable} from "rxjs";
 import { Component, OnInit } from '@angular/core';
 import { ExtendedQuizPreview } from '../_models/extendedquiz-preview';
-import { QuizListService } from '../_services/quiz-list.service';
+import { GameSettingsService } from '../_services/game-settings.service';
+import { Router } from '@angular/router';
+import { AuthenticationService } from '../_services/authentication.service';
+import { Role } from '../_models/role';
+import { SearchFilterQuizService } from '../_services/search-filter-quiz.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { QuizFilterComponent } from '../quiz-filter/quiz-filter.component';
 
 
-const PAGE_SIZE: number = 16;
+const PAGE_SIZE = 16;
 
 @Component({
-  selector: 'app-quiz-list',
-  templateUrl: './quiz-list.component.html',
-  styleUrls: ['./quiz-list.component.css']
+    selector: 'app-quiz-list',
+    templateUrl: './quiz-list.component.html',
+    styleUrls: ['./quiz-list.component.css']
 })
 export class QuizListComponent implements OnInit {
-  page: number;
-  pageSize: number;
+    accessCode: string;
+    accessCodeLoading: boolean;
+    admin: boolean;
+    searchInput: string;
 
-  totalSize$: Observable<number>;
-  quizList$: Observable<ExtendedQuizPreview[]>;
-  mockImageUrl = "../../assets/img/quiz.jpg";
+    canCreate: boolean;
 
-  constructor( private quizListService: QuizListService) { 
-    this.pageSize = PAGE_SIZE;
-    this.page = 1;
-  }
+    page: number;
+    pageSize: number;
+    quizList: ExtendedQuizPreview[] = [];
+    mockImageUrl = '../../assets/img/quiz.jpg';
+    totalSize: number;
 
-  ngOnInit(): void {
-    this.getTotalSize();
-    this.getQuizzes(this.page);
-  }
+    constructor(private modalService: NgbModal,
+        private gameSettingsService: GameSettingsService,
+        private router: Router,
+        private authenticationService: AuthenticationService,
+        private searchFilterQuizService: SearchFilterQuizService) {
+        this.pageSize = PAGE_SIZE;
+        this.page = 1;
+    }
 
-  getQuizzes(p:number): void{
-    this.quizList$ = this.quizListService.getQuizzesByPage(p);
-  }
+    ngOnInit(): void {
+        this.searchFilterQuizService.filterQuiz(this.page).subscribe();
+        this.searchFilterQuizService.currentQuizzes.subscribe(quizzes => {
+            if (quizzes) {
+                this.quizList = quizzes;
+            }
+        });
+        this.searchInput = this.searchFilterQuizService.getSettings().quizName;
+        this.searchFilterQuizService.currentQuizzesSize.subscribe(size =>
+            this.totalSize = size);
+        this.canCreate = this.authenticationService.currentUserValue != null;
+        this.admin = this.authenticationService.currentUserValue
+            && this.authenticationService.currentUserValue.role !== Role.User;
+    }
 
-  getTotalSize(): void{
-    this.totalSize$ = this.quizListService.getTotalSize();
-  }
+    loadPage(event) {
+        this.searchFilterQuizService.filterQuiz(event).subscribe();
+        this.scrollToTop();
+    }
 
-  loadPage(event){
-    this.getQuizzes(event);
-    this.scrollToTop();
-  }
+    scrollToTop() {
+        const scrollToTop = window.setInterval(() => {
+            const pos = window.pageYOffset;
+            if (pos > 0) {
+                window.scrollTo(0, pos - 40);
+            } else {
+                window.clearInterval(scrollToTop);
+            }
+        }, 16);
+    }
 
-  scrollToTop(){
-    let scrollToTop = window.setInterval(() => {
-      let pos = window.pageYOffset;
-      if (pos > 0) {
-          window.scrollTo(0, pos - 40);
-      } else {
-          window.clearInterval(scrollToTop);
-      }
-    }, 16);
-  }
+    join() {
+        this.accessCodeLoading = true;
+        this.router.navigateByUrl('/join/' + this.accessCode);
+    }
+
+    search() {
+        this.searchFilterQuizService.search(this.searchInput);
+    }
+
+    showFilter() {
+        const modal = this.modalService.open(QuizFilterComponent, { size: 'sm' });
+    }
 }
