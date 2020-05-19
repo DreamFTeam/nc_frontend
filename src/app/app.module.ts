@@ -34,7 +34,6 @@ import { ValidationPageComponent } from './validation-page/validation-page.compo
 import { ValidationTabComponent } from './validation-page/validation-tab/validation-tab.component';
 import { QuizValidationListService } from './_services/quiz-validation-list.service';
 import { QuizValidationComponent } from './quiz-validation/quiz-validation.component';
-import { ConfirmModalComponent } from './confirm-modal/confirm-modal.component';
 import { AnnouncementViewComponent } from './announcement-view/announcement-view.component';
 import { AnnouncementEditComponent } from './announcement-edit/announcement-edit.component';
 
@@ -49,9 +48,20 @@ import { QRCodeModule } from 'angularx-qrcode';
 import { AnonymInitComponent } from './anonym-init/anonym-init.component';
 import { MessageModalComponent } from './message-modal/message-modal.component';
 import { AnonymService } from './_services/anonym.service';
+import { NotificationsComponent } from './notifications/notifications.component';
+import { QuizFilterComponent } from './quiz-filter/quiz-filter.component';
+import { BadgeEditorComponent } from './badge-editor/badge-editor.component';
+import { SuggestionsComponent } from './suggestions/suggestions.component';
+import { ActivitiesComponent } from './activities/activities.component';
+import { YesNoModalComponent } from './yes-no-modal/yes-no-modal.component';
+import { UserInvitationsComponent } from './user-invitations/user-invitations.component';
 import { GameQuestionComponent } from './game-question/game-question.component';
-import {GameResultComponent} from './game-result/game-result.component';
-import {NgxChartsModule} from "@swimlane/ngx-charts";
+import { GameResultComponent } from './game-result/game-result.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { ToastsComponent } from './toasts/toasts.component';
+import { ToastsService } from './_services/toasts.service';
+import { UserSettingsComponent } from './user-settings/user-settings.component';
+import { UserChangePasswordComponent } from './user-change-password/user-change-password.component';
 
 const appRoutes: Routes = [];
 
@@ -82,22 +92,29 @@ const appRoutes: Routes = [];
     ValidationPageComponent,
     ValidationTabComponent,
     QuizValidationComponent,
-    ConfirmModalComponent,
     AnnouncementViewComponent,
     AnnouncementEditComponent,
     ShortQuizListComponent,
     QuestionEditorSelectorComponent,
+    BadgeEditorComponent,
+    SuggestionsComponent,
+    ActivitiesComponent,
+    YesNoModalComponent,
+    UserInvitationsComponent,
+    UserChangePasswordComponent,
     GameSettingsComponent,
     GameConnectorComponent,
     AnonymInitComponent,
     MessageModalComponent,
+    QuizFilterComponent,
+    NotificationsComponent,
     GameQuestionComponent,
-    GameResultComponent
-  ],
+    GameResultComponent,
+    ToastsComponent,
+    UserSettingsComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule,
     RouterModule.forRoot(appRoutes),
     ReactiveFormsModule,
     BrowserAnimationsModule,

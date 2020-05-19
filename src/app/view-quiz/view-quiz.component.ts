@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { Quiz } from '../_models/quiz';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { QuizService } from '../_services/quiz.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
-import { DomSanitizer } from '@angular/platform-browser';
+import { ExtendedQuiz } from '../_models/extended-quiz';
+import { AuthenticationService } from '../_services/authentication.service';
+import { Role } from '../_models/role';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { YesNoModalComponent } from '../yes-no-modal/yes-no-modal.component';
 
 @Component({
   selector: 'app-view-quiz',
@@ -11,72 +15,90 @@ import { DomSanitizer } from '@angular/platform-browser';
   styleUrls: ['./view-quiz.component.css']
 })
 export class ViewQuizComponent implements OnInit {
-  quiz: Quiz = {
-    id: "",
-    title: "",
-    category: ["3b338765-c75d-40e2-9ab0-789738acd07a"],
-    tags: ["c03a2080-d447-4bde-be2e-6f22c6ebee63"],
-    description: "",
-    imageReference: new Blob(),
-    creationDate: new Date(),
-    creatorId: "",
-    activated: false,
-    validated: false,
-    quizLanguage: "eng",
-    adminCommentary: "",
-    rating: 0,
-    published: false,
+  creatorId: string;
+  
+  quiz: ExtendedQuiz;
 
-  };
-  id: string;
   thumbnail: any;
 
-  constructor(private quizService: QuizService, private activateRoute: ActivatedRoute,
-    private sanitizer: DomSanitizer) { 
+  loading: boolean;
+
+  faSpinner = faSpinner;
+
+  constructor(private quizService: QuizService, private activateRoute: ActivatedRoute, private router: Router,
+    private authenticationService: AuthenticationService, private modalService: NgbModal) { 
+      this.loading = true;
     this.activateRoute.paramMap.pipe(
       switchMap(params => params.getAll('id')))
      .subscribe(data => this.getAllQuiz(data)); 
   }
 
+  ngOnInit(): void {}
+
   getAllQuiz(data){
-    this.quizService.getQuiz(data).subscribe(ans => this.mapGettedQuiz(ans),
-       err => this.getEditQuizErr(err))
+    this.quizService.getQuiz(data).subscribe(ans => this.setGettedQuiz(ans),
+       err => this.errHandler("Quiz could not be retrieved :(",err))
   }
 
-  mapGettedQuiz(answer){
-    console.log(answer);
-    this.quiz.id=answer.id;
-    this.quiz.title=answer.title;
-    this.quiz.description=answer.description;
-    this.quiz.imageReference=answer.imageContent;
-    this.quiz.quizLanguage=answer.language;
-    this.quiz.tags = answer.tagNameList;
-    this.quiz.category = answer.categoryNameList;
-    this.quiz.creationDate = answer.creationDate;
-    this.quiz.creatorId = answer.author
-    this.id= answer.creatorId;
+  setGettedQuiz(answer){
+    this.quiz = answer;
+    this.creatorId= answer.creatorId;
     
-    const objectURL = 'data:image/jpeg;base64,' + this.quiz.imageReference;
-    this.thumbnail = this.sanitizer.bypassSecurityTrustUrl(objectURL);;
-    
+    this.thumbnail = this.quiz.imageContent;
+    this.loading = false;
   }
 
-  getEditQuizErr(err){
-    alert("Quiz could not be retrieved: "+err.error.message);
+  markAsFavorite() {
+    this.quizService.markAsFavorite(this.quiz.id).subscribe(() => {},
+      err => this.errHandler("Could not mark this quiz as favorite :(",err));
+    this.quiz.favourite = !this.quiz.favourite
   }
 
-  markAsFavorite(){
-    this.quizService.markAsFavorite(this.quiz.id).subscribe(ans => alert("Marked as favorite"),
-       err => console.log(err))
+  deactivate() {
+    this.modal("Are you sure you want to deactivate this question?\n"+
+    "Once you deactivate a quiz, there is no going back.", "danger")
+      .subscribe((receivedEntry) => {
+        if (receivedEntry) {
+          this.quizService.deactivate(this.quiz.id).subscribe(
+            () => this.quiz.activated = false, 
+            err => this.errHandler("Could not deactivate this quiz :( ",err))
+        }
+      });
+
+  }
+
+  delete(){
+    this.modal("Are you sure you want to delete this question?"+
+    "Once you delete a quiz, there is no going back.", "danger")
+      .subscribe((receivedEntry) => {
+        if (receivedEntry) {
+          this.quizService.delete(this.quiz.id).subscribe(
+            () => this.router.navigate(['/']), 
+            err => this.errHandler("Could not deactivate this quiz :( ",err))
+        }
+      });
+  }
+
+  modal(text, style): any{
+    const modalRef = this.modalService.open(YesNoModalComponent);
+    modalRef.componentInstance.text = text;
+    modalRef.componentInstance.style =style;
+
+    return modalRef.componentInstance.passEntry;
+  }
+
+  errHandler(text, err){
+    console.log(err);
+    alert(text);
   }
 
   isMyQuiz(){
-    return this.quizService.canIEditQuiz(this.id);
+    const user = this.authenticationService.currentUserValue;
+    return user && this.creatorId === user.id;
   }
 
-
-  ngOnInit(): void {
-
+  isPrivileged(){
+    const user = this.authenticationService.currentUserValue;
+    return user && (user.role !== Role.User); 
   }
-
 }

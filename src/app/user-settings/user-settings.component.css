@@ -1,0 +1,43 @@
+.container-sm{
+    border-radius: 8px;
+    background-color:#F7F9FB;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+
+label{
+    font-weight: 200;
+    font-size: 20px;
+    -moz-user-select: none; /* Mozilla Firefox */
+-ms-user-select: none; /* Internet Explorer (не поддерживается) */
+-o-user-select: none; /* Opera Presto (не поддерживается) */
+-webkit-user-select: none; /* Google Chrome, Opera Next, Safari */
+}
+
+.title{
+    position: relative;  
+    color: rgba(0, 0, 0, 0.63);
+    font-size: 20px;
+    line-height: 24px;
+}
+
+.custom-switch.custom-switch-md .custom-control-label {
+    padding-left: 2rem;
+    padding-bottom: 1.5rem;
+}
+
+.custom-switch.custom-switch-md .custom-control-label::before {
+    height: 1.5rem;
+    width: calc(2rem + 0.75rem);
+    border-radius: 3rem;
+}
+
+.custom-switch.custom-switch-md .custom-control-label::after {
+    width: calc(1.5rem - 4px);
+    height: calc(1.5rem - 4px);
+    border-radius: calc(2rem - (1.5rem / 2));
+}
+
+.custom-switch.custom-switch-md .custom-control-input:checked ~ .custom-control-label::after {
+    transform: translateX(calc(1.5rem - 0.25rem));
+}

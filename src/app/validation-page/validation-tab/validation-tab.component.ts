@@ -1,13 +1,15 @@
-import { Component, OnInit, Input, Type } from '@angular/core';
+import { Component, OnInit, Input, Type, TemplateRef } from '@angular/core';
 import { Observable } from 'rxjs';
 import { QuizValidationPreview } from 'src/app/_models/quiz-validation-preview';
 import { QuizValidationListService } from 'src/app/_services/quiz-validation-list.service';
 import { Router } from '@angular/router';
 import { QuizValidationService } from 'src/app/_services/quiz-validation.service';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { YesNoModalComponent } from '../../yes-no-modal/yes-no-modal.component';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { ToastsService } from 'src/app/_services/toasts.service';
+import { ModalService } from 'src/app/_services/modal.service';
 
-//Pagination: number of items per page
-const PAGE_SIZE: number = 6;
 
 @Component({
   selector: 'app-validation-tab',
@@ -15,17 +17,33 @@ const PAGE_SIZE: number = 6;
   styleUrls: ['./validation-tab.component.css']
 })
 export class ValidationTabComponent implements OnInit {
-  mockImageUrl:string = "../../assets/img/quiz.jpg";
-  pageSize:number = PAGE_SIZE;
-  page: number;
+  //Pagination: number of items per page
+  pageSize: number = 6;
+
+  //src of mock image
+  mockImageUrl: string = "../../assets/img/quiz.jpg";
+  //Async - total size of quiz list. Used for pagination.
   totalSize$: Observable<number>;
   quizList$: Observable<QuizValidationPreview[]>;
+  page: number;
   @Input() showButtons: boolean;
+  faSpinner = faSpinner;
+  isLoading: boolean;
+  //Used to show message about empty list
+  //Must use it because using length in condition doesn't work properly
+  isEmpty: boolean;
+
+  toasts: any[];
 
   constructor(private quizValidationListService: QuizValidationListService,
-              private quizValidationService: QuizValidationService,
-              private router: Router,
-              private _modalService: NgbModal) { }
+    private quizValidationService: QuizValidationService,
+    private router: Router,
+    private modalService: ModalService,
+    public toastsService: ToastsService) {
+    this.isLoading = true;
+    this.isEmpty = false;
+    this.toasts = [];
+  }
 
   ngOnInit(): void {
     this.page = 1;
@@ -33,67 +51,50 @@ export class ValidationTabComponent implements OnInit {
     this.getQuizList(this.page);
   }
 
-  getTotalSize(): void{
+  getTotalSize(): void {
     this.totalSize$ = this.quizValidationListService.getTotalSize();
+    this.totalSize$.subscribe(val => {
+      this.isLoading = false;
+    },
+      error => {
+        this.toastsService.toastAddDanger('An error occured while fetching the total size of a list.');
+      });
   }
 
-  getQuizList(page): void{
+  getQuizList(page): void {
     this.quizList$ = this.quizValidationListService.getQuizListByPage(page);
+    this.quizList$.subscribe(val => {
+      if (val.length == 0) {
+        this.isEmpty = true;
+      }
+    }, error => {
+      this.toastsService.toastAddDanger('An error occured while fetching the list of quizzes.');
+    });
   }
 
-  loadPage(event):void{
+  loadPage(event): void {
     this.getQuizList(event);
   }
 
-  validate(id:string):void{
-    this.router.navigateByUrl('/validation/' + id); //further improvement is coming...
+  validate(id: string): void {
+    this.router.navigateByUrl('/validation/' + id);
   }
 
-  reject(id: string):void{
-    this._modalService.open(MODALS['autofocus']).result.then((result) => {
-      if(result === "Ok"){
-        this.quizValidationService.validateQuiz(id,false,"")
-          .subscribe(next => {
-            alert("The quiz was rejected successfully");
-            this.page = 1;
-            this.getTotalSize();
-            this.getQuizList(this.page);
-          },
-            error => {
-              alert("Something went wrong with the rejection: "+
-                error.message);
-            });
-      }
-    }, (reason) => {});
+  reject(id: string): void {
+    this.modalService.openModal("Are you sure you want to reject this quiz?", 'warning')
+      .subscribe((receivedEntry) => {
+        if (receivedEntry) {
+          this.quizValidationService.validateQuiz(id, false, "This quiz was instantly rejected without validation", null, null)
+            .subscribe(next => {
+              this.toastsService.toastAddSuccess('The quiz was rejected successfully.');
+              this.page = 1;
+              this.getTotalSize();
+              this.getQuizList(this.page);
+            },
+              error => {
+                this.toastsService.toastAddDanger('An error occured while rejecting the quiz.');
+              });
+        };
+      });
   }
 }
-
-
-//MODAL
-@Component({
-  selector: 'ngbd-modal-confirm-autofocus',
-  template: `
-  <div class="modal-header">
-    <h4 class="modal-title" id="modal-title">Quiz rejection</h4>
-    <button type="button" class="close" aria-label="Close button" aria-describedby="modal-title" (click)="modal.dismiss('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <p><strong>Are you sure you want to reject this quiz?</strong></p>
-    <span class="text-danger">This operation can not be undone.</span>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss('cancel click')">Cancel</button>
-    <button type="button" ngbAutofocus class="btn btn-danger" (click)="modal.close('Ok')">Ok</button>
-  </div>
-  `
-})
-export class NgbdModalConfirmAutofocus {
-  constructor(public modal: NgbActiveModal) {}
-}
-
-
-const MODALS: {[name: string]: Type<any>} = {
-  autofocus: NgbdModalConfirmAutofocus
-};

@@ -9,6 +9,9 @@ import { ExtendedQuestion } from '../_models/question/extendedquestion';
 export class OneOfFourComponent implements OnInit {
   @Input() question: ExtendedQuestion;
 
+  @Input()
+  available: boolean;
+
   constructor() {
   }
 
@@ -42,11 +45,11 @@ export class OneOfFourComponent implements OnInit {
 
 
   isLimitReached(){
-    return this.question.rightOptions.length + this.question.otherOptions.length !=4;
+    return (this.question.rightOptions.length + this.question.otherOptions.length !=4) && this.available;
   }
 
-  isRemovableRight(){ return this.question.rightOptions.length > 1; }
-  isRemovableOther(){ return this.question.otherOptions.length > 1; }
+  isRemovableRight(){ return this.question.rightOptions.length > 1 && this.available; }
+  isRemovableOther(){ return this.question.otherOptions.length > 1 && this.available; }
 
 
 

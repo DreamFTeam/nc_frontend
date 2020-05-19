@@ -1,10 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
-import {GetProfileService} from '../_services/get-profile.service';
-import {PrivilegedService} from '../_services/privileged.service';
-import {DomSanitizer} from '@angular/platform-browser';
-import {Profile} from '../_models/profile';
-import {AuthenticationService} from '../_services/authentication.service';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Router } from '@angular/router';
+import { ProfileService } from '../_services/profile.service';
+import { PrivilegedService } from '../_services/privileged.service';
+import { Profile } from '../_models/profile';
+import { AuthenticationService } from '../_services/authentication.service';
 
 @Component({
   selector: 'app-edit-profile',
@@ -12,131 +11,131 @@ import {AuthenticationService} from '../_services/authentication.service';
   styleUrls: ['./edit-profile.component.css']
 })
 export class EditProfileComponent implements OnInit {
-  private usernameToChange;
-  ready: boolean;
-  newAboutMe: string;
-  profile;
-  changedPic: boolean = false;
-  file: File;
 
-  constructor(private _router: Router, private getProfileService: GetProfileService,
-              private priviligedService: PrivilegedService, private sanitizer: DomSanitizer,
+  @ViewChild('fileinput')
+  fileInput: ElementRef;
+
+  private usernameToChange: string;
+  private profilePictureFile: File;
+
+  profile: Profile;
+  ready: boolean; // indicates the data was loaded and can be shown
+
+
+  constructor(private router: Router,
+              private getProfileService: ProfileService,
+              private priviligedService: PrivilegedService,
               private authenticationService: AuthenticationService) {
-    this.ready = false;
-    this.usernameToChange = history.state.data;
-    if (this.usernameToChange === undefined
-      || this.usernameToChange == null &&
-      authenticationService.currentUserValue.role != 'ROLE_USER') {
-      this._router.navigate(['/']);
 
-    } else if (this.usernameToChange === undefined || this.usernameToChange == null) {
-      this.usernameToChange = this.getProfileService.getCurrentProfile();
+    if (!this.setUsername()) {
+      this.router.navigate(['/']);
     }
 
   }
 
   ngOnInit(): void {
-    let thiserr = null;
     this.getProfileService.getProfile(this.usernameToChange).subscribe(
       result => {
-        this.profile = Profile.deserialize(result, this.sanitizer);
-        this.newAboutMe = this.profile.aboutMe;
+        this.profile = result;
         this.ready = true;
       },
       error => {
-        thiserr = error;
         console.error(error.error);
-        this._router.navigate(['/']);
+        this.router.navigate(['/']);
       });
-
 
   }
 
 
+  setUsername(): boolean { // returns true if could identify the profile to change
+    this.usernameToChange = history.state.data;
+
+    // only users are capable of changing their own profile
+    // thus only they can use the /editprofile shortcut
+    if (!this.usernameToChange && this.authenticationService.currentUserValue.role === 'ROLE_USER') {
+      this.usernameToChange = this.authenticationService.currentUserValue.username;
+    }
+
+    return this.usernameToChange !== null;
+  }
+
   saveProfile() {
-    if (this.profile.role === 'ROLE_USER' && this.newAboutMe !== undefined) {
+    if (this.profile.role === 'ROLE_USER') {
 
-      this.getProfileService.editProfile('aboutMe', this.newAboutMe).subscribe(
-        result => {
-          this._router.navigate(['/profile/' + this.usernameToChange]);
-
+      this.getProfileService.editProfile('aboutMe', this.profile.aboutMe).subscribe(
+        () => {
+          this.uploadPic();
         },
-        error => console.log(error.err)
+        error => {
+          console.log(error.err);
+          this.goBackToProfile();
+        }
       );
-
-
-    } else if (this.newAboutMe !== undefined) {
-      this.priviligedService.edit(this.profile.id, 'aboutMe', this.newAboutMe).subscribe(
-        result => {
-          this._router.navigate(['/profile/' + this.usernameToChange]);
-
-        },
-        error => console.log(error.err)
-      );
-
     } else {
-      this._router.navigate(['/profile/' + this.usernameToChange]);
+      this.priviligedService.edit(this.profile.id, 'aboutMe', this.profile.aboutMe).subscribe(
+        () => {
+          this.uploadPic();
+        },
+        error => {
+          console.log(error.err);
+          this.goBackToProfile();
+
+        });
     }
   }
 
-
-  cancel() {
-    this._router.navigate(['/profile']);
+  goBackToProfile() {
+    this.router.navigate(['/profile/' + this.usernameToChange]);
   }
 
-
-  onSelectFile(event) { // called each time file input changes
+  onSelectFile(event) {
     if (event.target.files && event.target.files[0]) {
-      var reader = new FileReader();
+      const reader = new FileReader();
 
       reader.readAsDataURL(event.target.files[0]); // read file as data url
-      if (event.target.files[0].type !== 'image/jpeg' && event.target.files[0].type !== 'image/png') {
-        alert('Your file must be an image, try other file.');
-        event.target.result = null;
+
+      if (event.target.files[0].type !== 'image/jpeg'
+        && event.target.files[0].type !== 'image/png') {
+        alert('Your file must be an image, try other file.'); 
+        this.fileInput.nativeElement.value = null;
         return;
       }
 
-      this.file = event.target.files[0];
-      if (confirm('Are u sure u want to upload this photo?')) {
-        reader.onload = event => { // called once readAsDataURL is completed
+      this.profilePictureFile = event.target.files[0];
 
-          this.profile.imageContent = event.target.result;
-          this.changedPic = true;
-          this.uploadPic();
-        };
-      } else {
-        event.target.files[0] = null;
-        event.target.result = null;
-
-        this.file = null;
-      }
+      reader.onload = (value) => { // called once readAsDataURL is completed
+        this.profile.image = value.target.result;
+      };
     }
-
   }
 
+  uploadPic(): void {
+    if (!this.profilePictureFile) {
+      this.goBackToProfile();
+    }
 
-  uploadPic() {
-    let newPic = new FormData();
-    newPic.append('key', this.file);
+    const newPic = new FormData();
+    newPic.append('key', this.profilePictureFile);
 
     if (this.profile.role === 'ROLE_USER') {
       this.getProfileService.uploadPicture(newPic).subscribe(
-        result => {
-          this._router.navigate(['/profile/' + this.usernameToChange]);
-
+        () => {
+          this.goBackToProfile();
         },
-        error => console.log(error.err)
+        error =>
+          alert('We couldn`t upload your picture, please, try again.')
       );
     } else {
 
-      newPic.append('userId', this.profile.id);
+      newPic.append('userId', this.profile.id); // required to change moderator's or admin's profile
 
       this.priviligedService.uploadPicture(newPic).subscribe(
-        result => {
-          this._router.navigate(['/profile/' + this.usernameToChange]);
-
+        () => {
+          this.goBackToProfile();
         },
-        error => console.log(error.err)
+        error => {
+          alert('We couldn`t upload your picture, please, try again.');
+        }
       );
     }
   }

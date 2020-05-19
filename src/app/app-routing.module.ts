@@ -12,43 +12,67 @@ import {PrivilegedProfileComponent} from './privileged-profile/privileged-profil
 import {ValidationPageComponent} from './validation-page/validation-page.component';
 import {QuizValidationComponent} from './quiz-validation/quiz-validation.component';
 import {AnnouncementEditComponent} from './announcement-edit/announcement-edit.component';
-import {GameQuestionComponent} from './game-question/game-question.component';
-import {AuthGuard} from './guards/editor.guard';
 import {Role} from './_models/role';
 import {GameSettingsComponent} from './game-settings/game-settings.component';
 import {GameConnectorComponent} from './game-connector/game-connector.component';
-import {GameConnectionGuard} from './guards/game-connection.guard';
 import {AnonymInitComponent} from './anonym-init/anonym-init.component';
-import {GameCreatorGuard} from './guards/game-creator.guard';
+import {NotificationsComponent} from './notifications/notifications.component';
+import {QuizFilterComponent} from './quiz-filter/quiz-filter.component';
+import {ActivitiesComponent} from './activities/activities.component';
+import {UserInvitationsComponent} from './user-invitations/user-invitations.component';
+import {GameQuestionComponent} from './game-question/game-question.component';
 import {GameResultComponent} from './game-result/game-result.component';
+import {AuthGuard} from './_helpers/auth.guard';
+import {GameConnectionGuard} from './_helpers/game-connection.guard';
+import {GameCreatorGuard} from './_helpers/game-creator.guard';
+import {UserSettingsComponent} from './user-settings/user-settings.component';
 
 
 const routes: Routes = [
-  {path: '', component: LandingPageComponent},
-  {path: 'recovery', component: ChangePasswordComponent},
-  {path: 'quizedit/:id', component: QuizComponent},
-  {path: 'profile/:username', component: ProfileComponent},
-  {path: 'profile', component: ProfileComponent},
-  {path: 'editprofile', component: EditProfileComponent},
-  {path: 'users', component: UsersComponent},
-  {path: 'privileged/main', component: PrivilegedProfileComponent},
-  {path: 'quizcreate', component: QuizComponent, canActivate: [AuthGuard], data: {roles: [Role.User]}},
-  {path: 'viewquiz/:id', component: ViewQuizComponent, canActivate: [AuthGuard], data: {roles: [Role.User]}},
-  {path: 'quiz-list', component: QuizListComponent},
-  {path: 'validation', component: ValidationPageComponent},
-  {path: 'validation/:id', component: QuizValidationComponent},
-  {path: 'editannouncements', component: AnnouncementEditComponent},
-  {path: 'quiz/:id/newgame', canActivate: [GameCreatorGuard], component: GameSettingsComponent},
-  {path: 'game/:id/lobby', component: GameConnectorComponent},
-  {path: 'join/:accessId', canActivate: [GameConnectionGuard], component: AnonymInitComponent},
-  {path: 'play/:gameid', component: GameQuestionComponent},
-  {path: 'game/result/:id', component: GameResultComponent},
-  {path: '**', redirectTo: ''}
+    {path: '', component: LandingPageComponent},
+    {path: 'recovery', component: ChangePasswordComponent},
+    {path: 'quizedit/:id', component: QuizComponent, canActivate: [AuthGuard], data: {roles: [Role.User]}},
+    {path: 'profile/:username', component: ProfileComponent},
+    {path: 'profile', component: ProfileComponent},
+    {path: 'editprofile', component: EditProfileComponent},
+    {path: 'users', component: UsersComponent},
+    {path: 'privileged/main', component: PrivilegedProfileComponent},
+    {path: 'quizcreate', component: QuizComponent, canActivate: [AuthGuard], data: {roles: [Role.User]}},
+    {path: 'viewquiz/:id', component: ViewQuizComponent},
+    {path: 'quiz-list', component: QuizListComponent},
+    {
+        path: 'validation',
+        component: ValidationPageComponent,
+        canActivate: [AuthGuard],
+        data: {roles: [Role.Admin, Role.Moderator, Role.SuperAdmin]}
+    },
+    {
+        path: 'validation/:id',
+        component: QuizValidationComponent,
+        canActivate: [AuthGuard],
+        data: {roles: [Role.Admin, Role.Moderator, Role.SuperAdmin]}
+    },
+
+    {
+        path: 'editannouncements', component: AnnouncementEditComponent,
+        canActivate: [AuthGuard], data: {roles: [Role.Admin, Role.Moderator, Role.SuperAdmin]}
+    },
+    {path: 'requests', component: UserInvitationsComponent},
+    {path: 'quiz/:id/newgame', canActivate: [GameCreatorGuard], component: GameSettingsComponent},
+    {path: 'game/:id/lobby', component: GameConnectorComponent},
+    {path: 'join/:accessId', canActivate: [GameConnectionGuard], component: AnonymInitComponent},
+    {path: 'notifications', component: NotificationsComponent},
+    {path: 'filterquiz', component: QuizFilterComponent},
+    {path: 'activities', component: ActivitiesComponent, canActivate: [AuthGuard], data: {roles: [Role.User]}},
+    {path: 'play/:gameid', component: GameQuestionComponent},
+    {path: 'game/result/:id', component: GameResultComponent},
+    {path: 'settings', component: UserSettingsComponent, canActivate: [AuthGuard], data: {roles: [Role.User]}},
+    {path: '**', redirectTo: ''}
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forRoot(routes)],
+    exports: [RouterModule]
 })
 export class AppRoutingModule {
 }

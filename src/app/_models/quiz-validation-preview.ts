@@ -11,6 +11,8 @@ export class QuizValidationPreview implements DesearizableWImage {
   language: string;
   adminComment: string;
   imageContent: any;
+  published: boolean;
+  activated: boolean;
 
   deserialize(input: any, sanitizer: DomSanitizer): this {
     Object.assign(this, input);

@@ -48,7 +48,6 @@ export class AnonymService {
 
   removeAnonym(): void {
     localStorage.removeItem('anonymData');
-    localStorage.removeItem('sessionid');
     this.currentAnonymSubject.next(null);
   }
 }

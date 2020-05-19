@@ -1,23 +1,42 @@
-<div class="container">
-    <div *ngFor="let item of quizList$ | async" class="row media">
-        <div class="media-left media-middle pic">
-            <img class="media-object" [src]="item.imageContent ? item.imageContent : this.mockImageUrl" alt="Quiz icon">
+<div class="container pr-0">
+    <div *ngIf="(!isEmpty && !isLoading) ; else ((isLoading) ? loading : empty)">
+        <div *ngFor="let item of quizList$ | async" class="row border rounded-lg shadow-sm p-2 mb-4 w-100">
+            <div class="pic col-lg-3 col-md-4">
+                <img class="img-fluid" [src]="item.imageContent ? item.imageContent : this.mockImageUrl" alt="Quiz icon">
+            </div>
+            <div class="w-100 col-lg-9 col-md-8">
+                <a routerLink="/viewquiz/{{item.id}}">
+                    <h4 class="wrap">{{item.title}}</h4>
+                </a>
+                <p *ngIf="!showButtons && !item.published && !item.activated" class="badge badge-danger">Rejected</p>
+                <p class="fnt-size wrap"><strong>Description: </strong>>{{item.description}}</p>
+                <p class="fnt-size wrap"><strong>Author: </strong><a routerLink="/profile/{{item.username}}"><u>{{item.username}}</u></a></p>
+                <p class="fnt-size wrap"><strong>Date of creation: </strong>{{item.creationDate}}</p>
+                <p class="fnt-size wrap"><strong>Language: </strong>{{item.language}}</p>
+                <div *ngIf="showButtons" class="row mt-2 align-middle">
+                    <div class="col col-sm-6">
+                        <button class="btn btn-lg buttonsec float-sm-none float-md-left" type="button" (click)="reject(item.id)">Reject now</button>
+                    </div>
+                    <div class="col col-sm-6">
+                        <button class="btn btn-lg buttonpr float-sm-none float-md-right" (click)="validate(item.id)" type="button">Validate</button>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="media-body">
-            <a routerLink="/viewquiz/{{item.id}}">
-                <h4>{{item.title}}</h4>
-            </a>
-            <p class="fnt-size"><strong>Description: </strong>{{item.description}}</p>
-            <p class="fnt-size"><strong>Author: </strong><a routerLink="">{{item.username}}</a></p>
-            <p class="fnt-size"><strong>Date of creation: </strong>{{item.creationDate}}</p>
-            <p class="fnt-size"><strong>Language: </strong>{{item.language}}</p>
-            <p *ngIf="showButtons">
-                <button class="btn btn-lg buttonsec float-none" type="button" (click)="reject(item.id)">Reject now</button>
-                <button class="btn btn-lg buttonpr float-right mrgn-right" (click)="validate(item.id)" type="button">Validate</button>
-            </p>
+        <div class="pagination-container">
+            <ngb-pagination class="d-flex justify-content-center" size="lg" [pageSize]="pageSize" [collectionSize]="totalSize$ | async" [(page)]="page" [maxSize]="7" [rotate]="true" (pageChange)="loadPage($event)"></ngb-pagination>
         </div>
-    </div>
-    <div class="pagination-container">
-        <ngb-pagination class="d-flex justify-content-center" size="lg" [collectionSize]="totalSize$ | async" [(page)]="page" [maxSize]="7" [rotate]="true" (pageChange)="loadPage($event)"></ngb-pagination>
     </div>
 </div>
+
+<!-- Showing this when the list is empty -->
+<ng-template #empty>
+    <p *ngIf="isEmpty" class="lead emptylabel">The list is empty</p>
+</ng-template>
+
+<!-- Showing this when the data is loading -->
+<ng-template #loading>
+    <div style="text-align: center;">
+        <fa-icon [icon]="faSpinner" [spin]="true" size="6x"></fa-icon>
+    </div>
+</ng-template>

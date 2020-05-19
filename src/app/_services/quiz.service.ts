@@ -1,19 +1,22 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {Quiz} from '../_models/quiz';
-import {User} from '../_models/user';
-import {ExtendedQuiz} from '../_models/extended-quiz';
-import {map} from 'rxjs/operators';
-import {DomSanitizer} from '@angular/platform-browser';
-import {AuthenticationService} from './authentication.service';
-import {environment} from '../../environments/environment';
+import { Quiz } from '../_models/quiz';
+import { User } from '../_models/user';
+import { ExtendedQuiz } from '../_models/extended-quiz';
+import { map } from 'rxjs/operators';
+import { DomSanitizer } from '@angular/platform-browser';
+import { Category } from '../_models/category';
+import { Tag } from '../_models/tag';
+import { environment } from 'src/environments/environment';
+import { AuthenticationService } from './authentication.service';
+import { Alert } from '../_models/alert';
 
 @Injectable({
   providedIn: 'root'
 })
 export class QuizService {
-  url = `${environment.apiUrl}quizzes/`;
+  url = `${environment.apiUrl}quizzes`;
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'
@@ -27,9 +30,7 @@ export class QuizService {
     this.user = authenticationService.currentUserValue;
   }
 
-  saveQuizNew(quiz: ExtendedQuiz): Observable<ExtendedQuiz> {
-    console.log(quiz.tagIdList);
-
+  saveQuiz(quiz: ExtendedQuiz, img: File): Observable<ExtendedQuiz> {
     const quizInfo = {
       title: quiz.title,
       quizId: quiz.id,
@@ -42,67 +43,50 @@ export class QuizService {
       newCategoryList: quiz.categoryIdList
     };
 
+    const formData = new FormData();
+    formData.append("obj", JSON.stringify(quizInfo));
+    if(img !== undefined && img !== null){
+      formData.append("img",img, img.name);
+    }
+
     console.log(quizInfo);
-    return this.http.post<ExtendedQuiz>(this.url + 'edit', JSON.stringify(quizInfo), this.httpOptions)
+    return this.http.post<ExtendedQuiz>(this.url + '/edit', formData)
       .pipe(map(data => {
         return new ExtendedQuiz().deserialize(data, this.sanitizer);
       }));
   }
 
-
-  saveQuiz(quiz: Quiz): Observable<Quiz> {
-    const quizInfo = {
-      title: quiz.title,
-      quizId: quiz.id,
-      creatorId: this.user.id,
-      newTitle: quiz.title,
-      newLanguage: quiz.quizLanguage,
-      newDescription: quiz.description,
-      newImageRef: quiz.imageReference,
-      newTagList: quiz.tags,
-      newCategoryList: quiz.category
-    };
-
-    console.log(quizInfo);
-    return this.http.post<Quiz>(this.url + 'edit', JSON.stringify(quizInfo), this.httpOptions);
-  }
-
-
-  createQuizNew(quiz: ExtendedQuiz): Observable<ExtendedQuiz> {
+  createQuiz(quiz: ExtendedQuiz, img: File): Observable<ExtendedQuiz> {
     const quizInfo = {
       title: quiz.title,
       creatorId: this.user.id,
       language: quiz.language,
       description: quiz.description,
-      tagList: quiz.tagIdList,
-      categoryList: quiz.categoryIdList
+      tagList: quiz.tags.map( a => a.id),
+      categoryList: quiz.categories.map( a => a.id)
     };
+
+    const formData = new FormData();
+    formData.append("obj", JSON.stringify(quizInfo));
+    if(img !== undefined && img !== null){
+      formData.append("img",img, img.name);
+    }
 
     console.log(quizInfo);
 
-    return this.http.post<ExtendedQuiz>(this.url, JSON.stringify(quizInfo), this.httpOptions);
+    return this.http.post<ExtendedQuiz>(this.url, formData);
   }
 
-  createQuiz(quiz: Quiz): Observable<Quiz> {
-    const quizInfo = {
-      title: quiz.title,
-      creatorId: this.user.id,
-      language: quiz.quizLanguage,
-      description: quiz.description,
-      // imageRef: quiz.imageReference,
-      tagList: quiz.tags,
-      categoryList: quiz.category
-    };
-    console.log(quizInfo);
 
-    return this.http.post<Quiz>(this.url, JSON.stringify(quizInfo), this.httpOptions);
-  }
+  getQuiz(quizId: string): Observable<ExtendedQuiz> {
+    let params = new HttpParams().set('quizId', quizId);
 
-  getQuizNew(quizId: string): Observable<ExtendedQuiz> {
+    if(this.user){
+      params.set('userId',this.user.id);
+    }
+
     const options = {
-      headers: this.httpOptions.headers,
-      params: new HttpParams().set('quizId', quizId)
-
+      params: params
     };
 
     return this.http.get<ExtendedQuiz>(this.url, options)
@@ -112,24 +96,13 @@ export class QuizService {
       }));
   }
 
-  getQuiz(quizId: string): Observable<Quiz> {
-
-    const options = {
-      headers: this.httpOptions.headers,
-      params: new HttpParams().set('quizId', quizId)
-
-    };
-    return this.http.get<Quiz>(this.url, options);
-  }
-
-
   markAsFavorite(id: string) {
     const favoriteInfo = {
       quizId: id,
       userId: this.user.id,
     };
 
-    return this.http.post<Quiz>(this.url + 'markasfavourite', JSON.stringify(favoriteInfo), this.httpOptions);
+    return this.http.post<Quiz>(this.url + '/markasfavourite', JSON.stringify(favoriteInfo), this.httpOptions);
   }
 
 
@@ -137,18 +110,55 @@ export class QuizService {
     const quizInfo = {
       quizId: id
     };
+    console.log(quizInfo);
 
-    return this.http.post<ExtendedQuiz>(this.url + 'markaspublished', JSON.stringify(quizInfo), this.httpOptions);
+    return this.http.post<ExtendedQuiz>(this.url + '/markaspublished', JSON.stringify(quizInfo), this.httpOptions);
   }
 
-  canIEditQuiz(id: string) {
-    return id === this.user.id;
+  delete(id: string){
+    return this.http.delete(this.url+"/"+id);
+  }
+
+  deactivate(id: string){
+    return this.http.post(this.url + '/deactivate/'+id, null);
+  }
+
+  getTagsList(): Observable<Tag[]>{
+
+    return this.http.get<any[]>(this.url+"/tags")
+    .pipe(map(data => data.map(x => {
+      return new Tag(x.tag_id, x.description);
+    })));
+  }
+
+  getCategoriesList() : Observable<Category[]>{
+
+    return this.http.get<any[]>(this.url+"/categories")
+    .pipe(map(data => data.map(x => {
+      return new Category(x.category_id, x.title);
+    })));;
   }
 
 
-  uploadImage(data: FormData) {
-    console.log(data);
-    return this.http.post(this.url + 'quiz-image', data);
-  }
+  quizValidator(quiz: ExtendedQuiz) : string[] {
+    let res: string[] = [];
 
+    if (quiz.title.trim().length < 2) {
+      res.push("Quiz title must be at least 2 symbol length");
+    }
+
+    if (quiz.description.trim().length < 2) {
+      res.push("Description must be at least 2 symbol length");
+    }
+
+    if (quiz.tags.length == 0){
+      res.push("You must add at least one tag");
+    }
+
+    if (quiz.categories.length == 0){
+      res.push("You must add at least one category");
+    }
+
+    return res;
+  }
 }

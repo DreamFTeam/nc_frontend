@@ -34,11 +34,16 @@ export class QuizValidationService {
     };
   }
 
-  validateQuiz(id: string, toValidate: boolean, admComment: string) {
+  validateQuiz(id: string, toValidate: boolean, admComment: string, authorId: string, quizTitle: string) {
+    console.log(authorId);
+    console.log(quizTitle);
+    
     return this.http.post(this.baseUrl + this.validateUrl, {
       quizId: id,
       validated: toValidate,
-      adminCommentary: admComment
+      adminCommentary: admComment,
+      creatorId: authorId, //creatorId and title are used here for better activities adding performance
+      title: quizTitle
     }, this.httpOptions);
   }
 

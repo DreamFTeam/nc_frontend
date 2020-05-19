@@ -23,6 +23,7 @@ export class AuthenticationService {
 
   constructor(private http: HttpClient) {
     this.currentUserSubject = new BehaviorSubject<User>(
+      
       localStorage.getItem('userData') ? jwt_decode(localStorage.getItem('userData')) : undefined);
     this.currentUser = this.currentUserSubject.asObservable();
   }
@@ -81,6 +82,15 @@ export class AuthenticationService {
   signoutUser(): void {
     localStorage.removeItem('userData');
     this.currentUserSubject.next(null);
+  }
+
+  /* PATCH: change user password (using current password) */
+  changeUserPassword(currentPassword: string, newPassword: string): Observable<any> {
+    const userInfo = {
+      currentPassword,
+      newPassword
+    };
+    return this.http.patch(this.url + 'account/changePassword', JSON.stringify(userInfo), this.httpOptions);
   }
 
 

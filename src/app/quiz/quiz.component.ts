@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { QuizService } from '../_services/quiz.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { QuestionService } from '../_services/question.service';
@@ -7,6 +7,10 @@ import { ExtendedQuiz } from '../_models/extended-quiz';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { ExtendedQuestion } from '../_models/question/extendedquestion';
 import { Alert } from '../_models/alert';
+import { YesNoModalComponent } from '../yes-no-modal/yes-no-modal.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalService } from '../_services/modal.service';
+import { ToastsService } from '../_services/toasts.service';
 
 @Component({
   selector: 'app-quiz',
@@ -15,39 +19,42 @@ import { Alert } from '../_models/alert';
 })
 export class QuizComponent implements OnInit {
 
+  tagLabel: string = "Tags";
+  categoryLabel: string = "Categories";
+
   quiz: ExtendedQuiz;
-  questions: ExtendedQuestion[] = [];
+  questions: ExtendedQuestion[];
 
   questionSelector: ExtendedQuestion;
 
-  thumbnail: any; 
-  file: File; 
+  thumbnail: any;
+  file: File;
 
-  questionData: FormData;
 
   quizLoading: boolean;
+  questionLoading: boolean;
   faSpinner = faSpinner;
-
-  questionAlerts: Alert[] = [];
 
 
   constructor(private quizService: QuizService, private questionService: QuestionService,
-     private activateRoute: ActivatedRoute, private router: Router,private sanitizer: DomSanitizer) { 
-       this.quizLoading = true;
-
-      const id = this.activateRoute.snapshot.params.id;
-      if(id === undefined){
-        this.initCreateQuiz();
-      }else{
-        this.getAllQuiz(id)
-      }
+    private activateRoute: ActivatedRoute, private router: Router, private sanitizer: DomSanitizer,
+    private modalService: ModalService, public toastsService: ToastsService) {
+    this.quizLoading = true;
+    this.questionLoading = false;
+    this.questions = [];
   }
 
   ngOnInit(): void {
-    this.questionData = new FormData();
-    this.questionData.append("img","");
-    this.questionData.append("questionId","");
+    this.toastsService.removeAll();
+    const id = this.activateRoute.snapshot.params.id;
+    if (id === undefined) {
+      this.initCreateQuiz();
+    } else {
+      this.getAllQuiz(id)
+    }
   }
+
+
 
 
   initCreateQuiz() {
@@ -64,9 +71,9 @@ export class QuizComponent implements OnInit {
       language: "eng",
       adminComment: "",
       rating: 0,
-      tagIdList: ["c03a2080-d447-4bde-be2e-6f22c6ebee63"],
+      tagIdList: [],
       tagNameList: [],
-      categoryIdList: ["3b338765-c75d-40e2-9ab0-789738acd07a"],
+      categoryIdList: [],
       categoryNameList: [],
       isFavourite: false,
       imageContent: ""
@@ -76,7 +83,7 @@ export class QuizComponent implements OnInit {
     this.quizLoading = false;
   }
 
-  initQuestion(): ExtendedQuestion{
+  initQuestion(): ExtendedQuestion {
 
     const res = new ExtendedQuestion().deserialize({
       id: "",
@@ -90,34 +97,35 @@ export class QuizComponent implements OnInit {
       rightOptions: [""],
       otherOptions: [""]
 
-    }, this.sanitizer); 
+    }, this.sanitizer);
     return res;
   }
 
-  getAllQuiz(data){
+  getAllQuiz(data) {
     //Find questions
     this.questionService.getAllQuestionsNew(data)
       .subscribe(
         ans => this.mapGettedQuestions(ans),
         err => {
           console.log(err);
-          alert("Couldn`t get questions :(");
+          this.toastsService.toastAddDanger('Couldn`t get questions :(');
         });
 
     //Find quiz
-    this.quizService.getQuizNew(data)
+    this.quizService.getQuiz(data)
       .subscribe(
         ans => this.setGettedQuiz(ans),
         err => {
           console.log(err);
-          alert("Couldn`t get this quiz :(");
+          this.toastsService.toastAddDanger('Couldn`t get this quiz :(');
         });
 
   }
 
   //Gettig quiz by id in url
-  setGettedQuiz(answer){    
+  setGettedQuiz(answer) {
     this.quiz = answer;
+    this.file = this.quiz.unsanitizedImage;
     this.thumbnail = this.quiz.imageContent;
 
     this.quizLoading = false;
@@ -126,180 +134,183 @@ export class QuizComponent implements OnInit {
   }
 
   //Getting questions of quiz in url 
-  mapGettedQuestions(ans){
+  mapGettedQuestions(ans) {
     this.questions = ans;
-
-    console.log(this.questions);
   }
 
 
   //Clicked on already saved questions TODO : show image
-  showQuestion(i){
+  showQuestion(i) {
     this.questionSelector = this.questions[i];
-
-    this.questionData.set("img","");
-    this.questionData.set("questionId",this.questionSelector.id);
-
+    console.log(this.questionSelector);
   }
 
 
-  addNewQuestion(){
+  addNewQuestion() {
     this.questionSelector = this.initQuestion();
     this.questions.push(this.questionSelector)
   }
 
 
-  // TODO : image add
+
   saveQuestion() {
-    const alert = this.questionService.questionValidator(this.questionSelector);
-    if (alert === undefined) {
+    const validated = this.questionService.questionValidator(this.questionSelector);
+
+    console.log(validated);
+    if (validated.length == 0) {
+      this.questionLoading = true;
       if (this.questionSelector.id === "") {
         this.questionService.sendQuestion(this.questionSelector, true).subscribe(
-          ans => this.setCreatedQuestion(ans),
-          err => console.log(err));
+          ans => this.setSavedQuestion(ans),
+          err => this.setSavedQuestionError(err));
 
       } else {
         this.questionService.sendQuestion(this.questionSelector, false).subscribe(
-          ans => this.setEditedQuestion(ans),
-          err => console.log(err));
+          ans => this.setSavedQuestion(ans),
+          err => this.setSavedQuestionError(err));
       }
-      this.questionAlerts = [];
-    }else{
-      this.questionAlerts.push(alert);
+
+    } else {
+      this.toastsService.removeAll();
+      validated.forEach(x =>
+        this.toastsService.toastAddDanger(x));
     }
   }
 
 
-  //TODO : fix send image
-  setCreatedQuestion(ans){
-    alert("Question created!");
 
-    this.questionSelector.id = ans.id;
+  setSavedQuestion(ans) {
 
-    this.questionData.set("questionId",this.questionSelector.id);
+    const index = this.questions.findIndex(el => el === this.questionSelector);
 
-    if(this.questionData.get("img") !== ""){
-      this.questionService.uploadImage(this.questionData)
-        .subscribe(ans => console.log(ans), err => alert("Couldn`t upload image: " + err));
-    }
-    
+    this.questions[index] = ans;
+    this.questionSelector = this.questions[index];
+
+    console.log(this.questions);
+    this.toastsService.toastAddSuccess('Question saved!');
+    this.questionLoading = false;
   }
 
-  //TODO : fix send image
-  setEditedQuestion(ans){
-
-    alert("Question edited!");
-
-
-    console.log(this.questionData.get("questionId"));
-    if(this.questionData.get("img") !== ""){
-      this.questionService.uploadImage(this.questionData)
-        .subscribe(ans => console.log(ans), err => alert("Couldn`t upload image: " + err));
-    }
+  setSavedQuestionError(err) {
+    console.log(err)
+    this.toastsService.toastAddDanger("Question could not be saved :(");
+    this.questionLoading = false;
   }
 
-
-  //TODO : fix realization (image in save, save published quizzes logic)
   saveQuiz() {
-    if (this.quiz.title !== "" && this.quiz.description !== "") {
-      
+    const validated = this.quizService.quizValidator(this.quiz);
 
-      if(this.file !== undefined && this.quiz.id !== ""){
-        this.quizService.uploadImage(this.getFormData(this.quiz.id))
-        .subscribe(
-          ans => this.createEditQuiz(),
-          err => {
-            console.log(err);
-            alert("Sorry, couldn`t upload your image :( (Quiz is not saved)")
-          }
-        )
-      }else{
-        this.createEditQuiz();
+    if (validated.length == 0) {
+      this.quizLoading = true;
+
+      if (this.quiz.id === "") {
+        this.createQuiz();
+      } else {
+        this.editQuiz();
       }
 
-      
     } else {
-      alert("Title and description must be provided");
+      this.toastsService.removeAll();
+      validated.forEach(x =>
+        this.toastsService.toastAddDanger(x))
     }
   }
 
-  createEditQuiz(){
-    if (this.quiz.id === "") {
-      this.quizService.createQuizNew(this.quiz).subscribe(
+  createQuiz() {
+    this.quizService.createQuiz(this.quiz, this.file).subscribe(
 
-        ans => {
-          if (this.file !== undefined) {
-            this.quizService.uploadImage(this.getFormData(ans.id))
-            .subscribe(
-              ans => ans,
-              err => {
-                console.log(err);
-                alert("Sorry, couldn`t upload your image :( (Quiz is not saved)")
-              }
-            )
-          }
+      ans => {
+        this.toastsService.toastAddSuccess('Created!');
+        this.quizLoading = false;
+        this.router.navigate(['/quizedit/' + ans.id])
+      },
 
-          alert("Created!");
-          this.router.navigate(['/quizedit/' + ans.id])
-        },
-
-        err => {
-          console.log(err);
-          alert("Sorry, couldn`t create your quiz :(")
-        });
-    } else {
-      this.quizService.saveQuizNew(this.quiz).subscribe(
-
-        ans => {
-          alert("Saved!");
-          this.router.navigate(['/quizedit/' + ans.id])
-        },
-
-        err => {
-          console.log(err);
-          alert("Sorry, couldn`t save your quiz :(")
-        });
-    }
+      err => {
+        console.log(err);
+        this.toastsService.toastAddDanger('Sorry, couldn`t create your quiz :(');
+      });
   }
+
+  editQuiz() {
+    this.quizService.saveQuiz(this.quiz, this.file).subscribe(
+
+      ans => {
+        this.toastsService.toastAddSuccess('Saved!');
+        this.quiz = ans;
+        this.quizLoading = false;
+        console.log(this.quiz.published);
+        if (this.quiz.published === true) {
+          this.router.navigate(['/quizedit/' + ans.id])
+        }
+
+      },
+
+      err => {
+        console.log(err);
+        this.toastsService.toastAddDanger('Sorry, couldn`t save your quiz :(');
+      });
+  }
+
 
   publish() {
-    this.quizService.publishQuiz(this.quiz.id)
-      .subscribe(
-        ans => alert("Published!"),
-        err => {
-          console.log(err)
-          alert("Sorry, couldn`t publish your quiz :(")
-        });
+    this.modalService.openModal("Are you sure you want to publish this quiz?", "warning")
+      .subscribe((receivedEntry) => {
+        if (receivedEntry) {
+          this.quizService.publishQuiz(this.quiz.id)
+            .subscribe(
+              ans => {
+                this.toastsService.toastAddSuccess('Published!');
+                this.quiz.published = true;
+              },
+              err => {
+                console.log(err)
+                this.toastsService.toastAddDanger('Sorry, couldn`t publish your quiz :(');
+              });
+        }
+      })
+  }
+
+
+  removeQuestionIndex(i, onCreatorDelete) {
+    this.modalService.openModal("Are you sure you want to delete this question?", "danger")
+      .subscribe((receivedEntry) => {
+        if (receivedEntry) {
+          if (this.questions[i].id === "") {
+            this.removeQuestionFromList(i, onCreatorDelete);
+          } else {
+            this.questionService.deleteQuestion(this.questions[i].id)
+              .subscribe(
+                () => this.removeQuestionFromList(i, onCreatorDelete),
+                err => {
+                  console.log(err);
+                  this.toastsService.toastAddDanger('Sorry, Couldn`t delete this question :(');
+                });
+          }
+        }
+      });
   }
 
   removeQuestion() {
-    if (this.questionSelector.id === "") {
-      this.removeQuestionFromList();
-    } else {
-      this.questionService.deleteQuestion(this.questionSelector.id)
-        .subscribe(
-          ans => this.removeQuestionFromList(),
-          err => {
-            console.log(err);
-            alert("Sorry, Couldn`t delete this question :(");
-          });
+    this.removeQuestionIndex(this.questions.findIndex(el => el === this.questionSelector), true);
+  }
+
+  removeQuestionFromList(index, onCreatorDelete) {
+    this.questions.splice(index, 1);
+    if (onCreatorDelete) {
+      this.questionSelector = undefined
+    }
+    this.toastsService.toastAddDanger('Question removed');
+  }
+
+  quizImage(e) {
+    if (e.target.files[0] !== null && e.target.files[0] !== undefined) {
+      this.file = e.target.files[0];
+      this.setImage();
     }
   }
 
-  removeQuestionFromList() {
-    const index = this.questions.findIndex( el => el === this.questionSelector);
-    this.questions.splice(index, 1);
-    this.questionSelector = undefined
-    alert("Question removed");
-  }
 
-  quizImage(e){
-    this.file = e.target.files[0];
-    this.setImage(this.file);
-  }
-
-
-  setImage(file: File){
+  setImage() {
     let reader = new FileReader();
     reader.readAsDataURL(this.file);
     reader.onload = () => {
@@ -307,26 +318,16 @@ export class QuizComponent implements OnInit {
     }
   }
 
-
-  getFormData(id: string): FormData {
-
-    const formData = new FormData();
-    formData.append('img', this.file);
-    formData.append('quizId',id);
-
-    return formData;
+  removeImage() {
+    this.file = null;
+    this.thumbnail = null;
   }
 
 
-  //close alert
-  close(alert: Alert) {
-    this.questionAlerts.splice(this.questionAlerts.indexOf(alert), 1);
-  }
-
-  
-  isQuizCreated(){ return this.quiz !== undefined && this.quiz.id !== ""; }
-  isPublishAvailable(){ return this.questions.filter(q => q.id.length > 0).length > 0 && !this.quiz.published }
-  isQuestionCreatorAvailable(){ return !this.quizLoading && !this.quiz.published && this.isQuizCreated() }
-  isPlusActive(){ return this.questionSelector.id !== ""}
+  isQuizCreated() { return this.quiz !== undefined && this.quiz.id !== ""; }
+  isPublishAvailable() { return this.questions.filter(q => q.id.length > 0).length > 3 && !this.quiz.published }
+  isQuestionCreatorAvailable() { return !this.questionLoading && !this.quizLoading && !this.quiz.published && this.isQuizCreated() }
+  isPlusActive() { return this.questionSelector.id !== "" }
+  isTemplate(toast) { return toast.textOrTpl instanceof TemplateRef }
 
 }

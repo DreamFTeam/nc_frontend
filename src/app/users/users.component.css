@@ -1,90 +1,37 @@
-.content {
-    padding-top: 60px;
+*{
+  font-size: medium;
 }
 
-#users {
-  position: relative;
-    top:20px;
-    padding:10px;
-    font-size: 20px;
-    font-weight: bold;
-    border-radius: 8px;
-    left:30%;
-    width:40%;
-    top:40px;
-    background-color:#F7F9FB;
-    height: 70vh;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    min-height: 90vh;
-    margin-bottom: 20px;
-    height: max-content;
-  }
-
-
-  input {
-    float:left;
-    left:30%;
-    width:40%;
-    font-size: larger;
-  }
-
-  button {
-    margin-left: 5px;
-    height:5vh;
-    width:5vh;
-    background: url("../../assets/img/srch.png");
-    background-size: contain;
-    background-color: #ffffff;
-  }
-
-  #search {
-    position: relative;
-    left:30%;
-    top:20px;
-
-  }
-
-
-  .user {
-    border-radius: 5px;
-    padding: 7px;
-    position: relative;
-      margin-top: 20px;
-      display: block;
-      background-color: #ffffff96;
-      height:25vh;
-      font-weight: lightern;
-  }
-
-  #picture {
-    float: left;
-    display: block;
-    border-radius: 8px;
-    width:8vw;
-    height:18vh;
-    background-size: 100%;
-    margin: 6px;
-   /* background-color: rgba(201, 201, 201, 0.61);*/
-    margin-right: 1vw;
-  }
-
-  #online {
-    border-radius: 50%;
-    float: right;
-    height:1.3vw;
-    width:1.3vw;
-    background: green;
-  }
-
-.info {
-  margin-top: 15px;
-  margin: 10px;
-  position: relative;
-}
-
-
-#img {
+.container-sm{
+  background-color:#F7F9FB;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
-  width: inherit;
-  height: inherit;
+
+}
+
+.col {
+  border-radius: 8px;
+  border-radius: 8px;
+
+}
+
+.blue {
+  color:#31708E;
+}
+
+#picture {
+  max-height: 40vh;
+}
+
+.container {
+  max-width: 70%;
+}
+
+img {
+  border-radius: 8px;
+}
+
+input {
+  border-radius: 8px;
+
 }
