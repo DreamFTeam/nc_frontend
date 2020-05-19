@@ -14,7 +14,7 @@
       [barPadding]="4"
       [view]=view
       [showDataLabel]=true
-      [results]="results"
+      [results]="resultsForGraphic"
       [xAxis]=true
       [yAxis]=true
       [legend]=true
@@ -27,9 +27,8 @@
     </ngx-charts-bar-vertical>
 
     <div class="btn-group" role="group">
-      <button type="button" class="btn btn-secondary">Play again</button>
-      <button type="button" class="btn btn-secondary">Statistic</button>
-      <button type="button" class="btn btn-secondary">More info</button>
+      <button type="button" class="btn btn-secondary" routerLink="/quiz-list">Other</button>
+      <button type="button" class="btn btn-secondary" routerLink="/">Quit</button>
     </div>
   </div>
 </div>
