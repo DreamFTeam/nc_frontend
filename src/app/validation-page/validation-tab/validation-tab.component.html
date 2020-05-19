@@ -9,7 +9,7 @@
                     <h4 class="wrap">{{item.title}}</h4>
                 </a>
                 <p *ngIf="!showButtons && !item.published && !item.activated" class="badge badge-danger">Rejected</p>
-                <p class="fnt-size wrap"><strong>Description: </strong>>{{item.description}}</p>
+                <p class="fnt-size wrap"><strong>Description: </strong>{{item.description}}</p>
                 <p class="fnt-size wrap"><strong>Author: </strong><a routerLink="/profile/{{item.username}}"><u>{{item.username}}</u></a></p>
                 <p class="fnt-size wrap"><strong>Date of creation: </strong>{{item.creationDate}}</p>
                 <p class="fnt-size wrap"><strong>Language: </strong>{{item.language}}</p>
