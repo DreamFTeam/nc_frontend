@@ -31,7 +31,6 @@ export class ExtendedQuiz implements DesearizableWImage {
 
     deserialize(input: any, sanitizer: DomSanitizer): this {
         Object.assign(this, input);
-        let img = this.imageContent;
 
         console.log("got");
 
@@ -50,10 +49,10 @@ export class ExtendedQuiz implements DesearizableWImage {
             }
         }
 
-        if (img !== null) {
+        if (this.imageContent !== null && this.imageContent !== undefined && this.imageContent != "") {
             const objUrl = 'data:image/jpeg;base64,' + this.imageContent;
             this.imageContent = sanitizer.bypassSecurityTrustUrl(objUrl);
-
+            console.log(objUrl);
             this.unsanitizedImage = this.dataURLtoFile(objUrl);
         }
         return this;
