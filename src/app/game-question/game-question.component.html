@@ -1,4 +1,5 @@
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<!-- <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"> -->
+
 
 <div *ngIf="curq.typeId == 1 && !waitResult">
     <div class="modal-dialog">
@@ -16,7 +17,7 @@
             <div class="quiz" id="quiz" data-toggle="buttons">
                 <label class="btn btn-lg btn-primary btn-block"
                        *ngFor="let answer of curq.answers"><span class="btn-label"></span> <button name="button1id"
-                                                                                                   class="btn btn-primary"
+                                                                                                   class="btn btn-primary tx"
                                                                                                    (click)="oneToFourAns(answer)">{{answer}}</button></label>
                 <label class="btn btn-lg btn-block"> 
                     <div class="progress">
@@ -93,6 +94,7 @@
         <div class="modal-body">
             <div class="quiz" id="quiz" data-toggle="buttons">
                 <input type="text"
+                       class="inp"
                        name="username"
                        [(ngModel)]="answf"
                        #nameref="ngModel"
