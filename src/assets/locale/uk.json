@@ -1,0 +1,18 @@
+{
+    "utils":{
+        "title":"Назва",
+        "description":"Опис",
+        "save":"Зберегти",
+        "questions":"Питання"
+    },
+    "quizCreation":{
+        "createQuiz":"Створити квіз",
+        "remove":"Видалити",
+        "image":"рисунок",
+        "question":"питання",
+        "save":"Зберегти як новий",
+        "publish":"Опублікувати",
+        "newQuestion":"Нове питання",
+        "addQuestion":"Додати питання"
+    }
+}

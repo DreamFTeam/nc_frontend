@@ -1,0 +1,18 @@
+{
+    "utils":{
+        "title":"Title",
+        "description":"Description",
+        "save":"Save",
+        "questions":"Questions"
+    },
+    "quizCreation":{
+        "createQuiz":"Create quiz",
+        "remove":"Remove",
+        "image":"image",
+        "question":"question",
+        "save":"Save as new",
+        "publish":"Publish",
+        "newQuestion":"New question",
+        "addQuestion":"Add question"
+    }
+}

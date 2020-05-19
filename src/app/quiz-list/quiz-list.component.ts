@@ -49,9 +49,12 @@ export class QuizListComponent implements OnInit {
         this.searchInput = this.searchFilterQuizService.getSettings().quizName;
         this.searchFilterQuizService.currentQuizzesSize.subscribe(size =>
             this.totalSize = size);
-        this.canCreate = this.authenticationService.currentUserValue != null;
-        this.admin = this.authenticationService.currentUserValue
-            && this.authenticationService.currentUserValue.role !== Role.User;
+        
+        const user = this.authenticationService.currentUserValue;
+        
+        this.canCreate = user && user.role === Role.User;
+
+        this.admin = user && user.role !== Role.User;
     }
 
     loadPage(event) {

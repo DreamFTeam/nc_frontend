@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { environment } from 'src/environments/environment';
+import { SettingsService } from './_services/settings.service';
+import { AuthenticationService } from './_services/authentication.service';
+import { LocaleService } from './_services/locale.service';
 
 @Component({
   selector: 'app-root',
@@ -9,11 +10,21 @@ import { environment } from 'src/environments/environment';
 })
 
 export class AppComponent implements OnInit {
+
   title = 'quizApp';
 
-  constructor(private translateService: TranslateService) {}
-  
+
+  constructor(
+    private localeService: LocaleService,
+    private authenticationService: AuthenticationService,
+    private settingsService: SettingsService
+  ) { }
+
   ngOnInit(): void {
-    this.translateService.use(environment.defaultLocale);
+    if(this.authenticationService.currentUserValue){
+      this.localeService.setUserLang( this.settingsService.getLanguage() );
+    }else{
+      this.localeService.setAnonymousLang();
+    }
   }
 }

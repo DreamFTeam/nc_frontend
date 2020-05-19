@@ -3,6 +3,8 @@ import { Setting } from '../_models/setting';
 import { SettingsService } from '../_services/settings.service';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { ToastsService } from '../_services/toasts.service';
+import { environment } from 'src/environments/environment';
+import { TranslateService } from '@ngx-translate/core';
 
 
 
@@ -13,8 +15,8 @@ import { ToastsService } from '../_services/toasts.service';
 })
 export class UserSettingsComponent implements OnInit {
   readonly languages = [
-    { name: "English", value: "eng" },
-    { name: "Українська", value: "ukr" }
+    { name: "English", value: `${environment.locales[0]}` },
+    { name: "Українська", value: `${environment.locales[1]}` }
   ]
 
   language: Setting;
@@ -52,17 +54,9 @@ export class UserSettingsComponent implements OnInit {
 
 
   save() {
-    const saved = this.settings.map(el => ({ ... (el) })).concat(Object.assign({}, this.language));
-
-
-    saved.map(el => ["title", "description"].map(x => delete el[x]));
-    saved.map(el => el.value = el.value.toString());
-
-    console.log(this.settings);
-    console.log(saved);
-
     this.loading = true;
-    this.settingsService.saveSettings(saved).subscribe(
+
+    this.settingsService.saveSettings(this.settings, this.language).subscribe(
       () => this.toastService.toastAddSuccess("Saved"),
       err => this.errHandler("Couldn`t save your settings :(",err),
       () => this.loading = false
