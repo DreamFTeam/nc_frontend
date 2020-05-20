@@ -16,8 +16,8 @@
                            Request sent on {{profile.invitationDatetime | date:'medium'}}
 
                            <div class="mw-100 m-2"></div>                        
-                           <a class="col-xs-2 col-sm-3 col-md-3 col-lg-3 p-2 btn btn-outline-success m-2 w-50 col"  (click)="processFriendRequest(profile, true)"> Accept request</a>
-                           <a class="col-xs-2 col-sm-3 col-md-3 col-lg-3 p-2 btn btn-outline-danger m-2 w-50 col"  (click)="processFriendRequest(profile, false)"> Reject request</a>
+                           <button class="col-xs-2 col-sm-3 col-md-3 col-lg-3 p-2 btn btn-outline-success m-2 w-50 col"  (click)="processFriendRequest(profile, true)"> Accept request</button>
+                           <button class="col-xs-2 col-sm-3 col-md-3 col-lg-3 p-2 btn btn-outline-danger m-2 w-50 col"  (click)="processFriendRequest(profile, false)"> Reject request</button>
                       </div>
                    </div>
                 <ngb-pagination class="d-flex justify-content-center"  [collectionSize]="invitationsSize" [(page)]="invitationsPage"  [pageSize]="MAX_AMOUNT" [rotate]="true" (pageChange)="load($event)"></ngb-pagination>
@@ -38,10 +38,10 @@
                          Request sent on {{profile.invitationDatetime | date:'medium'}}
                          <div class="mw-100 m-2"></div>  
                                                
-                         <a class="col-xs-2 col-sm-3 col-md-3 col-lg-3 p-2 btn btn-outline-danger mt-2 w-50 col" (click)="sendFriendRequest(profile, false)"> Cancel friend request</a>
+                         <button class="col-xs-2 col-sm-3 col-md-3 col-lg-3 p-2 btn btn-outline-danger mt-2 w-50 col" (click)="sendFriendRequest(profile, false)">{{'utils.cancel'| translate}}  {{'profile.friendrequest' | translate }}</button>
                    </div>
                    </div>
-                   <ngb-pagination class="d-flex justify-content-center"  [collectionSize]="invitationsSize" [(page)]="invitationsPage"  [pageSize]="MAX_AMOUNT" [rotate]="true" (pageChange)="load($event)"></ngb-pagination>
+                   <ngb-pagination  class="d-flex justify-content-center"  [collectionSize]="invitationsSize" [(page)]="invitationsPage"  [pageSize]="MAX_AMOUNT" [rotate]="true" (pageChange)="load($event)"></ngb-pagination>
                 </div>
          </ng-template>
       </li>
