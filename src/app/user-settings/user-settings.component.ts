@@ -4,7 +4,7 @@ import { SettingsService } from '../_services/settings.service';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { ToastsService } from '../_services/toasts.service';
 import { environment } from 'src/environments/environment';
-import { TranslateService } from '@ngx-translate/core';
+import { LocaleService } from '../_services/locale.service';
 
 
 
@@ -29,7 +29,7 @@ export class UserSettingsComponent implements OnInit {
   faSpinner = faSpinner;
 
   constructor(private settingsService: SettingsService,
-     public toastService: ToastsService) { 
+     public toastService: ToastsService, private localeService: LocaleService) { 
     
   }
 
@@ -38,12 +38,12 @@ export class UserSettingsComponent implements OnInit {
     this.buttonLoading = false;
     this.settingsService.getSettings()
       .subscribe(ans => this.setSettings(ans), 
-      err => err => this.errHandler("Couldn`t load your settings :(",err),);
+      err => err => this.errHandler(this.localeService.getValue('toasterEditor.wentWrong'),err),);
   }
 
   setSettings(ans) {
     let temp: Setting[] = ans;
-    const index = temp.findIndex(el => el.title === "Language");
+    const index = temp.findIndex(el => el.id === "e8449301-6d6f-4376-8247-b7d1f8df6416");
     this.language = temp.splice(index, 1)[0];
     this.settings = temp;
 
@@ -58,8 +58,8 @@ export class UserSettingsComponent implements OnInit {
   save() {
     this.buttonLoading = true;
     this.settingsService.saveSettings(this.settings, this.language).subscribe(
-      () => this.toastService.toastAddSuccess("Saved"),
-      err => this.errHandler("Couldn`t save your settings :(",err),
+      () => this.toastService.toastAddSuccess(this.localeService.getValue('toasterEditor.saved')),
+      err => this.errHandler(this.localeService.getValue('toasterEditor.wentWrong'),err),
       () => this.buttonLoading = false
     )
   }
