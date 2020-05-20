@@ -1,15 +1,16 @@
 <div role="main" class="container-fluid px-0">
     <div class="row w-100 mx-0" *ngIf="(isSignedIn && isRoleUser); else notUser">
-        <div class="col-md-3">
+        <div class="col-md-3 pr-md-0 pr-md-0">
             <!--last achievements, personal quizzes rating-->
             <app-last-achievements-list></app-last-achievements-list>
+            <app-user-quizzes-ratings></app-user-quizzes-ratings>
         </div>
         <div class="col-md-5">
             <!--short list, suggestions, announcements-->
-            <div class="container-lg px-0 pl-md-3 pr-md-3 pl-lg-0 pr-lg-0">
+            <div class="container-lg px-0 pl-lg-0 pr-lg-0">
                 <app-short-quiz-list></app-short-quiz-list>
             </div>
-            <div class="container-lg px-0 pl-md-3 pr-md-3 pl-lg-0 pr-lg-0">
+            <div class="container-lg px-0 pl-lg-0 pr-lg-0">
                 <app-suggestions></app-suggestions>
             </div>
             <div class="container-lg announcements mt-2 mb-2 p-3">
@@ -28,9 +29,6 @@
 <ng-template #notUser>
     <div class="container-lg px-0 pl-md-3 pr-md-3 pl-lg-0 pr-lg-0">
         <app-short-quiz-list></app-short-quiz-list>
-    </div>
-    <div class="container-lg px-0 pl-md-3 pr-md-3 pl-lg-0 pr-lg-0">
-        <app-suggestions></app-suggestions>
     </div>
     <div class="container-lg announcements mt-2 mb-2 p-3">
         <app-announcement-view></app-announcement-view>

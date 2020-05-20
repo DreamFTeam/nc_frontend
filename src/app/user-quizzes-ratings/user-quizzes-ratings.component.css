@@ -7,15 +7,25 @@
 }
 
 .card-header {
-    font-size: medium;
+    font-size: 1.1em;
 }
 
 .media :hover {
     cursor: pointer;
 }
 
+.media {
+    margin-bottom: 0.7em;
+}
+
 .card-body {
-    max-height: 21vh;
+    max-height: 30vh;
+}
+
+.quiztitle {
+    font-size: small;
+    padding: 0;
+    margin-bottom: 0.1em;
 }
 
 @media (min-width: 768px) {
