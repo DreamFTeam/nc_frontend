@@ -61,7 +61,7 @@ export class GameConnectorComponent implements OnInit, OnDestroy {
             Object.assign(this.sessions, ses);
             for (const session of this.sessions) {
                 if (this.sessionId === session.game_session_id) {
-                    this.creator = session.is_creator;
+                    this.creator = session._creator;
                 }
             }
         });
@@ -89,6 +89,7 @@ export class GameConnectorComponent implements OnInit, OnDestroy {
     @HostListener('window:beforeunload', ['$event'])
     ngOnDestroy(): void {
         console.log('destroy')
+        this.gameSettingsService.stopSse();
         if (!this.gameSettingsService.gameStart) {
             this.gameSettingsService.quitGame(this.sessionId).subscribe();
             localStorage.removeItem('sessionid');
