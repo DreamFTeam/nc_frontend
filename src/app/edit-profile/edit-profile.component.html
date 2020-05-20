@@ -9,11 +9,11 @@
            {{profile?.username}}
         </h1>
         <h3 style="font-size: larger;">
-           About me:
+         {{'profile.aboutMe' | translate}}:
            <input type="text" class="form-control input-lg mt-3"  name="profile.aboutMe" [(ngModel)]="profile.aboutMe" value="{{profile.aboutMe}}"  pattern=".{0,300}" #nameref="ngModel" />
         </h3>
-        <a class="btn btn-outline-success p-2 mt-5 mr-4" (click)="saveProfile()"> Save</a>
-        <a class="btn btn-outline-secondary p-2 mt-5" (click)="goBackToProfile()" > Cancel</a>
+        <a class="btn btn-outline-success p-2 mt-5 mr-4" (click)="saveProfile()"> {{'utils.save' | translate}}</a>
+        <a class="btn btn-outline-secondary p-2 mt-5" (click)="goBackToProfile()" > {{'utils.cancel' | translate}}</a>
      </div>
   </div>
 </div>

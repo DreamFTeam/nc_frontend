@@ -119,8 +119,13 @@
         "nofriends":"No friends yet",
         "findfriends":"find friends",
         "found":"Found",
-        "friends_whom" :"друзів"
-
+        "friends_whom" :"friends",
+        "user":"user",
+        "users":"users",
+        "aboutMe":"About me",
+        "requests":  "requests",
+        "request":  "request",
+        "requestSent" : "Request sent on"
     },
 
     "game":{
@@ -153,4 +158,5 @@
         "players":"Players",
         "points":"Points"
     }
+
 }
