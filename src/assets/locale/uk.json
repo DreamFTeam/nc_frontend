@@ -86,7 +86,7 @@
         "friend_whom" :"друга",
         "friends_whom" :"друзів",
         "Accept": "Прийняти",
-        "Reject": "",
+        "Reject": "Скасувати",
         "friendrequest":"запит у друзі",
         "Message":"Чат",
         "Unfriend":"Видалити з друзів",
@@ -118,6 +118,14 @@
         "playquizzes":"play quizzes to get them",
         "nofriends":"Поки немає друзів",
         "findfriends":"знайти друзів",
-        "found":"Знайдено"
+        "found":"Знайдено",
+        "user":"користувача",
+        "users":"користувачів",
+        "aboutMe":"Про мене",
+        "requests":  "запитів",
+        "request":  "запит",
+        "requestSent" : "Запит надіслано"
+
+
     }
 }
