@@ -11,10 +11,10 @@
                     [errorCorrectionLevel]="'M'"
                     [elementType]="'url'"></qrcode>
             <button [disabled]="started" *ngIf="creator && ready" (click)="startGame()" class="btn m-3 btn-primary btn-lg">
-              <span *ngIf="!started">Start game</span>
+              <span *ngIf="!started">{{'game.startgame'| translate}}</span>
               <span *ngIf="started" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
             </button>
-            <button *ngIf="!ready" class="btn m-3 btn-success btn-lg" (click)="setReady()">Ready</button>
+            <button *ngIf="!ready" class="btn m-3 btn-success btn-lg" (click)="setReady()">{{'game.ready'| translate}}</button>
           </div>
           <div class="col-xl-8 col-lg-12 col-md-12 col-sm-12 overflow-auto">
             <div class="container mb-4 mt-4">
@@ -25,7 +25,7 @@
                      width="35px"
                      [src]="session.imageContent ? session.imageContent : mockImageUrl"
                      alt="Quiz icon">
-                <span class="p-2 m-2">{{session.username}} connected</span>
+                <span class="p-2 m-2">{{session.username}} {{'game.connected'| translate}}</span>
 
               </div>
             </div>

@@ -121,5 +121,36 @@
         "found":"Found",
         "friends_whom" :"друзів"
 
+    },
+
+    "game":{
+        "title":"Title: ",
+        "question":"Question: ",
+        "true":"True",
+        "false":"False",
+        "apply":"Apply",
+        "ordertext":"Place answers in right order: ",
+        "waitingpl":" Waiting for other players ... ",
+        "yourscore":"Your score:",
+        "totalquiztime":"Total quiz time:",
+        "startgame":"Start game",
+        "ready":"Ready",
+        "connected":"connected",
+        "totalres":"Total Results !",
+        "champ":"Champion is",
+        "other":"Other",
+        "rate":"Rate",
+        "quit":"Quit",
+        "sec":"seconds",
+        "qtime":"Time for one question",
+        "qamount":"Questions amount",
+        "uamount":"Users amount",
+        "btime":"Break time",
+        "epoints":"Extra points for speed",
+        "back":"Back to quiz page",
+        "startg":"Start game",
+        "loading":"Loading...",
+        "players":"Players",
+        "points":"Points"
     }
 }
