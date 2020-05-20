@@ -25,7 +25,8 @@
         "play":"Play",
         "search":"Search",
         "yes":"Yes",
-        "no":"No"
+        "no":"No",
+        "notFound":"Not found"
     },
     "utilsOther":{
         "image":"image"
@@ -71,7 +72,9 @@
     "modal":{
         "sure":"Are you shure you want to ",
         "publish":"publish?",
-        "delete":"delete?"  
+        "delete":"delete?",  
+        "deleteQ":"delete this quiz? Once you delete a quiz, there is no going back.",
+        "deactivateQ":"deactivate this quiz? Once you deactivate a quiz, there is no going back."
     },
-    "managaAnn":"Manage announcements"
+    "managaAnn":"Manage announcements",
 }
