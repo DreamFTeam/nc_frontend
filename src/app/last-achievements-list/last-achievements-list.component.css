@@ -1,9 +1,31 @@
 .embed-responsive .pic {
     object-fit: cover;
 }
-.embed-responsive{
+
+.embed-responsive {
     max-width: 25%;
 }
-.card-header{
+
+.card-header {
     font-size: medium;
+}
+
+.media :hover {
+    cursor: pointer;
+}
+
+.card-body {
+    max-height: 21vh;
+}
+
+@media (max-width: 767px) {
+    .embed-responsive {
+        max-width: 20%;
+    }
+}
+
+@media (min-width: 768) and (max-width: 991px) {
+    .embed-responsive {
+        max-width: 30%;
+    }
 }
