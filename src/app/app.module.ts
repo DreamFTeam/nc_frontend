@@ -63,6 +63,8 @@ import { UserChangePasswordComponent } from './user-change-password/user-change-
 import { TranslateModule, TranslateLoader, MissingTranslationHandler } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { MissingTranslationService } from './_translation/missing';
+import { RatingQuizModalComponent } from './rating-quiz-modal/rating-quiz-modal.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 const appRoutes: Routes = [];
 
@@ -113,7 +115,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
     GameQuestionComponent,
     GameResultComponent,
     ToastsComponent,
-    UserSettingsComponent],
+    UserSettingsComponent,
+    RatingQuizModalComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -134,7 +137,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
       },
       missingTranslationHandler: { provide: MissingTranslationHandler, useClass: MissingTranslationService },
       useDefaultLang: false,
-    })
+    }),
+    DragDropModule
   ],
   entryComponents: [LogInComponent, SignUpComponent, RecoverPasswordComponent],
   providers: [AuthenticationService, QuizListService, QuestionService, QuizService, QuizValidationListService, AnonymService,
