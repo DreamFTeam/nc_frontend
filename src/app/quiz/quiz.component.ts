@@ -6,12 +6,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ExtendedQuiz } from '../_models/extended-quiz';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { ExtendedQuestion } from '../_models/question/extendedquestion';
-import { Alert } from '../_models/alert';
-import { YesNoModalComponent } from '../yes-no-modal/yes-no-modal.component';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalService } from '../_services/modal.service';
 import { ToastsService } from '../_services/toasts.service';
-import { TranslateService } from '@ngx-translate/core';
 import { LocaleService } from '../_services/locale.service';
 
 @Component({
@@ -45,6 +41,8 @@ export class QuizComponent implements OnInit {
     this.quizLoading = true;
     this.questionLoading = false;
     this.questions = [];
+    this.tagLabel = "Tags";
+    this.categoryLabel = "Categories";
   }
 
   ngOnInit(): void {
@@ -55,16 +53,6 @@ export class QuizComponent implements OnInit {
     } else {
       this.getAllQuiz(id)
     }
-
-
-    //NE RABOTAET
-    this.localeService.getValue(['quizCreation.tags','quizCreation.categories'])
-    .subscribe(translations => {
-      this.tagLabel = translations['quizCreation.tags'];
-      this.categoryLabel =  translations['quizCreation.categories']
-    });
-
-    
   }
 
 
@@ -121,7 +109,7 @@ export class QuizComponent implements OnInit {
         ans => this.mapGettedQuestions(ans),
         err => {
           console.log(err);
-          this.toastsService.toastAddDanger('Couldn`t get questions :(');
+          this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'));
         });
 
     //Find quiz
@@ -130,7 +118,7 @@ export class QuizComponent implements OnInit {
         ans => this.setGettedQuiz(ans),
         err => {
           console.log(err);
-          this.toastsService.toastAddDanger('Couldn`t get this quiz :(');
+          this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'));
         });
 
   }
@@ -206,7 +194,7 @@ export class QuizComponent implements OnInit {
 
   setSavedQuestionError(err) {
     console.log(err)
-    this.toastsService.toastAddDanger("Question could not be saved :(");
+    this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'));
     this.questionLoading = false;
   }
 
@@ -233,14 +221,14 @@ export class QuizComponent implements OnInit {
     this.quizService.createQuiz(this.quiz, this.file).subscribe(
 
       ans => {
-        this.toastsService.toastAddSuccess('Created!');
+        this.toastsService.toastAddSuccess(this.localeService.getValue('toasterEditor.created'));
         this.quizLoading = false;
         this.router.navigate(['/quizedit/' + ans.id])
       },
 
       err => {
         console.log(err);
-        this.toastsService.toastAddDanger('Sorry, couldn`t create your quiz :(');
+        this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'));
       });
   }
 
@@ -248,7 +236,7 @@ export class QuizComponent implements OnInit {
     this.quizService.saveQuiz(this.quiz, this.file).subscribe(
 
       ans => {
-        this.toastsService.toastAddSuccess('Saved!');
+        this.toastsService.toastAddSuccess(this.localeService.getValue('toasterEditor.saved'));
         this.quiz = ans;
         this.quizLoading = false;
         console.log(this.quiz.published);
@@ -260,24 +248,25 @@ export class QuizComponent implements OnInit {
 
       err => {
         console.log(err);
-        this.toastsService.toastAddDanger('Sorry, couldn`t save your quiz :(');
+        this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'));
       });
   }
 
 
   publish() {
-    this.modalService.openModal("Are you sure you want to publish this quiz?", "warning")
+    this.modalService
+    .openModal(this.localeService.getValue('modal.sure')+this.localeService.getValue('modal.publish'), "warning")
       .subscribe((receivedEntry) => {
         if (receivedEntry) {
           this.quizService.publishQuiz(this.quiz.id)
             .subscribe(
               ans => {
-                this.toastsService.toastAddSuccess('Published!');
+                this.toastsService.toastAddSuccess(this.localeService.getValue('toasterEditor.published'));
                 this.quiz.published = true;
               },
               err => {
                 console.log(err)
-                this.toastsService.toastAddDanger('Sorry, couldn`t publish your quiz :(');
+                this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'));
               });
         }
       })
@@ -285,7 +274,8 @@ export class QuizComponent implements OnInit {
 
 
   removeQuestionIndex(i, onCreatorDelete) {
-    this.modalService.openModal("Are you sure you want to delete this question?", "danger")
+    this.modalService
+    .openModal(this.localeService.getValue('modal.sure')+this.localeService.getValue('modal.delete'), "danger")
       .subscribe((receivedEntry) => {
         if (receivedEntry) {
           if (this.questions[i].id === "") {
@@ -296,7 +286,7 @@ export class QuizComponent implements OnInit {
                 () => this.removeQuestionFromList(i, onCreatorDelete),
                 err => {
                   console.log(err);
-                  this.toastsService.toastAddDanger('Sorry, Couldn`t delete this question :(');
+                  this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'));
                 });
           }
         }
@@ -312,7 +302,7 @@ export class QuizComponent implements OnInit {
     if (onCreatorDelete) {
       this.questionSelector = undefined
     }
-    this.toastsService.toastAddDanger('Question removed');
+    this.toastsService.toastAddWarning(this.localeService.getValue('toasterEditor.removed'));
   }
 
   quizImage(e) {

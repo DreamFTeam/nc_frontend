@@ -14,7 +14,7 @@
 
                         <button *ngIf="thumbnail !== null && thumbnail !== undefined"
                             class="btn buttondel mt-2 text-center" (click)="removeImage()">
-                            {{ 'quizCreation.remove' | translate }} {{ 'quizCreation.image' | translate }}
+                            {{ 'utils.remove' | translate }} {{ 'utilsOther.image' | translate }}
                         </button>
                     </div>
 
@@ -47,7 +47,7 @@
 
 
 
-                    <label class="mt-2">Language</label>
+                    <label class="mt-2">{{ 'utils.language' | translate }}</label>
                     <select [disabled]="quiz.published" [(ngModel)]="quiz.language" class="form-control">
                         <option selected="selected" value="eng">English</option>
                         <option value="ukr">Українська</option>

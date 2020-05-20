@@ -9,17 +9,26 @@ import { Observable } from 'rxjs';
 })
 export class LocaleService {
 
-  constructor(private translateService: TranslateService,
+  constructor(public translateService: TranslateService,
     private toastsService: ToastsService) { }
 
-  setUserLang(lang) {
-    lang.subscribe(
-      ans => this.setLang(ans.value.slice()),
-      () => {
-        this.toastsService.toastAddDanger("Sorry, lang could not be retrieved :(")
-        this.setAnonymousLang()
-      }
-    );
+  setUserLang(langA) {
+    if(localStorage.getItem("userLang")){
+      this.setLang(localStorage.getItem("userLang"));
+    }else{
+      let lang;
+      langA.subscribe(
+        ans => lang = this.setLang(ans.value.slice()),
+        () => {
+          lang = this.setLang(environment.defaultLocale);
+        },
+        () => {
+          console.log("current lang is "+this.translateService.currentLang);
+          localStorage.setItem('userLang',lang);
+        }
+      );
+    }
+    
 
   }
 
@@ -44,8 +53,19 @@ export class LocaleService {
     this.translateService.setDefaultLang(environment.defaultLocale);
   }
 
-  getValue(keys): Observable<any>{
-    return this.translateService.get(keys);
+  getValue(keys): string{
+    if (this.checkLang) {
+      return this.translateService.instant(keys);
+    }
+  }
+
+  private checkLang(): boolean{
+    if (this.translateService.currentLang) {
+      return true;
+    }
+    else {
+      setTimeout(this.checkLang, 500);
+    }
   }
 
   private getUsersLocale(): string {
@@ -54,7 +74,7 @@ export class LocaleService {
     }
     const wn = window.navigator as any;
     let lang = wn.languages ? wn.languages[0] : environment.defaultLocale;
-    lang = lang || wn.language || wn.browserLanguage || wn.userLanguage;
+    lang =  wn.language || wn.browserLanguage || wn.userLanguage || lang;
     return lang;
   }
   

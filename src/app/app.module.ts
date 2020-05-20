@@ -19,7 +19,6 @@ import { TrueFalseComponent } from './true-false/true-false.component';
 import { SeqOptionsComponent } from './seq-options/seq-options.component';
 import { OneOfFourComponent } from './one-of-four/one-of-four.component';
 import { OpenAnswerComponent } from './open-answer/open-answer.component';
-import { EditQuestionComponent } from './edit-question/edit-question.component';
 import { ViewQuizComponent } from './view-quiz/view-quiz.component';
 import { QuizListComponent } from './quiz-list/quiz-list.component';
 import { QuizListService } from './_services/quiz-list.service';
@@ -83,7 +82,6 @@ export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
     SeqOptionsComponent,
     OneOfFourComponent,
     OpenAnswerComponent,
-    EditQuestionComponent,
     ViewQuizComponent,
     NavBarComponent,
     ChangePasswordComponent,

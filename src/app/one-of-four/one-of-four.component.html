@@ -1,6 +1,6 @@
 
 <label>
-  Right answers
+  {{ 'quizCreation.rightAnswers' | translate }}
 </label>
 <div class="row  mt-2" *ngFor="let answer of this.question.rightOptions; let i = index; trackBy: trackByFn">
  
@@ -11,7 +11,7 @@
     </div>
     <div class="col-sm-10 mx-auto">
       <input maxlength="50" [disabled]="!available" 
-      class="form-control"  [(ngModel)]="question.rightOptions[i]" placeholder="answer {{i+1}}">
+      class="form-control"  [(ngModel)]="question.rightOptions[i]" placeholder="{{ 'utils.answer' | translate }} {{i+1}}">
     </div>
 
 </div>
@@ -24,7 +24,7 @@
 
 
 <label >
-  Other answers
+  {{ 'quizCreation.otherAnswers' | translate }}
 </label>
 <div class="row mt-2" *ngFor="let answer of this.question.otherOptions; let i = index; trackBy: trackByFn">
 
@@ -36,7 +36,7 @@
 
   <div class="col-sm-10 mx-auto">
     <input maxlength="50" [disabled]="!available" class="form-control"
-      [(ngModel)]="question.otherOptions[i]" placeholder="answer {{i+1}}">
+      [(ngModel)]="question.otherOptions[i]" placeholder="{{ 'utils.answer' | translate }} {{i+1}}">
   </div>
 
 

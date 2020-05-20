@@ -22,6 +22,7 @@ export class UserSettingsComponent implements OnInit {
   language: Setting;
 
   loading: boolean;
+  buttonLoading: boolean;
 
   settings: Setting[];
 
@@ -34,6 +35,7 @@ export class UserSettingsComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading = true;
+    this.buttonLoading = false;
     this.settingsService.getSettings()
       .subscribe(ans => this.setSettings(ans), 
       err => err => this.errHandler("Couldn`t load your settings :(",err),);
@@ -54,12 +56,11 @@ export class UserSettingsComponent implements OnInit {
 
 
   save() {
-    this.loading = true;
-
+    this.buttonLoading = true;
     this.settingsService.saveSettings(this.settings, this.language).subscribe(
       () => this.toastService.toastAddSuccess("Saved"),
       err => this.errHandler("Couldn`t save your settings :(",err),
-      () => this.loading = false
+      () => this.buttonLoading = false
     )
   }
 
