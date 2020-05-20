@@ -2,6 +2,9 @@ import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {GameResultService} from '../_services/game-result.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {GameResult} from '../_models/game-result';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {RatingQuizModalComponent} from '../rating-quiz-modal/rating-quiz-modal.component';
+import {mod} from 'ngx-bootstrap/chronos/utils';
 
 
 @Component({
@@ -26,7 +29,8 @@ export class GameResultComponent implements OnInit {
 
     constructor(private gameResultService: GameResultService,
                 private activatedRoute: ActivatedRoute,
-                private router: Router) {
+                private modalService: NgbModal
+                ) {
         this.gameId = this.activatedRoute.snapshot.paramMap.get('id');
     }
 
@@ -56,4 +60,8 @@ export class GameResultComponent implements OnInit {
         });
     }
 
+    rateModal() {
+        const modal = this.modalService.open(RatingQuizModalComponent);
+        modal.componentInstance.gameId = this.gameId;
+    }
 }
