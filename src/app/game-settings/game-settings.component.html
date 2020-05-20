@@ -35,7 +35,7 @@
     </div>
   </div>
     <div class="row form-group">
-      <label for="breakTime" class="col text-right col-form-label">{{'game.time'| translate}}</label>
+      <label for="breakTime" class="col text-right col-form-label">{{'game.btime'| translate}}</label>
       <div class="col">
         <select name="breakTime" required ngModel class="form-control" id="breakTime">
           <option *ngFor="let time of breaks" value="{{time}}">{{time}} {{'game.sec'| translate}}</option>
