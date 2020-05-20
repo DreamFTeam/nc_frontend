@@ -10,6 +10,7 @@ import {switchMap} from 'rxjs/operators';
 import {Game} from '../_models/game';
 import {SseService} from '../_services/sse.service';
 import {GameSettingsService} from '../_services/game-settings.service';
+import {Subscription} from 'rxjs';
 
 @Component({
     selector: 'app-game-question',
@@ -42,6 +43,7 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
 
     answf: string;
     waitResult: boolean;
+    finishGame: Subscription;
 
     constructor(private gameQuestionService: GameQuestionService,
                 private questionService: QuestionService,
@@ -163,7 +165,7 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
             this.sendResults();
             clearInterval(this.interval);
             this.waitResult = true;
-            this.sseService.getServerSentEvent(this.game.id, 'finished').subscribe(n => {
+            this.finishGame = this.sseService.getServerSentEvent(this.game.id, 'finished').subscribe(n => {
                     console.log('finished');
                     this.router.navigateByUrl(`game/result/${this.game.id}`);
                 }
@@ -252,6 +254,7 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
     @HostListener('window:beforeunload', ['$event'])
     ngOnDestroy(): void {
         console.log('destroy');
+        this.finishGame.unsubscribe();
         if (!this.waitResult) {
             this.gameSettingsService.quitGame(localStorage.getItem('sessionid')).subscribe();
         }
