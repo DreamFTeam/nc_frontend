@@ -3,6 +3,7 @@ import { SuggestionService } from '../_services/suggestion.service';
 import { AuthenticationService } from '../_services/authentication.service';
 import { Role } from '../_models/role';
 import { ExtendedQuizPreview } from '../_models/extendedquiz-preview';
+import { ToastsService } from '../_services/toasts.service';
 
 @Component({
   selector: 'app-suggestions',
@@ -15,7 +16,8 @@ export class SuggestionsComponent implements OnInit {
   suggestions: ExtendedQuizPreview[];
 
   constructor(private suggestionService: SuggestionService, 
-    private authenticationService: AuthenticationService) {
+    private authenticationService: AuthenticationService,
+    public toastsService: ToastsService) {
     this.suggestions = [];
   }
 
@@ -26,7 +28,7 @@ export class SuggestionsComponent implements OnInit {
       {
         this.suggestions = ans
       }, 
-      err => console.log(err));
+      err => this.toastsService.toastAddDanger("Something went wrong while fetching suggestions.\nWe are sorry for that"));
   }
 
 }

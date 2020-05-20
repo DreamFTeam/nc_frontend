@@ -2,7 +2,7 @@
     <div class="card-header lead">
         Your last played games
     </div>
-    <div class="card-body overflow-auto p-0">
+    <div class="card-body overflow-auto p-0" *ngIf="!isEmpty ; else empty">
         <table class="table table-hover">
             <thead>
                 <tr class="table-secondary">
@@ -24,5 +24,9 @@
             </tbody>
         </table>
     </div>
-
 </div>
+
+<!-- Showing this when the list is empty -->
+<ng-template #empty>
+    <p *ngIf="isEmpty" class="lead emptylabel">You haven't played anything for a week.</p>
+</ng-template>

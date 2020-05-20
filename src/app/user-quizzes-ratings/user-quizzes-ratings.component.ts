@@ -14,10 +14,18 @@ export class UserQuizzesRatingsComponent implements OnInit {
 
   quizList$: Observable<ExtendedQuizRatingsPreview[]>;
   
-  constructor(private userQuizzesRatingsService:UserQuizzesRatingsService) { }
+  isEmpty: boolean;
+  constructor(private userQuizzesRatingsService:UserQuizzesRatingsService) { 
+    this.isEmpty = false;
+  }
 
   ngOnInit(): void {
     this.quizList$ = this.userQuizzesRatingsService.getUserQuizzesRatingsList();
+    this.quizList$.subscribe(v => {
+      if(v.length == 0){
+        this.isEmpty = true;
+      }
+    });
   }
 
 }

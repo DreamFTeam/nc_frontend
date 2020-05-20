@@ -1,8 +1,8 @@
-<div *ngIf="(achievements$ | async)?.length != 0" class="card mb-2">
+<div class="card mb-2">
     <div class="card-header lead">
         Last gained achievements this week
     </div>
-    <div class="card-body p-1 overflow-auto">
+    <div class="card-body p-1 overflow-auto" *ngIf="!isEmpty ; else empty">
         <ul class="list-unstyled mb-0">
             <li class="media" *ngFor="let item of achievements$ | async" routerLink='/profile'>
                 <div class="embed-responsive embed-responsive-1by1" placement="right" ngbTooltip="{{item.description}}">
@@ -14,5 +14,9 @@
             </li>
         </ul>
     </div>
-
 </div>
+
+<!-- Showing this when the list is empty -->
+<ng-template #empty>
+    <p *ngIf="isEmpty" class="lead emptylabel">You haven't got any achievements during past week.</p>
+</ng-template>

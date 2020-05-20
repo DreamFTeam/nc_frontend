@@ -11,11 +11,22 @@ import { Observable } from 'rxjs';
 export class LastPlayedGamesComponent implements OnInit {
 
   gamesList$: Observable<QuizLastPlayed[]>;
-  constructor(private profileService: ProfileService) { }
+  isEmpty: boolean;
+  constructor(private profileService: ProfileService) { 
+    this.isEmpty = false;
+  }
   timezone: string;
-  
+
   ngOnInit(): void {
     this.gamesList$ = this.profileService.getLastPlayedGames();
+    this.gamesList$.subscribe(v => {
+      if(v.length == 0){
+        this.isEmpty = true;
+      }
+    }, error => {
+      console.error(error);
+    });
+
     this.timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   }
 

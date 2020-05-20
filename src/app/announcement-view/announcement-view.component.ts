@@ -5,6 +5,7 @@ import { AnnouncementService } from '../_services/announcement.service';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { AuthenticationService } from '../_services/authentication.service';
 import { Role } from '../_models/role';
+import { ToastsService } from '../_services/toasts.service';
 
 const PAGE_SIZE: number = 5;
 
@@ -26,11 +27,15 @@ export class AnnouncementViewComponent implements OnInit {
   faSpinner = faSpinner;
 
   constructor(private authenticationService: AuthenticationService, 
-    private announcementService: AnnouncementService) { 
+    private announcementService: AnnouncementService,
+    public toastsService: ToastsService) { 
     this.announcementService.getAmount().subscribe(ans => this.collectionSize = ans, err => console.log(err));
     this.announcementService.getAnnouncements(0,5).subscribe(ans => 
       this.setAnnouncements(ans)
-      , err => console.log(err));
+      , err => {
+      console.log(err)
+        this.toastsService.toastAddDanger("Error occured while fetching site announcements.\n We are sorry for that");
+    });
   }
 
   ngOnInit(): void {
