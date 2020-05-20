@@ -254,7 +254,9 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
     @HostListener('window:beforeunload', ['$event'])
     ngOnDestroy(): void {
         console.log('destroy');
-        this.finishGame.unsubscribe();
+        if (this.finishGame) {
+            this.finishGame.unsubscribe();
+        }
         if (!this.waitResult) {
             this.gameSettingsService.quitGame(localStorage.getItem('sessionid')).subscribe();
         }
