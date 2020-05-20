@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from 'src/environments/environment';
 import { ToastsService } from './toasts.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -13,12 +14,13 @@ export class LocaleService {
 
   setUserLang(lang) {
     lang.subscribe(
-      ans => this.setLang(ans.value),
+      ans => this.setLang(ans.value.slice()),
       () => {
         this.toastsService.toastAddDanger("Sorry, lang could not be retrieved :(")
         this.setAnonymousLang()
       }
     );
+
   }
 
   setAnonymousLang() {
@@ -28,12 +30,22 @@ export class LocaleService {
         const lang = this.setLang(this.getUsersLocale().substring(0, 2));
         localStorage.setItem('anonymousLang',lang);
     }
+    console.log("set lang: "+this.translateService.currentLang);
   }
 
   setLang(locale): string{
-    const lang = environment.locales.includes(locale) ? locale : environment.defaultLocale;
+    let lang = environment.locales.includes(locale) ? locale : environment.defaultLocale;
     this.translateService.use(lang);
     return lang;
+  }
+
+  initLangs(){
+    this.translateService.addLangs(environment.locales)
+    this.translateService.setDefaultLang(environment.defaultLocale);
+  }
+
+  getValue(keys): Observable<any>{
+    return this.translateService.get(keys);
   }
 
   private getUsersLocale(): string {

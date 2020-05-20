@@ -11,6 +11,8 @@ import { YesNoModalComponent } from '../yes-no-modal/yes-no-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalService } from '../_services/modal.service';
 import { ToastsService } from '../_services/toasts.service';
+import { TranslateService } from '@ngx-translate/core';
+import { LocaleService } from '../_services/locale.service';
 
 @Component({
   selector: 'app-quiz',
@@ -19,8 +21,8 @@ import { ToastsService } from '../_services/toasts.service';
 })
 export class QuizComponent implements OnInit {
 
-  tagLabel: string = "Tags";
-  categoryLabel: string = "Categories";
+  tagLabel: string;
+  categoryLabel: string;
 
   quiz: ExtendedQuiz;
   questions: ExtendedQuestion[];
@@ -38,7 +40,8 @@ export class QuizComponent implements OnInit {
 
   constructor(private quizService: QuizService, private questionService: QuestionService,
     private activateRoute: ActivatedRoute, private router: Router, private sanitizer: DomSanitizer,
-    private modalService: ModalService, public toastsService: ToastsService) {
+    private modalService: ModalService, public toastsService: ToastsService,
+     private localeService: LocaleService) {
     this.quizLoading = true;
     this.questionLoading = false;
     this.questions = [];
@@ -52,6 +55,16 @@ export class QuizComponent implements OnInit {
     } else {
       this.getAllQuiz(id)
     }
+
+
+    //NE RABOTAET
+    this.localeService.getValue(['quizCreation.tags','quizCreation.categories'])
+    .subscribe(translations => {
+      this.tagLabel = translations['quizCreation.tags'];
+      this.categoryLabel =  translations['quizCreation.categories']
+    });
+
+    
   }
 
 

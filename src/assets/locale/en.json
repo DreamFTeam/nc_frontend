@@ -13,6 +13,9 @@
         "save":"Save as new",
         "publish":"Publish",
         "newQuestion":"New question",
-        "addQuestion":"Add question"
+        "addQuestion":"Add question",
+        "ofQuiz":"of quiz",
+        "tags":"Tags",
+        "categories":"Categories"
     }
 }

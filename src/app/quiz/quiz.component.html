@@ -31,7 +31,7 @@
                     <label>{{ 'utils.title' | translate }} <span *ngIf="!quiz.published" style="color: red;">*</span></label>
 
                     <input [disabled]="quiz.published" class="form-control" type="text" maxlength="50"
-                        [(ngModel)]="quiz.title" placeholder="Title of quiz">
+                        [(ngModel)]="quiz.title" placeholder="{{ 'utils.title' | translate }} {{ 'quizCreation.ofQuiz' | translate }}">
 
 
                     <div class="mt-2">
@@ -47,7 +47,7 @@
 
 
 
-                    <label class="mt-2">Language:</label>
+                    <label class="mt-2">Language</label>
                     <select [disabled]="quiz.published" [(ngModel)]="quiz.language" class="form-control">
                         <option selected="selected" value="eng">English</option>
                         <option value="ukr">Українська</option>
@@ -56,7 +56,9 @@
 
                     <label>{{ 'utils.description' | translate }} <span *ngIf="!quiz.published" style="color: red;">*</span></label>
                     <textarea class="form-control" rows="5" [disabled]="quiz.published" maxlength="250"
-                        [(ngModel)]="quiz.description" placeholder="Description of quiz"></textarea>
+                        [(ngModel)]="quiz.description" 
+                        placeholder="{{ 'utils.description' | translate }} {{ 'quizCreation.ofQuiz' | translate }}">
+                    </textarea>
                 </div>
             </div>
 
