@@ -18,7 +18,6 @@ export class UserQuizzesRatingsComponent implements OnInit {
 
   ngOnInit(): void {
     this.quizList$ = this.userQuizzesRatingsService.getUserQuizzesRatingsList();
-    this.quizList$.subscribe(v => console.log(v));
   }
 
 }

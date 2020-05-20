@@ -3,7 +3,7 @@
         Popular now
     </div>
     <div class="card-body card-group row row-cols-5">
-        <div class="col mb-3 mb-md-0 px-0" *ngFor="let item of shortQuizList$ | async">
+        <div class="col mb-0 px-0" *ngFor="let item of shortQuizList$ | async">
             <div class="card circle-noborder h-100">
                 <a routerLink="/viewquiz/{{item.id}}">
                     <div class="embed-responsive embed-responsive-1by1">

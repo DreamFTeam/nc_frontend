@@ -4,7 +4,7 @@
     </div>
     <div class="card-body p-1 overflow-auto">
         <ul class="list-unstyled mb-0">
-            <li class="media" *ngFor="let item of quizList$ | async" routerLink='/profile'>
+            <li class="media" *ngFor="let item of quizList$ | async" routerLink='/viewquiz/{{item.id}}'>
                 <div class="align-self-center embed-responsive embed-responsive-1by1">
                     <img class="mr-2 embed-responsive-item align-self-center pic" [src]="item.imageContent ? item.imageContent : this.mockImgUrl" alt="Quiz icon">
                 </div>
