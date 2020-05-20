@@ -62,6 +62,7 @@ import { ToastsComponent } from './toasts/toasts.component';
 import { ToastsService } from './_services/toasts.service';
 import { UserSettingsComponent } from './user-settings/user-settings.component';
 import { UserChangePasswordComponent } from './user-change-password/user-change-password.component';
+import { RatingQuizModalComponent } from './rating-quiz-modal/rating-quiz-modal.component';
 
 const appRoutes: Routes = [];
 
@@ -111,7 +112,8 @@ const appRoutes: Routes = [];
     GameQuestionComponent,
     GameResultComponent,
     ToastsComponent,
-    UserSettingsComponent],
+    UserSettingsComponent,
+    RatingQuizModalComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
