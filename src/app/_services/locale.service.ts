@@ -1,16 +1,14 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from 'src/environments/environment';
-import { ToastsService } from './toasts.service';
-import { Observable } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class LocaleService {
 
-  constructor(public translateService: TranslateService,
-    private toastsService: ToastsService) { }
+  constructor(public translateService: TranslateService) { }
 
   setUserLang(langA) {
     if(localStorage.getItem("userLang")){
@@ -28,8 +26,6 @@ export class LocaleService {
         }
       );
     }
-    
-
   }
 
   setAnonymousLang() {

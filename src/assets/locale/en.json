@@ -23,7 +23,9 @@
         "password":"password",
         "author":"Author",
         "play":"Play",
-        "search":"Search"
+        "search":"Search",
+        "yes":"Yes",
+        "no":"No"
     },
     "utilsOther":{
         "image":"image"

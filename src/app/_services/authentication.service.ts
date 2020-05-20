@@ -92,6 +92,7 @@ export class AuthenticationService {
 
   signoutUser(): void {
     localStorage.removeItem('userData');
+    localStorage.removeItem("userLang")
     this.currentUserSubject.next(null);
 
     this.localeService.setAnonymousLang();

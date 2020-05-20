@@ -188,7 +188,7 @@ export class QuizComponent implements OnInit {
     this.questionSelector = this.questions[index];
 
     console.log(this.questions);
-    this.toastsService.toastAddSuccess('Question saved!');
+    this.toastsService.toastAddSuccess(this.localeService.getValue('toasterEditor.saved'));
     this.questionLoading = false;
   }
 

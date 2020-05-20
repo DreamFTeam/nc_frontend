@@ -24,7 +24,9 @@
         "password":"пароль",
         "author":"Автор",
         "play":"Грати",
-        "search":"Пошук"
+        "search":"Пошук",
+        "yes":"Так",
+        "no":"Ні"
     },
     "utilsOther":{
         "image":"світлину"
