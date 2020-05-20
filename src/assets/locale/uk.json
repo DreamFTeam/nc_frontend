@@ -1,0 +1,78 @@
+{
+    "utils":{
+        "title":"Назва",
+        "description":"Опис",
+        "save":"Зберегти",
+        "questions":"Питання",
+        "language":"Мова",
+        "tags":"Теги",
+        "categories":"Категорії",
+        "content":"Зміст",
+        "true":"Істина",
+        "false":"Хиба",
+        "points":"Бали",
+        "answer":"Відповідь",
+        "delete":"Видалити",
+        "remove": "Видалити",
+        "announcement":"оголошення",
+        "announcements":"оголошення",
+        "edit":"Редагувати",
+        "cancel":"Скасувати",
+        "image":"світлина",
+        "settings":"Налаштування",
+        "change":"Змінити",
+        "password":"пароль",
+        "author":"Автор",
+        "play":"Грати",
+        "search":"Пошук",
+        "yes":"Так",
+        "no":"Ні",
+        "notFound":"Не знайдено"
+    },
+    "utilsOther":{
+        "image":"світлину"
+    },
+    "quizCreation":{
+        "createQuiz":"Створити квіз",
+        "question":"питання",
+        "save":"Зберегти як новий",
+        "publish":"Опублікувати",
+        "newQuestion":"Нове питання",
+        "addQuestion":"Додати питання",
+        "ofQuiz":"квіза",
+        "questiontitle":"Назва питання",
+        "rightAnswer":"Вірна відповідь",
+        "rightAnswers":"Вірні відповіді",
+        "otherAnswers":"Інші відповіді"
+    },
+    "viewQuiz":{
+        "deactivated":"Деактивований",
+        "deactivate":"Деактивувати",
+        "danger":"Небезпечні дії"
+    },
+    "navbar":{
+        "validation":"ВАЛІДАЦІЯ",
+        "activities":"АКТІВІТІ",
+        "profile":"ПРОФІЛЬ",
+        "users":"КОРИСТУВАЧІ",
+        "quizzes":"КВІЗИ",
+        "login":"УВІЙТИ",
+        "signup":"РЕЄСТРАЦІЯ",
+        "logout":"ВИЙТИ"
+    },
+    "toasterEditor":{
+        "wentWrong":"Щось пішло не так :(",
+        "saved":"Збережено",
+        "created":"Створено",
+        "published":"Опубліковано",
+        "removed":"Видалено"
+    },
+    "modal":{
+        "sure":"Ви впевнені що ви хочете ",
+        "publish":"опублікувати",
+        "delete":"видалити" ,  
+        "deleteQ":"видалити цей квіз? Ви не зможете його відновити.",
+        "deactivateQ":"деактивувати цей квіз?" 
+    },
+    "managaAnn":"Керувати оголошеннями"
+}

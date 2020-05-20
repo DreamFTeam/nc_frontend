@@ -18,3 +18,12 @@ a {
 .clickable:hover {
     cursor: pointer;
 }
+
+.adminw{
+    width: 30% !important;
+}
+
+.otherw{
+    width: 40% !important;
+}
+

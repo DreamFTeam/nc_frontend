@@ -9,8 +9,16 @@ import { Temp } from '../_models/temp';
   styleUrls: ['./question-editor-selector.component.css']
 })
 export class QuestionEditorSelectorComponent implements OnInit {
+  readonly types = [
+    { name: "Select option", value: 1 },
+    { name: "True\\False", value: 2 },
+    { name: "Type answer", value: 3 },
+    { name: "Select sequence", value: 4 }
+  ]
 
   temp: Temp[];
+
+  typeTemp: number;
 
   @Input()
   question: ExtendedQuestion;
@@ -24,11 +32,12 @@ export class QuestionEditorSelectorComponent implements OnInit {
 
 
   constructor() {
-    
     if(this.question !== undefined 
       && this.question.imageContent !== "" ){
       this.thumbnail = this.question.imageContent;
       }
+      
+
   }
 
   ngOnChanges() {
@@ -50,6 +59,7 @@ export class QuestionEditorSelectorComponent implements OnInit {
       rightOptions:["","",""],
       otherOptions:[]
     })
+    this.typeTemp = this.question.typeId;
   }
 
   ngOnInit(): void {
@@ -64,7 +74,10 @@ export class QuestionEditorSelectorComponent implements OnInit {
     this.temp[this.question.typeId-1].otherOptions = (this.question.otherOptions);
 
     //Change question type
-    this.question.typeId = parseInt(deviceValue);
+    this.typeTemp = parseInt(deviceValue)
+    this.question.typeId = this.typeTemp;
+
+    console.log(this.temp)
     
     //Reinit from temp 
     this.question.rightOptions = (this.temp[this.question.typeId-1].rightOptions);

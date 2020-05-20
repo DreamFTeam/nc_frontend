@@ -12,6 +12,6 @@
     (click)="trueResult()" 
     [ngClass]="{'btn-outline-danger': style === 'danger',
     'btn-outline-success': style === 'success',
-    'btn-outline-warning': style === 'warning'}">Yes</button>
-    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">No</button>
+    'btn-outline-warning': style === 'warning'}">{{ 'utils.yes' | translate }}</button>
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">{{ 'utils.no' | translate }}</button>
   </div>

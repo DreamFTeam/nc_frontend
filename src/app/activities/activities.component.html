@@ -22,7 +22,7 @@
 
     <ng-template #elseBlock>
         <div *ngIf="!loading" style="text-align: center;">
-            No activities found
+            {{ 'utils.notFound' | translate }}
         </div>
         <div [hidden]="!loading" style="text-align: center;">
             <fa-icon [icon]="faSpinner" [spin]="true" size="6x"></fa-icon>

@@ -1,0 +1,36 @@
+<link href="https://fonts.googleapis.com/css?family=Balsamiq+Sans&display=swap" rel="stylesheet">
+<div class="p-4 container bg-white rounded">
+  <h1>
+    Total Results !
+  </h1>
+
+  <div class="head-wrap">
+    <h3>Champion is {{winner}}</h3>
+    <div class="champ-img"><img src="assets/img/champ.jpg" class="img-fluid" alt="Responsive image"></div>
+  </div>
+
+  <div style="display: flex; align-items: center; justify-content: center; flex-direction: column">
+    <ngx-charts-bar-vertical
+      [barPadding]="4"
+      [view]=view
+      [showDataLabel]=true
+      [results]="resultsForGraphic"
+      [xAxis]=true
+      [yAxis]=true
+      [legend]=true
+      [showXAxisLabel]=true
+      [showYAxisLabel]=true
+      legendTitle="Players"
+      legendPosition="right"
+      yAxisLabel="Points"
+      (select)="onSelect($event)">
+    </ngx-charts-bar-vertical>
+
+    <div class="btn-group" role="group">
+      <button type="button" class="btn btn-secondary" routerLink="/quiz-list">Other</button>
+      <button class="btn btn-secondary" (click)="rateModal()">Rate</button>
+      <button type="button" class="btn btn-secondary" routerLink="/">Quit</button>
+    </div>
+  </div>
+</div>
+

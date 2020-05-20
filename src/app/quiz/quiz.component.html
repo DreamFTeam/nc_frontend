@@ -1,36 +1,25 @@
-<div class="toastpos">
-    <ngb-toast *ngFor="let toast of toasts" [class]="toast.classname" [autohide]="true" [delay]="5000"
-        (hide)="removeToast(toast)">
-
-        <ng-template [ngIf]="isTemplate(toast)" [ngIfElse]="text">
-            <ng-template [ngTemplateOutlet]="toast.textOrTpl"></ng-template>
-        </ng-template>
-
-        <ng-template #text>{{ toast.textOrTpl }}</ng-template>
-    </ngb-toast>
-</div>
-
-
-
 <div role="main">
     <div class="container-sm mt-2 mb-2 p-3">
         <div *ngIf="!quizLoading">
-            <h1 class="title font-base">Create quiz</h1>
+            <h1 class="title font-base">{{ 'quizCreation.createQuiz' | translate }}</h1>
             <div class="row ml-2 mt-3">
 
                 <div class="col-sm-3 ">
                     <div *ngIf="!quiz.published; else elseBlock">
-                        <img [src]= "thumbnail ? thumbnail : '../assets/img/quizupl.jpg'" class="img-thumbnail" (click)="imageInput.click()">
+                        <img [src]="thumbnail ? thumbnail : '../assets/img/quizupl.jpg'" class="img-thumbnail"
+                            (click)="imageInput.click()">
 
                         <input style="display: none" #imageInput type="file" accept="image/*"
                             (change)="quizImage($event)">
 
                         <button *ngIf="thumbnail !== null && thumbnail !== undefined"
-                            class="btn buttondel mt-2 text-center" (click)="removeImage()">Remove image</button>
+                            class="btn buttondel mt-2 text-center" (click)="removeImage()">
+                            {{ 'utils.remove' | translate }} {{ 'utilsOther.image' | translate }}
+                        </button>
                     </div>
 
                     <ng-template #elseBlock>
-                        <img [src]="thumbnail ? thumbnail : '../assets/img/quiz.jpg'" alt="Upload"
+                        <img [src]="thumbnail ? thumbnail : '../assets/img/quiz.jpg'"
                             class="img-thumbnail">
                     </ng-template>
 
@@ -39,10 +28,10 @@
 
                 <div class="col-sm-8">
 
-                    <label>Title <span *ngIf="!quiz.published" style="color: red;">*</span></label>
+                    <label>{{ 'utils.title' | translate }} <span *ngIf="!quiz.published" style="color: red;">*</span></label>
 
                     <input [disabled]="quiz.published" class="form-control" type="text" maxlength="50"
-                        [(ngModel)]="quiz.title" placeholder="Title of quiz">
+                        [(ngModel)]="quiz.title" placeholder="{{ 'utils.title' | translate }} {{ 'quizCreation.ofQuiz' | translate }}">
 
 
                     <div class="mt-2">
@@ -58,16 +47,18 @@
 
 
 
-                    <label class="mt-2">Language:</label>
+                    <label class="mt-2">{{ 'utils.language' | translate }}</label>
                     <select [disabled]="quiz.published" [(ngModel)]="quiz.language" class="form-control">
                         <option selected="selected" value="eng">English</option>
-                        <option value="ukr">Ukrainian</option>
+                        <option value="ukr">Українська</option>
                     </select>
 
 
-                    <label>Description <span *ngIf="!quiz.published" style="color: red;">*</span></label>
+                    <label>{{ 'utils.description' | translate }} <span *ngIf="!quiz.published" style="color: red;">*</span></label>
                     <textarea class="form-control" rows="5" [disabled]="quiz.published" maxlength="250"
-                        [(ngModel)]="quiz.description" placeholder="Description of quiz"></textarea>
+                        [(ngModel)]="quiz.description" 
+                        placeholder="{{ 'utils.description' | translate }} {{ 'quizCreation.ofQuiz' | translate }}">
+                    </textarea>
                 </div>
             </div>
 
@@ -75,18 +66,20 @@
 
             <div class="m-3">
                 <button class="btn buttonpr mr-4" (click)="saveQuiz()">
-                    <div *ngIf="!quiz.published">Save</div>
+                    <div *ngIf="!quiz.published">{{ 'utils.save' | translate }}</div>
                     <div *ngIf="quiz.published">
-                        Save as new quiz
+                        {{ 'quizCreation.save' | translate }}
                     </div>
 
                 </button>
-                <button *ngIf="isPublishAvailable()" class="btn buttonsec" (click)="publish()">Publish quiz</button>
+                <button *ngIf="isPublishAvailable()" class="btn buttonsec" (click)="publish()">
+                    {{ 'quizCreation.publish' | translate }}
+                </button>
             </div>
 
 
             <div *ngIf="isQuizCreated()">
-                <h3>Questions:</h3>
+                <h3>{{ 'utils.questions' | translate }}</h3>
                 <div class="m-2 p-3 questionpos">
                     <div class="">
 
@@ -99,7 +92,7 @@
                                     'buttonpr': question.id !== '','selected': questionSelector === questions[i]}">
                                     <div style="overflow-wrap: break-word;" *ngIf="question.title !== ''">
                                         {{question.title}}</div>
-                                    <div *ngIf="question.title === ''">New question</div>
+                                    <div *ngIf="question.title === ''">{{ 'quizCreation.newQuestion' | translate }}</div>
                                 </button>
                             </div>
                         </div>
@@ -108,8 +101,7 @@
             </div>
 
             <button *ngIf="isQuestionCreatorAvailable()" class="btn buttonpr rounded mt-1 ml-2"
-                (click)="addNewQuestion()">Add
-                question</button>
+                (click)="addNewQuestion()">{{ 'quizCreation.addQuestion' | translate }}</button>
         </div>
 
         <div style="text-align: center;" *ngIf="quizLoading">
@@ -122,7 +114,7 @@
         <div *ngIf="!questionLoading">
             <div *ngIf="!quiz.published">
                 <button class="btn buttondel" (click)="removeQuestion()">
-                    Remove question
+                    {{ 'quizCreation.remove' | translate }} {{ 'quizCreation.question' | translate }}
                 </button>
 
             </div>
@@ -132,8 +124,8 @@
                     [thumbnail]="questionSelector.imageContent"></app-question-editor-selector>
             </div>
 
-            <button *ngIf="isQuestionCreatorAvailable()" class="btn buttonpr mt-2" (click)="saveQuestion()">Save
-                question</button>
+            <button *ngIf="isQuestionCreatorAvailable()" class="btn buttonpr mt-2" (click)="saveQuestion()">
+                {{ 'utils.save' | translate }} {{ 'quizCreation.question' | translate }}</button>
         </div>
         <div style="text-align: center;" *ngIf="questionLoading">
             <fa-icon [icon]="faSpinner" [spin]="true" size="6x"></fa-icon>

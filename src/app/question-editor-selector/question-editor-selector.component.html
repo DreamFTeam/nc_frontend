@@ -1,43 +1,19 @@
 <div>
     <div class="mt-4">
-        <label>Question title <span *ngIf="available" style="color: red;">*</span></label>
+        <label>{{ 'quizCreation.questiontitle' | translate }} <span *ngIf="available"
+                style="color: red;">*</span></label>
         <div class="row">
             <div class="col-sm-8">
-                
-                <input [disabled]="!available" maxlength="50"
-                 class="form-control" type="text" [(ngModel)]="question.title" placeholder="Title of question">
+
+                <input [disabled]="!available" maxlength="50" class="form-control" type="text"
+                    [(ngModel)]="question.title" placeholder="{{ 'quizCreation.questiontitle' | translate }}">
             </div>
             <div class="col-sm-3">
-                <select [disabled]="!available" (change)="onChange($event.target.value)" class="form-control">
-
-                    <option *ngIf="isOneToFour(); else elseBlock" selected="selected" value="1">
-                        Select option
+                <select [disabled]="!available" (change)="onChange($event.target.value)" class="form-control"
+                    [(ngModel)]="typeTemp">
+                    <option *ngFor="let type of types" [value]="type.value">
+                        {{type.name}}
                     </option>
-                    <ng-template #elseBlock>
-                        <option value="1">Select option</option>
-                    </ng-template>
-
-                    <option *ngIf="isTrueFalse(); else elseBlock1" selected="selected" value="2">
-                        True\False
-                    </option>
-                    <ng-template #elseBlock1>
-                        <option value="2">True\False</option>
-                    </ng-template>
-
-                    <option *ngIf="isOpenAnswer(); else elseBlock2" selected="selected" value="3">
-                        Type answer
-                    </option>
-                    <ng-template #elseBlock2>
-                        <option value="3">Type answer</option>
-                    </ng-template>
-
-                    <option *ngIf="isSequenceAnswer(); else elseBlock3" selected="selected" value="4">
-                        Select sequence
-                    </option>
-                    <ng-template #elseBlock3>
-                        <option value="4">Select sequence</option>
-                    </ng-template>
-
                 </select>
             </div>
         </div>
@@ -46,30 +22,34 @@
         <div class="row">
             <div class="col-sm-8">
                 <div class="m-3">
-                    <label>Content <span *ngIf="available" style="color: red;">*</span></label>
-                    <textarea [disabled]="!available" maxlength="250"
-                     class="form-control" rows="3" [(ngModel)]="question.content" placeholder="Content of question"></textarea>
+                    <label>{{ 'utils.content' | translate }} <span *ngIf="available"
+                            style="color: red;">*</span></label>
+                    <textarea [disabled]="!available" maxlength="250" class="form-control" rows="3"
+                        [(ngModel)]="question.content" placeholder="{{ 'utils.content' | translate }}">
+                    </textarea>
                 </div>
 
                 <app-one-of-four *ngIf="isOneToFour()" [available]="available" [question]="question"></app-one-of-four>
                 <app-true-false *ngIf="isTrueFalse()" [available]="available" [question]="question"></app-true-false>
                 <app-open-answer *ngIf="isOpenAnswer()" [available]="available" [question]="question"></app-open-answer>
-                <app-seq-options *ngIf="isSequenceAnswer()" [available]="available" [question]="question"></app-seq-options>
+                <app-seq-options *ngIf="isSequenceAnswer()" [available]="available" [question]="question">
+                </app-seq-options>
             </div>
             <div class="col-sm-3">
                 <div *ngIf="available; else imgElse">
                     <input style="display: none" #questionInput type="file" accept="image/*"
-                    (change)="questionImage($event)">
-                <img [src]='thumbnail' alt="Upload" class="img-thumbnail mt-5 mx-auto d-block"
-                    (click)="questionInput.click()">
-                    <button *ngIf="thumbnail !== null && thumbnail !== undefined"
-                     class="btn buttondel mt-2" (click)="removeImage()" >Remove image</button>
+                        (change)="questionImage($event)">
+                    <img [src]='thumbnail' alt="Upload" class="img-thumbnail mt-5 mx-auto d-block"
+                        (click)="questionInput.click()">
+                    <button *ngIf="thumbnail !== null && thumbnail !== undefined" class="btn buttondel mt-2"
+                        (click)="removeImage()">
+                        {{ 'utils.remove' | translate }} {{ 'utilsOther.image' | translate }}
+                    </button>
                 </div>
                 <ng-template #imgElse>
-                        <img *ngIf="thumbnail !== undefined && thumbnail !== null"
-                         class="img-thumbnail" [src]='thumbnail'>
+                    <img *ngIf="thumbnail !== undefined && thumbnail !== null" class="img-thumbnail" [src]='thumbnail'>
                 </ng-template>
-                
+
             </div>
         </div>
 
@@ -77,12 +57,11 @@
     </div>
 </div>
 
-<label class="mt-4">Points <span *ngIf="available" style="color: red;">*</span></label>
+<label class="mt-4">{{ 'utils.points' | translate }} <span *ngIf="available" style="color: red;">*</span></label>
 <div class="row">
     <div class="col-sm-6">
-        <input [disabled]="!available" class="form-control" style="max-width: 20%;" maxlength="3"
-        type="text" [(ngModel)]="question.points"
-            placeholder="Points">
+        <input [disabled]="!available" class="form-control" style="max-width: 20%;" maxlength="3" type="text"
+            [(ngModel)]="question.points" placeholder="{{ 'utils.points' | translate }}">
     </div>
     <div class="col-sm-5">
 

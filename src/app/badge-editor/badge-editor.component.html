@@ -1,4 +1,8 @@
-<div><label>{{label}} <span *ngIf="available" style="color: red;">*</span></label></div>
+<div><label>
+    <ng-template [ngIf]="isTag()" [ngIfElse]="categs">{{ 'utils.tags' | translate }} </ng-template>
+    <ng-template #categs>{{ 'utils.categories' | translate }} </ng-template>
+    <span *ngIf="available" style="color: red;">*</span>
+</label></div>
 <span *ngFor="let item of tagCateg; let i = index" 
 [ngClass]="{'badge-primary': isTag(), 'badge-success': !isTag()}" 
 class="badge mr-1">
@@ -18,11 +22,10 @@ class="badge mr-1">
 </span>
 
 <div *ngIf="available">
-    <div>Search for {{ label }}:</div>
 <input id="typeahead-focus" type="text" class="form-control" [(ngModel)]="model" [ngbTypeahead]="search"
     [inputFormatter]="formatter" [resultFormatter]="formatter" [editable]='false'
     (focus)="focus$.next($any($event).target.value)" (click)="click$.next($any($event).target.value)"
-    placeholder="{{label}}" (keyup.enter)="add()"/>
+    (keyup.enter)="add()"/>
 
 
 <button class="btn buttonpr mr-1 mt-1 rounded" (click)="add()">

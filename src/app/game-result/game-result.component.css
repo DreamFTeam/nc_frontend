@@ -1,0 +1,75 @@
+h1, h3 {
+  font-family: 'Balsamiq Sans', cursive;
+  text-align: center;
+  color: darkgreen;
+}
+
+.legend-label-text {
+  white-space: normal !important;
+  width: 100% !important;
+  color: blue;
+  height: 25px;
+  font-family: 'Balsamiq Sans', cursive;
+  font-weight: bold;
+}
+
+.ngx-charts text {
+  fill: green;
+  font-family: 'Balsamiq Sans', cursive;
+  font-weight: bold;
+}
+
+.legend-title {
+  color: green;
+  font-family: 'Balsamiq Sans', cursive;
+}
+
+.btn-group {
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  margin-top: 40px;
+
+}
+
+.btn-group .btn {
+  cursor: pointer;
+  width: 120px;
+  margin-right: 15px;
+  text-align: center;
+  background: lightgreen;
+  border: none;
+  border-radius: 10px;
+  outline: none;
+  box-shadow: 4px 7px 32px -10px rgba(113, 247, 156, 0.76);
+  padding: 10px;
+  color: #fff;
+}
+
+.btn-group .btn:hover {
+  transition: all 0.4s ease-in-out;
+  background-color: green;
+  box-shadow: 4px 7px 95px -10px rgba(113, 247, 156, 0.76);
+}
+
+.btn-group .btn:last-child {
+  margin-right: 0px;
+
+}
+
+.champ-img {
+  width: 68px;
+  height: 68px;
+  margin-left: 10px;
+}
+
+.champ-img img{
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.head-wrap{
+  display: flex;
+  justify-content: center;
+}

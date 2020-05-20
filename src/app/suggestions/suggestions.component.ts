@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Suggestion } from '../_models/suggestion';
 import { SuggestionService } from '../_services/suggestion.service';
 import { AuthenticationService } from '../_services/authentication.service';
 import { Role } from '../_models/role';
+import { ExtendedQuizPreview } from '../_models/extendedquiz-preview';
 
 @Component({
   selector: 'app-suggestions',
@@ -11,7 +11,8 @@ import { Role } from '../_models/role';
 })
 export class SuggestionsComponent implements OnInit {
   
-  suggestions: Suggestion[];
+  mockImgUrl = "../../assets/img/quiz.jpg";
+  suggestions: ExtendedQuizPreview[];
 
   constructor(private suggestionService: SuggestionService, 
     private authenticationService: AuthenticationService) {
@@ -23,7 +24,6 @@ export class SuggestionsComponent implements OnInit {
     if(user && user.role === Role.User)
     this.suggestionService.getSuggestionList().subscribe(ans => 
       {
-        console.log(ans);
         this.suggestions = ans
       }, 
       err => console.log(err));
