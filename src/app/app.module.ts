@@ -63,6 +63,7 @@ import { ToastsService } from './_services/toasts.service';
 import { UserSettingsComponent } from './user-settings/user-settings.component';
 import { UserChangePasswordComponent } from './user-change-password/user-change-password.component';
 import { RatingQuizModalComponent } from './rating-quiz-modal/rating-quiz-modal.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 const appRoutes: Routes = [];
 
@@ -125,7 +126,8 @@ const appRoutes: Routes = [];
     NgbModule,
     FontAwesomeModule,
     QRCodeModule,
-    NgxChartsModule
+    NgxChartsModule,
+    DragDropModule
   ],
   entryComponents: [LogInComponent, SignUpComponent, RecoverPasswordComponent],
   providers: [AuthenticationService, QuizListService, QuestionService, QuizService, QuizValidationListService, AnonymService,

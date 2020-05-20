@@ -11,6 +11,7 @@ import {Game} from '../_models/game';
 import {SseService} from '../_services/sse.service';
 import {GameSettingsService} from '../_services/game-settings.service';
 import {Subscription} from 'rxjs';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 @Component({
     selector: 'app-game-question',
@@ -224,6 +225,10 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
             this.seqanswers.push(ans);
         }
         console.log(this.seqanswers);
+    }
+
+    drop(event: CdkDragDrop<string[]>) {
+        moveItemInArray(this.shuffled, event.previousIndex, event.currentIndex);
     }
 
     seqAns() {
