@@ -8,6 +8,7 @@ import { catchError, map } from 'rxjs/operators';
 import { Quiz } from '../_models/quiz';
 import { HandleErrorsService } from './handle-errors.service';
 import { Achievement } from '../_models/achievement';
+import { QuizLastPlayed } from '../_models/quiz-last-played';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +25,7 @@ export class ProfileService {
   };
 
   profilesUrl = `${environment.apiUrl}profiles/`;
+  quizzesUrl = `${environment.apiUrl}quizzes/`;
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'
@@ -105,8 +107,12 @@ export class ProfileService {
     return this.http.get<Achievement[]>(this.profilesUrl + 'achievements/last-week',
       this.httpOptions).pipe(map((data) => data.map(achievement => {
         return new Achievement().deserialize(achievement, this.sanitizer);
-      }))
-    );
+      })), catchError(this.errorHandler.handleError<Achievement[]>('getUserQuizzesRatingsList', [])));
+  }
+
+  public getLastPlayedGames(): Observable<QuizLastPlayed[]>{
+    return this.http.get<QuizLastPlayed[]>(this.quizzesUrl + 'last-played', this.httpOptions)
+    .pipe(catchError(this.errorHandler.handleError<QuizLastPlayed[]>('getUserQuizzesRatingsList', [])));
   }
 
 }

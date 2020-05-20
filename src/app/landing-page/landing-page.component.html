@@ -1,6 +1,6 @@
 <div role="main" class="container-fluid px-0">
     <div class="row w-100 mx-0" *ngIf="(isSignedIn && isRoleUser); else notUser">
-        <div class="col-md-3 pr-md-0 pr-md-0">
+        <div class="col-md-3 pr-md-0">
             <!--last achievements, personal quizzes rating-->
             <app-last-achievements-list></app-last-achievements-list>
             <app-user-quizzes-ratings></app-user-quizzes-ratings>
@@ -17,9 +17,9 @@
                 <app-announcement-view></app-announcement-view>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4 pl-md-0">
             <!--last played games-->
-
+            <app-last-played-games></app-last-played-games>
         </div>
     </div>
 </div>

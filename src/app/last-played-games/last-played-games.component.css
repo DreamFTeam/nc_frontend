@@ -1,0 +1,11 @@
+.pointer :hover {
+    cursor: pointer;
+}
+
+.quiztitle {
+    font-size: smaller;
+}
+
+.card-body {
+    max-height: 65vh;
+}

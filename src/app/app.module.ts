@@ -65,6 +65,7 @@ import { UserChangePasswordComponent } from './user-change-password/user-change-
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { LastAchievementsListComponent } from './last-achievements-list/last-achievements-list.component';
 import { UserQuizzesRatingsComponent } from './user-quizzes-ratings/user-quizzes-ratings.component';
+import { LastPlayedGamesComponent } from './last-played-games/last-played-games.component';
 
 const appRoutes: Routes = [];
 
@@ -116,7 +117,8 @@ const appRoutes: Routes = [];
     ToastsComponent,
     UserSettingsComponent,
     LastAchievementsListComponent,
-    UserQuizzesRatingsComponent],
+    UserQuizzesRatingsComponent,
+    LastPlayedGamesComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
