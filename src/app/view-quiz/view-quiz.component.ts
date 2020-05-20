@@ -8,6 +8,7 @@ import { AuthenticationService } from '../_services/authentication.service';
 import { Role } from '../_models/role';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { YesNoModalComponent } from '../yes-no-modal/yes-no-modal.component';
+import { LocaleService } from '../_services/locale.service';
 
 @Component({
   selector: 'app-view-quiz',
@@ -26,7 +27,8 @@ export class ViewQuizComponent implements OnInit {
   faSpinner = faSpinner;
 
   constructor(private quizService: QuizService, private activateRoute: ActivatedRoute, private router: Router,
-    private authenticationService: AuthenticationService, private modalService: NgbModal) { 
+    private authenticationService: AuthenticationService, private modalService: NgbModal,
+    private localeService: LocaleService) { 
       this.loading = true;
     this.activateRoute.paramMap.pipe(
       switchMap(params => params.getAll('id')))
@@ -37,7 +39,7 @@ export class ViewQuizComponent implements OnInit {
 
   getAllQuiz(data){
     this.quizService.getQuiz(data).subscribe(ans => this.setGettedQuiz(ans),
-       err => this.errHandler("Quiz could not be retrieved :(",err))
+       err => this.errHandler(this.localeService.getValue('toasterEditor.wentWrong'),err))
   }
 
   setGettedQuiz(answer){
@@ -50,31 +52,29 @@ export class ViewQuizComponent implements OnInit {
 
   markAsFavorite() {
     this.quizService.markAsFavorite(this.quiz.id).subscribe(() => {},
-      err => this.errHandler("Could not mark this quiz as favorite :(",err));
+      err => this.errHandler(this.localeService.getValue('toasterEditor.wentWrong'),err));
     this.quiz.favourite = !this.quiz.favourite
   }
 
   deactivate() {
-    this.modal("Are you sure you want to deactivate this question?\n"+
-    "Once you deactivate a quiz, there is no going back.", "danger")
+    this.modal(this.localeService.getValue('modal.deactivateQ'), "danger")
       .subscribe((receivedEntry) => {
         if (receivedEntry) {
           this.quizService.deactivate(this.quiz.id).subscribe(
             () => this.quiz.activated = false, 
-            err => this.errHandler("Could not deactivate this quiz :( ",err))
+            err => this.errHandler(this.localeService.getValue('toasterEditor.wentWrong'),err))
         }
       });
 
   }
 
   delete(){
-    this.modal("Are you sure you want to delete this question?"+
-    "Once you delete a quiz, there is no going back.", "danger")
+    this.modal(this.localeService.getValue('modal.deleteQ'), "danger")
       .subscribe((receivedEntry) => {
         if (receivedEntry) {
           this.quizService.delete(this.quiz.id).subscribe(
             () => this.router.navigate(['/']), 
-            err => this.errHandler("Could not deactivate this quiz :( ",err))
+            err => this.errHandler(this.localeService.getValue('toasterEditor.wentWrong'),err))
         }
       });
   }

@@ -32,6 +32,8 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.28",
     "@fortawesome/free-solid-svg-icons": "^5.13.0",
     "@ng-bootstrap/ng-bootstrap": "^6.1.0",
+    "@ngx-translate/core": "^12.1.2",
+    "@ngx-translate/http-loader": "^4.0.0",
     "@swimlane/ngx-charts": "^14.0.0",
     "angular-font-awesome": "^3.1.2",
     "angularx-qrcode": "^2.1.1",

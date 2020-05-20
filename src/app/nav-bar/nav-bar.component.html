@@ -1,5 +1,7 @@
 <nav class="navbar navbar-light bg-light navbar-expand-lg justify-content-center mb-3">
-  <a class="navbar-brand d-flex w-50 mr-auto" [routerLink]="'/'">QUIZ-NET</a>
+  <a class="navbar-brand mr-auto" [routerLink]="'/'"
+  [ngClass]="{'adminw': privileged, 'otherw': !privileged}"
+  >QUIZ-NET</a>
   <button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -12,32 +14,44 @@
           <a class="nav-link" [routerLink]="'/privileged/main'" (click)="isMenuCollapsed = true">MAIN</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="'/validation'" (click)="isMenuCollapsed = true">VALIDATION</a>
+          <a class="nav-link" [routerLink]="'/validation'" (click)="isMenuCollapsed = true">
+            {{ 'navbar.validation' | translate }}
+          </a>
         </li>
       </ng-template>
-      <ng-template [ngIf]="!privileged">
+      <ng-template [ngIf]="!privileged && signedIn">
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="'/activities'" (click)="isMenuCollapsed = true">ACTIVITIES</a>
+          <a class="nav-link" [routerLink]="'/activities'" (click)="isMenuCollapsed = true">
+            {{ 'navbar.activities' | translate }}
+          </a>
         </li>
       </ng-template>
       <ng-template [ngIf]="signedIn">
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="'/profile'" (click)="isMenuCollapsed = true">PROFILE</a>
+          <a class="nav-link" [routerLink]="'/profile'" (click)="isMenuCollapsed = true">
+            {{ 'navbar.profile' | translate }}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="'/users'" (click)="isMenuCollapsed = true">
+            {{ 'navbar.users' | translate }}
+          </a>
         </li>
       </ng-template>
+      
 
 
 
 
       <li class="nav-item">
-        <a class="nav-link" [routerLink]="'/quiz-list'" (click)="isMenuCollapsed = true">QUIZZES</a>
+        <a class="nav-link" [routerLink]="'/quiz-list'" (click)="isMenuCollapsed = true">
+          {{ 'navbar.quizzes' | translate }}
+        </a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="'/users'" (click)="isMenuCollapsed = true">USERS</a>
-      </li>
+      
       <li class="nav-item">
         <input class="form-control mr-sm-2 mt-1" type="text" name="search" [(ngModel)]="searchArea"
-          (keydown.enter)="search()" placeholder="Search">
+          (keydown.enter)="search()" placeholder="{{ 'utils.search' | translate }}">
       </li>
     </ul>
     <a *ngIf="signedIn" class="navbar-brand" [routerLink]="'/notifications'">
@@ -57,15 +71,15 @@
     <ul class="nav navbar-nav ml-auto w-100 justify-content-end">
       <ng-template [ngIf]="signedIn" [ngIfElse]="loggedOut">
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="'/'" (click)="logout()">LOG OUT</a>
+          <a class="nav-link" [routerLink]="'/'" (click)="logout()">{{ 'navbar.logout' | translate }}</a>
         </li>
       </ng-template>
       <ng-template #loggedOut>
         <li class="nav-item">
-          <a class="nav-link clickable" (click)="openLogin()">LOG IN</a>
+          <a class="nav-link clickable" (click)="openLogin()">{{ 'navbar.login' | translate }}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link clickable" (click)="openReg()">SIGN UP</a>
+          <a class="nav-link clickable" (click)="openReg()">{{ 'navbar.signup' | translate }}</a>
         </li>
       </ng-template>
     </ul>

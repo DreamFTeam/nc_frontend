@@ -1,0 +1,80 @@
+{
+    "utils":{
+        "title":"Title",
+        "description":"Description",
+        "save":"Save",
+        "questions":"Questions",
+        "language":"Language",
+        "tags":"Tags",
+        "categories":"Categories",
+        "content":"Content",
+        "true":"True",
+        "false":"False",
+        "points":"Points",
+        "delete":"Delete",
+        "remove": "Remove",
+        "announcement":"announcement",
+        "announcements":"announcements",
+        "edit":"Edit",
+        "cancel":"Cancel",
+        "image":"image",
+        "settings":"Settings",
+        "change":"Change",
+        "password":"password",
+        "author":"Author",
+        "play":"Play",
+        "search":"Search",
+        "yes":"Yes",
+        "no":"No",
+        "notFound":"Not found"
+    },
+    "utilsOther":{
+        "image":"image"
+    },
+    "quizCreation":{
+        "createQuiz":"Create quiz",
+        "remove":"Remove",
+        "image":"image",
+        "question":"question",
+        "save":"Save as new",
+        "publish":"Publish",
+        "newQuestion":"New question",
+        "addQuestion":"Add question",
+        "ofQuiz":"of quiz",
+        "questiontitle":"Question title",
+        "rightAnswer":"Right answer",
+        "rightAnswers":"Right answers",
+        "otherAnswers":"Other answers",
+        "answer":"answer"
+    },
+    "viewQuiz":{
+        "deactivated":"Deactivated",
+        "deactivate":"Deactivate",
+        "danger":"Danger zone"
+    },
+    "navbar":{
+        "validation":"VALIDATION",
+        "activities":"ACTIVITIES",
+        "profile":"PROFILE",
+        "users":"USERS",
+        "quizzes":"QUIZZES",
+        "login":"LOG IN",
+        "signup":"SIGN IN",
+        "logout":"LOG OUT"
+    },
+    "toasterEditor":{
+        "wentWrong":"Sorry, something went wrong :(",
+        "saved":"Saved",
+        "created":"Created",
+        "published":"Published",
+        "removed":"Removed"
+    },
+    "modal":{
+        "sure":"Are you shure you want to ",
+        "publish":"publish?",
+        "delete":"delete?",  
+        "deleteQ":"delete this quiz? Once you delete a quiz, there is no going back.",
+        "deactivateQ":"deactivate this quiz? Once you deactivate a quiz, there is no going back."
+    },
+    "managaAnn":"Manage announcements"
+}

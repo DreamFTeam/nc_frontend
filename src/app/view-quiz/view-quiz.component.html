@@ -24,12 +24,11 @@
                     </div>
 
                     <label style="word-wrap: break-word;" class="mt-2">{{quiz.title}}</label>
-                    <p *ngIf="!quiz.activated" style="color: red;">Deactivated</p>
+                    <p *ngIf="!quiz.activated" style="color: red;">{{ 'viewQuiz.deactivated' | translate }}</p>
 
                 </div>
                 <div class="col">
                     <div class="float-right">
-                        Updated
                         <div style="font-style: italic;">{{quiz.creationDate}}</div>
                     </div>
 
@@ -42,7 +41,7 @@
                 </div>
                 <div class="col-sm-8">
                     <div>
-                        <label>Author: </label>
+                        <label>{{ 'utils.author' | translate }}: </label>
                         <a class="ml-2" routerLink="/profile/{{quiz.author}}">{{quiz.author}}</a>
                     </div>
 
@@ -57,7 +56,7 @@
                         </span>
                     </div>
 
-                    <label class="mt-4">Description</label>
+                    <label class="mt-4">{{ 'utils.description' | translate }}</label>
                     <div class="mt-2" style="word-wrap: break-word;">
                         {{quiz.description}}
                     </div>
@@ -66,24 +65,27 @@
             </div>
 
             <div class="mt-3">
-                <div *ngIf="!isPrivileged()" class="btn buttonpr ml-1" routerLink="/quiz/{{quiz.id}}/newgame">Play quiz
+                <div *ngIf="!isPrivileged()" class="btn buttonpr ml-1" routerLink="/quiz/{{quiz.id}}/newgame">
+                    {{ 'utils.play' | translate }}
                 </div>
-                <div *ngIf="isMyQuiz()" class="btn buttonsec ml-1" routerLink="/quizedit/{{quiz.id}}">Edit quiz</div>
+                <div *ngIf="isMyQuiz()" class="btn buttonsec ml-1" routerLink="/quizedit/{{quiz.id}}">
+                    {{ 'utils.edit' | translate }}
+                </div>
 
             </div>
 
             <div class="row ml-1 mt-2">
                 <div *ngIf="isMyQuiz() || isPrivileged() " class="border border-danger rounded 
                 col-5 col-sm-5 col-md-3 col-lg-2 p-2">
-                    <label style="color: red">Danger zone</label>
+                    <label style="color: red">{{ 'viewQuiz.danger' | translate }}</label>
                     <div class="mt-1">
                         <button *ngIf="quiz.activated" class="btn buttondel" (click)="deactivate()">
-                            Deactivate quiz
+                            {{ 'viewQuiz.deactivate' | translate }}
                         </button>
                     </div>
                     <div class="mt-1">
                         <button class="btn buttondel" (click)="delete()">
-                            Delete quiz
+                            {{ 'utils.delete' | translate }}
                         </button>
                     </div>
                 </div>
