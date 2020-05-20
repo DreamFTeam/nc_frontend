@@ -63,6 +63,7 @@ import { ToastsService } from './_services/toasts.service';
 import { UserSettingsComponent } from './user-settings/user-settings.component';
 import { UserChangePasswordComponent } from './user-change-password/user-change-password.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { LastAchievementsListComponent } from './last-achievements-list/last-achievements-list.component';
 
 const appRoutes: Routes = [];
 
@@ -112,7 +113,8 @@ const appRoutes: Routes = [];
     GameQuestionComponent,
     GameResultComponent,
     ToastsComponent,
-    UserSettingsComponent],
+    UserSettingsComponent,
+    LastAchievementsListComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

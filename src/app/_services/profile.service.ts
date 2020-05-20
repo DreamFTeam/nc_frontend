@@ -101,5 +101,12 @@ export class ProfileService {
 
   }
 
+  public getLastAchievements(): Observable<Achievement[]>{
+    return this.http.get<Achievement[]>(this.profilesUrl + 'achievements/last-week',
+      this.httpOptions).pipe(map((data) => data.map(achievement => {
+        return new Achievement().deserialize(achievement, this.sanitizer);
+      }))
+    );
+  }
 
 }

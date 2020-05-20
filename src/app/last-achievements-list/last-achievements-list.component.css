@@ -1,0 +1,9 @@
+.embed-responsive .pic {
+    object-fit: cover;
+}
+.embed-responsive{
+    max-width: 25%;
+}
+.card-header{
+    font-size: medium;
+}

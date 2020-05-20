@@ -1,6 +1,8 @@
 import {Component, Input, OnInit, Renderer2, TemplateRef, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { AuthenticationService } from '../_services/authentication.service';
+import { Role } from '../_models/role';
 
 @Component({
   selector: 'app-modal-content-message',
@@ -27,10 +29,13 @@ export class MessModalContent {
 })
 export class LandingPageComponent implements OnInit {
   @ViewChild('message') mess: TemplateRef<any>;
-
+  
+  isSignedIn: boolean;
+  isRoleUser: boolean;
 
   constructor(private activatedRoute: ActivatedRoute,
-              private modalService: NgbModal) {
+              private modalService: NgbModal,
+              private authenticationService: AuthenticationService) {
   }
 
   ngOnInit(): void {
@@ -40,6 +45,9 @@ export class LandingPageComponent implements OnInit {
           .componentInstance.message = params.message;
       }
     });
+    this.isSignedIn = (this.authenticationService.currentUserValue === undefined) ? false : true;
+    this.isRoleUser = (this.isSignedIn &&
+      this.authenticationService.currentUserValue.role === Role.User);
   }
 
 
