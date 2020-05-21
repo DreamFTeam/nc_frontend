@@ -21,6 +21,9 @@ export class Profile {
           ('data:image\/(png|jpg|jpeg);base64,'
             + input.image);
     }
+
+    input.online = input.online || (new Date().getTime() - new Date(input.lastTimeOnline).getTime()) < 300000;
+
     return input;
   }
 

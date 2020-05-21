@@ -3,6 +3,8 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
+  locales: ['en', 'uk'],
+  defaultLocale: 'en',
   production: false,
   apiUrl: 'https://qznetbc.herokuapp.com/api/'
   // apiUrl: 'http://localhost:8081/api/'

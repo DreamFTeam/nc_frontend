@@ -26,7 +26,6 @@ export class UsersComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.search();
   }
 
   search() {
@@ -34,7 +33,7 @@ export class UsersComponent implements OnInit {
       data => {
         this.searchResults = data;
         this.searchResults.forEach(element => {
-          return Profile.deserialize(element, this.sanitizer)
+          return Profile.deserialize(element, this.sanitizer);
         });
       });
   }

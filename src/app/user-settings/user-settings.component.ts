@@ -3,6 +3,8 @@ import { Setting } from '../_models/setting';
 import { SettingsService } from '../_services/settings.service';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { ToastsService } from '../_services/toasts.service';
+import { environment } from 'src/environments/environment';
+import { LocaleService } from '../_services/locale.service';
 
 
 
@@ -13,33 +15,35 @@ import { ToastsService } from '../_services/toasts.service';
 })
 export class UserSettingsComponent implements OnInit {
   readonly languages = [
-    { name: "English", value: "eng" },
-    { name: "Українська", value: "ukr" }
+    { name: "English", value: `${environment.locales[0]}` },
+    { name: "Українська", value: `${environment.locales[1]}` }
   ]
 
   language: Setting;
 
   loading: boolean;
+  buttonLoading: boolean;
 
   settings: Setting[];
 
   faSpinner = faSpinner;
 
   constructor(private settingsService: SettingsService,
-     public toastService: ToastsService) { 
+     public toastService: ToastsService, private localeService: LocaleService) { 
     
   }
 
   ngOnInit(): void {
     this.loading = true;
+    this.buttonLoading = false;
     this.settingsService.getSettings()
       .subscribe(ans => this.setSettings(ans), 
-      err => err => this.errHandler("Couldn`t load your settings :(",err),);
+      err => err => this.errHandler(this.localeService.getValue('toasterEditor.wentWrong'),err),);
   }
 
   setSettings(ans) {
     let temp: Setting[] = ans;
-    const index = temp.findIndex(el => el.title === "Language");
+    const index = temp.findIndex(el => el.id === "e8449301-6d6f-4376-8247-b7d1f8df6416");
     this.language = temp.splice(index, 1)[0];
     this.settings = temp;
 
@@ -52,20 +56,11 @@ export class UserSettingsComponent implements OnInit {
 
 
   save() {
-    const saved = this.settings.map(el => ({ ... (el) })).concat(Object.assign({}, this.language));
-
-
-    saved.map(el => ["title", "description"].map(x => delete el[x]));
-    saved.map(el => el.value = el.value.toString());
-
-    console.log(this.settings);
-    console.log(saved);
-
-    this.loading = true;
-    this.settingsService.saveSettings(saved).subscribe(
-      () => this.toastService.toastAddSuccess("Saved"),
-      err => this.errHandler("Couldn`t save your settings :(",err),
-      () => this.loading = false
+    this.buttonLoading = true;
+    this.settingsService.saveSettings(this.settings, this.language).subscribe(
+      () => this.toastService.toastAddSuccess(this.localeService.getValue('toasterEditor.saved')),
+      err => this.errHandler(this.localeService.getValue('toasterEditor.wentWrong'),err),
+      () => this.buttonLoading = false
     )
   }
 

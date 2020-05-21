@@ -22,6 +22,7 @@ export class GameSettingsService {
     private readySubject: BehaviorSubject<string[]>;
     public readyList: Observable<string[]>;
 
+    private eventSource: EventSource;
     httpOptions = {
         headers: new HttpHeaders({
             'Content-Type': 'application/json'
@@ -41,15 +42,14 @@ export class GameSettingsService {
     }
 
     getSseForGame(gameId: string) {
-        const eventSource = this.sseService.getEventSource(this.sseConnectorUrl + gameId);
-
-        eventSource.addEventListener('join', event => {
+        this.eventSource = this.sseService.getEventSource(this.sseConnectorUrl + gameId);
+        this.eventSource.addEventListener('join', event => {
             const ev: any = event;
             console.log('Join ' + ev.data);
             this.setSubjSessions(gameId);
         });
 
-        eventSource.addEventListener('ready', event => {
+        this.eventSource.addEventListener('ready', event => {
             const ev: any = event;
             console.log('Ready ' + ev.data);
             if (!this.readySubject.value.includes(ev.data)) {
@@ -58,17 +58,21 @@ export class GameSettingsService {
             }
         });
 
-        eventSource.addEventListener('start', () => {
+        this.eventSource.addEventListener('start', () => {
             this.readySubject.next([]);
             this.sessionsSubject.next([]);
             this.gameStart = true;
             this.router.navigateByUrl(`/play/${gameId}`);
         });
 
-        eventSource.onerror = error => {
+        this.eventSource.onerror = error => {
             console.error(error);
         };
 
+    }
+
+    stopSse() {
+        this.eventSource.close();
     }
 
     createGame(settings: any): Observable<Game> {

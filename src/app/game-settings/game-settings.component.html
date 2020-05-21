@@ -1,15 +1,15 @@
 <div class="container bg-white rounded p-2">
   <form #settingsForm="ngForm">
   <div class="form-group row">
-    <label for="roundDuration" class="col text-right col-form-label">Time for one question</label>
+    <label for="roundDuration" class="col text-right col-form-label">{{'game.qtime'| translate}}</label>
     <div class="col">
       <select name="roundDuration" required ngModel class="form-control" id="roundDuration">
-        <option *ngFor="let time of roundDurations" value="{{time}}">{{time}} seconds</option>
+        <option *ngFor="let time of roundDurations" value="{{time}}">{{time}} {{'game.sec'| translate}}</option>
       </select>
     </div>
   </div>
   <div class="row form-group">
-    <label for="numberOfQuestions" class="col text-right col-form-label">Questions amount</label>
+    <label for="numberOfQuestions" class="col text-right col-form-label">{{'game.qamount'| translate}}</label>
     <div class="col">
       <input class="form-control"
              ngModel
@@ -22,7 +22,7 @@
     </div>
   </div>
    <div class="row form-group">
-    <label for="maxUsersCount" class="col text-right col-form-label">Users amount</label>
+    <label for="maxUsersCount" class="col text-right col-form-label">{{'game.uamount'| translate}}</label>
     <div class="col">
       <input class="form-control"
              ngModel
@@ -35,15 +35,15 @@
     </div>
   </div>
     <div class="row form-group">
-      <label for="breakTime" class="col text-right col-form-label">Break time</label>
+      <label for="breakTime" class="col text-right col-form-label">{{'game.btime'| translate}}</label>
       <div class="col">
         <select name="breakTime" required ngModel class="form-control" id="breakTime">
-          <option *ngFor="let time of breaks" value="{{time}}">{{time}} seconds</option>
+          <option *ngFor="let time of breaks" value="{{time}}">{{time}} {{'game.sec'| translate}}</option>
         </select>
       </div>
     </div>
     <div class="row form-group">
-      <label for="additionalPoints" class="col text-right col-form-label">Extra points for speed</label>
+      <label for="additionalPoints" class="col text-right col-form-label">{{'game.epoints'| translate}}</label>
       <div class="col">
         <input class="form-control"
                ngModel
@@ -57,14 +57,14 @@
 
 <div class="mt-4 container bg-white rounded p-3">
   <div class="row">
-    <div class="col"><button routerLink="/viewquiz/{{quizId}}" class="btn btn-block btn-warning">Back to quiz page</button></div>
+    <div class="col"><button routerLink="/viewquiz/{{quizId}}" class="btn btn-block btn-warning">{{'game.back'| translate}}</button></div>
     <div class="col"><button
       [disabled]="settingsForm.invalid || loading"
       class="btn btn-block btn-success"
       (click)="applySettings(settingsForm.value)">
-      <span *ngIf="!loading">Start game</span>
+      <span *ngIf="!loading">{{'game.startg'| translate}}</span>
     <span *ngIf="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-    <span *ngIf="loading" class="sr-only">Loading...</span></button></div>
+    <span *ngIf="loading" class="sr-only">{{'game.loading'| translate}}</span></button></div>
   </div>
   <div *ngIf="error" class="mt-4 alert alert-danger font-weight-bolder text-center" role="alert">
     {{errorMessage}}

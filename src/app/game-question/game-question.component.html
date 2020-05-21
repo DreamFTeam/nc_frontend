@@ -5,10 +5,10 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h3><p>Title: {{curq.title}}</p></h3>
+                <h3><p>{{'game.title' | translate }} {{curq.title}}</p></h3>
             </div>
             <div class="modal-header">
-                <h3><p>Question: {{curq.content}}</p></h3>
+                <h3><p>{{'game.question' | translate }} {{curq.content}}</p></h3>
             </div>
             <div *ngIf="curq_image != null" class="modal-header">
                 <img [src]="'data:image/jpeg;base64,'+curq_image"/>
@@ -43,10 +43,10 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h3><p>Title: {{curq.title}}</p></h3>
+                <h3><p>{{'game.title' | translate }} {{curq.title}}</p></h3>
             </div>
             <div class="modal-header">
-                <h3><p>Question: {{curq.content}}</p></h3>
+                <h3><p>{{'game.question' | translate }} {{curq.content}}</p></h3>
             </div>
             <div *ngIf="curq_image != null" class="modal-header">
                 <img [src]="'data:image/jpeg;base64,'+curq_image"/>
@@ -55,10 +55,10 @@
             <div class="quiz" id="quiz" data-toggle="buttons">
                 <label class="btn btn-lg btn-primary btn-block"><span class="btn-label"></span> <button name="button1id"
                                                                                                         class="btn btn-primary"
-                                                                                                        (click)="trueFalseAns('true')">True</button></label>
+                                                                                                        (click)="trueFalseAns('true')">{{'game.true' | translate }}</button></label>
                 <label class="btn btn-lg btn-primary btn-block"><span class="btn-label"></span> <button name="button1id"
                                                                                                         class="btn btn-primary"
-                                                                                                        (click)="trueFalseAns('false')">False</button></label>
+                                                                                                        (click)="trueFalseAns('false')">{{'game.false' | translate }}</button></label>
                 <label class="btn btn-lg btn-block"> 
                     <div class="progress">
                         <div id="cnt"
@@ -83,10 +83,10 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h3><p>Title: {{curq.title}}</p></h3>
+                <h3><p>{{'game.title' | translate }} {{curq.title}}</p></h3>
             </div>
             <div class="modal-header">
-                <h3><p>Question: {{curq.content}}</p></h3>
+                <h3><p>{{'game.question' | translate }} {{curq.content}}</p></h3>
             </div>
             <div *ngIf="curq_image != null" class="modal-header">
                 <img [src]="'data:image/jpeg;base64,'+curq_image"/>
@@ -102,7 +102,7 @@
                        pattern="[a-zA-Z]+"/>
                 <label class="btn btn-lg btn-primary btn-block"><span class="btn-label"></span> <button name="button1id"
                                                                                                         class="btn btn-primary"
-                                                                                                        (click)="manualAns()">Apply</button></label>
+                                                                                                        (click)="manualAns()">{{'game.apply' | translate }}</button></label>
                 <label class="btn btn-lg btn-block"> 
                     <div class="progress">
                         <div id="cnt"
@@ -127,17 +127,17 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h3><p>Title: {{curq.title}}</p></h3>
+                <h3><p>{{'game.title' | translate }} {{curq.title}}</p></h3>
             </div>
             <div class="modal-header">
-                <h3><p>Question: {{curq.content}}</p></h3>
+                <h3><p>{{'game.question' | translate }} {{curq.content}}</p></h3>
             </div>
             <div *ngIf="curq_image != null" class="modal-header">
                 <img [src]="'data:image/jpeg;base64,'+curq_image"/>
             </div>
         <div class="modal-body">
             <div class="quiz" id="quiz" data-toggle="buttons">
-                <p><i>Place answers in right order: </i></p>
+                <p><i>{{'game.ordertext' | translate }}</i></p>
                 <div cdkDropList class="e-list" (cdkDropListDropped)="drop($event)">
                     <div class="e-box" *ngFor="let answer of shuffled" cdkDrag>{{answer}}</div>
                 </div>
@@ -149,7 +149,7 @@
                 </form> -->
                 <label class="btn btn-lg btn-primary btn-block"><span class="btn-label"></span> <button name="button1id"
                                                                                                         class="btn btn-primary"
-                                                                                                        (click)="seqAns()">Apply</button></label>
+                                                                                                        (click)="seqAns()">{{'game.apply' | translate }}</button></label>
                 <label class="btn btn-lg btn-block"> 
                     <div class="progress">
                         <div id="cnt"
@@ -174,7 +174,7 @@
     <div class="row">
         <div class="col-2"></div>
         <div class="col bg-white rounded text-center">
-            <p class="h4"> Waiting for other players ... </p>
+            <p class="h4">{{'game.waitingpl' | translate }}</p>
         </div>
         <div class="col-2"></div>
     </div>
@@ -184,7 +184,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h3><p>Your score: {{playerRating}}; Total quiz time: {{timeSpend}}s</p></h3>
+                <h3><p>{{'game.yourscore' | translate }} {{playerRating}}; {{'game.totalquiztime' | translate }} {{timeSpend}}s</p></h3>
             </div>
         </div>
     </div>

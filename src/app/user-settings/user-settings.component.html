@@ -4,7 +4,7 @@
         <fa-icon [icon]="faSpinner" [spin]="true" size="6x"></fa-icon>
     </div>
     <div *ngIf="!loading">
-        <h1 class="title font-base">Settings</h1>
+        <h1 class="title font-base">{{ 'utils.settings' | translate }}</h1>
         <div class="ml-4 mt-2">
             <div>
                 <label style="font-weight: 600;">{{language.title}}</label>
@@ -31,13 +31,15 @@
                 </span>
             </div>
 
-            <button class="btn buttonpr mt-2" (click)="save()">Save</button>
+            <button class="btn buttonpr mt-2" (click)="save()">{{ 'utils.save' | translate }}
+                <span *ngIf="buttonLoading" class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+            </button>
         </div>
 
 
 
         <hr>
-        <h1 class="title font-base">Change password</h1>
+        <h1 class="title font-base">{{ 'utils.change' | translate }} {{ 'utils.password' | translate }}</h1>
         <app-user-change-password></app-user-change-password>
     </div>
 
