@@ -1,17 +1,17 @@
 <div class="content container" role="main">
     <div class="col mainstyle container">
         <div class="row jumbotron">
-            <p class="page-heading page-heading-font-size lead">{{currentUsername}}'s quiz validation list</p>
+            <p class="page-heading page-heading-font-size lead">{{currentUsername}}{{'validationPage.title' | translate}}</p>
         </div>
         <ul ngbNav #nav="ngbNav" [(activeId)]="active" (activeIdChange)="changeList($event)" class="nav-tabs">
             <li [ngbNavItem]="1" [destroyOnHide]="true">
-                <a ngbNavLink class="tab-head">Unvalidated</a>
+                <a ngbNavLink class="tab-head">{{'utils.unvalidated' | translate}}</a>
                 <ng-template ngbNavContent>
                     <app-validation-tab [showButtons]="showButtons"></app-validation-tab>
                 </ng-template>
             </li>
             <li [ngbNavItem]="2" [destroyOnHide]="true">
-                <a ngbNavLink class="tab-head">Validated</a>
+                <a ngbNavLink class="tab-head">{{'utils.validated' | translate}}</a>
                 <ng-template ngbNavContent>
                     <app-validation-tab [showButtons]="showButtons"></app-validation-tab>
                 </ng-template>

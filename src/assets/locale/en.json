@@ -4,6 +4,8 @@
         "description":"Description",
         "save":"Save",
         "questions":"Questions",
+        "question":"Question",
+        "info":"Info",
         "language":"Language",
         "tags":"Tags",
         "categories":"Categories",
@@ -11,6 +13,8 @@
         "true":"True",
         "false":"False",
         "points":"Points",
+        "answer":"Answer",
+        "answers":"Answers",
         "delete":"Delete",
         "remove": "Remove",
         "announcement":"announcement",
@@ -26,7 +30,15 @@
         "search":"Search",
         "yes":"Yes",
         "no":"No",
-        "notFound":"Not found"
+        "notFound":"Not found",
+        "rejected":"Rejected",
+        "reject":"Reject",
+        "validate":"Validate",
+        "unvalidated":"Unvalidated",
+        "validated":"Validated",
+        "dateofcreation":"Date of creation",
+        "langEng":"English",
+        "langUkr":"Ukrainian"
     },
     "utilsOther":{
         "image":"image"
@@ -67,14 +79,19 @@
         "saved":"Saved",
         "created":"Created",
         "published":"Published",
-        "removed":"Removed"
+        "removed":"Removed",
+        "rejected":"Rejected successfully",
+        "acceptedActivated":"Successfully accepted and activated"
     },
     "modal":{
+        "attention":"Attention",
         "sure":"Are you shure you want to ",
         "publish":"publish?",
         "delete":"delete?",  
         "deleteQ":"delete this quiz? Once you delete a quiz, there is no going back.",
-        "deactivateQ":"deactivate this quiz? Once you deactivate a quiz, there is no going back."
+        "deactivateQ":"deactivate this quiz? Once you deactivate a quiz, there is no going back.",
+        "reject":"Are you sure you want to reject this quiz? This action can't be undone.",
+        "acceptQuiz":"Are you sure you want to accept and activate this quiz?"
     },
     "managaAnn":"Manage announcements",
 
@@ -157,6 +174,20 @@
         "loading":"Loading...",
         "players":"Players",
         "points":"Points"
+    },
+    "validationPage" :{
+        "title":"'s quiz validation list"
+    },
+    "validationTab":{
+        "empty":"The list is empty"
+    },
+    "quizValidation":{
+        "title":"Quiz review",
+        "acceptAndActivate":"Accept&activate",
+        "rightAnswers":"Right answers",
+        "rightAnswer":"Rigth answer",
+        "questionType":"Question type",
+        "admComment":"Administration commentary"
     }
 
 }

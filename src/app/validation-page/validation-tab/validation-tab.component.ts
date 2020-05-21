@@ -9,6 +9,7 @@ import { YesNoModalComponent } from '../../yes-no-modal/yes-no-modal.component';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { ToastsService } from 'src/app/_services/toasts.service';
 import { ModalService } from 'src/app/_services/modal.service';
+import { LocaleService } from 'src/app/_services/locale.service';
 
 
 @Component({
@@ -39,7 +40,8 @@ export class ValidationTabComponent implements OnInit {
     private quizValidationService: QuizValidationService,
     private router: Router,
     private modalService: ModalService,
-    public toastsService: ToastsService) {
+    public toastsService: ToastsService,
+    private localeService: LocaleService) {
     this.isLoading = true;
     this.isEmpty = false;
     this.toasts = [];
@@ -57,7 +59,7 @@ export class ValidationTabComponent implements OnInit {
       this.isLoading = false;
     },
       error => {
-        this.toastsService.toastAddDanger('An error occured while fetching the total size of a list.');
+        this.toastsService.toastAddDanger('Couldn\'t fetch list size.');
       });
   }
 
@@ -80,19 +82,19 @@ export class ValidationTabComponent implements OnInit {
     this.router.navigateByUrl('/validation/' + id);
   }
 
-  reject(id: string): void {
-    this.modalService.openModal("Are you sure you want to reject this quiz?", 'warning')
+  reject(id: string, creatorId: string, title: string): void {
+    this.modalService.openModal(this.localeService.getValue('modal.reject'), 'warning')
       .subscribe((receivedEntry) => {
         if (receivedEntry) {
-          this.quizValidationService.validateQuiz(id, false, "This quiz was instantly rejected without validation", null, null)
+          this.quizValidationService.validateQuiz(id, false, "This quiz was instantly rejected without validation", creatorId, title)
             .subscribe(next => {
-              this.toastsService.toastAddSuccess('The quiz was rejected successfully.');
+              this.toastsService.toastAddSuccess(this.localeService.getValue('toasterEditor.rejected'));
               this.page = 1;
               this.getTotalSize();
               this.getQuizList(this.page);
             },
               error => {
-                this.toastsService.toastAddDanger('An error occured while rejecting the quiz.');
+                this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'));
               });
         };
       });
