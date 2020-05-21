@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ShortQuizListService } from '../_services/short-quiz-list.service';
 import { Observable, of } from 'rxjs';
 import { ExtendedQuizPreview } from '../_models/extendedquiz-preview';
+import { ToastsService } from '../_services/toasts.service';
 
 @Component({
   selector: 'app-short-quiz-list',

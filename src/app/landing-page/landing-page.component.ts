@@ -1,6 +1,8 @@
 import {Component, Input, OnInit, Renderer2, TemplateRef, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {ToastsService} from '../_services/toasts.service';
+import { AuthenticationService } from '../_services/authentication.service';
+import { Role } from '../_models/role';
 
 @Component({
   selector: 'app-landing-page',
@@ -8,9 +10,12 @@ import {ToastsService} from '../_services/toasts.service';
   styleUrls: ['./landing-page.component.css']
 })
 export class LandingPageComponent implements OnInit {
+  isSignedIn: boolean;
+  isRoleUser: boolean;
 
   constructor(private activatedRoute: ActivatedRoute,
-              private toastsService: ToastsService) {
+              private toastsService: ToastsService,
+              private authenticationService: AuthenticationService) {
   }
 
   ngOnInit(): void {
@@ -19,6 +24,9 @@ export class LandingPageComponent implements OnInit {
         this.toastsService.toastAddWarning(params.message);
       }
     });
+    this.isSignedIn = (this.authenticationService.currentUserValue === undefined) ? false : true;
+    this.isRoleUser = (this.isSignedIn &&
+      this.authenticationService.currentUserValue.role === Role.User);
   }
 
 

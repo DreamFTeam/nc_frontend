@@ -14,7 +14,7 @@ export class Announcement implements DesearizableWImage{
         Object.assign(this,input);
 
         let img = this.image;
-        if (img !== null){
+        if (img !== null && img !== undefined && img !== ''){
             const objUrl = 'data:image/jpeg;base64,' + this.image;
             this.image = sanitizer.bypassSecurityTrustUrl(objUrl);    
         }

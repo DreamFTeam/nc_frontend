@@ -1,0 +1,39 @@
+.embed-responsive .pic {
+    object-fit: cover;
+}
+
+.embed-responsive {
+    max-width: 25%;
+}
+
+.card-header {
+    font-size: medium;
+}
+
+.media :hover {
+    cursor: pointer;
+}
+
+.media {
+    margin-bottom: 0.7em;
+}
+
+.card-body {
+    max-height: 30vh;
+}
+
+.quiztitle {
+    font-size: small;
+    padding: 0;
+    margin-bottom: 0.1em;
+}
+
+@media (min-width: 768px) {
+    .embed-responsive {
+        min-width: 15% !important;
+        max-width: 35% !important;
+    }
+    .card-header {
+        font-size: 1em;
+    }
+}

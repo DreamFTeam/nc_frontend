@@ -1,0 +1,22 @@
+.pointer :hover {
+    cursor: pointer;
+}
+
+.quiztitle {
+    font-size: smaller;
+}
+
+.card-body {
+    max-height: 65vh;
+}
+
+.emptylabel {
+    width: 100%;
+    padding: 2em;
+    text-align: center;
+    font-size: medium;
+}
+
+.card-header {
+    font-size: medium;
+}
