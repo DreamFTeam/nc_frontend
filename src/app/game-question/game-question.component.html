@@ -1,6 +1,6 @@
 <!-- <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"> -->
 
-<div class="container-sm mt-2 mb-2 p-3" *ngIf="!questionsLoading">
+<div class="container-sm mt-2 mb-2 p-3" *ngIf="!questionsLoading && !isBreak">
     <div *ngIf="curq.typeId == 1 && !waitResult">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -170,6 +170,27 @@
         <div class="col-2"></div>
         <div class="col bg-white rounded text-center">
             <p class="h4">{{'game.waitingpl' | translate }}</p>
+        </div>
+        <div class="col-2"></div>
+    </div>
+</div>
+
+<div *ngIf="isBreak" class="container">
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col bg-white rounded text-center">
+            <p class="h4">{{'game.break' | translate }}</p>
+            <label class="btn btn-lg btn-block"> 
+                <div class="progress">
+                    <div id="cnt"
+                        class="progress-bar progress-bar-striped progress-bar-animated"
+                        role="progressbar"
+                        aria-valuenow="20"
+                        aria-valuemin="0"
+                        aria-valuemax="60"
+                        style="width:{{timeLeft}}%"></div>
+                </div>
+            </label>
         </div>
         <div class="col-2"></div>
     </div>
