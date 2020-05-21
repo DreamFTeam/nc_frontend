@@ -1,12 +1,89 @@
-<div class="content" role="main" >
-  <div id="profile"  >
-   <b> Username</b> : {{profile.username}}
-      <img id="image">
-   <b><br> Role: </b>{{profile.role.substr(5).toLowerCase()}}
-   <div class="btncreate" *ngIf="profile.role=='ROLE_SUPERADMIN'" (click)="createAdmin()">Create admin</div>
-   <div class="btncreate" *ngIf="profile.role!='ROLE_MODERATOR'" (click)="createModerator()">Create  moderator</div>
-  </div>
-  <!--
-  <div id="quizlist"> Quizzes to review </div>
- -->
+<div class="row mx-2">
+    <div class="col">
+        <div class="container bg-white rounded">
+            <b> Username</b> : {{profile.username}}
+	        <img id="image">
+            <b>Role: </b>{{profile.role.substr(5).toLowerCase()}}
+	        <button class="btn mb-1 btncreate" *ngIf="profile.role=='ROLE_SUPERADMIN'" (click)="createAdmin()">Create admin</button>
+            <button class="btn mb-4 btncreate" *ngIf="profile.role!='ROLE_MODERATOR'" (click)="createModerator()">Create moder</button>
+        </div>
+    </div>
+    <div class="col p-2">
+        <div class="container text-center bg-white rounded">
+            <div class="row">
+                <p class="h5 col">
+                    {{titlePopQuiz}}
+                </p>
+            </div>
+            <div class="row">
+                <div class="col p-1 m-1">
+                    <ngx-charts-bar-horizontal
+                            (select)="selectQuiz($event)"
+                            [results]="dataPopQuiz"
+                            [gradient]="gradientPopQuiz"
+                            [xAxis]="showXAxisPopQuiz"
+                            [yAxis]="showYAxisPopQuiz"
+                            [showDataLabel]="true"
+                            [showYAxisLabel]="showYAxisLabelPopQuiz">
+                    </ngx-charts-bar-horizontal>
+                </div>
+            </div>
+        </div>
+    </div>
+     <div class="col-sm-12 col-xl-12 col-md-12 col-lg-12  p-2 ">
+        <div class="container text-center bg-white rounded">
+            <div class="row">
+                <p class="h5 col">
+                    {{titleQuizStatus}}
+                </p>
+            </div>
+            <div class="row">
+                <div class="col p-0 m-0">
+                    <ngx-charts-pie-grid
+                            [tooltipDisabled]="true"
+                            [results]="dataQuizStatus"
+                    minWidth="80">
+                    </ngx-charts-pie-grid>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row m-2">
+    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 p-2">
+        <div class="container text-center bg-white rounded">
+            <div class="row">
+                <p class="h5 col">
+                    {{titleValidQuiz}}
+                </p>
+            </div>
+            <div class="row">
+                <div class="col p-0 m-0" >
+                    <ngx-charts-bar-vertical
+                            [yAxis]="true"
+                            [results]="dataValidQuiz"
+                            [legend]="legendValidQuiz"
+                            [noBarWhenZero]="noBarWhenZeroValidQuiz">
+                    </ngx-charts-bar-vertical>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 p-2">
+        <div class="container text-center bg-white rounded">
+            <div class="row">
+                <p class="h5 col">
+                    {{titleGamesPerDay}}
+                </p>
+            </div>
+            <div class="row">
+                <div class="col px-2 pt-0 pb-3">
+                   <ngx-charts-area-chart
+                           [results]="dataGamesPerDay"
+                           [xAxis]="true">
+                    </ngx-charts-area-chart>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

@@ -57,7 +57,6 @@ import { GameQuestionComponent } from './game-question/game-question.component';
 import { GameResultComponent } from './game-result/game-result.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ToastsComponent } from './toasts/toasts.component';
-import { ToastsService } from './_services/toasts.service';
 import { UserSettingsComponent } from './user-settings/user-settings.component';
 import { UserChangePasswordComponent } from './user-change-password/user-change-password.component';
 import { TranslateModule, TranslateLoader, MissingTranslationHandler } from '@ngx-translate/core';
