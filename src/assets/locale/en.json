@@ -124,6 +124,7 @@
         "users":"users",
         "aboutMe":"About me",
         "requests":  "requests",
+        "requests_whom":  "requests",
         "request":  "request",
         "requestSent" : "Request sent on"
     },

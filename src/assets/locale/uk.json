@@ -122,7 +122,9 @@
         "user":"користувача",
         "users":"користувачів",
         "aboutMe":"Про мене",
-        "requests":  "запитів",
+        "requests":  "запити",
+        "requests_whom":  "запити(ів)",
+
         "request":  "запит",
         "requestSent" : "Запит надіслано"
     },
