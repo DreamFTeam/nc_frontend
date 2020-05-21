@@ -52,9 +52,13 @@
         <div class="row">
           <div *ngFor="let item of quizList" class="col-lg-3 col-md-4 col-sm-6 card text-center cards">
             <a routerLink="/viewquiz/{{item.id}}">
-              <img class="img-fluid card-img-top thumbn"
+              <div class="embed-responsive embed-responsive-4by3">
+                <img class="card-img-top  embed-responsive-item p-1"
                 [src]="item.imageContent ? item.imageContent : this.mockImageUrl" alt="Quiz icon">
-              <h5 class="card-title">{{item.title}}</h5>
+              </div>
+              <div class="card-body text-center">
+                <p class="card-title h5">{{item.title}}</p>
+              </div>
             </a>
           </div>
         </div>
