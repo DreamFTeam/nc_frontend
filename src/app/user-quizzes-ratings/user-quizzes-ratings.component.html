@@ -1,6 +1,6 @@
 <div class="card mb-2">
     <div class="card-header lead">
-        Your quizzes' ratings
+        {{'userQuizzesRating.title'|translate}}
     </div>
     <div class="card-body p-1 overflow-auto" *ngIf="!isEmpty ; else empty">
         <ul class="list-unstyled mb-0">
@@ -10,7 +10,7 @@
                 </div>
                 <div class="media-body pl-2">
                     <i><p class="lead quiztitle">{{item.title}}</p></i>
-                    <strong><p class="">Rating: {{item.rating}}</p></strong>
+                    <strong><p class="">{{'userQuizzesRating.rating'|translate}}: {{item.rating}}</p></strong>
                 </div>
             </li>
         </ul>
@@ -19,5 +19,5 @@
 
 <!-- Showing this when the list is empty -->
 <ng-template #empty>
-    <p *ngIf="isEmpty" class="lead emptylabel">You haven't created any quizzes yet.</p>
+    <p *ngIf="isEmpty" class="lead emptylabel">{{'userQuizzesRating.empty'|translate}}</p>
 </ng-template>
