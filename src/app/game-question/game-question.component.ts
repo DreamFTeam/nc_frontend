@@ -12,6 +12,7 @@ import {SseService} from '../_services/sse.service';
 import {GameSettingsService} from '../_services/game-settings.service';
 import {Subscription} from 'rxjs';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import {faSpinner} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
     selector: 'app-game-question',
@@ -30,21 +31,26 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
         accessId: '',
         quizId: ''
     };
-    timeLeft: number = 100;
+    questionsLoading: boolean;
+    faSpinner = faSpinner;
+
+    timeLeft: number = 100; 
     interval;
     subscribeTimer: any;
+
     questions: (OneToFour | TrueFalse | OpenAnswer | SequenceAnswer)[] = [];
     currQuestNumb: number = 0;
     curq;
     curq_image;
-    shuffled: string[];
-    seqanswers: string[] = [];
+    shuffled: string[];  
+    answf: string;
+
     playerRating: number = 0;
     timeSpend: number = 0;
 
-    answf: string;
     waitResult: boolean;
     finishGame: Subscription;
+    
 
     constructor(private gameQuestionService: GameQuestionService,
                 private questionService: QuestionService,
@@ -52,6 +58,7 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
                 private router: Router,
                 private sseService: SseService,
                 private gameSettingsService: GameSettingsService) {
+        this.questionsLoading = true;
         this.activateRoute.paramMap.pipe(
             switchMap(params => params.getAll('gameid')))
             .subscribe(data => this.loadGameData(data));
@@ -98,7 +105,6 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
     }
 
     mapGettedQuestions(ans) {
-        console.log(ans);
         for (let question of ans) {
             if (question.typeId === 1) {
                 let rightAnswers: boolean[] = [];
@@ -145,7 +151,7 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
                 value: a
             })).sort((a, b) => a.sort - b.sort).map((a) => a.value);
         }
-        console.log(this.questions.length);
+        this.questionsLoading = false;
         this.timer();
     }
 
@@ -161,7 +167,6 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
                     value: a
                 })).sort((a, b) => a.sort - b.sort).map((a) => a.value);
             }
-            console.log(this.curq);
         } else {
             this.sendResults();
             clearInterval(this.interval);
@@ -219,15 +224,6 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
         this.timeLeft = 100;
     }
 
-    addSeq(ans: string) {
-        if (this.seqanswers.indexOf(ans) != -1) {
-            this.seqanswers.splice(this.seqanswers.indexOf(ans), 1);
-        } else {
-            this.seqanswers.push(ans);
-        }
-        console.log(this.seqanswers);
-    }
-
     drop(event: CdkDragDrop<string[]>) {
         moveItemInArray(this.shuffled, event.previousIndex, event.currentIndex);
     }
@@ -237,7 +233,7 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
         let check: boolean = true;
         this.timeSpend = this.timeSpend + Math.round((100 - this.timeLeft) * this.game.roundDuration / 100);
         for (let i = 0; i < sq.rightAnswers.length; i++) {
-            if (this.seqanswers[i] != sq.rightAnswers[i]) {
+            if (this.shuffled[i] != sq.rightAnswers[i]) {
                 check = false;
             }
         }
