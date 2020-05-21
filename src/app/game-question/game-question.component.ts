@@ -34,9 +34,11 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
     questionsLoading: boolean;
     faSpinner = faSpinner;
 
-    timeLeft: number = 100; 
+    timeLeft: number = 100;
+    timerStep: number; 
     interval;
     subscribeTimer: any;
+    isBreak: boolean;
 
     questions: (OneToFour | TrueFalse | OpenAnswer | SequenceAnswer)[] = [];
     currQuestNumb: number = 0;
@@ -59,6 +61,7 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
                 private sseService: SseService,
                 private gameSettingsService: GameSettingsService) {
         this.questionsLoading = true;
+        this.isBreak = false;
         this.activateRoute.paramMap.pipe(
             switchMap(params => params.getAll('gameid')))
             .subscribe(data => this.loadGameData(data));
@@ -84,10 +87,14 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
             if (this.timeLeft > 0) {
                 this.timeLeft--;
             } else {
+                if(this.isBreak = true) {
+                    this.isBreak = false;
+                    this.timerStep = this.game.roundDuration;
+                }
                 this.nextQuestion();
                 this.timeLeft = 100;
             }
-        }, this.game.roundDuration / 100 * 1000);
+        }, this.timerStep / 100 * 1000);
     }
 
     mapGettedGameData(ans) {
@@ -101,6 +108,7 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
         this.game.accessId = ans.accessId;
         this.game.quizId = ans.quizId;
         this.loadQuestionData();
+        this.timerStep = this.game.roundDuration;
         console.log('Mapped game data: quizId - ' + this.game.quizId + ' startTime - ' + this.game.startDatetime);
     }
 
@@ -167,6 +175,8 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
                     value: a
                 })).sort((a, b) => a.sort - b.sort).map((a) => a.value);
             }
+            clearInterval(this.interval);
+            this.timer();
         } else {
             this.sendResults();
             clearInterval(this.interval);
@@ -191,7 +201,10 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
                 }
             }
         }
-        this.nextQuestion();
+        this.isBreak = true;
+        this.timerStep = this.game.breakTime;
+        clearInterval(this.interval);
+        this.timer();
         this.timeLeft = 100;
     }
 
@@ -205,7 +218,10 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
                 this.playerRating = this.playerRating + tf.points;
             }
         }
-        this.nextQuestion();
+        this.isBreak = true;
+        this.timerStep = this.game.breakTime;
+        clearInterval(this.interval);
+        this.timer();
         this.timeLeft = 100;
     }
 
@@ -220,7 +236,10 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
             }
         }
         this.answf = "";
-        this.nextQuestion();
+        this.isBreak = true;
+        this.timerStep = this.game.breakTime;
+        clearInterval(this.interval);
+        this.timer();
         this.timeLeft = 100;
     }
 
@@ -244,7 +263,10 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
                 this.playerRating = this.playerRating + sq.points;
             }
         }
-        this.nextQuestion();
+        this.isBreak = true;
+        this.timerStep = this.game.breakTime;
+        clearInterval(this.interval);
+        this.timer();
         this.timeLeft = 100;
     }
 
