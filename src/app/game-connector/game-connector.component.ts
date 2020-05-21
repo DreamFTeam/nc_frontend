@@ -44,6 +44,7 @@ export class GameConnectorComponent implements OnInit, OnDestroy {
             this.router.navigateByUrl('/');
         }
         const gameId = this.activateRoute.snapshot.paramMap.get('id');
+        this.gameSettingsService.getSseForGame(gameId);
         this.gameSettingsService
             .getGame(gameId)
             .subscribe(game => {
@@ -55,10 +56,10 @@ export class GameConnectorComponent implements OnInit, OnDestroy {
                     this.game = game;
                 }
             );
-        this.gameSettingsService.getSseForGame(gameId);
         this.gameSettingsService.setSubjSessions(gameId);
         this.gameSettingsService.sessions.subscribe(ses => {
             Object.assign(this.sessions, ses);
+            console.log(ses);
             for (const session of this.sessions) {
                 if (this.sessionId === session.game_session_id) {
                     this.creator = session._creator;
@@ -67,7 +68,6 @@ export class GameConnectorComponent implements OnInit, OnDestroy {
         });
         this.gameSettingsService.readyList.subscribe(ls => {
             Object.assign(this.usersSessionsReady, ls);
-            console.log(ls);
             this.ready = this.usersSessionsReady.includes(this.sessionId);
         });
     }
