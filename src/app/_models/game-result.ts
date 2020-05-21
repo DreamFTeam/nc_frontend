@@ -3,7 +3,7 @@ export interface GameResult {
   user_id: string;
   username: string;
   score: number;
-  is_winner: boolean;
-  is_creator: boolean;
+  _winner: boolean;
+  _creator: boolean;
   duration_time: number;
 }

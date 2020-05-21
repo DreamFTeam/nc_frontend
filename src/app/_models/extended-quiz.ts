@@ -52,7 +52,7 @@ export class ExtendedQuiz implements DesearizableWImage {
         if (this.imageContent !== null && this.imageContent !== undefined && this.imageContent != "") {
             const objUrl = 'data:image/jpeg;base64,' + this.imageContent;
             this.imageContent = sanitizer.bypassSecurityTrustUrl(objUrl);
-            console.log(objUrl);
+            // console.log(objUrl);
             this.unsanitizedImage = this.dataURLtoFile(objUrl);
         }
         return this;
