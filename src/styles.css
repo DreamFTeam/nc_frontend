@@ -65,6 +65,14 @@ a:active {
     background-color: #d94e5c;
 }
 
+.buttonsuc {
+    background-color: #28a745;
+}
+
+.buttonsuc:hover {
+    background-color: #51ad66;
+}
+
 .newlines {
     white-space: pre-wrap;
 }

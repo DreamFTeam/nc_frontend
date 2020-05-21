@@ -62,7 +62,9 @@
     "viewQuiz":{
         "deactivated":"Deactivated",
         "deactivate":"Deactivate",
-        "danger":"Danger zone"
+        "danger":"Danger zone",
+        "asFavorite":"Favorite",
+        "comment":"Admin comment"
     },
     "navbar":{
         "validation":"VALIDATION",
