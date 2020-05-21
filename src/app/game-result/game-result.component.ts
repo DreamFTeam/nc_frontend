@@ -50,7 +50,7 @@ export class GameResultComponent implements OnInit {
     }
 
     findWinner(gameResults: GameResult[]): void {
-        this.winner = gameResults.filter(result => result.is_winner)[0].username;
+        this.winner = gameResults.filter(result => result._winner)[0].username;
     }
 
     setResultsForGraphic(gameResults: GameResult[]) {
