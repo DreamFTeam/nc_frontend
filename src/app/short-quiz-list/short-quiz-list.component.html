@@ -1,6 +1,6 @@
 <div *ngIf="(shortQuizList$ | async)?.length" class="card">
     <div class="card-header lead">
-        Popular now
+        {{'shortList.title'|translate}}
     </div>
     <div class="card-body card-group row row-cols-5">
         <div class="col mb-0 px-0" *ngFor="let item of shortQuizList$ | async">

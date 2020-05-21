@@ -1,6 +1,6 @@
 <div class="card mb-2">
     <div class="card-header lead">
-        Last gained achievements this week
+        {{'lastAchievements.title' | translate}}
     </div>
     <div class="card-body p-1 overflow-auto" *ngIf="!isEmpty ; else empty">
         <ul class="list-unstyled mb-0">
@@ -18,5 +18,5 @@
 
 <!-- Showing this when the list is empty -->
 <ng-template #empty>
-    <p *ngIf="isEmpty" class="lead emptylabel">You haven't got any achievements during past week.</p>
+    <p *ngIf="isEmpty" class="lead emptylabel">{{'lastAchievements.empty' | translate}}.</p>
 </ng-template>

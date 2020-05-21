@@ -191,6 +191,32 @@
         "rightAnswer":"Rigth answer",
         "questionType":"Question type",
         "admComment":"Administration commentary"
+    },
+    "lastAchievements":{
+        "title":"Last gained achievements past week",
+        "empty":"You haven't got any achievements during past week"
+    },
+    "suggestions":{
+        "title":"Suggested for you"
+    },
+    "lastPlayed":{
+        "title":"Your last played games",
+        "quiz":"Quiz",
+        "winner":"Winner?",
+        "score":"Score",
+        "duration":"Duration",
+        "started":"Started",
+        "empty":"You haven't played anything for a week"
+    },
+    "shortList":{
+        "title":"Users' choice"
+    },
+    "userQuizzesRating":{
+        "title":"Your quizzes' ratings",
+        "rating":"Rating",
+        "empty":"You haven't created any quizzes yet."
+    },
+    "announcementsView":{
+        "title":"Site announcements"
     }
-
 }
