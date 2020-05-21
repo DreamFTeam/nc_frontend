@@ -214,6 +214,7 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
                 this.playerRating = this.playerRating + oa.points;
             }
         }
+        this.answf = "";
         this.nextQuestion();
         this.timeLeft = 100;
     }
