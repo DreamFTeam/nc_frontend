@@ -20,7 +20,7 @@ export class Profile {
         sanitizer.bypassSecurityTrustUrl
           ('data:image\/(png|jpg|jpeg);base64,'
             + input.image);
-    } else if (input.imageContent !== undefined) {
+    } else if (input.imageContent !== undefined && input.imageContent !== null) {
       input.image =
         sanitizer.bypassSecurityTrustUrl
           ('data:image\/(png|jpg|jpeg);base64,'
