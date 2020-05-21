@@ -5,7 +5,7 @@
           <a ngbNavLink class="blue p-2 mr-2"> {{'profile.Incoming' | translate }} {{'profile.requests' | translate }} </a>
           <ng-template ngbNavContent>
             <div *ngIf="tabReady">
-               <h1 class="m-3" style="font-size: larger; font-weight: bolder;">{{'profile.found' | translate}}   {{invitationsSize}}  {{ (invitationsSize == 1 ? 'profile.request' : 'profile.requests')| translate }} </h1>
+               <h1 class="m-3" style="font-size: larger; font-weight: bolder;">{{'profile.found' | translate}}   {{invitationsSize}}  {{ (invitationsSize == 1 ? 'profile.request' : 'profile.requests_whom')| translate }} </h1>
                 <ngb-pagination class="d-flex justify-content-center"  [collectionSize]="invitationsSize" [(page)]="invitationsPage"  [pageSize]="MAX_AMOUNT" [rotate]="true" (pageChange)="load($event)"></ngb-pagination>
                 <div *ngFor="let profile of this.invitations" style='font-size: larger;' class="row p-2 border m-2">
                       <img  routerLink="/profile/{{profile.username}}"  class="img-thumbnail col-xs-5 col-sm-5 col-md-4 col-lg-3 float-left" [src]="profile.image ? profile.image : '../../assets/img/nopicture.jpg'" style="background-color:rgba(243, 202, 165, 0.863);">
@@ -28,7 +28,7 @@
          <a ngbNavLink class="blue p-2 mr-2" > {{'profile.Outgoing' | translate }} {{'profile.requests' | translate }} </a>
          <ng-template ngbNavContent>
             <div *ngIf="tabReady ">
-               <h1 class="m-3" style="font-size: larger; font-weight: bolder;">{{'profile.found' | translate}}   {{invitationsSize}}  {{ (invitationsSize == 1 ? 'profile.request' : 'profile.requests')| translate }} </h1>
+               <h1 class="m-3" style="font-size: larger; font-weight: bolder;">{{'profile.found' | translate}}   {{invitationsSize}}  {{ (invitationsSize == 1 ? 'profile.request' : 'profile.requests_whom')| translate }} </h1>
                 <ngb-pagination class="d-flex justify-content-center"  [collectionSize]="invitationsSize" [(page)]="invitationsPage"  [pageSize]="MAX_AMOUNT" [rotate]="true" (pageChange)="load($event)"></ngb-pagination>
                 <div *ngFor="let profile of this.invitations" class="row p-2 m-2 border" style='font-size: larger;'>
                       <img  routerLink="/profile/{{profile.username}}"  class="img-thumbnail col-xs-5 col-sm-5 col-md-4 col-lg-3  float-left" [src]="profile.image ? profile.image : '../../assets/img/nopicture.jpg'" style="background-color:rgba(243, 202, 165, 0.863);">
