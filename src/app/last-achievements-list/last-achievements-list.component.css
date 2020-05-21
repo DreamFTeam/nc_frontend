@@ -24,3 +24,10 @@
         max-width: 35% !important;
     }
 }
+
+.emptylabel {
+    width: 100%;
+    padding: 2em;
+    text-align: center;
+    font-size: medium;
+}

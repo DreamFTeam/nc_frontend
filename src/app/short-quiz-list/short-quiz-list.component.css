@@ -1,7 +1,8 @@
 .embed-responsive .card-img-top {
     object-fit: cover;
     border-radius: 50%;
-    padding: 0;
+    padding: 0 !important;
+    border: 0.9px solid gray;
 }
 
 .border-secondary {
@@ -23,7 +24,7 @@
     padding: 0;
 }
 
-.circle-noborder {
+.noborder {
     border-color: transparent;
 }
 
