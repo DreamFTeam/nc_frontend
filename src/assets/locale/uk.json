@@ -59,7 +59,9 @@
     "viewQuiz":{
         "deactivated":"Деактивований",
         "deactivate":"Деактивувати",
-        "danger":"Небезпечні дії"
+        "danger":"Небезпечні дії",
+        "asFavorite":"Вибране",
+        "comment":"Коментар адміністратора"
     },
     "navbar":{
         "validation":"ВАЛІДАЦІЯ",
