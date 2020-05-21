@@ -5,6 +5,8 @@ import { Profile } from '../_models/profile';
 import { HandleErrorsService } from './handle-errors.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError } from 'rxjs/internal/operators/catchError';
+import { map } from 'rxjs/internal/operators/map';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +26,7 @@ export class FriendsService {
 
   constructor(
     private http: HttpClient,
+    private sanitizer: DomSanitizer,
     private errorHandler: HandleErrorsService) {
   }
 
@@ -50,7 +53,11 @@ export class FriendsService {
 
   public getUsersFriends(targetId: string, page: string): Observable<Profile[]> {
     return this.http.get<Profile[]>(this.profilesUrl + targetId + `/friends/page/` + page,
-      this.httpOptions).pipe();
+      this.httpOptions).pipe(
+        map((data) => data.map(friend => {
+          return Profile.deserialize(friend, this.sanitizer);
+        })
+      ));
   }
 
 
