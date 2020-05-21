@@ -1,3 +1,8 @@
+.embed-responsive .card-img-top {
+    object-fit: cover;
+    padding: 0 !important;
+}
+
 .mainstyle {
     border-radius: 8px;
     background-color: #F7F9FB;
@@ -37,12 +42,6 @@
     text-align: center;
     font-weight: bold;
     font-size: large;
-}
-
-.thumbn {
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-    max-height: 11.5rem;
 }
 
 #allquizzes {
