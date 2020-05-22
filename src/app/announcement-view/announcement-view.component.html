@@ -1,24 +1,30 @@
-<div style="text-align: center;" *ngIf="loading">
-    <fa-icon [icon]="faSpinner" [spin]="true" size="6x"></fa-icon>
-</div>
-<div *ngIf="!loading" class="mb-4">
-    <a *ngIf="isPrivileged()" class="btn buttonpr" [routerLink]="'/editannouncements'" >{{ 'managaAnn' | translate }}</a>
-    <div class="p-2" *ngFor="let announcement of announcements; let i = index">
-        <hr class="my-4" *ngIf="i != 0">
-        <div class="row">
-            <div class="col-sm-10">
-                <p style="font-size: 20px;"><strong>{{announcement.title}}</strong></p>
-            </div>
-            <div class="col-sm-2 float-right">
-                <p style="font-style: italic;">{{announcement.creationDate | date}}</p>
-            </div>
-        </div>
-
-        <img *ngIf="announcement.image !== null" [src]='announcement.image' class="img-thumbnail">
-
-        <p class="mt-4">{{announcement.textContent}}</p>
+<div class="card mb-2">
+    <div class="card-header lead">
+        {{'announcementsView.title'|translate}}
     </div>
-    <ngb-pagination [collectionSize]="collectionSize" [pageSize]="pageSize" [(page)]="page"
-        class="d-flex justify-content-center mt-2" (pageChange)="loadPage($event)">
-    </ngb-pagination>
+    <div class="card-body p-1">
+        <div style="text-align: center;" *ngIf="loading">
+            <fa-icon [icon]="faSpinner" [spin]="true" size="6x"></fa-icon>
+        </div>
+        <div *ngIf="!loading" class="mb-2">
+            <a *ngIf="isPrivileged()" class="btn buttonpr" [routerLink]="'/editannouncements'">{{'managaAnn' | translate}}</a>
+            <div class="p-2" *ngFor="let announcement of announcements; let i = index">
+                <hr class="my-2" *ngIf="i != 0">
+                <div class="row">
+                    <div class="col-sm-10">
+                        <p style="font-size: 20px;"><strong>{{announcement.title}}</strong></p>
+                    </div>
+                    <div class="col-sm-2 float-right">
+                        <p style="font-style: italic;">{{announcement.creationDate | date}}</p>
+                    </div>
+                </div>
+
+                <img *ngIf="announcement.image !== null" [src]='announcement.image' class="img-thumbnail">
+
+                <p>{{announcement.textContent}}</p>
+            </div>
+            <ngb-pagination [collectionSize]="collectionSize" [pageSize]="pageSize" [(page)]="page" class="d-flex justify-content-center mt-2" (pageChange)="loadPage($event)">
+            </ngb-pagination>
+        </div>
+    </div>
 </div>

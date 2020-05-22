@@ -1,13 +1,13 @@
-import { Component, OnInit, Type } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { QuizValidationService } from '../_services/quiz-validation.service';
 import { Observable } from 'rxjs';
 import { ExtendedQuiz } from '../_models/extended-quiz';
-import { DomSanitizer } from '@angular/platform-browser';
 import { ExtendedQuestion } from '../_models/question/extendedquestion';
 import { ModalService } from '../_services/modal.service';
 import { ToastsService } from '../_services/toasts.service';
+import { LocaleService } from '../_services/locale.service';
 
 const PAGE_SIZE: number = 3;
 
@@ -32,7 +32,8 @@ export class QuizValidationComponent implements OnInit {
               private quizValidationService: QuizValidationService,
               public modalService: ModalService,
               private router: Router,
-              public toastsService: ToastsService
+              public toastsService: ToastsService,
+              private localeService: LocaleService
               ){
       this.pageSize = PAGE_SIZE;
       this.page = 1;
@@ -75,32 +76,32 @@ export class QuizValidationComponent implements OnInit {
   
   
   reject(id: string):void{
-    this.modalService.openModal("Are you sure you want to reject this quiz?", 'danger')
+    this.modalService.openModal(this.localeService.getValue('modal.reject'), 'danger')
     .subscribe((receivedEntry) => {
       if (receivedEntry) {
         this.quizValidationService.validateQuiz(id,false,this.adminComment,null,null)
           .subscribe(next => {
-            this.toastsService.toastAddWarning("The quiz was successfully rejected");
+            this.toastsService.toastAddWarning(this.localeService.getValue('toasterEditor.rejected'));
             this.router.navigateByUrl('/validation');      
           },
             error => {
-              this.toastsService.toastAddWarning("Something went wrong with the processing of rejection");
+              this.toastsService.toastAddWarning(this.localeService.getValue('toasterEditor.wentWrong'));
           });
       }
     });
   }
 
   accept(id: string):void{
-    this.modalService.openModal("Are you sure you want to accept this quiz?", 'success')
+    this.modalService.openModal(this.localeService.getValue('modal.acceptQuiz'), 'success')
     .subscribe((receivedEntry) => {
       if (receivedEntry) {
         this.quizValidationService.validateQuiz(id,true,this.adminComment,this.quiz.creatorId,this.quiz.title)
           .subscribe(next => {
-            this.toastsService.toastAddSuccess("The quiz was successfully accepted!");
+            this.toastsService.toastAddSuccess(this.localeService.getValue('toasterEditor.acceptedActivated'));
             this.router.navigateByUrl('/validation');      
           },
             error => {
-              this.toastsService.toastAddDanger("Something went wrong while processing the acception.");
+              this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'));
               this.router.navigateByUrl('/validation');      
           });
       }

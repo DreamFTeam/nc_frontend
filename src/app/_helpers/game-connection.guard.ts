@@ -32,6 +32,7 @@ export class GameConnectionGuard implements CanActivate {
           console.log('Joining');
           localStorage.setItem('sessionid', n.id);
           this.router.navigateByUrl(`game/${n.gameId}/lobby`);
+          return false;
         },
         error => {
           this.modal.show('An error occurred', 'An error occurred.');

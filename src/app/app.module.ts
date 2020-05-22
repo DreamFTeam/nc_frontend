@@ -64,6 +64,9 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { MissingTranslationService } from './_translation/missing';
 import { RatingQuizModalComponent } from './rating-quiz-modal/rating-quiz-modal.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { LastAchievementsListComponent } from './last-achievements-list/last-achievements-list.component';
+import { UserQuizzesRatingsComponent } from './user-quizzes-ratings/user-quizzes-ratings.component';
+import { LastPlayedGamesComponent } from './last-played-games/last-played-games.component';
 
 const appRoutes: Routes = [];
 
@@ -115,6 +118,9 @@ export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
     GameResultComponent,
     ToastsComponent,
     UserSettingsComponent,
+    LastAchievementsListComponent,
+    UserQuizzesRatingsComponent,
+    LastPlayedGamesComponent,
     RatingQuizModalComponent],
   imports: [
     BrowserModule,

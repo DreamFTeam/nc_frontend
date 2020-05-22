@@ -4,6 +4,8 @@
         "description":"Description",
         "save":"Save",
         "questions":"Questions",
+        "question":"Question",
+        "info":"Info",
         "language":"Language",
         "tags":"Tags",
         "categories":"Categories",
@@ -11,6 +13,8 @@
         "true":"True",
         "false":"False",
         "points":"Points",
+        "answer":"Answer",
+        "answers":"Answers",
         "delete":"Delete",
         "remove": "Remove",
         "announcement":"announcement",
@@ -26,7 +30,15 @@
         "search":"Search",
         "yes":"Yes",
         "no":"No",
-        "notFound":"Not found"
+        "notFound":"Not found",
+        "rejected":"Rejected",
+        "reject":"Reject",
+        "validate":"Validate",
+        "unvalidated":"Unvalidated",
+        "validated":"Validated",
+        "dateofcreation":"Date of creation",
+        "langEng":"English",
+        "langUkr":"Ukrainian"
     },
     "utilsOther":{
         "image":"image"
@@ -50,7 +62,9 @@
     "viewQuiz":{
         "deactivated":"Deactivated",
         "deactivate":"Deactivate",
-        "danger":"Danger zone"
+        "danger":"Danger zone",
+        "asFavorite":"Favorite",
+        "comment":"Admin comment"
     },
     "navbar":{
         "validation":"VALIDATION",
@@ -67,14 +81,143 @@
         "saved":"Saved",
         "created":"Created",
         "published":"Published",
-        "removed":"Removed"
+        "removed":"Removed",
+        "rejected":"Rejected successfully",
+        "acceptedActivated":"Successfully accepted and activated"
     },
     "modal":{
+        "attention":"Attention",
         "sure":"Are you shure you want to ",
         "publish":"publish?",
         "delete":"delete?",  
         "deleteQ":"delete this quiz? Once you delete a quiz, there is no going back.",
-        "deactivateQ":"deactivate this quiz? Once you deactivate a quiz, there is no going back."
+        "deactivateQ":"deactivate this quiz? Once you deactivate a quiz, there is no going back.",
+        "reject":"Are you sure you want to reject this quiz? This action can't be undone.",
+        "acceptQuiz":"Are you sure you want to accept and activate this quiz?"
     },
-    "managaAnn":"Manage announcements"
+    "managaAnn":"Manage announcements",
+
+    "profile":{
+        "profile":"profile",
+        "friend" :"friend",
+        "friends" :"friends",
+        "online": "online",
+        "Add": "add",
+        "friend_whom" :"friend",
+        "Accept": "Accept",
+        "Reject": "Reject",
+        "friendrequest":"friend request",
+        "Message":"Mesage",
+        "Unfriend":"Unfriend",
+        "deactivated":"deactivated",
+        "lastSeenOn": "Last seen on",
+        "Incoming": "Incoming ",
+        "Outgoing":"Outgoing",
+        "friendRequests":"Friend Requests",
+        "deactivate":"Deactivate",
+        "downgrade":"Downgrade to Moderator",
+        "upgrade":"Upgrade to Admin",
+        "whose":"s",
+        "quizzes":"quizzes",
+        "noquizzes":" No quizzes yet",
+        "newquiz":" NEW QUIZ ",
+        "descrip":"Description",
+        "timeModif":"Last time modified",
+        "status":"Status",
+        "published":"published",
+        "notvalidated":"not validated yet",
+        "adminsComment":"Admin's comment",
+        "rating":"Rating",
+        "your":"your",
+        "favourite":"favourite",
+        "nofavourites":"No favourite quizzes yet",
+        "explore":"explore quizzes",
+        "achievements":"achievements",
+        "noachievements":"No achievements yet",
+        "playquizzes":"play quizzes to get them",
+        "nofriends":"No friends yet",
+        "findfriends":"find friends",
+        "found":"Found",
+        "friends_whom" :"friends",
+        "user":"user",
+        "users":"users",
+        "aboutMe":"About me",
+        "requests":  "requests",
+        "requests_whom":  "requests",
+        "request":  "request",
+        "requestSent" : "Request sent on"
+    },
+
+    "game":{
+        "title":"Title: ",
+        "question":"Question: ",
+        "true":"True",
+        "false":"False",
+        "apply":"Apply",
+        "ordertext":"Place answers in right order: ",
+        "waitingpl":" Waiting for other players ... ",
+        "break":" Break time ...",
+        "yourscore":"Your score:",
+        "totalquiztime":"Total quiz time:",
+        "startgame":"Start game",
+        "ready":"Ready",
+        "connected":"connected",
+        "totalres":"Total Results !",
+        "champ":"Champion is",
+        "other":"Other",
+        "rate":"Rate",
+        "quit":"Quit",
+        "sec":"seconds",
+        "qtime":"Time for one question",
+        "qamount":"Questions amount",
+        "uamount":"Users amount",
+        "btime":"Break time",
+        "epoints":"Extra points for speed",
+        "back":"Back to quiz page",
+        "startg":"Start game",
+        "loading":"Loading...",
+        "players":"Players",
+        "points":"Points"
+    },
+    "validationPage" :{
+        "title":"'s quiz validation list"
+    },
+    "validationTab":{
+        "empty":"The list is empty"
+    },
+    "quizValidation":{
+        "title":"Quiz review",
+        "acceptAndActivate":"Accept&activate",
+        "rightAnswers":"Right answers",
+        "rightAnswer":"Rigth answer",
+        "questionType":"Question type",
+        "admComment":"Administration commentary"
+    },
+    "lastAchievements":{
+        "title":"Last gained achievements past week",
+        "empty":"You haven't got any achievements during past week"
+    },
+    "suggestions":{
+        "title":"Suggested for you"
+    },
+    "lastPlayed":{
+        "title":"Your last played games",
+        "quiz":"Quiz",
+        "winner":"Winner?",
+        "score":"Score",
+        "duration":"Duration",
+        "started":"Started",
+        "empty":"You haven't played anything for a week"
+    },
+    "shortList":{
+        "title":"Users' choice"
+    },
+    "userQuizzesRating":{
+        "title":"Your quizzes' ratings",
+        "rating":"Rating",
+        "empty":"You haven't created any quizzes yet."
+    },
+    "announcementsView":{
+        "title":"Site announcements"
+    }
 }

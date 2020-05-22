@@ -15,12 +15,20 @@ export class Profile {
 
   static deserialize(input: any, sanitizer: DomSanitizer): Profile {
 
-    if (input.image !== null) {
+    if (input.image !== undefined && input.image !== null) {
       input.image =
         sanitizer.bypassSecurityTrustUrl
           ('data:image\/(png|jpg|jpeg);base64,'
             + input.image);
+    } else if (input.imageContent !== undefined && input.imageContent !== null) {
+      input.image =
+        sanitizer.bypassSecurityTrustUrl
+          ('data:image\/(png|jpg|jpeg);base64,'
+            + input.imageContent);
     }
+
+    input.online =  (new Date().getTime() - new Date(input.lastTimeOnline).getTime()) < 300000;
+
     return input;
   }
 

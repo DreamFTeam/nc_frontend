@@ -12,6 +12,7 @@ import {SseService} from '../_services/sse.service';
 import {GameSettingsService} from '../_services/game-settings.service';
 import {Subscription} from 'rxjs';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import {faSpinner} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
     selector: 'app-game-question',
@@ -30,21 +31,28 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
         accessId: '',
         quizId: ''
     };
+    questionsLoading: boolean;
+    faSpinner = faSpinner;
+
     timeLeft: number = 100;
+    timerStep: number; 
     interval;
     subscribeTimer: any;
+    isBreak: boolean;
+
     questions: (OneToFour | TrueFalse | OpenAnswer | SequenceAnswer)[] = [];
     currQuestNumb: number = 0;
     curq;
     curq_image;
-    shuffled: string[];
-    seqanswers: string[] = [];
+    shuffled: string[];  
+    answf: string;
+
     playerRating: number = 0;
     timeSpend: number = 0;
 
-    answf: string;
     waitResult: boolean;
     finishGame: Subscription;
+    
 
     constructor(private gameQuestionService: GameQuestionService,
                 private questionService: QuestionService,
@@ -52,6 +60,8 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
                 private router: Router,
                 private sseService: SseService,
                 private gameSettingsService: GameSettingsService) {
+        this.questionsLoading = true;
+        this.isBreak = false;
         this.activateRoute.paramMap.pipe(
             switchMap(params => params.getAll('gameid')))
             .subscribe(data => this.loadGameData(data));
@@ -77,10 +87,14 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
             if (this.timeLeft > 0) {
                 this.timeLeft--;
             } else {
+                if(this.isBreak = true) {
+                    this.isBreak = false;
+                    this.timerStep = this.game.roundDuration;
+                }
                 this.nextQuestion();
                 this.timeLeft = 100;
             }
-        }, this.game.roundDuration / 100 * 1000);
+        }, this.timerStep / 100 * 1000);
     }
 
     mapGettedGameData(ans) {
@@ -94,11 +108,11 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
         this.game.accessId = ans.accessId;
         this.game.quizId = ans.quizId;
         this.loadQuestionData();
+        this.timerStep = this.game.roundDuration;
         console.log('Mapped game data: quizId - ' + this.game.quizId + ' startTime - ' + this.game.startDatetime);
     }
 
     mapGettedQuestions(ans) {
-        console.log(ans);
         for (let question of ans) {
             if (question.typeId === 1) {
                 let rightAnswers: boolean[] = [];
@@ -145,7 +159,7 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
                 value: a
             })).sort((a, b) => a.sort - b.sort).map((a) => a.value);
         }
-        console.log(this.questions.length);
+        this.questionsLoading = false;
         this.timer();
     }
 
@@ -161,7 +175,8 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
                     value: a
                 })).sort((a, b) => a.sort - b.sort).map((a) => a.value);
             }
-            console.log(this.curq);
+            clearInterval(this.interval);
+            this.timer();
         } else {
             this.sendResults();
             clearInterval(this.interval);
@@ -186,7 +201,10 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
                 }
             }
         }
-        this.nextQuestion();
+        this.isBreak = true;
+        this.timerStep = this.game.breakTime;
+        clearInterval(this.interval);
+        this.timer();
         this.timeLeft = 100;
     }
 
@@ -200,7 +218,10 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
                 this.playerRating = this.playerRating + tf.points;
             }
         }
-        this.nextQuestion();
+        this.isBreak = true;
+        this.timerStep = this.game.breakTime;
+        clearInterval(this.interval);
+        this.timer();
         this.timeLeft = 100;
     }
 
@@ -214,17 +235,12 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
                 this.playerRating = this.playerRating + oa.points;
             }
         }
-        this.nextQuestion();
+        this.answf = "";
+        this.isBreak = true;
+        this.timerStep = this.game.breakTime;
+        clearInterval(this.interval);
+        this.timer();
         this.timeLeft = 100;
-    }
-
-    addSeq(ans: string) {
-        if (this.seqanswers.indexOf(ans) != -1) {
-            this.seqanswers.splice(this.seqanswers.indexOf(ans), 1);
-        } else {
-            this.seqanswers.push(ans);
-        }
-        console.log(this.seqanswers);
     }
 
     drop(event: CdkDragDrop<string[]>) {
@@ -236,7 +252,7 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
         let check: boolean = true;
         this.timeSpend = this.timeSpend + Math.round((100 - this.timeLeft) * this.game.roundDuration / 100);
         for (let i = 0; i < sq.rightAnswers.length; i++) {
-            if (this.seqanswers[i] != sq.rightAnswers[i]) {
+            if (this.shuffled[i] != sq.rightAnswers[i]) {
                 check = false;
             }
         }
@@ -247,7 +263,10 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
                 this.playerRating = this.playerRating + sq.points;
             }
         }
-        this.nextQuestion();
+        this.isBreak = true;
+        this.timerStep = this.game.breakTime;
+        clearInterval(this.interval);
+        this.timer();
         this.timeLeft = 100;
     }
 

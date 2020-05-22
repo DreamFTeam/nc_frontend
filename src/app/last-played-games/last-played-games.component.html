@@ -1,0 +1,32 @@
+<div class="card mb-2">
+    <div class="card-header lead">
+        {{'lastPlayed.title' | translate}}
+    </div>
+    <div class="card-body overflow-auto p-0" *ngIf="!isEmpty ; else empty">
+        <table class="table table-hover">
+            <thead>
+                <tr class="table-secondary">
+                    <th scope="col">{{'lastPlayed.quiz'|translate}}</th>
+                    <th scope="col">{{'lastPlayed.winner'|translate}}</th>
+                    <th scope="col">{{'lastPlayed.score'|translate}}</th>
+                    <th scope="col">{{'lastPlayed.duration'|translate}}</th>
+                    <th scope="col">{{'lastPlayed.started'|translate}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of gamesList$ | async" routerLink="game/result/{{item.gameId}}" class="pointer">
+                    <th scope="row" class="quiztitle"><a routerLink='/viewquiz/{{item.quizId}}'>{{item.title}}</a></th>
+                    <td>{{(item.winner) ? ("utils.yes"|translate) : ("utils.no"|translate)}}</td>
+                    <td>{{item.score}}</td>
+                    <td>{{item.durationTime * 1000 | date:"HH:mm:ss":'UTC'}}</td>
+                    <td>{{item.datetimeStart | date:"MMM d, HH:mm:ss":this.timezone}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Showing this when the list is empty -->
+<ng-template #empty>
+    <p *ngIf="isEmpty" class="lead emptylabel">{{'lastPlayed.empty'|translate}}</p>
+</ng-template>
