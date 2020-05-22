@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { ExtendedQuestion } from '../_models/question/extendedquestion';
-import { DomSanitizer } from '@angular/platform-browser';
 import { Temp } from '../_models/temp';
 
 @Component({

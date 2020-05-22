@@ -52,7 +52,7 @@ export class AuthenticationService {
         const userDecode: User = jwt_decode(tokenJSON.token);
         console.log(userDecode);
         this.currentUserSubject.next(userDecode);
-        this.localeService.setUserLang(this.settingsService.getLanguage());
+        this.localeService.initUserLang(this.settingsService.getLanguage());
         return userDecode;
       })
     );

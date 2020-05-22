@@ -38,7 +38,6 @@ export class SettingsService {
   }
 
   saveSettings(settings, language){
-    this.localeService.setLang(language.value);
     localStorage.setItem("userLang",this.localeService.setLang(language.value))
 
     const saved = settings.map(el => ({ ... (el) })).concat(Object.assign({}, language));

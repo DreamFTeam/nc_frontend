@@ -10,7 +10,7 @@ export class LocaleService {
 
   constructor(public translateService: TranslateService) { }
 
-  setUserLang(langA) {
+  initUserLang(langA) {
     if(localStorage.getItem("userLang")){
       this.setLang(localStorage.getItem("userLang"));
     }else{
@@ -21,7 +21,6 @@ export class LocaleService {
           lang = this.setLang(environment.defaultLocale);
         },
         () => {
-          console.log("current lang is "+this.translateService.currentLang);
           localStorage.setItem('userLang',lang);
         }
       );
@@ -35,7 +34,6 @@ export class LocaleService {
         const lang = this.setLang(this.getUsersLocale().substring(0, 2));
         localStorage.setItem('anonymousLang',lang);
     }
-    console.log("set lang: "+this.translateService.currentLang);
   }
 
   setLang(locale): string{
@@ -52,6 +50,15 @@ export class LocaleService {
   getValue(keys): string{
     if (this.checkLang) {
       return this.translateService.instant(keys);
+    }
+  }
+
+  getAnonymousLanguage(){
+    if (localStorage.getItem('anonymousLang')){
+      return localStorage.getItem('anonymousLang');
+    }else{
+      this.setAnonymousLang();
+      return localStorage.getItem('anonymousLang');
     }
   }
 

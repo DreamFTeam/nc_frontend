@@ -37,6 +37,7 @@
             </li>
           </ng-template>
 
+         
           <li class="nav-item">
             <a class="nav-link" [routerLink]="'/quiz-list'" (click)="isMenuCollapsed = true">
               {{ 'navbar.quizzes' | translate }}
@@ -47,6 +48,17 @@
             <input class="form-control mr-sm-2 mt-1" type="text" name="search" [(ngModel)]="searchArea"
               (keydown.enter)="search()" placeholder="{{ 'utils.search' | translate }}">
           </li>
+
+          <ng-template [ngIf]="!signedIn">
+            <li class="nav-item">
+              <select class="custom-select mt-1" [(ngModel)]="language" (change)="onChange()">
+                <option *ngFor="let lang of languages" [value]="lang.value">
+                  {{lang.name}}
+                </option>
+              </select>
+            </li>
+          </ng-template>
+
 
           <li class="nav-item">
             <a *ngIf="signedIn" class="navbar-brand" [routerLink]="'/notifications'">
@@ -65,7 +77,7 @@
             </a>
           </li>
       </ul>
-      <ul class="nav navbar-nav flex-row justify-content-md-center justify-content-start flex-nowrap">
+      <ul class="nav navbar-nav justify-content-md-center justify-content-start">
         <ng-template [ngIf]="signedIn" [ngIfElse]="loggedOut">
           <li class="nav-item">
             <a class="nav-link" [routerLink]="'/'" (click)="logout()">{{ 'navbar.logout' | translate }}</a>
@@ -75,7 +87,7 @@
           <li class="nav-item">
             <a class="nav-link clickable" (click)="openLogin()">{{ 'navbar.login' | translate }}</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item ">
             <a class="nav-link clickable" (click)="openReg()">{{ 'navbar.signup' | translate }}</a>
           </li>
         </ng-template>
