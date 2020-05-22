@@ -22,10 +22,6 @@ export class PrivilegedProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.profile == null ||
-      this.profile.role == 'ROLE_USER') {
-      this._router.navigate(['/']);
-    }
     this.ready = true;
   }
 

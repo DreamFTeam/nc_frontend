@@ -63,8 +63,8 @@ export class NavBarComponent implements OnInit {
 
   logout() {
     this.isMenuCollapsed = true;
-    this.authenticationService.signoutUser();
     this.router.navigate(['/']);
+    this.authenticationService.signoutUser();
     window.location.reload();
   }
 

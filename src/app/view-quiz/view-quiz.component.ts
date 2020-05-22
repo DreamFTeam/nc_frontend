@@ -9,6 +9,7 @@ import { Role } from '../_models/role';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { YesNoModalComponent } from '../yes-no-modal/yes-no-modal.component';
 import { LocaleService } from '../_services/locale.service';
+import { User } from '../_models/user';
 
 @Component({
   selector: 'app-view-quiz',
@@ -16,6 +17,8 @@ import { LocaleService } from '../_services/locale.service';
   styleUrls: ['./view-quiz.component.css']
 })
 export class ViewQuizComponent implements OnInit {
+  user: User;
+
   creatorId: string;
   
   quiz: ExtendedQuiz;
@@ -35,7 +38,9 @@ export class ViewQuizComponent implements OnInit {
      .subscribe(data => this.getAllQuiz(data)); 
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.user = this.authenticationService.currentUserValue;
+  }
 
   getAllQuiz(data){
     this.quizService.getQuiz(data).subscribe(ans => this.setGettedQuiz(ans),
@@ -93,12 +98,10 @@ export class ViewQuizComponent implements OnInit {
   }
 
   isMyQuiz(){
-    const user = this.authenticationService.currentUserValue;
-    return user && this.creatorId === user.id;
+    return this.user && this.creatorId === this.user.id;
   }
 
   isPrivileged(){
-    const user = this.authenticationService.currentUserValue;
-    return user && (user.role !== Role.User); 
+    return this.user && (this.user.role !== Role.User); 
   }
 }
