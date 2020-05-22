@@ -104,4 +104,8 @@ export class ViewQuizComponent implements OnInit {
   isPrivileged(){
     return this.user && (this.user.role !== Role.User); 
   }
+
+  isLinkAvailable(){
+    return this.user && this.user.role;
+  }
 }

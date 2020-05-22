@@ -37,6 +37,11 @@ a:hover{
     text-decoration: none;
 }
 
+.nonlink:hover{
+    cursor: default;
+    text-decoration: underline !important;
+}
+
 .cursor:hover{
     cursor: pointer;
 }
@@ -47,12 +52,19 @@ a:hover{
     font-size: 1.5rem;
     color: #d3d3d3;
   }
+
   .full {
     color: black;
   }
+
   .half {
     position: absolute;
     display: inline-block;
     overflow: hidden;
     color: black;
+  }
+
+  ngb-rating:focus{
+    outline: none!important;
+    box-shadow: none;
   }
