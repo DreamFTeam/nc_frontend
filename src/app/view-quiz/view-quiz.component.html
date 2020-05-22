@@ -41,9 +41,7 @@
                     <div>
                         <label>{{ 'utils.author' | translate }}: </label>
                         <ng-template [ngIf]="isLinkAvailable()" [ngIfElse]="elseLink">
-                            <a class="ml-2 cursor" routerLink="/profile/{{quiz.author}}">
-                                {{quiz.author}}
-                            </a>
+                            <a class="ml-2 cursor" routerLink="/profile/{{quiz.author}}">{{quiz.author}}</a>
                         </ng-template>
                         <ng-template #elseLink>
                             <a class="ml-2 nonlink">{{quiz.author}}</a>
@@ -71,7 +69,7 @@
             </div>
 
             <div *ngIf="isMyQuiz()" class="row">
-                <div class="col-6">
+                <div *ngIf="isCommentShown()" class="col-6">
                     <label>{{ 'viewQuiz.comment' | translate }}:</label>
                     <div style="word-wrap: break-word;">{{quiz.adminComment}}</div>
                 </div> 

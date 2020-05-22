@@ -108,4 +108,8 @@ export class ViewQuizComponent implements OnInit {
   isLinkAvailable(){
     return this.user && this.user.role;
   }
+
+  isCommentShown(){
+    return this.quiz.adminComment !== null && this.quiz.adminComment !== undefined && this.quiz.adminComment !== "";
+  }
 }
