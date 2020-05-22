@@ -40,7 +40,13 @@
 
                     <div>
                         <label>{{ 'utils.author' | translate }}: </label>
-                        <a class="ml-2 cursor" routerLink="/profile/{{quiz.author}}">{{quiz.author}}</a>
+                        <ng-template [ngIf]="isLinkAvailable()" [ngIfElse]="elseLink">
+                            <a class="ml-2 cursor" routerLink="/profile/{{quiz.author}}">{{quiz.author}}</a>
+                        </ng-template>
+                        <ng-template #elseLink>
+                            <a class="ml-2 nonlink">{{quiz.author}}</a>
+                        </ng-template>
+
                     </div>
 
                     <div class="mt-2">
@@ -63,7 +69,7 @@
             </div>
 
             <div *ngIf="isMyQuiz()" class="row">
-                <div class="col-6">
+                <div *ngIf="isCommentShown()" class="col-6">
                     <label>{{ 'viewQuiz.comment' | translate }}:</label>
                     <div style="word-wrap: break-word;">{{quiz.adminComment}}</div>
                 </div> 
@@ -78,7 +84,7 @@
                         <div *ngIf="isMyQuiz()" class="btn buttonsec ml-1" routerLink="/quizedit/{{quiz.id}}">
                             {{ 'utils.edit' | translate }}
                         </div>
-                        <div class="btn buttonsuc ml-1" (click)="markAsFavorite()">
+                        <div *ngIf="isLinkAvailable()" class="btn buttonsuc ml-1" (click)="markAsFavorite()">
                             <svg *ngIf="quiz.favourite" class="bi bi-star-fill" width="1.5em" height="1.5em"
                                 viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
             
