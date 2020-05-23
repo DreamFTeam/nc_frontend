@@ -16,7 +16,7 @@ export class LocaleService {
     }else{
       let lang;
       langA.subscribe(
-        ans => lang = this.setLang(ans.value.slice()),
+        ans => lang = this.setLang(ans),
         () => {
           lang = this.setLang(environment.defaultLocale);
         },
