@@ -36,9 +36,8 @@ export class UserSettingsComponent implements OnInit {
   ngOnInit(): void {
     this.loading = true;
     this.buttonLoading = false;
-    this.settingsService.getSettings()
-      .subscribe(ans => this.setSettings(ans), 
-      err => err => this.errHandler(this.localeService.getValue('toasterEditor.wentWrong'),err),);
+    this.init();
+    
   }
 
   setSettings(ans) {
@@ -58,10 +57,19 @@ export class UserSettingsComponent implements OnInit {
   save() {
     this.buttonLoading = true;
     this.settingsService.saveSettings(this.settings, this.language).subscribe(
-      () => this.toastService.toastAddSuccess(this.localeService.getValue('toasterEditor.saved')),
+      () => {
+        this.init();
+        this.toastService.toastAddSuccess(this.localeService.getValue('toasterEditor.saved'));
+      },
       err => this.errHandler(this.localeService.getValue('toasterEditor.wentWrong'),err),
       () => this.buttonLoading = false
     )
+  }
+
+  init() {
+    this.settingsService.getSettings()
+      .subscribe(ans => this.setSettings(ans),
+        err => this.errHandler(this.localeService.getValue('toasterEditor.wentWrong'), err));
   }
 
   errHandler(text,err){

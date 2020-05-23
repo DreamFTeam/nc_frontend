@@ -30,11 +30,8 @@ export class SettingsService {
       })));
   }
 
-  getLanguage():Observable<Setting>{
-    return this.http.get<Setting>(this.baseUrl+"/language")
-      .pipe(map(data => {
-        return new Setting().deserialize(data);
-      }));
+  getLanguage():Observable<any>{
+    return this.http.get<any>(this.baseUrl+"/language");
   }
 
   saveSettings(settings, language){
