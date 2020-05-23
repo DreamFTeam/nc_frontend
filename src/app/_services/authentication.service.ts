@@ -67,7 +67,8 @@ export class AuthenticationService {
     const userInfo = {
       username,
       password,
-      email
+      email,
+      language: this.localeService.getAnonymousLanguage()
     };
     return this.http.post<User>(this.url + 'sign-up', JSON.stringify(userInfo), this.httpOptions);
   }

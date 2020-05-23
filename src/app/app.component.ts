@@ -22,6 +22,7 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    
     this.localeService.initLangs();
     if(this.authenticationService.currentUserValue){
       this.localeService.initUserLang( this.settingsService.getLanguage());
