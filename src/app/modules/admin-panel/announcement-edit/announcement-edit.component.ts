@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Announcement } from '../../core/_models/announcement';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { AnnouncementService } from '../../core/_services/announcement.service';
+import { AnnouncementService } from '../../core/_services/announcements/announcement.service';
 import { Alert } from '../../core/_models/alert'
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { DomSanitizer } from '@angular/platform-browser';

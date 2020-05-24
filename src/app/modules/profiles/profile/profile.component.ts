@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProfileService } from '../../core/_services/profile.service';
-import { PrivilegedService } from '../../core/_services/privileged.service';
+import { ProfileService } from '../../core/_services/profile/profile.service';
+import { PrivilegedService } from '../../core/_services/admin/privileged.service';
 import { Profile } from '../../core/_models/profile';
 import { DomSanitizer } from '@angular/platform-browser';
-import { AuthenticationService } from '../../core/_services/authentication.service';
-import { QuizService } from '../../core/_services/quiz.service';
-import { FriendsService } from '../../core/_services/friends-service.service';
+import { AuthenticationService } from '../../core/_services/authentication/authentication.service';
+import { QuizService } from '../../core/_services/quiz/quiz.service';
+import { FriendsService } from '../../core/_services/profile/friends-service.service';
 import { Achievement } from '../../core/_models/achievement';
 
 

@@ -1,12 +1,12 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {ExtendedQuizPreview} from '../_models/extendedquiz-preview';
+import {ExtendedQuizPreview} from '../../_models/extendedquiz-preview';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {catchError} from 'rxjs/operators';
 import {DomSanitizer} from '@angular/platform-browser';
-import {environment} from '../../../../environments/environment';
+import {environment} from '../../../../../environments/environment';
 import {SearchFilterQuizService} from './search-filter-quiz.service';
-import {HandleErrorsService} from './handle-errors.service';
+import {HandleErrorsService} from '../utils/handle-errors.service';
 
 @Injectable({
   providedIn: 'root'

@@ -1,6 +1,6 @@
 import { Component, OnInit , Input} from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import {PrivilegedService} from '../../core/_services/privileged.service'
+import {PrivilegedService} from '../../core/_services/admin/privileged.service'
 
 @Component({
   selector: 'app-create-privileged',

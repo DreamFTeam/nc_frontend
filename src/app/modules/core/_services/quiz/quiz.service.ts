@@ -1,16 +1,16 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import { Quiz } from '../_models/quiz';
-import { User } from '../_models/user';
-import { ExtendedQuiz } from '../_models/extended-quiz';
+import { Quiz } from '../../_models/quiz';
+import { User } from '../../_models/user';
+import { ExtendedQuiz } from '../../_models/extended-quiz';
 import { map } from 'rxjs/operators';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Category } from '../_models/category';
-import { Tag } from '../_models/tag';
+import { Category } from '../../_models/category';
+import { Tag } from '../../_models/tag';
 import { environment } from 'src/environments/environment';
-import { AuthenticationService } from './authentication.service';
-import { Alert } from '../_models/alert';
+import { AuthenticationService } from '../authentication/authentication.service';
+import { Alert } from '../../_models/alert';
 
 @Injectable({
   providedIn: 'root'
@@ -39,8 +39,8 @@ export class QuizService {
       newLanguage: quiz.language,
       newDescription: quiz.description,
       newImageRef: '',
-      newTagList: quiz.tagIdList,
-      newCategoryList: quiz.categoryIdList
+      newTagList: quiz.tags.map( a => a.id),
+      newCategoryList: quiz.categories.map( a => a.id)
     };
 
     const formData = new FormData();

@@ -1,12 +1,12 @@
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from '../../../../environments/environment';
-import { Announcement } from '../_models/announcement';
-import { HttpHeaders, HttpClient, HttpParams } from '@angular/common/http';
-import { User } from '../_models/user';
-import { Observable, from } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { DomSanitizer } from '@angular/platform-browser';
-import { AuthenticationService } from './authentication.service';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { environment } from '../../../../../environments/environment';
+import { Announcement } from '../../_models/announcement';
+import { User } from '../../_models/user';
+import { AuthenticationService } from '../authentication/authentication.service';
 
 @Injectable({
   providedIn: 'root'

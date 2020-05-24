@@ -1,15 +1,15 @@
 import { Component, OnInit, Input, Type, TemplateRef } from '@angular/core';
 import { Observable } from 'rxjs';
 import { QuizValidationPreview } from 'src/app/modules/core/_models/quiz-validation-preview';
-import { QuizValidationListService } from 'src/app/modules/core/_services/quiz-validation-list.service';
+import { QuizValidationListService } from 'src/app/modules/core/_services/quiz/quiz-validation-list.service';
 import { Router } from '@angular/router';
-import { QuizValidationService } from 'src/app/modules/core/_services/quiz-validation.service';
+import { QuizValidationService } from 'src/app/modules/core/_services/quiz/quiz-validation.service';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { YesNoModalComponent } from '../../shared/yes-no-modal/yes-no-modal.component';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { ToastsService } from 'src/app/modules/core/_services/toasts.service';
-import { ModalService } from 'src/app/modules/core/_services/modal.service';
-import { LocaleService } from 'src/app/modules/core/_services/locale.service';
+import { ToastsService } from 'src/app/modules/core/_services/utils/toasts.service';
+import { ModalService } from 'src/app/modules/core/_services/utils/modal.service';
+import { LocaleService } from 'src/app/modules/core/_services/utils/locale.service';
 
 
 @Component({

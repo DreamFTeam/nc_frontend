@@ -1,12 +1,12 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {environment} from '../../../../environments/environment';
-import {Game} from '../_models/game';
-import {SseService} from './sse.service';
-import {GameSession} from '../_models/game-session';
+import {environment} from '../../../../../environments/environment';
+import {Game} from '../../_models/game';
+import {SseService} from '../utils/sse.service';
+import {GameSession} from '../../_models/game-session';
 import {catchError, map} from 'rxjs/operators';
-import {HandleErrorsService} from './handle-errors.service';
+import {HandleErrorsService} from '../utils/handle-errors.service';
 import {AnonymService} from './anonym.service';
 import {Router} from '@angular/router';
 

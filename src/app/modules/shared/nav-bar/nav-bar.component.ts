@@ -3,12 +3,12 @@ import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LogInComponent } from '../../authorization/log-in/log-in.component';
 import { SignUpComponent } from '../../authorization/sign-up/sign-up.component';
-import { AuthenticationService } from '../../core/_services/authentication.service';
+import { AuthenticationService } from '../../core/_services/authentication/authentication.service';
 import { Role } from '../../core/_models/role';
-import { NotificationsService } from '../../core/_services/notifications.service';
-import { SearchFilterQuizService } from '../../core/_services/search-filter-quiz.service';
+import { NotificationsService } from '../../core/_services/user/notifications.service';
+import { SearchFilterQuizService } from '../../core/_services/quiz/search-filter-quiz.service';
 import { environment } from 'src/environments/environment';
-import { LocaleService } from '../../core/_services/locale.service';
+import { LocaleService } from '../../core/_services/utils/locale.service';
 
 @Component({
   selector: 'app-nav-bar',

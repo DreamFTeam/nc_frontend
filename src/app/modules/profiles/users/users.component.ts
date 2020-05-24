@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ProfileService } from '../../core/_services/profile.service'
+import { ProfileService } from '../../core/_services/profile/profile.service'
 import { Profile } from '../../core/_models/profile';
 import { DomSanitizer } from '@angular/platform-browser';
-import { AuthenticationService } from '../../core/_services/authentication.service';
+import { AuthenticationService } from '../../core/_services/authentication/authentication.service';
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',

@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {MessageModalComponent} from '../../authorization/message-modal/message-modal.component';
+import {MessageModalComponent} from '../../../authorization/message-modal/message-modal.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {Router} from '@angular/router';
 

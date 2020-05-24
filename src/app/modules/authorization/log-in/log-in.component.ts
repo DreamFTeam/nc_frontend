@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AuthenticationService } from '../../core/_services/authentication.service';
+import { AuthenticationService } from '../../core/_services/authentication/authentication.service';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RecoverPasswordComponent } from '../recover-password/recover-password.component';
 import { Router } from '@angular/router';

@@ -1,12 +1,12 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {DomSanitizer} from '@angular/platform-browser';
-import {HandleErrorsService} from './handle-errors.service';
+import {HandleErrorsService} from '../utils/handle-errors.service';
 import {Observable} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
-import {environment} from '../../../../environments/environment';
-import { ExtendedQuizPreview } from '../_models/extendedquiz-preview';
-import { ExtendedQuizRatingsPreview } from '../_models/extended-quiz-ratings-preview';
+import {environment} from '../../../../../environments/environment';
+import { ExtendedQuizPreview } from '../../_models/extendedquiz-preview';
+import { ExtendedQuizRatingsPreview } from '../../_models/extended-quiz-ratings-preview';
 
 
 @Injectable({

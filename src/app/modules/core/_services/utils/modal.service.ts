@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { YesNoModalComponent } from '../../shared/yes-no-modal/yes-no-modal.component';
+import { YesNoModalComponent } from '../../../shared/yes-no-modal/yes-no-modal.component';
 
 @Injectable({
   providedIn: 'root'

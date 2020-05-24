@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { environment } from '../../../../environments/environment';
+import { environment } from '../../../../../environments/environment';
 import { Observable, of } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Profile } from '../_models/profile';
+import { Profile } from '../../_models/profile';
 import { catchError, map } from 'rxjs/operators';
-import { Quiz } from '../_models/quiz';
-import { HandleErrorsService } from './handle-errors.service';
-import { Achievement } from '../_models/achievement';
-import { QuizLastPlayed } from '../_models/quiz-last-played';
+import { Quiz } from '../../_models/quiz';
+import { HandleErrorsService } from '../utils/handle-errors.service';
+import { Achievement } from '../../_models/achievement';
+import { QuizLastPlayed } from '../../_models/quiz-last-played';
 
 @Injectable({
   providedIn: 'root'

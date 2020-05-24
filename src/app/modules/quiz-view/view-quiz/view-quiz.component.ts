@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { QuizService } from '../../core/_services/quiz.service';
+import { QuizService } from '../../core/_services/quiz/quiz.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { ExtendedQuiz } from '../../core/_models/extended-quiz';
-import { AuthenticationService } from '../../core/_services/authentication.service';
+import { AuthenticationService } from '../../core/_services/authentication/authentication.service';
 import { Role } from '../../core/_models/role';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { YesNoModalComponent } from '../../shared/yes-no-modal/yes-no-modal.component';
-import { LocaleService } from '../../core/_services/locale.service';
+import { LocaleService } from '../../core/_services/utils/locale.service';
 import { User } from '../../core/_models/user';
 
 @Component({

@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
 import {Observable} from 'rxjs';
-import {AuthenticationService} from '../_services/authentication.service';
+import {AuthenticationService} from '../_services/authentication/authentication.service';
 import {Role} from '../_models/role';
-import {GameSettingsService} from '../_services/game-settings.service';
-import {ModalMessageService} from '../_services/modal-message.service';
+import {GameSettingsService} from '../_services/game/game-settings.service';
+import {ModalMessageService} from '../_services/utils/modal-message.service';
 
 
 @Injectable({

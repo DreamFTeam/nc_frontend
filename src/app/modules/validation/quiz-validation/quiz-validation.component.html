@@ -16,11 +16,11 @@
                 </a>
                 <p><strong>{{'utils.dateofcreation' | translate}}: </strong>{{quiz.creationDate}}</p>
                 <p><strong>{{'utils.language' | translate}}: </strong>{{quiz.language == 'ukr' ? ('utils.langUkr' | translate) : ('utils.langEng'| translate)}}</p>
-                <p *ngIf="quiz.tagNameList">
-                    <strong>{{'utils.tags' | translate}}: </strong><span *ngFor="let tag of quiz.tagNameList; let isLast=last">{{tag}}{{isLast? '' : ', '}}</span>
+                <p>
+                    <strong>{{'utils.tags' | translate}}: </strong><span *ngFor="let tag of quiz.tags; let isLast=last">{{tag.description}}{{isLast? '' : ', '}}</span>
                 </p>
-                <p *ngIf="quiz.categoryNameList">
-                    <strong>{{'utils.categories' | translate}}: </strong><span *ngFor="let cat of quiz.categoryNameList; let isL=last">{{cat}}{{isL? '' : ', '}}</span>
+                <p>
+                    <strong>{{'utils.categories' | translate}}: </strong><span *ngFor="let cat of quiz.categories; let isL=last">{{cat.description}}{{isL? '' : ', '}}</span>
                 </p>
                 <input class="adm-comm" [(ngModel)]="adminComment" placeholder="{{'quizValidation.admComment' | translate}}" />
                 <div class="row">

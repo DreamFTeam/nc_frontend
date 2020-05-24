@@ -1,12 +1,12 @@
 import {Injectable} from '@angular/core';
-import {Quiz} from '../_models/quiz';
+import {Quiz} from '../../_models/quiz';
 import {BehaviorSubject, Observable, of} from 'rxjs';
-import {environment} from '../../../../environments/environment';
+import {environment} from '../../../../../environments/environment';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {map} from 'rxjs/operators';
-import {ExtendedQuizPreview} from '../_models/extendedquiz-preview';
+import {ExtendedQuizPreview} from '../../_models/extendedquiz-preview';
 import {DomSanitizer} from '@angular/platform-browser';
-import {QuizFilterSettings} from '../_models/quiz-filter-settings';
+import {QuizFilterSettings} from '../../_models/quiz-filter-settings';
 
 @Injectable({
     providedIn: 'root'

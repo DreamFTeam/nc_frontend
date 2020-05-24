@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Announcement } from '../../core/_models/announcement';
-import { AnnouncementService } from '../../core/_services/announcement.service';
+import { AnnouncementService } from '../../core/_services/announcements/announcement.service';
 
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { AuthenticationService } from '../../core/_services/authentication.service';
+import { AuthenticationService } from '../../core/_services/authentication/authentication.service';
 import { Role } from '../../core/_models/role';
-import { ToastsService } from '../../core/_services/toasts.service';
+import { ToastsService } from '../../core/_services/utils/toasts.service';
 
 const PAGE_SIZE: number = 5;
 

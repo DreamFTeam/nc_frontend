@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {AnonymService} from '../../core/_services/anonym.service';
-import {GameSettingsService} from '../../core/_services/game-settings.service';
+import {AnonymService} from '../../core/_services/game/anonym.service';
+import {GameSettingsService} from '../../core/_services/game/game-settings.service';
 import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({

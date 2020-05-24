@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {map} from 'rxjs/operators';
-import {environment} from '../../../../environments/environment';
+import {environment} from '../../../../../environments/environment';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {User} from '../_models/user';
+import {User} from '../../_models/user';
 import * as jwt_decode from 'jwt-decode';
 
 @Injectable({

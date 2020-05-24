@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ExtendedQuizRatingsPreview } from '../../core/_models/extended-quiz-ratings-preview';
 import { Observable } from 'rxjs';
-import { UserQuizzesRatingsService } from '../../core/_services/user-quizzes-ratings.service';
+import { UserQuizzesRatingsService } from '../../core/_services/user/user-quizzes-ratings.service';
 
 @Component({
   selector: 'app-user-quizzes-ratings',

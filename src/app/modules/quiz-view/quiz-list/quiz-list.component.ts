@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ExtendedQuizPreview } from '../../core/_models/extendedquiz-preview';
-import { GameSettingsService } from '../../core/_services/game-settings.service';
+import { GameSettingsService } from '../../core/_services/game/game-settings.service';
 import { Router } from '@angular/router';
-import { AuthenticationService } from '../../core/_services/authentication.service';
+import { AuthenticationService } from '../../core/_services/authentication/authentication.service';
 import { Role } from '../../core/_models/role';
-import { SearchFilterQuizService } from '../../core/_services/search-filter-quiz.service';
+import { SearchFilterQuizService } from '../../core/_services/quiz/search-filter-quiz.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { QuizFilterComponent } from '../quiz-filter/quiz-filter.component';
 

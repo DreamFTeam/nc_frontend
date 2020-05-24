@@ -16,14 +16,8 @@ export class ExtendedQuiz implements DesearizableWImage {
     language: string;
     adminComment: string;
     rating: number;
-    tagIdList: string[];
-    tagNameList: string[];
-    categoryIdList: string[];
-    categoryNameList: string[];
-
     tags: Tag[];
     categories: Category[];
-
     isFavourite: boolean;
     imageContent: any;
     favourite: boolean;
@@ -31,9 +25,6 @@ export class ExtendedQuiz implements DesearizableWImage {
 
     deserialize(input: any, sanitizer: DomSanitizer): this {
         Object.assign(this, input);
-
-        console.log("got");
-
 
         if (input.tagIdList !== undefined) {
             this.tags = [];
@@ -52,7 +43,6 @@ export class ExtendedQuiz implements DesearizableWImage {
         if (this.imageContent !== null && this.imageContent !== undefined && this.imageContent != "") {
             const objUrl = 'data:image/jpeg;base64,' + this.imageContent;
             this.imageContent = sanitizer.bypassSecurityTrustUrl(objUrl);
-            // console.log(objUrl);
             this.unsanitizedImage = this.dataURLtoFile(objUrl);
         }
         return this;

@@ -3,8 +3,8 @@ import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/com
 import {Observable} from 'rxjs';
 
 import {environment} from '../../../../environments/environment';
-import {AuthenticationService} from '../_services/authentication.service';
-import {AnonymService} from '../_services/anonym.service';
+import {AuthenticationService} from '../_services/authentication/authentication.service';
+import {AnonymService} from '../_services/game/anonym.service';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {

@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { User } from '../_models/user';
+import { User } from '../../_models/user';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
-import { environment } from '../../../../environments/environment';
+import { environment } from '../../../../../environments/environment';
 import * as jwt_decode from 'jwt-decode';
-import { SettingsService } from './settings.service';
-import { LocaleService } from './locale.service';
+import { SettingsService } from '../profile/settings.service';
+import { LocaleService } from '../utils/locale.service';
 
 
 @Injectable({

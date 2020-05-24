@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
-import {environment} from '../../../../environments/environment';
+import {environment} from '../../../../../environments/environment';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {User} from '../_models/user';
+import {User} from '../../_models/user';
 import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
-import {AuthenticationService} from './authentication.service';
+import {AuthenticationService} from '../authentication/authentication.service';
 
 @Injectable({
   providedIn: 'root'

@@ -1,10 +1,8 @@
 import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AppRoutingModule } from './app-routing.module';
@@ -40,6 +38,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
   imports: [
     BrowserModule,
     AppRoutingModule,
+    BrowserAnimationsModule,
     RouterModule.forRoot(appRoutes),
     HttpClientModule,
     TranslateModule.forRoot({

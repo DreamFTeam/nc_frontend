@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ProfileService } from '../../core/_services/profile.service';
+import { ProfileService } from '../../core/_services/profile/profile.service';
 import { Achievement } from '../../core/_models/achievement';
 import { Observable } from 'rxjs';
 

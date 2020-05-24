@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {GameResultService} from '../../core/_services/game-result.service';
+import {GameResultService} from '../../core/_services/game/game-result.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {GameResult} from '../../core/_models/game-result';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';

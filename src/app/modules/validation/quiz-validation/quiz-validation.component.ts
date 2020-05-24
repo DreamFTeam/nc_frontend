@@ -1,13 +1,13 @@
 import { Component, OnInit} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { QuizValidationService } from '../../core/_services/quiz-validation.service';
+import { QuizValidationService } from '../../core/_services/quiz/quiz-validation.service';
 import { Observable } from 'rxjs';
 import { ExtendedQuiz } from '../../core/_models/extended-quiz';
 import { ExtendedQuestion } from '../../core/_models/question/extendedquestion';
-import { ModalService } from '../../core/_services/modal.service';
-import { ToastsService } from '../../core/_services/toasts.service';
-import { LocaleService } from '../../core/_services/locale.service';
+import { ModalService } from '../../core/_services/utils/modal.service';
+import { ToastsService } from '../../core/_services/utils/toasts.service';
+import { LocaleService } from '../../core/_services/utils/locale.service';
 
 const PAGE_SIZE: number = 3;
 

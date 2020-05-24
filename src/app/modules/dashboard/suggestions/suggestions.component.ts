@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { SuggestionService } from '../../core/_services/suggestion.service';
-import { AuthenticationService } from '../../core/_services/authentication.service';
+import { SuggestionService } from '../../core/_services/user/suggestion.service';
+import { AuthenticationService } from '../../core/_services/authentication/authentication.service';
 import { Role } from '../../core/_models/role';
 import { ExtendedQuizPreview } from '../../core/_models/extendedquiz-preview';
-import { ToastsService } from '../../core/_services/toasts.service';
+import { ToastsService } from '../../core/_services/utils/toasts.service';
 
 @Component({
   selector: 'app-suggestions',

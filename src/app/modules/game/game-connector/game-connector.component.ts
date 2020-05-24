@@ -1,11 +1,11 @@
 import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {GameSettingsService} from '../../core/_services/game-settings.service';
+import {GameSettingsService} from '../../core/_services/game/game-settings.service';
 import {Game} from '../../core/_models/game';
-import {SseService} from '../../core/_services/sse.service';
-import {AuthenticationService} from '../../core/_services/authentication.service';
+import {SseService} from '../../core/_services/utils/sse.service';
+import {AuthenticationService} from '../../core/_services/authentication/authentication.service';
 import {Role} from '../../core/_models/role';
-import {ModalMessageService} from '../../core/_services/modal-message.service';
+import {ModalMessageService} from '../../core/_services/utils/modal-message.service';
 
 
 @Component({

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Profile } from '../../core/_models/profile';
-import { FriendsService } from '../../core/_services/friends-service.service';
+import { FriendsService } from '../../core/_services/profile/friends-service.service';
 import { Router } from '@angular/router';
-import { AuthenticationService } from '../../core/_services/authentication.service';
+import { AuthenticationService } from '../../core/_services/authentication/authentication.service';
 
 @Component({
   selector: 'app-user-invitations',

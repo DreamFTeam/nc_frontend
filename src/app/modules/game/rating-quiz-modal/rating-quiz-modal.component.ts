@@ -1,7 +1,7 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {GameResultService} from '../../core/_services/game-result.service';
-import {GameQuestionService} from '../../core/_services/game-question.service';
+import {GameResultService} from '../../core/_services/game/game-result.service';
+import {GameQuestionService} from '../../core/_services/game/game-question.service';
 import {ActivatedRoute} from '@angular/router';
 
 @Component({

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationService } from '../../core/_services/authentication.service';
+import { AuthenticationService } from '../../core/_services/authentication/authentication.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ModalMessageService } from '../../core/_services/modal-message.service';
+import { ModalMessageService } from '../../core/_services/utils/modal-message.service';
 
 @Component({
   selector: 'app-sign-up',

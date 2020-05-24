@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
-import { Profile } from '../_models/profile';
-import { HandleErrorsService } from './handle-errors.service';
+import { Profile } from '../../_models/profile';
+import { HandleErrorsService } from '../utils/handle-errors.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError } from 'rxjs/internal/operators/catchError';
 import { map } from 'rxjs/internal/operators/map';

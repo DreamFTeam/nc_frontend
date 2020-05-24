@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Activity } from '../_models/activity';
+import { Activity } from '../../_models/activity';
 import { DomSanitizer } from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';

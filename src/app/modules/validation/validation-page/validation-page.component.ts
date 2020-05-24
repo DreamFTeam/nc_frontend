@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { QuizValidationListService} from '../../core/_services/quiz-validation-list.service';
+import { QuizValidationListService} from '../../core/_services/quiz/quiz-validation-list.service';
 
 @Component({
   selector: 'app-validation-page',

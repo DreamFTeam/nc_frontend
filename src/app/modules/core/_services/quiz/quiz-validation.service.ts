@@ -2,13 +2,13 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {DomSanitizer} from '@angular/platform-browser';
 import {Observable} from 'rxjs';
-import {HandleErrorsService} from './handle-errors.service';
-import {ExtendedQuiz} from '../_models/extended-quiz';
+import {HandleErrorsService} from '../utils/handle-errors.service';
+import {ExtendedQuiz} from '../../_models/extended-quiz';
 import {catchError, map} from 'rxjs/operators';
-import {ExtendedQuestion} from '../_models/question/extendedquestion';
-import {AuthenticationService} from './authentication.service';
-import {User} from '../_models/user';
-import {environment} from '../../../../environments/environment';
+import {ExtendedQuestion} from '../../_models/question/extendedquestion';
+import {AuthenticationService} from '../authentication/authentication.service';
+import {User} from '../../_models/user';
+import {environment} from '../../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'

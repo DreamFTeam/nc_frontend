@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/internal/operators/map';
-import { ExtendedQuizPreview } from '../_models/extendedquiz-preview';
+import { ExtendedQuizPreview } from '../../_models/extendedquiz-preview';
 
 @Injectable({
   providedIn: 'root'

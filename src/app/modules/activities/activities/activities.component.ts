@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Activity } from '../../core/_models/activity';
-import { ActivityService } from '../../core/_services/activity.service';
+import { ActivityService } from '../../core/_services/user/activity.service';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 @Component({

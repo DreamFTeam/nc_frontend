@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Setting } from '../_models/setting';
+import { Setting } from '../../_models/setting';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { LocaleService } from './locale.service';
+import { LocaleService } from '../utils/locale.service';
 import { environment } from 'src/environments/environment';
 
 @Injectable({

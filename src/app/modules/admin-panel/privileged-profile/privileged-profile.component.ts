@@ -2,9 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {CreatePrivilegedComponent} from '../create-privileged/create-privileged.component';
-import {AuthenticationService} from '../../core/_services/authentication.service';
+import {AuthenticationService} from '../../core/_services/authentication/authentication.service';
 import {User} from '../../core/_models/user';
-import {AdminDashboardService} from '../../core/_services/admin-dashboard.service';
+import {AdminDashboardService} from '../../core/_services/admin/admin-dashboard.service';
 
 @Component({
     selector: 'app-privileged-profile',

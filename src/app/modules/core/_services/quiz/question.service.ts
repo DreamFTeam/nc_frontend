@@ -1,14 +1,14 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {User} from '../_models/user';
-import {Question} from '../_models/question/question';
-import {ExtendedQuestion} from '../_models/question/extendedquestion';
+import {User} from '../../_models/user';
+import {Question} from '../../_models/question/question';
+import {ExtendedQuestion} from '../../_models/question/extendedquestion';
 import {DomSanitizer} from '@angular/platform-browser';
 import {map} from 'rxjs/operators';
-import {Alert} from '../_models/alert';
-import {environment} from '../../../../environments/environment';
-import {AuthenticationService} from './authentication.service';
+import {Alert} from '../../_models/alert';
+import {environment} from '../../../../../environments/environment';
+import {AuthenticationService} from '../authentication/authentication.service';
 
 @Injectable({
   providedIn: 'root'

@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {QuestionService} from '../../core/_services/question.service';
-import {GameSettingsService} from '../../core/_services/game-settings.service';
-import {AuthenticationService} from '../../core/_services/authentication.service';
+import {QuestionService} from '../../core/_services/quiz/question.service';
+import {GameSettingsService} from '../../core/_services/game/game-settings.service';
+import {AuthenticationService} from '../../core/_services/authentication/authentication.service';
 import {Role} from '../../core/_models/role';
-import {ModalMessageService} from '../../core/_services/modal-message.service';
+import {ModalMessageService} from '../../core/_services/utils/modal-message.service';
 
 @Component({
   selector: 'app-game-settings',

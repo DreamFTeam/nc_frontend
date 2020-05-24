@@ -1,14 +1,14 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { QuizService } from '../../core/_services/quiz.service';
+import { QuizService } from '../../core/_services/quiz/quiz.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { QuestionService } from '../../core/_services/question.service';
+import { QuestionService } from '../../core/_services/quiz/question.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ExtendedQuiz } from '../../core/_models/extended-quiz';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { ExtendedQuestion } from '../../core/_models/question/extendedquestion';
-import { ModalService } from '../../core/_services/modal.service';
-import { ToastsService } from '../../core/_services/toasts.service';
-import { LocaleService } from '../../core/_services/locale.service';
+import { ModalService } from '../../core/_services/utils/modal.service';
+import { ToastsService } from '../../core/_services/utils/toasts.service';
+import { LocaleService } from '../../core/_services/utils/locale.service';
 
 @Component({
   selector: 'app-quiz',

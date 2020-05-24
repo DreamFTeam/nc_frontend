@@ -2,12 +2,12 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {catchError, map} from 'rxjs/operators';
-import {QuizValidationPreview} from '../_models/quiz-validation-preview';
-import {AuthenticationService} from './authentication.service';
+import {QuizValidationPreview} from '../../_models/quiz-validation-preview';
+import {AuthenticationService} from '../authentication/authentication.service';
 import {DomSanitizer} from '@angular/platform-browser';
-import {HandleErrorsService} from './handle-errors.service';
-import {User} from '../_models/user';
-import {environment} from '../../../../environments/environment';
+import {HandleErrorsService} from '../utils/handle-errors.service';
+import {User} from '../../_models/user';
+import {environment} from '../../../../../environments/environment';
 
 export enum ListType {
   Unvalidated = 1,

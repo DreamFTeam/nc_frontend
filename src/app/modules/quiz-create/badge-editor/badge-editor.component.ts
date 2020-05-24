@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Observable, merge, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
-import { QuizService } from '../../core/_services/quiz.service';
+import { QuizService } from '../../core/_services/quiz/quiz.service';
 import { TagCatg } from '../../core/_models/tagcateg';
 import { Tag } from '../../core/_models/tag';
 import { Category } from '../../core/_models/category';

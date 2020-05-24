@@ -1,7 +1,7 @@
 import {Component, Input, OnInit, Renderer2, TemplateRef, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {ToastsService} from '../../core/_services/toasts.service';
-import { AuthenticationService } from '../../core/_services/authentication.service';
+import {ToastsService} from '../../core/_services/utils/toasts.service';
+import { AuthenticationService } from '../../core/_services/authentication/authentication.service';
 import { Role } from '../../core/_models/role';
 
 @Component({

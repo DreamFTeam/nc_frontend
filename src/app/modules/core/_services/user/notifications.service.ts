@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {Notification} from '../_models/notification';
-import {AuthenticationService} from './authentication.service';
+import {Notification} from '../../_models/notification';
+import {AuthenticationService} from '../authentication/authentication.service';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {environment} from '../../../../environments/environment';
+import {environment} from '../../../../../environments/environment';
 import {map} from 'rxjs/operators';
-import {SseService} from './sse.service';
+import {SseService} from '../utils/sse.service';
 
 @Injectable({
   providedIn: 'root'

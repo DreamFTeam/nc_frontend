@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { ProfileService } from '../../core/_services/profile.service';
-import { PrivilegedService } from '../../core/_services/privileged.service';
+import { ProfileService } from '../../core/_services/profile/profile.service';
+import { PrivilegedService } from '../../core/_services/admin/privileged.service';
 import { Profile } from '../../core/_models/profile';
-import { AuthenticationService } from '../../core/_services/authentication.service';
+import { AuthenticationService } from '../../core/_services/authentication/authentication.service';
 
 @Component({
   selector: 'app-edit-profile',

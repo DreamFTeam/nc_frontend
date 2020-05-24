@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Setting } from '../../core/_models/setting';
-import { SettingsService } from '../../core/_services/settings.service';
+import { SettingsService } from '../../core/_services/profile/settings.service';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { ToastsService } from '../../core/_services/toasts.service';
+import { ToastsService } from '../../core/_services/utils/toasts.service';
 import { environment } from 'src/environments/environment';
-import { LocaleService } from '../../core/_services/locale.service';
+import { LocaleService } from '../../core/_services/utils/locale.service';
 
 
 
