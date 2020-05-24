@@ -1,17 +1,17 @@
 <div class="modal-header">
-    <h4 class="modal-title">Rate</h4>
+    <h4 class="modal-title">Rating</h4>
     <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
 </div>
 <div class="modal-body">
-	<div *ngIf="message">
+	<div *ngIf="message" class="text-center">
 		<p class="h5">
 			{{message}}
 		</p>
-	    <ngb-rating [(rate)]="currentRate" max="5">
+	    <ngb-rating [(rate)]="currentRate"  max="5">
 		  <ng-template let-fill="fill" let-index="index">
-		    <span class="star" [class.filled]="fill === 100" >&#9733;</span>
+		    <span class="star" [style]="{'font-size':'3em'}" [class.filled]="fill === 100" >&#9733;</span>
 		  </ng-template>
 		</ngb-rating>
 	</div>
@@ -20,7 +20,4 @@
 		  <span class="sr-only">Loading...</span>
 		</div>
 	</div>
-</div>
-<div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">OK</button>
 </div>

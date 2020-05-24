@@ -1,10 +1,10 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {GameResultService} from '../_services/game-result.service';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import {GameResult} from '../_models/game-result';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {RatingQuizModalComponent} from '../rating-quiz-modal/rating-quiz-modal.component';
-import {mod} from 'ngx-bootstrap/chronos/utils';
+import {AuthenticationService} from '../_services/authentication.service';
 
 
 @Component({
@@ -22,6 +22,7 @@ export class GameResultComponent implements OnInit {
     winner: string;
     view = [600, 400];
     resultsForGraphic: any[];
+    loggedIn: boolean;
 
     // colorScheme = {
     //   domain: ['#e5de09', '#9e0505', '#05b4ff', '#FF5005']
@@ -29,8 +30,9 @@ export class GameResultComponent implements OnInit {
 
     constructor(private gameResultService: GameResultService,
                 private activatedRoute: ActivatedRoute,
-                private modalService: NgbModal
-                ) {
+                private modalService: NgbModal,
+                private authenticationService: AuthenticationService
+    ) {
         this.gameId = this.activatedRoute.snapshot.paramMap.get('id');
     }
 
@@ -39,7 +41,7 @@ export class GameResultComponent implements OnInit {
     }
 
     ngOnInit(): void {
-
+        this.loggedIn = !!this.authenticationService.currentUserValue;
         this.gameResultService.getResults(this.gameId)
             .subscribe(ses => {
                 this.results = ses;
