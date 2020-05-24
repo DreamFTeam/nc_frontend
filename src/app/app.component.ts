@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { SettingsService } from './_services/settings.service';
-import { AuthenticationService } from './_services/authentication.service';
-import { LocaleService } from './_services/locale.service';
+import { SettingsService } from './modules/core/_services/settings.service';
+import { AuthenticationService } from './modules/core/_services/authentication.service';
+import { LocaleService } from './modules/core/_services/locale.service';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
