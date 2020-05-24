@@ -9,7 +9,7 @@ import {environment} from '../../environments/environment';
 export class AdminDashboardService {
 
     private readonly popularQuizWeekURL = `${environment.apiUrl}quizzes/popular`;
-    private readonly quizzesStatusesURL = `${environment.apiUrl}quizzes/popular`;
+    private readonly quizzesStatusesURL = `${environment.apiUrl}quizzes/statuses`;
     private readonly quizzesValidInvalidURL = `${environment.apiUrl}quizzes/statistic`;
     private readonly gamesAmountPerDayURL = `${environment.apiUrl}games/amount-per-day`;
 
@@ -28,9 +28,7 @@ export class AdminDashboardService {
     }
 
     getQuizzesStatuses(): Observable<any> {
-        // return this.http.get(this.quizzesStatusesURL, this.httpOptions);
-        return this.http.get(this.popularQuizWeekURL,
-            {headers: this.httpOptions.headers, params: {amount: '5'}});
+        return this.http.get(this.quizzesStatusesURL, this.httpOptions);
     }
 
     getQuizzesValidInvalid(): Observable<any> {
