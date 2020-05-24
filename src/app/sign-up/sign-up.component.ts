@@ -54,8 +54,9 @@ export class SignUpComponent implements OnInit {
           this.modalMessageService.show('Mail', 'Check your email!');
         }
       },
-        err => {
-          this.message = err;
+        error => {
+          this.message = error.error ? error.error.message : 'An error occurred';
+          console.log(error);
           this.loading = false;
         }
       );
