@@ -1,6 +1,7 @@
 import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {Notification} from '../_models/notification';
 import {NotificationsService} from '../_services/notifications.service';
+import {environment} from '../../environments/environment';
 
 @Component({
   selector: 'app-notifications',
@@ -10,14 +11,19 @@ import {NotificationsService} from '../_services/notifications.service';
 export class NotificationsComponent implements OnInit, OnDestroy {
   notifications: Notification[];
   newNotification: boolean;
+  language: string;
+  locales: string[];
 
   constructor(private notificationsService: NotificationsService) {
   }
 
   ngOnInit(): void {
+
+    this.locales = environment.locales;
+    this.language = localStorage.getItem('userLang');
     this.notificationsService.notifications
-      .subscribe(notfs => {
-        this.notifications = notfs;
+      .subscribe(notifications => {
+        this.notifications = notifications;
         this.newNotification = this.notifications && this.notifications.length > 0;
       });
   }
