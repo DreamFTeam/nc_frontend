@@ -5,8 +5,8 @@ import { AuthenticationService } from '../authentication/authentication.service'
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
 import { map } from 'rxjs/operators';
-import { SseService } from './sse.service';
-import { ToastsService } from './toasts.service';
+import {ToastsService} from '../utils/toasts.service';
+import {SseService} from '../utils/sse.service';
 
 @Injectable({
     providedIn: 'root'

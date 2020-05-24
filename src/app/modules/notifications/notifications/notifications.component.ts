@@ -1,7 +1,7 @@
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
-import { Notification } from '../_models/notification';
-import { NotificationsService } from '../_services/notifications.service';
-import { environment } from '../../environments/environment';
+import {NotificationsService} from '../../core/_services/user/notifications.service';
+import {environment} from '../../../../environments/environment';
+import {Notification} from '../../core/_models/notification';
 
 @Component({
   selector: 'app-notifications',
