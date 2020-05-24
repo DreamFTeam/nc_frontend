@@ -38,7 +38,7 @@ export class RecoverPasswordComponent implements OnInit {
         this.loading = false;
       },
       error => {
-        this.message = error;
+        this.message = error.error ? error.error.message : 'An error occurred';
         this.loading = false;
       });
     this.loading = true;

@@ -39,7 +39,7 @@ export class LogInComponent {
         this.loading = false;
       },
         error => {
-          this.message = error;
+          this.message = error.error ? error.error.message : 'An error occurred';
           console.log(error);
           this.loading = false;
         }
