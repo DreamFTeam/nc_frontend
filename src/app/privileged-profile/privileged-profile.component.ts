@@ -27,7 +27,7 @@ export class PrivilegedProfileComponent implements OnInit {
 
     // Quizzes statuses chart
     dataQuizStatus: any[];
-    titleQuizStatus = 'Quizzes statuses (FALSE) ';
+    titleQuizStatus = 'Quizzes statuses';
     view = [400, 200];
 
     // Quizzes valid/invalid chart
@@ -59,21 +59,13 @@ export class PrivilegedProfileComponent implements OnInit {
             this.dataPopQuiz = data.map(x => {
                 return {name: x.title, value: x.gamesAmount, id: x.quizId};
             });
-            console.log(data);
         });
-        // this.adminDashboardService.getQuizzesStatuses().subscribe(data => {
-        //     this.dataQuizStatus = data.map(x => {
-        //         return {name: x.title, value: x.gamesAmount};
-        //     });
-        //     console.log(data);
-        // });
-        this.dataQuizStatus = [
-            {name: 'Published', value: 21},
-            {name: 'Rejected', value: 6},
-            {name: 'Activated', value: 24},
-            {name: 'Unvalidated', value: 12},
-            {name: 'Total', value: 35}
-        ]
+        this.adminDashboardService.getQuizzesStatuses().subscribe(data => {
+            this.dataQuizStatus = [];
+            for (const stat in data) {
+                this.dataQuizStatus.push({name: stat, value: data[stat]});
+            }
+        });
         this.adminDashboardService.getQuizzesValidInvalid().subscribe(data => {
             this.dataValidQuiz = [
                 {
@@ -85,11 +77,9 @@ export class PrivilegedProfileComponent implements OnInit {
                     value: data.countValidatedByModerator
                 }
             ];
-            console.log(data);
         });
 
         this.adminDashboardService.getGamesAmountPerDay().subscribe(data => {
-            console.log(data)
             this.dataGamesPerDay = [{
                 name: 'Games',
                 series: data.map(x => {
