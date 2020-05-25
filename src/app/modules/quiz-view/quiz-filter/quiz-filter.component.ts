@@ -1,11 +1,11 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {merge, Observable, Subject} from 'rxjs';
-import {debounceTime, distinctUntilChanged, map, filter} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
 import {SearchFilterQuizService} from '../../core/_services/quiz/search-filter-quiz.service';
 import {Tag} from '../../core/_models/tag';
 import {Category} from '../../core/_models/category';
 import {QuizFilterSettings} from '../../core/_models/quiz-filter-settings';
-import {NgbActiveModal, NgbTypeahead} from '@ng-bootstrap/ng-bootstrap';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {TagCatg} from '../../core/_models/tagcateg';
 import {QuizService} from '../../core/_services/quiz/quiz.service';
 

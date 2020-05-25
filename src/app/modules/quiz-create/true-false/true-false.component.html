@@ -1,7 +1,7 @@
- <div class="answer">
+<div class="answer">
      <span>{{ 'quizCreation.rightAnswer' | translate }}</span>
-     <select [disabled]="!available" class="form-control" style="max-width: 100px;" 
-     (change)="onChange($event.target.value)" [(ngModel)]="question.rightOptions[0]" >
+     <select [disabled]="!available" class="form-control" style="max-width: 100px;"
+             (change)="onChange($event.target.value)" [(ngModel)]="question.rightOptions[0]">
         <option value="false">{{ 'utils.false' | translate }}</option>
         <option value="true">{{ 'utils.true' | translate }}</option>
       </select>

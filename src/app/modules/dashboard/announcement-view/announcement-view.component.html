@@ -7,7 +7,9 @@
             <fa-icon [icon]="faSpinner" [spin]="true" size="6x"></fa-icon>
         </div>
         <div *ngIf="!loading" class="mb-2">
-            <a *ngIf="isPrivileged()" class="btn buttonpr" [routerLink]="'/editannouncements'">{{'managaAnn' | translate}}</a>
+            <a *ngIf="isPrivileged()"
+               class="btn buttonpr"
+               [routerLink]="'/editannouncements'">{{'managaAnn' | translate}}</a>
             <div class="p-2" *ngFor="let announcement of announcements; let i = index">
                 <hr class="my-2" *ngIf="i != 0">
                 <div class="row">
@@ -23,7 +25,11 @@
 
                 <p>{{announcement.textContent}}</p>
             </div>
-            <ngb-pagination [collectionSize]="collectionSize" [pageSize]="pageSize" [(page)]="page" class="d-flex justify-content-center mt-2" (pageChange)="loadPage($event)">
+            <ngb-pagination [collectionSize]="collectionSize"
+                            [pageSize]="pageSize"
+                            [(page)]="page"
+                            class="d-flex justify-content-center mt-2"
+                            (pageChange)="loadPage($event)">
             </ngb-pagination>
         </div>
     </div>

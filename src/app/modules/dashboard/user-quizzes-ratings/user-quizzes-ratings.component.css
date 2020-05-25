@@ -1,39 +1,50 @@
-.embed-responsive .pic {
+.embed-responsive .pic
+{
     object-fit: cover;
 }
 
-.embed-responsive {
+.embed-responsive
+{
     max-width: 25%;
 }
 
-.card-header {
+.card-header
+{
     font-size: medium;
 }
 
-.media :hover {
+.media :hover
+{
     cursor: pointer;
 }
 
-.media {
+.media
+{
     margin-bottom: 0.7em;
 }
 
-.card-body {
+.card-body
+{
     max-height: 30vh;
 }
 
-.quiztitle {
-    font-size: small;
-    padding: 0;
+.quiztitle
+{
+    font-size:     small;
+    padding:       0;
     margin-bottom: 0.1em;
 }
 
-@media (min-width: 768px) {
-    .embed-responsive {
+@media (min-width: 768px)
+{
+    .embed-responsive
+    {
         min-width: 15% !important;
         max-width: 35% !important;
     }
-    .card-header {
+
+    .card-header
+    {
         font-size: 1em;
     }
 }

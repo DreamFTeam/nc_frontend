@@ -1,9 +1,9 @@
 <div class="toastpos">
-    <ngb-toast *ngFor="let toast of toastsService.toasts" 
-                [class]="toast.classname" 
-                [autohide]="true" 
-                [delay]="5000"
-        (hide)="toastsService.removeToast(toast)">
+    <ngb-toast *ngFor="let toast of toastsService.toasts"
+               [class]="toast.classname"
+               [autohide]="true"
+               [delay]="5000"
+               (hide)="toastsService.removeToast(toast)">
 
         <ng-template [ngIf]="isTemplate(toast)" [ngIfElse]="text">
             <ng-template [ngTemplateOutlet]="toast.textOrTpl"></ng-template>

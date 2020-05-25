@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
-import {Quiz} from '../../_models/quiz';
-import {BehaviorSubject, Observable, of} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {environment} from '../../../../../environments/environment';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import {ExtendedQuizPreview} from '../../_models/extendedquiz-preview';
 import {DomSanitizer} from '@angular/platform-browser';
@@ -60,7 +59,7 @@ export class SearchFilterQuizService {
             lessThanRating: this.settings.lessThanRating,
             orderByRating: this.settings.orderByRating,
             tags: this.settings.tags.length > 0 ? this.settings.tags.map(x => x.id) : null,
-            categories: this.settings.categories.length > 0  ? this.settings.categories.map(x => x.id) : null,
+            categories: this.settings.categories.length > 0 ? this.settings.categories.map(x => x.id) : null,
             quizLang: this.settings.quizLang === 'All' ? null : this.languageEditor(this.settings.quizLang)
         };
         return this.http.post<number>(this.filterUrlTotalSize, sett, this.httpOptions);
@@ -94,21 +93,21 @@ export class SearchFilterQuizService {
             moreThanRating: settings.moreThanRating,
             lessThanRating: settings.lessThanRating,
             orderByRating: settings.orderByRating,
-            tags: settings.tags.length > 0  ? settings.tags.map(x => x.id) : null,
-            categories: settings.categories.length > 0  ? settings.categories.map(x => x.id) : null,
+            tags: settings.tags.length > 0 ? settings.tags.map(x => x.id) : null,
+            categories: settings.categories.length > 0 ? settings.categories.map(x => x.id) : null,
             quizLang: settings.quizLang === 'All' ? null : this.languageEditor(settings.quizLang)
         };
         console.log(sett);
         return this.http.post<ExtendedQuizPreview[]>(`${this.filterUrl}/${page}`, JSON.stringify(sett),
             this.httpOptions).pipe(map(data => {
-                    const quizzes = data.map(x => {
-                        return new ExtendedQuizPreview().deserialize(x, this.sanitizer);
-                    });
-                    this.currentQuizzesSubject.next(quizzes);
-                    console.log(this.currentQuizzesSubject.value);
-                    return quizzes;
-                }
-            ));
+                const quizzes = data.map(x => {
+                    return new ExtendedQuizPreview().deserialize(x, this.sanitizer);
+                });
+                this.currentQuizzesSubject.next(quizzes);
+                console.log(this.currentQuizzesSubject.value);
+                return quizzes;
+            }
+        ));
     }
 
     private languageEditor(lang: string) {

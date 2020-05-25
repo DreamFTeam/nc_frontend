@@ -7,7 +7,7 @@
                     <p style="font-size: 20px;" routerLink="/profile/{{act.username}}">
                         <img *ngIf="act.imageContent !== null" [src]='act.imageContent' class="img-thumbnail avatar">
                         <img *ngIf="act.imageContent === null" src="../assets/img/nopicture.jpg"
-                            class="img-thumbnail avatar">
+                             class="img-thumbnail avatar">
                         <strong class="ml-2">{{act.username}}</strong>
                     </p>
 

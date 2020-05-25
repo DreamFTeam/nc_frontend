@@ -1,22 +1,26 @@
-  button.addb {
+button.addb
+{
 
-    margin: 2px auto auto auto;
-    border: 0px;
+    margin:           2px auto auto auto;
+    border:           0px;
     background-color: transparent;
-  }
+}
 
-  button.remb {
-    margin-top: 2px;
-    border: 0px;
+button.remb
+{
+    margin-top:       2px;
+    border:           0px;
     background-color: transparent;
-  }
+}
 
-  img {
-    width: 30px;
+img
+{
+    width:  30px;
     height: 30px;
-  }
+}
 
-  label{
+label
+{
     font-weight: 600;
-    font-size: 20px;
+    font-size:   20px;
 }

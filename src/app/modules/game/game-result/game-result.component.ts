@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { GameResultService } from '../_services/game-result.service';
-import { ActivatedRoute } from '@angular/router';
-import { GameResult } from '../_models/game-result';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { RatingQuizModalComponent } from '../rating-quiz-modal/rating-quiz-modal.component';
-import { AuthenticationService } from '../_services/authentication.service';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {RatingQuizModalComponent} from '../rating-quiz-modal/rating-quiz-modal.component';
+import {GameResult} from '../../core/_models/game-result';
+import {GameResultService} from '../../core/_services/game/game-result.service';
+import {AuthenticationService} from '../../core/_services/authentication/authentication.service';
+import {AnonymService} from '../../core/_services/game/anonym.service';
 
 
 @Component({
@@ -14,7 +15,7 @@ import { AuthenticationService } from '../_services/authentication.service';
     encapsulation: ViewEncapsulation.None
 })
 
-export class GameResultComponent implements OnInit {
+export class GameResultComponent implements OnInit, OnDestroy {
 
     results: GameResult[];
     gameId: string;
@@ -29,9 +30,10 @@ export class GameResultComponent implements OnInit {
     // };
 
     constructor(private gameResultService: GameResultService,
-        private activatedRoute: ActivatedRoute,
-        private modalService: NgbModal,
-        private authenticationService: AuthenticationService
+                private activatedRoute: ActivatedRoute,
+                private modalService: NgbModal,
+                private authenticationService: AuthenticationService,
+                private anonymService: AnonymService
     ) {
         this.gameId = this.activatedRoute.snapshot.paramMap.get('id');
     }
@@ -58,12 +60,18 @@ export class GameResultComponent implements OnInit {
     setResultsForGraphic(gameResults: GameResult[]) {
         this.resultsForGraphic = [];
         gameResults.forEach(result => {
-            this.resultsForGraphic.push({ name: result.username, value: result.score });
+            this.resultsForGraphic.push({name: result.username, value: result.score});
         });
     }
 
     rateModal() {
         const modal = this.modalService.open(RatingQuizModalComponent);
         modal.componentInstance.gameId = this.gameId;
+    }
+
+    ngOnDestroy(): void {
+        if (this.anonymService.currentAnonymValue) {
+            this.anonymService.removeAnonym();
+        }
     }
 }

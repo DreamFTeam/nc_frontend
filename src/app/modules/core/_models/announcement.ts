@@ -1,7 +1,7 @@
-import { DesearizableWImage } from './deserializable-w-image';
-import { DomSanitizer } from '@angular/platform-browser';
+import {DesearizableWImage} from './deserializable-w-image';
+import {DomSanitizer} from '@angular/platform-browser';
 
-export class Announcement implements DesearizableWImage{
+export class Announcement implements DesearizableWImage {
     announcementId: string;
     creatorId: string;
     title: string;
@@ -10,13 +10,13 @@ export class Announcement implements DesearizableWImage{
     image: any;
 
 
-    deserialize(input: any, sanitizer: DomSanitizer): this{
-        Object.assign(this,input);
+    deserialize(input: any, sanitizer: DomSanitizer): this {
+        Object.assign(this, input);
 
         let img = this.image;
-        if (img !== null && img !== undefined && img !== ''){
+        if (img !== null && img !== undefined && img !== '') {
             const objUrl = 'data:image/jpeg;base64,' + this.image;
-            this.image = sanitizer.bypassSecurityTrustUrl(objUrl);    
+            this.image = sanitizer.bypassSecurityTrustUrl(objUrl);
         }
 
         return this;
