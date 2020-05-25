@@ -1,9 +1,13 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {Router} from '@angular/router';
-import {ProfileService} from '../../core/_services/profile/profile.service';
-import {PrivilegedService} from '../../core/_services/admin/privileged.service';
-import {Profile} from '../../core/_models/profile';
-import {AuthenticationService} from '../../core/_services/authentication/authentication.service';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+import { ProfileService } from '../../core/_services/profile/profile.service';
+import { PrivilegedService } from '../../core/_services/admin/privileged.service';
+import { Profile } from '../../core/_models/profile';
+import { AuthenticationService } from '../../core/_services/authentication/authentication.service';
+import { ToastsService } from '../../core/_services/utils/toasts.service';
+import { LocaleService } from '../../core/_services/utils/locale.service';
+import { YesNoModalComponent } from '../../shared/yes-no-modal/yes-no-modal.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-edit-profile',
@@ -25,7 +29,11 @@ export class EditProfileComponent implements OnInit {
     constructor(private router: Router,
                 private getProfileService: ProfileService,
                 private priviligedService: PrivilegedService,
-                private authenticationService: AuthenticationService) {
+                private authenticationService: AuthenticationService,
+                private toastsService: ToastsService,
+                private localeService: LocaleService,
+                private modalService: NgbModal
+    ) {
 
         if (!this.setUsername()) {
             this.router.navigate(['/']);
@@ -60,32 +68,43 @@ export class EditProfileComponent implements OnInit {
     }
 
     saveProfile() {
-        if (this.profile.role === 'ROLE_USER') {
+        this.modal(this.localeService.getValue('modal.saveChanges'), 'danger')
+            .subscribe((receivedEntry) => {
+                if (receivedEntry) {
+                    if (this.profile.role === 'ROLE_USER') {
 
-            this.getProfileService.editProfile('aboutMe', this.profile.aboutMe).subscribe(
-                () => {
-                    this.uploadPic();
-                },
-                error => {
-                    console.log(error.err);
-                    this.goBackToProfile();
+                        this.getProfileService.editProfile('aboutMe', this.profile.aboutMe).subscribe(
+                            () => {
+                                this.uploadPic();
+                            },
+                            (error) => {
+                                this.toastsService.toastAddWarning(this.localeService.getValue('toasterEditor.wentWrong'));
+                            });
+
+                    } else {
+                        this.priviligedService.edit(this.profile.id, 'aboutMe', this.profile.aboutMe).subscribe(
+                            () => {
+                                this.uploadPic();
+                            },
+                            (error) => {
+                                this.toastsService.toastAddWarning(this.localeService.getValue('toasterEditor.wentWrong'));
+
+                            });
+                    }
                 }
-            );
-        } else {
-            this.priviligedService.edit(this.profile.id, 'aboutMe', this.profile.aboutMe).subscribe(
-                () => {
-                    this.uploadPic();
-                },
-                error => {
-                    console.log(error.err);
-                    this.goBackToProfile();
+            });
 
-                });
-        }
+
     }
 
     goBackToProfile() {
-        this.router.navigate(['/profile/' + this.usernameToChange]);
+        this.modal(this.localeService.getValue('modal.leavePage'), 'danger')
+        .subscribe((receivedEntry) => {
+            if (receivedEntry) {
+             this.router.navigate(['/profile/' + this.usernameToChange]);
+            }
+        });
+
     }
 
     onSelectFile(event) {
@@ -122,9 +141,11 @@ export class EditProfileComponent implements OnInit {
                 () => {
                     this.goBackToProfile();
                 },
-                error =>
-                    alert('We couldn`t upload your picture, please, try again.')
-            );
+                (error) => {
+                    this.toastsService.toastAddWarning(this.localeService.getValue('toasterEditor.wentWrong'));
+
+                });
+
         } else {
 
             newPic.append('userId', this.profile.id); // required to change moderator's or admin's profile
@@ -133,10 +154,19 @@ export class EditProfileComponent implements OnInit {
                 () => {
                     this.goBackToProfile();
                 },
-                error => {
-                    alert('We couldn`t upload your picture, please, try again.');
-                }
-            );
+                (error) => {
+                    this.toastsService.toastAddWarning(this.localeService.getValue('toasterEditor.wentWrong'));
+
+                });
         }
+    }
+
+
+    modal(text, style): any {
+        const modalRef = this.modalService.open(YesNoModalComponent);
+        modalRef.componentInstance.text = text;
+        modalRef.componentInstance.style = style;
+
+        return modalRef.componentInstance.passEntry;
     }
 }

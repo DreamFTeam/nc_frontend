@@ -1,13 +1,15 @@
-import {Component, OnInit} from '@angular/core';
-import {ProfileService} from '../../core/_services/profile/profile.service';
-import {Profile} from '../../core/_models/profile';
-import {DomSanitizer} from '@angular/platform-browser';
-import {AuthenticationService} from '../../core/_services/authentication/authentication.service';
+import { Component, OnInit } from '@angular/core';
+import { ProfileService } from '../../core/_services/profile/profile.service';
+import { Profile } from '../../core/_models/profile';
+import { DomSanitizer } from '@angular/platform-browser';
+import { AuthenticationService } from '../../core/_services/authentication/authentication.service';
+import { ToastsService } from '../../core/_services/utils/toasts.service';
+import { LocaleService } from '../../core/_services/utils/locale.service';
 
 @Component({
-    selector: 'app-users',
-    templateUrl: './users.component.html',
-    styleUrls: ['./users.component.css']
+  selector: 'app-users',
+  templateUrl: './users.component.html',
+  styleUrls: ['./users.component.css']
 })
 export class UsersComponent implements OnInit {
 
@@ -17,8 +19,10 @@ export class UsersComponent implements OnInit {
   privileged: boolean;
 
   constructor(private getProfileService: ProfileService,
-              private sanitizer: DomSanitizer,
-              private authenticationService: AuthenticationService,
+    private sanitizer: DomSanitizer,
+    private authenticationService: AuthenticationService,
+    private toastsService: ToastsService,
+    private localeService: LocaleService
 
   ) {
     this.searchResults = null;
@@ -44,6 +48,10 @@ export class UsersComponent implements OnInit {
         this.searchResults.forEach(element => {
           return Profile.deserialize(element, this.sanitizer);
         });
+      },
+      (error) => {
+        this.toastsService.toastAddWarning(this.localeService.getValue('toasterEditor.wentWrong'));
+
       });
   }
 
@@ -54,6 +62,10 @@ export class UsersComponent implements OnInit {
         this.searchResults.forEach(element => {
           return Profile.deserialize(element, this.sanitizer);
         });
+      },
+      (error) => {
+        this.toastsService.toastAddWarning(this.localeService.getValue('toasterEditor.wentWrong'));
+
       });
   }
 
@@ -64,6 +76,10 @@ export class UsersComponent implements OnInit {
         this.searchResults.forEach(element => {
           return Profile.deserialize(element, this.sanitizer);
         });
+      },
+      (error) => {
+        this.toastsService.toastAddWarning(this.localeService.getValue('toasterEditor.wentWrong'));
+
       });
   }
 
