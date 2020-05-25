@@ -1,89 +1,107 @@
-.display-4 {
+.display-4
+{
     font-size: 3em;
     word-wrap: break-word;
 }
 
-.mainstyle {
-    border-radius: 8px;
+.mainstyle
+{
+    border-radius:    8px;
     background-color: #F7F9FB;
-    min-height: 10hv;
+    min-height:       10 hv;
 }
 
-.descr{
-    width: 100%;
+.descr
+{
+    width:     100%;
     word-wrap: break-word;
 }
 
-.content {
-    padding-top: 1em;
+.content
+{
+    padding-top:   1em;
     margin-bottom: 2em;
 }
 
-.pagination-container {
-    width: 100%;
+.pagination-container
+{
+    width:      100%;
     margin-top: 1em;
 }
 
-.quest-title {
+.quest-title
+{
     padding-top: 0.5em;
 }
 
-.quest-cont-title {
-    background-color: #eaedf0;
-    margin-left: 1em;
-    margin-right: 1em;
-    margin-bottom: 1em;
+.quest-cont-title
+{
+    background-color: #EAEDF0;
+    margin-left:      1em;
+    margin-right:     1em;
+    margin-bottom:    1em;
 }
 
-.quest {
+.quest
+{
     margin-top: 2em;
 }
 
-.quest-content {
-    margin-top: 1.5em;
+.quest-content
+{
+    margin-top:    1.5em;
     margin-bottom: 1.5em;
-    font-size: 1.75rem;
+    font-size:     1.75rem;
 }
 
-.fnt-size p {
+.fnt-size p
+{
     font-size: 1.5rem;
 }
 
-.q-fnt {
+.q-fnt
+{
     font-size: 2rem;
 }
 
-.q-info .q-info-head {
+.q-info .q-info-head
+{
     font-size: 2rem;
 }
 
-.q-info p {
+.q-info p
+{
     font-size: 1.5rem;
 }
 
-.ans-head {
+.ans-head
+{
     padding-left: 0.5em;
 }
 
-.ans-r {
+.ans-r
+{
     font-weight: bold;
 }
 
-.ans {
-    font-size: 1.2rem;
-    padding-left: 1.1em;
-    padding-top: 1em;
+.ans
+{
+    font-size:      1.2rem;
+    padding-left:   1.1em;
+    padding-top:    1em;
     padding-bottom: 1em;
-    border: 1px solid grey;
+    border:         1px solid grey;
 }
 
-.seq-ftn {
+.seq-ftn
+{
     font-size: 1.4rem;
 }
 
-.adm-comm {
-    font-size: 1rem;
-    padding: 0.5em;
+.adm-comm
+{
+    font-size:     1rem;
+    padding:       0.5em;
     margin-bottom: 0.5em;
-    width: 100%;
+    width:         100%;
 }

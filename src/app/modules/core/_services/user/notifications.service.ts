@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { Notification } from '../../_models/notification';
-import { AuthenticationService } from '../authentication/authentication.service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { environment } from '../../../../../environments/environment';
-import { map } from 'rxjs/operators';
+import {Injectable} from '@angular/core';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {Notification} from '../../_models/notification';
+import {AuthenticationService} from '../authentication/authentication.service';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {environment} from '../../../../../environments/environment';
+import {map} from 'rxjs/operators';
 import {ToastsService} from '../utils/toasts.service';
 import {SseService} from '../utils/sse.service';
 
@@ -23,9 +23,9 @@ export class NotificationsService {
     };
 
     constructor(private authenticationService: AuthenticationService,
-        private http: HttpClient,
-        private sseService: SseService,
-        private toastsService: ToastsService) {
+                private http: HttpClient,
+                private sseService: SseService,
+                private toastsService: ToastsService) {
         this.notificationsSubject = new BehaviorSubject<Notification[]>([]);
         this.notifications = this.notificationsSubject.asObservable();
         if (authenticationService.currentUserValue) {
@@ -61,7 +61,7 @@ export class NotificationsService {
 
     showNotification(notificationId: string) {
         this.getById(notificationId).subscribe(n => {
-            this.toastsService.toastAdd(n.content, { header: '' });
+            this.toastsService.toastAdd(n.content, {header: ''});
         });
     }
 }

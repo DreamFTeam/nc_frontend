@@ -1,7 +1,7 @@
-import { DesearizableWImage } from './deserializable-w-image';
-import { DomSanitizer } from '@angular/platform-browser';
+import {DesearizableWImage} from './deserializable-w-image';
+import {DomSanitizer} from '@angular/platform-browser';
 
-export class Activity implements DesearizableWImage{
+export class Activity implements DesearizableWImage {
     id: string;
     userId: string;
     username: string;

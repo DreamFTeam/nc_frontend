@@ -6,7 +6,9 @@
         <ul class="list-unstyled mb-0">
             <li class="media" *ngFor="let item of quizList$ | async" routerLink='/viewquiz/{{item.id}}'>
                 <div class="align-self-center embed-responsive embed-responsive-1by1">
-                    <img class="mr-2 embed-responsive-item align-self-center pic" [src]="item.imageContent ? item.imageContent : this.mockImgUrl" alt="Quiz icon">
+                    <img class="mr-2 embed-responsive-item align-self-center pic"
+                         [src]="item.imageContent ? item.imageContent : this.mockImgUrl"
+                         alt="Quiz icon">
                 </div>
                 <div class="media-body pl-2">
                     <i><p class="lead quiztitle">{{item.title}}</p></i>

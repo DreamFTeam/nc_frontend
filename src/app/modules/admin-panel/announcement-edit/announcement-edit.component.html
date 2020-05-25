@@ -8,15 +8,17 @@
                 <button class="btn addb" (click)="add()"><img src="../assets/img/plus.png"></button>
             </div>
 
-            <!-- ANNOUNCEMENT ADD -->
+	        <!-- ANNOUNCEMENT ADD -->
 
             <div *ngIf="inEdit[0] && !saveLoading">
                 <div><label>Adding announcement</label></div>
                 <label class="mt-4">{{ 'utils.title' | translate }}:</label>
-                <input class="form-control" [(ngModel)]="currentAnnouncement.title" placeholder="{{ 'utils.title' | translate }}">
+                <input class="form-control"
+                       [(ngModel)]="currentAnnouncement.title"
+                       placeholder="{{ 'utils.title' | translate }}">
                 <label>{{ 'utils.content' | translate }}:</label>
                 <textarea class="form-control" rows="5" [(ngModel)]="currentAnnouncement.textContent"
-                    placeholder="{{ 'utils.content' | translate }}"></textarea>
+                          placeholder="{{ 'utils.content' | translate }}"></textarea>
 
                 <button *ngIf="thumbnail !== null" class="btn buttondel mt-2" (click)="removeImage()">
                     {{ 'quizCreation.remove' | translate }} {{ 'quizCreation.image' | translate }}
@@ -24,7 +26,7 @@
                 <div class="mt-2">
                     <img [src]='thumbnail' alt="Upload" class="img-thumbnail" (click)="imageInput.click()">
                     <input style="display: none" #imageInput type="file" accept="image/*"
-                        (change)="uploadImage($event)">
+                           (change)="uploadImage($event)">
                 </div>
 
                 <div class="mt-4">
@@ -37,8 +39,7 @@
             </div>
 
 
-
-            <!-- ANNOUNCEMENTS LIST -->
+	        <!-- ANNOUNCEMENTS LIST -->
 
             <div class="mb-4" *ngFor="let announcement of announcements; let i = index">
                 <div *ngIf="!inEdit[i+1]">
@@ -49,13 +50,13 @@
 
                             <div>
                                 <img *ngIf="announcement.image !== null" [src]='announcement.image'
-                                    class="img-thumbnail">
+                                     class="img-thumbnail">
                             </div>
 
                             <button class="btn" (click)="isCollapsed[i] = !isCollapsed[i]">
                                 <a>{{ 'utils.content' | translate }}</a>
                                 <span
-                                    *ngIf="!isCollapsed[i]">
+		                                *ngIf="!isCollapsed[i]">
                                     ↑</span><span *ngIf="isCollapsed[i]"> ↓</span>
                             </button>
                             <div [ngbCollapse]="isCollapsed[i]">
@@ -70,7 +71,9 @@
 
 
                     <div class="mt-4"><i class="fas fa-chevron-down"></i>
-                        <button *ngIf="!editorEnabled" class="btn buttonpr" (click)="edit(i)">{{ 'utils.edit' | translate }}</button>
+                        <button *ngIf="!editorEnabled"
+                                class="btn buttonpr"
+                                (click)="edit(i)">{{ 'utils.edit' | translate }}</button>
                         <button class="btn buttondel ml-2" (click)="delete(i)">
                             {{ 'utils.delete' | translate }} {{ 'utils.announcement' | translate }}
                         </button>
@@ -78,8 +81,7 @@
                 </div>
 
 
-
-                <!-- ANNOUNCEMENT EDITOR -->
+	            <!-- ANNOUNCEMENT EDITOR -->
 
                 <div *ngIf="inEdit[i+1] && !saveLoading">
                     <hr class="my-4">
@@ -88,10 +90,12 @@
                         <p style="font-style: italic;">{{announcement.creationDate | date}}</p>
                     </div>
                     <label>{{ 'utils.title' | translate }}:</label>
-                    <input class="form-control" [(ngModel)]="currentAnnouncement.title" placeholder="{{ 'utils.title' | translate }}">
+                    <input class="form-control"
+                           [(ngModel)]="currentAnnouncement.title"
+                           placeholder="{{ 'utils.title' | translate }}">
                     <label>{{ 'utils.content' | translate }}:</label>
                     <textarea class="form-control" rows="5" [(ngModel)]="currentAnnouncement.textContent"
-                        placeholder="{{ 'utils.content' | translate }}"></textarea>
+                              placeholder="{{ 'utils.content' | translate }}"></textarea>
 
 
                     <button *ngIf="thumbnail !== null" class="btn buttondel mt-2" (click)="removeImage()">
@@ -100,7 +104,7 @@
                     <div class="mt-2">
                         <img [src]='thumbnail' alt="Upload" class="img-thumbnail" (click)="imageInput.click()">
                         <input style="display: none" #imageInput type="file" accept="image/*"
-                            (change)="uploadImage($event)">
+                               (change)="uploadImage($event)">
                     </div>
 
                     <div class="mt-4"><i class="fas fa-chevron-down"></i>
@@ -115,11 +119,10 @@
             </div>
 
 
-
-            <!-- PAGINATION -->
+	        <!-- PAGINATION -->
 
             <ngb-pagination [collectionSize]="collectionSize" [pageSize]="pageSize" [(page)]="page"
-                class="d-flex justify-content-center" (pageChange)="loadPage($event)"></ngb-pagination>
+                            class="d-flex justify-content-center" (pageChange)="loadPage($event)"></ngb-pagination>
         </div>
         <div style="text-align: center;" *ngIf="loading">
             <fa-icon [icon]="faSpinner" [spin]="true" size="6x"></fa-icon>

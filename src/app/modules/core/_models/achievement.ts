@@ -1,27 +1,27 @@
-import { DesearizableWImage } from './deserializable-w-image';
-import { DomSanitizer } from '@angular/platform-browser';
+import {DesearizableWImage} from './deserializable-w-image';
+import {DomSanitizer} from '@angular/platform-browser';
 
 export class Achievement implements DesearizableWImage {
 
-  title: string;
+    title: string;
 
-  description: string;
+    description: string;
 
-  imageContent: any;
+    imageContent: any;
 
-  categoryTitle: string;
+    categoryTitle: string;
 
-  datetimeGained: Date;
+    datetimeGained: Date;
 
-  timesGained: number;
+    timesGained: number;
 
-  deserialize(input: any, sanitizer: DomSanitizer): this {
-    if (input.imageContent !== null) {
-      input.imageContent =
-        sanitizer.bypassSecurityTrustUrl
-          ('data:image\/(png|jpg|jpeg);base64,'
-            + input.imageContent);
+    deserialize(input: any, sanitizer: DomSanitizer): this {
+        if (input.imageContent !== null) {
+            input.imageContent =
+                sanitizer.bypassSecurityTrustUrl
+                ('data:image\/(png|jpg|jpeg);base64,'
+                    + input.imageContent);
+        }
+        return input;
     }
-    return input;
-  }
 }

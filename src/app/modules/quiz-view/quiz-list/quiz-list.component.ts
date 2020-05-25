@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { ExtendedQuizPreview } from '../../core/_models/extendedquiz-preview';
-import { GameSettingsService } from '../../core/_services/game/game-settings.service';
-import { Router } from '@angular/router';
-import { AuthenticationService } from '../../core/_services/authentication/authentication.service';
-import { Role } from '../../core/_models/role';
-import { SearchFilterQuizService } from '../../core/_services/quiz/search-filter-quiz.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { QuizFilterComponent } from '../quiz-filter/quiz-filter.component';
+import {Component, OnInit} from '@angular/core';
+import {ExtendedQuizPreview} from '../../core/_models/extendedquiz-preview';
+import {GameSettingsService} from '../../core/_services/game/game-settings.service';
+import {Router} from '@angular/router';
+import {AuthenticationService} from '../../core/_services/authentication/authentication.service';
+import {Role} from '../../core/_models/role';
+import {SearchFilterQuizService} from '../../core/_services/quiz/search-filter-quiz.service';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {QuizFilterComponent} from '../quiz-filter/quiz-filter.component';
 
 
 const PAGE_SIZE = 16;
@@ -31,10 +31,10 @@ export class QuizListComponent implements OnInit {
     totalSize: number;
 
     constructor(private modalService: NgbModal,
-        private gameSettingsService: GameSettingsService,
-        private router: Router,
-        private authenticationService: AuthenticationService,
-        private searchFilterQuizService: SearchFilterQuizService) {
+                private gameSettingsService: GameSettingsService,
+                private router: Router,
+                private authenticationService: AuthenticationService,
+                private searchFilterQuizService: SearchFilterQuizService) {
         this.pageSize = PAGE_SIZE;
         this.page = 1;
     }
@@ -49,9 +49,9 @@ export class QuizListComponent implements OnInit {
         this.searchInput = this.searchFilterQuizService.getSettings().quizName;
         this.searchFilterQuizService.currentQuizzesSize.subscribe(size =>
             this.totalSize = size);
-        
+
         const user = this.authenticationService.currentUserValue;
-        
+
         this.canCreate = user && user.role === Role.User;
 
         this.admin = user && user.role !== Role.User;
@@ -83,6 +83,6 @@ export class QuizListComponent implements OnInit {
     }
 
     showFilter() {
-        const modal = this.modalService.open(QuizFilterComponent, { size: 'sm' });
+        const modal = this.modalService.open(QuizFilterComponent, {size: 'sm'});
     }
 }

@@ -2,29 +2,46 @@
     <div *ngIf="(!isEmpty && !isLoading) ; else ((isLoading) ? loading : empty)">
         <div *ngFor="let item of quizList$ | async" class="row border rounded-lg shadow-sm p-2 mb-4 w-100">
             <div class="pic col-lg-3 col-md-4">
-                <img class="img-fluid" [src]="item.imageContent ? item.imageContent : this.mockImageUrl" alt="Quiz icon">
+                <img class="img-fluid"
+                     [src]="item.imageContent ? item.imageContent : this.mockImageUrl"
+                     alt="Quiz icon">
             </div>
             <div class="w-100 col-lg-9 col-md-8">
                 <a routerLink="/viewquiz/{{item.id}}">
                     <h4 class="wrap">{{item.title}}</h4>
                 </a>
-                <p *ngIf="!showButtons && !item.published && !item.activated" class="badge badge-danger">{{'utils.rejected' | translate}}</p>
+                <p *ngIf="!showButtons && !item.published && !item.activated"
+                   class="badge badge-danger">{{'utils.rejected' | translate}}</p>
                 <p class="fnt-size wrap"><strong>{{'utils.description' | translate}}: </strong>{{item.description}}</p>
-                <p class="fnt-size wrap"><strong>{{'utils.author' | translate}}: </strong><a routerLink="/profile/{{item.username}}"><u>{{item.username}}</u></a></p>
-                <p class="fnt-size wrap"><strong>{{'utils.dateofcreation' | translate}}: </strong>{{item.creationDate | date:'d.MM.yyyy':'UTC'}}</p>
-                <p class="fnt-size wrap"><strong>{{'utils.language' | translate}}: </strong>{{((item.language) === 'ukr') ? ('utils.langUkr' | translate) : ('utils.langEng'|translate)}}</p>
+                <p class="fnt-size wrap"><strong>{{'utils.author' | translate}}
+	                : </strong><a routerLink="/profile/{{item.username}}"><u>{{item.username}}</u></a></p>
+                <p class="fnt-size wrap"><strong>{{'utils.dateofcreation' | translate}}
+	                : </strong>{{item.creationDate | date:'d.MM.yyyy':'UTC'}}</p>
+                <p class="fnt-size wrap"><strong>{{'utils.language' | translate}}
+	                : </strong>{{((item.language) === 'ukr') ? ('utils.langUkr' | translate) : ('utils.langEng'|translate)}}</p>
                 <div *ngIf="showButtons" class="row mt-2 align-middle">
                     <div class="col col-sm-6">
-                        <button class="btn btn-lg buttonsec float-sm-none float-md-left" type="button" (click)="reject(item.id, item.creatorId, item.title)">{{'utils.reject' | translate}}</button>
+                        <button class="btn btn-lg buttonsec float-sm-none float-md-left"
+                                type="button"
+                                (click)="reject(item.id, item.creatorId, item.title)">{{'utils.reject' | translate}}</button>
                     </div>
                     <div class="col col-sm-6">
-                        <button class="btn btn-lg buttonpr float-sm-none float-md-right" (click)="validate(item.id)" type="button">{{'utils.validate' | translate}}</button>
+                        <button class="btn btn-lg buttonpr float-sm-none float-md-right"
+                                (click)="validate(item.id)"
+                                type="button">{{'utils.validate' | translate}}</button>
                     </div>
                 </div>
             </div>
         </div>
         <div class="pagination-container">
-            <ngb-pagination class="d-flex justify-content-center" size="lg" [pageSize]="pageSize" [collectionSize]="totalSize$ | async" [(page)]="page" [maxSize]="7" [rotate]="true" (pageChange)="loadPage($event)"></ngb-pagination>
+            <ngb-pagination class="d-flex justify-content-center"
+                            size="lg"
+                            [pageSize]="pageSize"
+                            [collectionSize]="totalSize$ | async"
+                            [(page)]="page"
+                            [maxSize]="7"
+                            [rotate]="true"
+                            (pageChange)="loadPage($event)"></ngb-pagination>
         </div>
     </div>
 </div>

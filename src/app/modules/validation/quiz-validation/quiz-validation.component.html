@@ -7,7 +7,9 @@
         </div>
         <div class="row">
             <div class="col-md-4">
-                <img class="img-fluid" [src]="quiz.imageContent ? quiz.imageContent : this.mockImageUrl" alt="Quiz icon">
+                <img class="img-fluid"
+                     [src]="quiz.imageContent ? quiz.imageContent : this.mockImageUrl"
+                     alt="Quiz icon">
             </div>
             <div class="col-md-8 fnt-size descr">
                 <p><strong>{{'utils.description' | translate}}: </strong>{{quiz.description}}</p>
@@ -15,20 +17,29 @@
                     <p><strong>{{'utils.author' | translate}}: </strong>{{quiz.author}}</p>
                 </a>
                 <p><strong>{{'utils.dateofcreation' | translate}}: </strong>{{quiz.creationDate}}</p>
-                <p><strong>{{'utils.language' | translate}}: </strong>{{quiz.language == 'ukr' ? ('utils.langUkr' | translate) : ('utils.langEng'| translate)}}</p>
+                <p><strong>{{'utils.language' | translate}}
+	                : </strong>{{quiz.language == 'ukr' ? ('utils.langUkr' | translate) : ('utils.langEng'| translate)}}</p>
                 <p>
-                    <strong>{{'utils.tags' | translate}}: </strong><span *ngFor="let tag of quiz.tags; let isLast=last">{{tag.description}}{{isLast? '' : ', '}}</span>
+                    <strong>{{'utils.tags' | translate}}
+	                    : </strong><span *ngFor="let tag of quiz.tags; let isLast=last">{{tag.description}}{{isLast ? '' : ', '}}</span>
                 </p>
                 <p>
-                    <strong>{{'utils.categories' | translate}}: </strong><span *ngFor="let cat of quiz.categories; let isL=last">{{cat.description}}{{isL? '' : ', '}}</span>
+                    <strong>{{'utils.categories' | translate}}
+	                    : </strong><span *ngFor="let cat of quiz.categories; let isL=last">{{cat.description}}{{isL ? '' : ', '}}</span>
                 </p>
-                <input class="adm-comm" [(ngModel)]="adminComment" placeholder="{{'quizValidation.admComment' | translate}}" />
+                <input class="adm-comm"
+                       [(ngModel)]="adminComment"
+                       placeholder="{{'quizValidation.admComment' | translate}}"/>
                 <div class="row">
                     <div class="col">
-                        <button class="btn btn-lg buttonsec float-none" type="button" (click)="reject(quiz.id)">{{'utils.reject' | translate}}</button>
+                        <button class="btn btn-lg buttonsec float-none"
+                                type="button"
+                                (click)="reject(quiz.id)">{{'utils.reject' | translate}}</button>
                     </div>
                     <div class="col">
-                        <button class="btn btn-lg buttonpr float-right mr-1" type="button" (click)="accept(quiz.id)">{{'quizValidation.acceptAndActivate' | translate}}</button>
+                        <button class="btn btn-lg buttonpr float-right mr-1"
+                                type="button"
+                                (click)="accept(quiz.id)">{{'quizValidation.acceptAndActivate' | translate}}</button>
                     </div>
                 </div>
             </div>
@@ -42,7 +53,7 @@
         <div class="row quest" *ngFor="let question of (questionList$ | async); let i = index">
             <div class="col quest-cont-title">
                 <hr>
-                <h3 class="lead q-fnt">{{'utils.question' | translate}} {{i+1}}. {{question.title}}</h3>
+                <h3 class="lead q-fnt">{{'utils.question' | translate}} {{i + 1}}. {{question.title}}</h3>
                 <hr>
             </div>
             <div class="container">
@@ -59,7 +70,8 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        <h5 class="text-left quest-content text-center"><span class="lead q-fnt">{{'utils.content' | translate}}: </span>{{question.content}}</h5>
+                        <h5 class="text-left quest-content text-center"><span class="lead q-fnt">{{'utils.content' | translate}}
+	                        : </span>{{question.content}}</h5>
                     </div>
                 </div>
                 <div class="row">
@@ -85,8 +97,8 @@
                                     <div class="col ans seq-fnt">
                                         <span *ngFor="let ans of question.rightOptions; let isLast=last; let i = index">
                                             <span>
-                                                <strong>{{i+1}}.</strong>
-                                            </span> {{ans}}{{isLast? '' : '; '}}
+                                                <strong>{{i + 1}}.</strong>
+                                            </span> {{ans}}{{isLast ? '' : '; '}}
                                         </span>
                                     </div>
                                 </div>
@@ -96,8 +108,10 @@
                             <h5>{{'utils.answers' | translate}}</h5>
                             <div class="container">
                                 <div class="row">
-                                    <div *ngFor="let ans of question.rightOptions" class="rounded-sm bg-success col-md-6 ans-r ans">{{ans}} (✔)</div>
-                                    <div *ngFor="let oAns of question.otherOptions" class="rounded-sm col-md-6 ans">{{oAns}}</div>
+                                    <div *ngFor="let ans of question.rightOptions"
+                                         class="rounded-sm bg-success col-md-6 ans-r ans">{{ans}} (✔)</div>
+                                    <div *ngFor="let oAns of question.otherOptions"
+                                         class="rounded-sm col-md-6 ans">{{oAns}}</div>
                                 </div>
                             </div>
                         </div>
@@ -108,7 +122,14 @@
             </div>
         </div>
         <div class="pagination-container">
-            <ngb-pagination class="d-flex justify-content-center" size="lg" [pageSize]="pageSize" [collectionSize]="totalQuestionsListSize$ | async" [(page)]="page" [maxSize]="7" [rotate]="true" (pageChange)="loadPage($event)"></ngb-pagination>
+            <ngb-pagination class="d-flex justify-content-center"
+                            size="lg"
+                            [pageSize]="pageSize"
+                            [collectionSize]="totalQuestionsListSize$ | async"
+                            [(page)]="page"
+                            [maxSize]="7"
+                            [rotate]="true"
+                            (pageChange)="loadPage($event)"></ngb-pagination>
         </div>
     </div>
 </div>

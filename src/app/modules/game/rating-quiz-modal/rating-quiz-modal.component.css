@@ -1,7 +1,10 @@
-.star {
+.star
+{
     font-size: 1.5rem;
-    color: #deb0b0;
+    color:     #DEB0B0;
 }
-.filled {
-    color: #ff1e1e;
+
+.filled
+{
+    color: #FF1E1E;
 }

@@ -221,5 +221,23 @@
     },
     "announcementsView":{
         "title":"Site announcements"
+    },
+    "adminDash":{
+        "username":"Username",
+        "role":"Role:",
+        "crAdm":"Create admin",
+        "crMod":"Create moder",
+        "popularTitle":"Most popular quizzes",
+        "statusTitle":"Quizzes statuses",
+        "validTitle":"Validation statistic",
+        "gamespdTitle":"Games statistic",
+        "admins":"Admins",
+        "moderators":"Moderators",
+        "games":"Games",
+        "total":"total",
+        "published":"published",
+        "rejected":"rejected",
+        "activated":"activated",
+        "unvalidated":"unvalidated"
     }
 }

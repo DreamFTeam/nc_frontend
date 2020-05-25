@@ -1,56 +1,66 @@
-.container-sm{
-    border-radius: 8px;
-    background-color:#F7F9FB;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+.container-sm
+{
+    border-radius:    8px;
+    background-color: #F7F9FB;
+    box-shadow:       0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
-textarea{
+textarea
+{
     resize: none;
 }
 
-label{
+label
+{
     font-weight: 600;
-    font-size: 20px;
+    font-size:   20px;
 }
 
-.form-control{
-    color: black;
+.form-control
+{
+    color:       black;
     font-weight: 400;
 }
 
-.btn{
-    outline: none !important;
+.btn
+{
+    outline:    none !important;
     box-shadow: 0 0 0 0;
 }
 
-a{
-    font-size: 20px;
+a
+{
+    font-size:   20px;
     font-weight: 600;
-    color:#74BDE6;
+    color:       #74BDE6;
 }
 
-a:hover{
+a:hover
+{
     text-decoration: underline;
 }
 
-.buttondel{
-    background-color: #db3545;
+.buttondel
+{
+    background-color: #DB3545;
 }
 
-.buttondel:hover{
-    background-color: #d94e5c;
+.buttondel:hover
+{
+    background-color: #D94E5C;
 }
 
 
+button.addb
+{
 
-button.addb {
-
-    margin-top: 2px;
-    border: 0px;
+    margin-top:       2px;
+    border:           0px;
     background-color: transparent;
-  }
+}
 
-  button img{
-      width: 50px;
-      height: 50px;
-  }
+button img
+{
+    width:  50px;
+    height: 50px;
+}
