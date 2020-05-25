@@ -13,6 +13,7 @@ export class UsersComponent implements OnInit {
   searchResults: Profile[];
   username: string;
   currentUsername: string;
+  privileged: boolean;
 
   constructor(private getProfileService: ProfileService,
               private sanitizer: DomSanitizer,
@@ -20,12 +21,19 @@ export class UsersComponent implements OnInit {
 
   ) {
     this.searchResults = null;
-    this.username = '';
     this.currentUsername = this.authenticationService.currentUserValue.username;
+    this.privileged = authenticationService.currentUserValue.role !== 'ROLE_USER';
+
   }
 
 
   ngOnInit(): void {
+    if (this.privileged) {
+      this.getPrivilegedUsers();
+    } else {
+      this.getPopularCreators();
+
+    }
   }
 
   search() {
@@ -37,4 +45,25 @@ export class UsersComponent implements OnInit {
         });
       });
   }
+
+  getPopularCreators() {
+    this.getProfileService.getPopularCreators().subscribe(
+      data => {
+        this.searchResults = data;
+        this.searchResults.forEach(element => {
+          return Profile.deserialize(element, this.sanitizer);
+        });
+      });
+  }
+
+  getPrivilegedUsers() {
+    this.getProfileService.getPrivilegedUsers().subscribe(
+      data => {
+        this.searchResults = data;
+        this.searchResults.forEach(element => {
+          return Profile.deserialize(element, this.sanitizer);
+        });
+      });
+  }
+
 }

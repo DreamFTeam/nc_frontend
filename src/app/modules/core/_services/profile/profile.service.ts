@@ -105,6 +105,15 @@ export class ProfileService {
   }
 
 
+  public getPopularCreators(): Observable<Profile[]> {
+    return this.http.get<Profile[]>(this.profilesUrl + 'popular-creators',
+    { headers: this.httpOptions.headers}).pipe();
+  }
+
+  public getPrivilegedUsers(): Observable<Profile[]> {
+    return this.http.get<Profile[]>(this.profilesUrl + 'privileged-users',
+    { headers: this.httpOptions.headers}).pipe();
+  }
   public getProfileAchievement(targetId: string): Observable<Achievement[]> {
     return this.http.get<Achievement[]>(this.profilesUrl + targetId + '/achievements',
       this.httpOptions).pipe(

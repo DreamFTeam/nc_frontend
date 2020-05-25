@@ -112,7 +112,7 @@
         "lastSeenOn": "Восстаннє в мережі",
         "Incoming": "Вхідні ",
         "Outgoing":"Вихідні",
-        "friendRequests":"Запити у Друзі",
+        "friendRequests":"Запити у Друзі ",
         "deactivate":"Деактивувати",
         "downgrade":"Зробити модератором",
         "upgrade":"Зробити адміністратором",
@@ -142,9 +142,10 @@
         "aboutMe":"Про мене",
         "requests":  "запити",
         "requests_whom":  "запити(ів)",
-
+        "administration": "Адміністрація",
         "request":  "запит",
-        "requestSent" : "Запит надіслано"
+        "requestSent" : "Запит надіслано",
+        "popularCreators": "Популярні творці"
     },
 
     "game":{
@@ -190,7 +191,7 @@
         "rightAnswers":"Вірні відповіді",
         "rightAnswer":"Вірна відповідь",
         "questionType":"Тип питання",
-        "admComment":"Комантар адміністрації"
+        "admComment":"Коментар адміністрації"
     },
     "lastAchievements":{
         "title":"Отримані досягнення за останній тиждень",

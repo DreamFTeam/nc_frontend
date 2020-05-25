@@ -230,9 +230,12 @@ export class ProfileComponent implements OnInit {
   markQuizFavourite(quiz: any) {
     quiz.favourite = !quiz.favourite;
     this.quizService.markAsFavorite(quiz.id).subscribe();
+    this.favQuizAmount += (quiz.favourite) ? 1 : -1;
+
     if (this.activeTab === 2) {
       this.quizzes = this.quizzes.filter(item => item !== quiz);
     }
+
   }
 
   sendFriendRequest(value: boolean) {

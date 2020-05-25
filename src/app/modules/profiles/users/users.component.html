@@ -3,7 +3,11 @@
   <button class="btn btn-info btn-lg col-xs-2 col-sm-4 col-md-4 col-lg-2 p-2 border" type="button"  (click)="search()"> {{'utils.search' | translate}}</button>
   <div class="w-100"></div>
   <div class="container-sm mt-3 p-3" *ngIf="this.searchResults;">
-     <h1 style="font-size: larger; font-weight: bolder;">{{'profile.found' | translate}}   {{searchResults.length }}  {{(searchResults.length == 1 ? 'profile.user' : 'profile.users') | translate }} </h1>
+     <h1 style="font-size: larger; font-weight: bolder;" *ngIf="username!== undefined">{{'profile.found' | translate}}   {{searchResults.length }}  {{(searchResults.length == 1 ? 'profile.user' : 'profile.users') | translate }} </h1>
+     <h1 style="font-size: larger; font-weight: bolder;" *ngIf="username === undefined && privileged">
+       {{'profile.administration' | translate}} </h1>
+     <h1 style="font-size: larger; font-weight: bolder;" *ngIf="username === undefined && !privileged">
+      {{'profile.popularCreators' | translate}} </h1>
      <div *ngFor="let profile of this.searchResults" style='font-size: larger;'>
         <div class="row p-2 m-2 border" >
            <img  routerLink="/profile/{{profile.username}}"  class="img-thumbnail col-xs-5 col-sm-5 col-md-4 col-lg-3  float-left" [src]="profile.image ? profile.image : '../../assets/img/nopicture.jpg'" style="background-color:rgba(243, 202, 165, 0.863);">

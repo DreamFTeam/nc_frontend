@@ -23,8 +23,8 @@
             <h5>{{profile.aboutMe}}</h5>
          </div>
          <div *ngIf= "this.role=='ROLE_USER'" class="col-xs-2 col-sm-3 col-md-3 col-lg-3 p-2 ">
-            <a *ngIf="owner" (click)="seeeRequests('incoming')" class="btn btn-outline-info mt-2 w-100"> {{'profile.Incoming' | translate }} {{'profile.friendRequests' | translate }}<div *ngIf="incomingAmount !== undefined"class="badge badge-info"> {{incomingAmount}}</div></a>
-            <a *ngIf="owner" (click)="seeeRequests('outgoing')" class="btn btn-outline-info mt-2 w-100"> {{'profile.Outgoing' | translate }} {{'profile.friendRequests' | translate }}<div *ngIf="outGoingAmount !== undefined" class="badge badge-info"> {{outGoingAmount}}</div> </a>
+            <a *ngIf="owner" (click)="seeeRequests('incoming')" class="btn btn-outline-info mt-2 w-100"> {{'profile.Incoming' | translate }} {{'profile.friendRequests' | translate }}<span *ngIf="incomingAmount !== undefined"class="badge badge-info"> {{incomingAmount}}</span></a>
+            <a *ngIf="owner" (click)="seeeRequests('outgoing')" class="btn btn-outline-info mt-2 w-100"> {{'profile.Outgoing' | translate }} {{'profile.friendRequests' | translate }}<span *ngIf="outGoingAmount !== undefined" class="badge badge-info"> {{outGoingAmount}}</span> </a>
          </div>
          <div *ngIf= "this.role!='ROLE_USER' && owner && profile.activated" class="col-3 ">
             <button class="btn btn-outline-secondary mt-2" (click)="deactivate(false)">  {{'profile.deactivate' | translate }} </button>
