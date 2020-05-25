@@ -1,16 +1,16 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { QuizValidationListService } from './quiz-validation-list.service';
+import {QuizValidationListService} from './quiz-validation-list.service';
 
 describe('QuizValidationListService', () => {
-  let service: QuizValidationListService;
+    let service: QuizValidationListService;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(QuizValidationListService);
-  });
+    beforeEach(() => {
+        TestBed.configureTestingModule({});
+        service = TestBed.inject(QuizValidationListService);
+    });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
+    it('should be created', () => {
+        expect(service).toBeTruthy();
+    });
 });

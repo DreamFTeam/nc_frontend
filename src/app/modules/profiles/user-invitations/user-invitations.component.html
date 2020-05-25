@@ -1,6 +1,10 @@
 <div role="main" class="container" *ngIf="ready" style="word-wrap: break-word;">
     <div class="container-sm mt-2 p-4" *ngIf="true">
-       <ul ngbNav #nav="ngbNav" [(activeId)]="activeTab" (navChange)="changeTab($event)" class="nav-tabs w-100 m-2 p-2 border">
+       <ul ngbNav
+           #nav="ngbNav"
+           [(activeId)]="activeTab"
+           (navChange)="changeTab($event)"
+           class="nav-tabs w-100 m-2 p-2 border">
        <li [ngbNavItem]="1">
           <a ngbNavLink class="blue p-2 mr-2"> {{'profile.Incoming' | translate }} {{'profile.requests' | translate }} <div *ngIf="incomingInvitationsSize !== undefined"class="badge badge-info"> {{incomingInvitationsSize}}</div></a>
           <ng-template ngbNavContent>
@@ -8,16 +12,22 @@
                <h1 class="m-3" style="font-size: larger; font-weight: bolder;">{{'profile.found' | translate}}   {{incomingInvitationsSize}}  {{ (incomingInvitationsSize == 1 ? 'profile.request' : 'profile.requests_whom')| translate }} </h1>
                 <ngb-pagination class="d-flex justify-content-center"  [collectionSize]="incomingInvitationsSize" [(page)]="invitationsPage"  [pageSize]="MAX_AMOUNT" [rotate]="true" (pageChange)="load($event)"></ngb-pagination>
                 <div *ngFor="let profile of this.invitations" style='font-size: larger;' class="row p-2 border m-2">
-                      <img  routerLink="/profile/{{profile.username}}"  class="img-thumbnail col-xs-5 col-sm-5 col-md-4 col-lg-3 float-left" [src]="profile.image ? profile.image : '../../assets/img/nopicture.jpg'" style="background-color:rgba(243, 202, 165, 0.863);">
+                      <img routerLink="/profile/{{profile.username}}"
+                           class="img-thumbnail col-xs-5 col-sm-5 col-md-4 col-lg-3 float-left"
+                           [src]="profile.image ? profile.image : '../../assets/img/nopicture.jpg'"
+                           style="background-color:rgba(243, 202, 165, 0.863);">
                       <div class="col-xs-5 col-sm-7 col-md-8 col-lg-9">
-                           <a routerLink="/profile/{{profile.username}}" style="font-weight: bolder;">{{profile.username}}</a>
-                           <div class="mw-100 m-2"></div>                        
- 
-                           {{'profile.requestSent' | translate}} {{profile.invitationDatetime | date:'medium'}}
+                           <a routerLink="/profile/{{profile.username}}"
+                              style="font-weight: bolder;">{{profile.username}}</a>
+                           <div class="mw-100 m-2"></div>
 
-                           <div class="mw-100 m-2"></div>                        
-                           <button class="col-xs-2 col-sm-3 col-md-3 col-lg-3 p-2 btn btn-outline-success m-2 w-50 col"  (click)="processFriendRequest(profile, true)"> {{'profile.Accept' | translate }} {{'profile.friendrequest' | translate }}</button>
-                           <button class="col-xs-2 col-sm-3 col-md-3 col-lg-3 p-2 btn btn-outline-danger m-2 w-50 col"  (click)="processFriendRequest(profile, false)"> {{'profile.Reject' | translate }} {{'profile.friendrequest' | translate }}</button>
+	                      {{'profile.requestSent' | translate}} {{profile.invitationDatetime | date:'medium'}}
+
+	                      <div class="mw-100 m-2"></div>
+                           <button class="col-xs-2 col-sm-3 col-md-3 col-lg-3 p-2 btn btn-outline-success m-2 w-50 col"
+                                   (click)="processFriendRequest(profile, true)"> {{'profile.Accept' | translate }} {{'profile.friendrequest' | translate }}</button>
+                           <button class="col-xs-2 col-sm-3 col-md-3 col-lg-3 p-2 btn btn-outline-danger m-2 w-50 col"
+                                   (click)="processFriendRequest(profile, false)"> {{'profile.Reject' | translate }} {{'profile.friendrequest' | translate }}</button>
                       </div>
                    </div>
                 <ngb-pagination class="d-flex justify-content-center"  [collectionSize]="incomingInvitationsSize" [(page)]="invitationsPage"  [pageSize]="MAX_AMOUNT" [rotate]="true" (pageChange)="load($event)"></ngb-pagination>
@@ -31,14 +41,19 @@
                <h1 class="m-3" style="font-size: larger; font-weight: bolder;">{{'profile.found' | translate}}   {{outgoingInvitationsSize}}  {{ (outgoingInvitationsSize == 1 ? 'profile.request' : 'profile.requests_whom')| translate }} </h1>
                 <ngb-pagination class="d-flex justify-content-center"  [collectionSize]="outgoingInvitationsSize" [(page)]="invitationsPage"  [pageSize]="MAX_AMOUNT" [rotate]="true" (pageChange)="load($event)"></ngb-pagination>
                 <div *ngFor="let profile of this.invitations" class="row p-2 m-2 border" style='font-size: larger;'>
-                      <img  routerLink="/profile/{{profile.username}}"  class="img-thumbnail col-xs-5 col-sm-5 col-md-4 col-lg-3  float-left" [src]="profile.image ? profile.image : '../../assets/img/nopicture.jpg'" style="background-color:rgba(243, 202, 165, 0.863);">
+                      <img routerLink="/profile/{{profile.username}}"
+                           class="img-thumbnail col-xs-5 col-sm-5 col-md-4 col-lg-3  float-left"
+                           [src]="profile.image ? profile.image : '../../assets/img/nopicture.jpg'"
+                           style="background-color:rgba(243, 202, 165, 0.863);">
                       <div class="col-xs-5 col-sm-7 col-md-8 col-lg-9 p-2 p-2">
-                         <a  routerLink="/profile/{{profile.username}}" style="font-weight: bolder;">{{profile.username}}</a>
-                         <div class="mw-100 m-2"></div>                        
-                         {{'profile.requestSent' | translate}} {{profile.invitationDatetime | date:'medium'}}
-                         <div class="mw-100 m-2"></div>  
+                         <a routerLink="/profile/{{profile.username}}"
+                            style="font-weight: bolder;">{{profile.username}}</a>
+                         <div class="mw-100 m-2"></div>
+	                      {{'profile.requestSent' | translate}} {{profile.invitationDatetime | date:'medium'}}
+	                      <div class="mw-100 m-2"></div>
                                                
-                         <button class="col-xs-2 col-sm-3 col-md-3 col-lg-3 p-2 btn btn-outline-danger mt-2 w-50 col" (click)="sendFriendRequest(profile, false)">{{'utils.cancel'| translate}}  {{'profile.friendrequest' | translate }}</button>
+                         <button class="col-xs-2 col-sm-3 col-md-3 col-lg-3 p-2 btn btn-outline-danger mt-2 w-50 col"
+                                 (click)="sendFriendRequest(profile, false)">{{'utils.cancel'| translate}}  {{'profile.friendrequest' | translate }}</button>
                    </div>
                    </div>
                    <ngb-pagination  class="d-flex justify-content-center"  [collectionSize]="outgoingInvitationsSize" [(page)]="invitationsPage"  [pageSize]="MAX_AMOUNT" [rotate]="true" (pageChange)="load($event)"></ngb-pagination>

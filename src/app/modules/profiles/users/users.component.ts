@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { ProfileService } from '../../core/_services/profile/profile.service'
-import { Profile } from '../../core/_models/profile';
-import { DomSanitizer } from '@angular/platform-browser';
-import { AuthenticationService } from '../../core/_services/authentication/authentication.service';
+import {Component, OnInit} from '@angular/core';
+import {ProfileService} from '../../core/_services/profile/profile.service';
+import {Profile} from '../../core/_models/profile';
+import {DomSanitizer} from '@angular/platform-browser';
+import {AuthenticationService} from '../../core/_services/authentication/authentication.service';
+
 @Component({
-  selector: 'app-users',
-  templateUrl: './users.component.html',
-  styleUrls: ['./users.component.css']
+    selector: 'app-users',
+    templateUrl: './users.component.html',
+    styleUrls: ['./users.component.css']
 })
 export class UsersComponent implements OnInit {
 

@@ -5,16 +5,21 @@
         <div class="row bg-white rounded">
           <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 text-center">
             <p class="mt-4 h4 text-center">{{game.accessId}}</p>
-            <qrcode [margin]="0"
+            <qrcode [margin]="3"
                     [qrdata]="connectUrl + game.accessId"
                     [width]="256"
                     [errorCorrectionLevel]="'M'"
                     [elementType]="'url'"></qrcode>
-            <button [disabled]="started" *ngIf="creator && ready" (click)="startGame()" class="btn m-3 btn-primary btn-lg">
+            <button [disabled]="started"
+                    *ngIf="creator && ready"
+                    (click)="startGame()"
+                    class="btn m-3 btn-primary btn-lg">
               <span *ngIf="!started">{{'game.startgame'| translate}}</span>
               <span *ngIf="started" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
             </button>
-            <button *ngIf="!ready" class="btn m-3 btn-success btn-lg" (click)="setReady()">{{'game.ready'| translate}}</button>
+            <button *ngIf="!ready"
+                    class="btn m-3 btn-success btn-lg"
+                    (click)="setReady()">{{'game.ready'| translate}}</button>
           </div>
           <div class="col-xl-8 col-lg-12 col-md-12 col-sm-12 overflow-auto">
             <div class="container mb-4 mt-4">

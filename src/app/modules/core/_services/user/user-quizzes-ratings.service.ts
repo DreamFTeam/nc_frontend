@@ -5,32 +5,32 @@ import {HandleErrorsService} from '../utils/handle-errors.service';
 import {Observable} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 import {environment} from '../../../../../environments/environment';
-import { ExtendedQuizPreview } from '../../_models/extendedquiz-preview';
-import { ExtendedQuizRatingsPreview } from '../../_models/extended-quiz-ratings-preview';
+import {ExtendedQuizPreview} from '../../_models/extendedquiz-preview';
+import {ExtendedQuizRatingsPreview} from '../../_models/extended-quiz-ratings-preview';
 
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class UserQuizzesRatingsService {
-  private baseUrl = `${environment.apiUrl}quizzes/`;
-  private httpOptions = {};
+    private baseUrl = `${environment.apiUrl}quizzes/`;
+    private httpOptions = {};
 
 
     constructor(private http: HttpClient, private sanitizer: DomSanitizer,
-      private handleErrorsService: HandleErrorsService) {   
+                private handleErrorsService: HandleErrorsService) {
         this.httpOptions = {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json'
-        })
-      };
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
     }
 
     getUserQuizzesRatingsList(): Observable<ExtendedQuizRatingsPreview[]> {
-      return this.http.get<ExtendedQuizPreview[]>(this.baseUrl + 'rating', this.httpOptions)
-        .pipe(map(data => data.map(x => {
-          return new ExtendedQuizRatingsPreview().deserialize(x, this.sanitizer);
-        }), catchError(this.handleErrorsService.handleError<ExtendedQuizRatingsPreview[]>('getUserQuizzesRatingsList', []))));
+        return this.http.get<ExtendedQuizPreview[]>(this.baseUrl + 'rating', this.httpOptions)
+            .pipe(map(data => data.map(x => {
+                return new ExtendedQuizRatingsPreview().deserialize(x, this.sanitizer);
+            }), catchError(this.handleErrorsService.handleError<ExtendedQuizRatingsPreview[]>('getUserQuizzesRatingsList', []))));
     }
 
-  }
+}

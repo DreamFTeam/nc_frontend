@@ -5,6 +5,7 @@ import {CreatePrivilegedComponent} from '../create-privileged/create-privileged.
 import {AuthenticationService} from '../../core/_services/authentication/authentication.service';
 import {User} from '../../core/_models/user';
 import {AdminDashboardService} from '../../core/_services/admin/admin-dashboard.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
     selector: 'app-privileged-profile',
@@ -21,30 +22,27 @@ export class PrivilegedProfileComponent implements OnInit {
     showYAxisPopQuiz = true;
     gradientPopQuiz = false;
     showYAxisLabelPopQuiz = true;
-    titlePopQuiz = 'Most popular quizzes';
     quizPopAmount = 5;
     dataPopQuiz: any[];
 
     // Quizzes statuses chart
     dataQuizStatus: any[];
-    titleQuizStatus = 'Quizzes statuses';
     view = [400, 200];
 
     // Quizzes valid/invalid chart
     legendValidQuiz = true;
     dataValidQuiz: any[];
-    titleValidQuiz = 'Validation statistic';
     noBarWhenZeroValidQuiz = false;
 
     // Games per day chart
     timeline = true;
-    titleGamesPerDay = 'Games statistic';
     dataGamesPerDay: any[];
 
 
     constructor(private router: Router, private modalService: NgbModal,
                 private authenticationService: AuthenticationService,
-                private adminDashboardService: AdminDashboardService) {
+                private adminDashboardService: AdminDashboardService,
+                private translate: TranslateService) {
         this.ready = false;
         this.profile = authenticationService.currentUserValue;
     }
@@ -63,17 +61,17 @@ export class PrivilegedProfileComponent implements OnInit {
         this.adminDashboardService.getQuizzesStatuses().subscribe(data => {
             this.dataQuizStatus = [];
             for (const stat in data) {
-                this.dataQuizStatus.push({name: stat, value: data[stat]});
+                this.dataQuizStatus.push({name: this.translate.instant('adminDash.' + stat), value: data[stat]});
             }
         });
         this.adminDashboardService.getQuizzesValidInvalid().subscribe(data => {
             this.dataValidQuiz = [
                 {
-                    name: 'Admins',
+                    name: this.translate.instant('adminDash.admins'),
                     value: data.countValidatedByAdmin
                 },
                 {
-                    name: 'Moderators',
+                    name: this.translate.instant('adminDash.moderators'),
                     value: data.countValidatedByModerator
                 }
             ];
@@ -81,7 +79,7 @@ export class PrivilegedProfileComponent implements OnInit {
 
         this.adminDashboardService.getGamesAmountPerDay().subscribe(data => {
             this.dataGamesPerDay = [{
-                name: 'Games',
+                name: this.translate.instant('adminDash.games'),
                 series: data.map(x => {
                     return {name: x.date, value: x.gamesAmount};
                 })

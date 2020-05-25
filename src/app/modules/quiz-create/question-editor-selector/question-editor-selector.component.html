@@ -1,16 +1,16 @@
 <div>
     <div class="mt-4">
         <label>{{ 'quizCreation.questiontitle' | translate }} <span *ngIf="available"
-                style="color: red;">*</span></label>
+                                                                    style="color: red;">*</span></label>
         <div class="row">
             <div class="col-sm-8">
 
                 <input [disabled]="!available" maxlength="50" class="form-control" type="text"
-                    [(ngModel)]="question.title" placeholder="{{ 'quizCreation.questiontitle' | translate }}">
+                       [(ngModel)]="question.title" placeholder="{{ 'quizCreation.questiontitle' | translate }}">
             </div>
             <div class="col-sm-3">
                 <select [disabled]="!available" (change)="onChange($event.target.value)" class="form-control"
-                    [(ngModel)]="typeTemp">
+                        [(ngModel)]="typeTemp">
                     <option *ngFor="let type of types" [value]="type.value">
                         {{type.name}}
                     </option>
@@ -23,9 +23,9 @@
             <div class="col-sm-8">
                 <div class="m-3">
                     <label>{{ 'utils.content' | translate }} <span *ngIf="available"
-                            style="color: red;">*</span></label>
+                                                                   style="color: red;">*</span></label>
                     <textarea [disabled]="!available" maxlength="250" class="form-control" rows="3"
-                        [(ngModel)]="question.content" placeholder="{{ 'utils.content' | translate }}">
+                              [(ngModel)]="question.content" placeholder="{{ 'utils.content' | translate }}">
                     </textarea>
                 </div>
 
@@ -38,11 +38,11 @@
             <div class="col-sm-3">
                 <div *ngIf="available; else imgElse">
                     <input style="display: none" #questionInput type="file" accept="image/*"
-                        (change)="questionImage($event)">
+                           (change)="questionImage($event)">
                     <img [src]='thumbnail' alt="Upload" class="img-thumbnail mt-5 mx-auto d-block"
-                        (click)="questionInput.click()">
+                         (click)="questionInput.click()">
                     <button *ngIf="thumbnail !== null && thumbnail !== undefined" class="btn buttondel mt-2"
-                        (click)="removeImage()">
+                            (click)="removeImage()">
                         {{ 'utils.remove' | translate }} {{ 'utilsOther.image' | translate }}
                     </button>
                 </div>
@@ -61,7 +61,7 @@
 <div class="row">
     <div class="col-sm-6">
         <input [disabled]="!available" class="form-control" style="max-width: 20%;" maxlength="3" type="text"
-            [(ngModel)]="question.points" placeholder="{{ 'utils.points' | translate }}">
+               [(ngModel)]="question.points" placeholder="{{ 'utils.points' | translate }}">
     </div>
     <div class="col-sm-5">
 

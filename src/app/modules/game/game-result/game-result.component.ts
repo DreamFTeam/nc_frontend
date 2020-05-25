@@ -1,10 +1,11 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {GameResultService} from '../../core/_services/game/game-result.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {GameResult} from '../../core/_models/game-result';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {RatingQuizModalComponent} from '../rating-quiz-modal/rating-quiz-modal.component';
-import {mod} from 'ngx-bootstrap/chronos/utils';
+import {GameResult} from '../../core/_models/game-result';
+import {GameResultService} from '../../core/_services/game/game-result.service';
+import {AuthenticationService} from '../../core/_services/authentication/authentication.service';
+import {AnonymService} from '../../core/_services/game/anonym.service';
 
 
 @Component({
@@ -14,7 +15,7 @@ import {mod} from 'ngx-bootstrap/chronos/utils';
     encapsulation: ViewEncapsulation.None
 })
 
-export class GameResultComponent implements OnInit {
+export class GameResultComponent implements OnInit, OnDestroy {
 
     results: GameResult[];
     gameId: string;
@@ -22,6 +23,7 @@ export class GameResultComponent implements OnInit {
     winner: string;
     view = [600, 400];
     resultsForGraphic: any[];
+    loggedIn: boolean;
 
     // colorScheme = {
     //   domain: ['#e5de09', '#9e0505', '#05b4ff', '#FF5005']
@@ -29,8 +31,10 @@ export class GameResultComponent implements OnInit {
 
     constructor(private gameResultService: GameResultService,
                 private activatedRoute: ActivatedRoute,
-                private modalService: NgbModal
-                ) {
+                private modalService: NgbModal,
+                private authenticationService: AuthenticationService,
+                private anonymService: AnonymService
+    ) {
         this.gameId = this.activatedRoute.snapshot.paramMap.get('id');
     }
 
@@ -39,7 +43,7 @@ export class GameResultComponent implements OnInit {
     }
 
     ngOnInit(): void {
-
+        this.loggedIn = !!this.authenticationService.currentUserValue;
         this.gameResultService.getResults(this.gameId)
             .subscribe(ses => {
                 this.results = ses;
@@ -63,5 +67,11 @@ export class GameResultComponent implements OnInit {
     rateModal() {
         const modal = this.modalService.open(RatingQuizModalComponent);
         modal.componentInstance.gameId = this.gameId;
+    }
+
+    ngOnDestroy(): void {
+        if (this.anonymService.currentAnonymValue) {
+            this.anonymService.removeAnonym();
+        }
     }
 }

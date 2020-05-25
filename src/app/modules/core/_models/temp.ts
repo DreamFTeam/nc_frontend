@@ -1,4 +1,4 @@
 export interface Temp {
-  rightOptions: string[];
-  otherOptions: string[];
+    rightOptions: string[];
+    otherOptions: string[];
 }

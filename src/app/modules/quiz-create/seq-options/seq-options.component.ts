@@ -1,43 +1,42 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { SequenceAnswer } from '../../core/_models/question/sequenceanswer';
-import { ExtendedQuestion } from '../../core/_models/question/extendedquestion';
+import {Component, Input, OnInit} from '@angular/core';
+import {ExtendedQuestion} from '../../core/_models/question/extendedquestion';
 
 @Component({
-  selector: 'app-seq-options',
-  templateUrl: './seq-options.component.html',
-  styleUrls: ['./seq-options.component.css']
+    selector: 'app-seq-options',
+    templateUrl: './seq-options.component.html',
+    styleUrls: ['./seq-options.component.css']
 })
 export class SeqOptionsComponent implements OnInit {
-  @Input() question: ExtendedQuestion;
+    @Input() question: ExtendedQuestion;
 
-  @Input()
-  available: boolean;
+    @Input()
+    available: boolean;
 
-  constructor() {
-    
-   }
+    constructor() {
 
-  ngOnInit(): void {
-  }
+    }
 
-  addAnswer(){
-    this.question.rightOptions.push("");
-  }
+    ngOnInit(): void {
+    }
 
-  removeAnswer(i){
-    this.question.rightOptions.splice(i,1);
-  }
+    addAnswer() {
+        this.question.rightOptions.push('');
+    }
 
-  isLimitReached(){
-    return this.question.rightOptions.length!=8;
-  }
+    removeAnswer(i) {
+        this.question.rightOptions.splice(i, 1);
+    }
 
-  isRemovable(){
-    return this.question.rightOptions.length>3;
-  }
+    isLimitReached() {
+        return this.question.rightOptions.length != 8;
+    }
 
-  trackByFn(index: any, item: any) {
-    return index;
-   } 
+    isRemovable() {
+        return this.question.rightOptions.length > 3;
+    }
+
+    trackByFn(index: any, item: any) {
+        return index;
+    }
 
 }
