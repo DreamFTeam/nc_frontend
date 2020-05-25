@@ -1,0 +1,25 @@
+input {
+    font-size: 1.1em;
+    width: 18vw;
+}
+
+.nav-link {
+    font-size: 22px;
+}
+
+.navbar-brand {
+    font-size: 22px;
+}
+
+a {
+    color: black;
+}
+
+.clickable:hover {
+    cursor: pointer;
+}
+
+.bi-bell-fill {
+    color: orangered;
+}
+

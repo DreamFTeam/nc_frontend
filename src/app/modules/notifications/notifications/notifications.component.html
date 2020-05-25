@@ -1,0 +1,15 @@
+<div class="container">
+  <div *ngIf="!newNotification" class="h3 p-3 text-center bg-white rounded">
+    No new notifications
+  </div>
+  <div *ngFor="let not of notifications" class="row m-1">
+    <div class="col"></div>
+    <div class="col bg-white rounded">
+      <p class="h5">{{not.date}}</p>
+      <p class="btn-link" routerLink="{{not.link}}">
+        <span>{{not.content}}</span>
+      </p>
+    </div>
+    <div class="col"></div>
+  </div>
+</div>
