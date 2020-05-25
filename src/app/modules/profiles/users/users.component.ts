@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProfileService } from '../../core/_services/profile/profile.service';
 import { Profile } from '../../core/_models/profile';
-import { DomSanitizer } from '@angular/platform-browser';
 import { AuthenticationService } from '../../core/_services/authentication/authentication.service';
 import { ToastsService } from '../../core/_services/utils/toasts.service';
 import { LocaleService } from '../../core/_services/utils/locale.service';
@@ -24,7 +23,6 @@ export class UsersComponent implements OnInit {
 
 
   constructor(private getProfileService: ProfileService,
-              private sanitizer: DomSanitizer,
               private authenticationService: AuthenticationService,
               private toastsService: ToastsService,
               private localeService: LocaleService
@@ -53,9 +51,6 @@ export class UsersComponent implements OnInit {
     this.getProfileService.getProfilebyUserName(this.username === undefined ? '' : this.username).subscribe(
       data => {
         this.searchResults = data;
-        this.searchResults.forEach(element => {
-          return Profile.deserialize(element, this.sanitizer);
-        });
         this.ready = true;
 
       },
@@ -71,9 +66,6 @@ export class UsersComponent implements OnInit {
     this.getProfileService.getPopularCreators().subscribe(
       data => {
         this.searchResults = data;
-        this.searchResults.forEach(element => {
-          return Profile.deserialize(element, this.sanitizer);
-        });
         this.ready = true;
 
       },
@@ -89,9 +81,6 @@ export class UsersComponent implements OnInit {
     this.getProfileService.getPrivilegedUsers().subscribe(
       data => {
         this.searchResults = data;
-        this.searchResults.forEach(element => {
-          return Profile.deserialize(element, this.sanitizer);
-        });
         this.ready = true;
 
       },

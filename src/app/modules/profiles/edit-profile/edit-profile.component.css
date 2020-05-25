@@ -10,29 +10,3 @@
     background-color: #F7F9FB;
     box-shadow:       0px 4px 4px rgba(0, 0, 0, 0.25);
 }
-
-
-/*
-
-
-#upload {
-  margin-left: 4px;
-  border-radius: 8px;
-  margin-top: 10px;
-  background-color: blanchedalmond;
-  border: #677864;
-  position: relative;
-  width: 8vw;
-  min-height: max-content;
-  height: 8vh;
-
-}
-
-#upload::-webkit-file-upload-button {
-  visibility: hidden;
-}
-
-#upload:before{
-content:"Upload file";
-align-content: flex-end;
-}*/

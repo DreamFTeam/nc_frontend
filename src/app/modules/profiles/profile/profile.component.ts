@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ProfileService } from '../../core/_services/profile/profile.service';
 import { PrivilegedService } from '../../core/_services/admin/privileged.service';
 import { Profile } from '../../core/_models/profile';
-import { DomSanitizer } from '@angular/platform-browser';
 import { AuthenticationService } from '../../core/_services/authentication/authentication.service';
 import { QuizService } from '../../core/_services/quiz/quiz.service';
 import { FriendsService } from '../../core/_services/profile/friends-service.service';
@@ -12,7 +11,8 @@ import { ToastsService } from '../../core/_services/utils/toasts.service';
 import { LocaleService } from '../../core/_services/utils/locale.service';
 import { YesNoModalComponent } from '../../shared/yes-no-modal/yes-no-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import {faSpinner} from '@fortawesome/free-solid-svg-icons';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { ExtendedQuiz } from '../../core/_models/extended-quiz';
 
 
 @Component({
@@ -28,7 +28,7 @@ export class ProfileComponent implements OnInit {
   username: string;
   ready: boolean; // indicates the profile was loaded (doesn't include quizzes)
   owner: boolean; // indicates which rights the user has concerning this profile
-  quizzes;
+  quizzes: ExtendedQuiz[];
   profile: Profile;
   tabReady: boolean;
   friends: Profile[];
@@ -49,7 +49,6 @@ export class ProfileComponent implements OnInit {
     private friendService: FriendsService,
     private getProfileService: ProfileService,
     private privilegedService: PrivilegedService,
-    private sanitizer: DomSanitizer,
     private quizService: QuizService,
     private authenticationService: AuthenticationService,
     private toastsService: ToastsService,
@@ -188,15 +187,6 @@ export class ProfileComponent implements OnInit {
 
     this.getProfileService.getProfileQuiz(this.profile.id).subscribe(
       result => {
-        result.forEach(input => {
-          if (input['imageContent'] !== null) {
-            input['imageContent'] =
-              this.sanitizer.bypassSecurityTrustUrl
-                ('data:image\/(png|jpg|jpeg);base64,'
-                  + input['imageContent']);
-          }
-          return input;
-        });
         this.quizzes = result;
         this.tabReady = true;
       },
@@ -245,15 +235,6 @@ export class ProfileComponent implements OnInit {
 
     this.getProfileService.getProfileFavQuiz().subscribe(
       result => {
-        result.forEach(input => {
-          if (input['imageContent'] !== null) {
-            input['imageContent'] =
-              this.sanitizer.bypassSecurityTrustUrl
-                ('data:image\/(png|jpg|jpeg);base64,'
-                  + input['imageContent']);
-          }
-          return input;
-        });
         this.quizzes = result;
         this.tabReady = true;
       },
@@ -299,6 +280,7 @@ export class ProfileComponent implements OnInit {
     this.modal(this.localeService.getValue('modal.sendRequest'), 'danger')
       .subscribe((receivedEntry) => {
         if (receivedEntry) {
+
           this.friendService.sendFriendRequest(this.profile.id, value.toString()).subscribe(
             () => this.profile.outgoingRequest = value,
             (error) => {
@@ -313,6 +295,7 @@ export class ProfileComponent implements OnInit {
     this.modal(this.localeService.getValue(value ? 'modal.acceptRequest' : 'modal.rejectRequest'), 'danger')
       .subscribe((receivedEntry) => {
         if (receivedEntry) {
+
           this.friendService.processFriendRequest(this.profile.id, value.toString()).subscribe(
             () => {
               this.profile.friend = value;
@@ -332,6 +315,7 @@ export class ProfileComponent implements OnInit {
     this.modal(this.localeService.getValue('modal.removeFriend'), 'danger')
       .subscribe((receivedEntry) => {
         if (receivedEntry) {
+
           this.friendService.removeFriend(this.profile.id).subscribe(
             () => {
               this.profile.friend = false;

@@ -8,7 +8,7 @@ import { ToastsService } from '../../core/_services/utils/toasts.service';
 import { LocaleService } from '../../core/_services/utils/locale.service';
 import { YesNoModalComponent } from '../../shared/yes-no-modal/yes-no-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import {faSpinner} from '@fortawesome/free-solid-svg-icons';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
     selector: 'app-edit-profile',
@@ -29,12 +29,12 @@ export class EditProfileComponent implements OnInit {
 
 
     constructor(private router: Router,
-                private getProfileService: ProfileService,
-                private priviligedService: PrivilegedService,
-                private authenticationService: AuthenticationService,
-                private toastsService: ToastsService,
-                private localeService: LocaleService,
-                private modalService: NgbModal
+        private getProfileService: ProfileService,
+        private priviligedService: PrivilegedService,
+        private authenticationService: AuthenticationService,
+        private toastsService: ToastsService,
+        private localeService: LocaleService,
+        private modalService: NgbModal
     ) {
 
         if (!this.setUsername()) {
@@ -101,11 +101,11 @@ export class EditProfileComponent implements OnInit {
 
     goBackToProfile() {
         this.modal(this.localeService.getValue('modal.leavePage'), 'danger')
-        .subscribe((receivedEntry) => {
-            if (receivedEntry) {
-             this.router.navigate(['/profile/' + this.usernameToChange]);
-            }
-        });
+            .subscribe((receivedEntry) => {
+                if (receivedEntry) {
+                    this.router.navigate(['/profile/' + this.usernameToChange]);
+                }
+            });
 
     }
 
@@ -117,7 +117,8 @@ export class EditProfileComponent implements OnInit {
 
             if (event.target.files[0].type !== 'image/jpeg'
                 && event.target.files[0].type !== 'image/png') {
-                alert('Your file must be an image, try other file.');
+
+                this.toastsService.toastAddWarning('Your file must be an image, try other file.');
                 this.fileInput.nativeElement.value = null;
                 return;
             }
@@ -165,7 +166,7 @@ export class EditProfileComponent implements OnInit {
     }
 
 
-    modal(text, style): any {
+    modal(text: string, style: string): any {
         const modalRef = this.modalService.open(YesNoModalComponent);
         modalRef.componentInstance.text = text;
         modalRef.componentInstance.style = style;

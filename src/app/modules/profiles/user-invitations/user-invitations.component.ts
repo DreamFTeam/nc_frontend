@@ -7,7 +7,7 @@ import { ToastsService } from '../../core/_services/utils/toasts.service';
 import { LocaleService } from '../../core/_services/utils/locale.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { YesNoModalComponent } from '../../shared/yes-no-modal/yes-no-modal.component';
-import {faSpinner} from '@fortawesome/free-solid-svg-icons';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-user-invitations',
@@ -38,6 +38,7 @@ export class UserInvitationsComponent implements OnInit {
     this.MAX_AMOUNT = friendService.AMOUNT_OF_USERS;
     this.activeTab = history.state.data === 'outgoing' ? 2 : 1;
     this.invitationsPage = 1;
+
     this.getInvitationsSize('incoming');
     this.getInvitationsSize('outgoing');
     this.getInvitations(history.state.data || 'incoming', 1);
@@ -52,7 +53,6 @@ export class UserInvitationsComponent implements OnInit {
 
   changeTab(event): void {
     this.activeTab = event;
-    this.invitations = null;
     this.tabReady = false;
     const value = (event.nextId === 1) ? 'incoming' : 'outgoing';
 
@@ -99,6 +99,7 @@ export class UserInvitationsComponent implements OnInit {
     this.modal(this.localeService.getValue(value ? 'modal.acceptRequest' : 'modal.rejectRequest'), 'danger')
       .subscribe((receivedEntry) => {
         if (receivedEntry) {
+
           this.friendService.processFriendRequest(profile.id, value.toString()).subscribe(
             () => {
               this.invitations = this.invitations.filter(item => item !== profile);
@@ -119,6 +120,7 @@ export class UserInvitationsComponent implements OnInit {
     this.modal(this.localeService.getValue('modal.rejectRequest'), 'danger')
       .subscribe((receivedEntry) => {
         if (receivedEntry) {
+
           this.friendService.sendFriendRequest(profile.id, value.toString()).subscribe(
             () => {
               this.invitations = this.invitations.filter(item => item !== profile);
@@ -140,7 +142,6 @@ export class UserInvitationsComponent implements OnInit {
     const modalRef = this.modalService.open(YesNoModalComponent);
     modalRef.componentInstance.text = text;
     modalRef.componentInstance.style = style;
-
     return modalRef.componentInstance.passEntry;
   }
 
