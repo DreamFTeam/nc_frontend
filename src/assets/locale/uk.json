@@ -218,5 +218,23 @@
     },
     "announcementsView":{
         "title":"Оголошення сайту"
+    },
+    "adminDash":{
+        "username":"Логін",
+        "role":"Роль:",
+        "crAdm":"Створити адміністратора",
+        "crMod":"Створити модератора",
+        "popularTitle":"Найбільш популярні квізи",
+        "statusTitle":"Статуси квізів",
+        "validTitle":"Статистика валідації",
+        "gamespdTitle":"Ігрова статистика",
+        "admins":"Адміністратири",
+        "moderators":"Модератори",
+        "games":"Ігор",
+        "total":"всього",
+        "published":"опубліковано",
+        "rejected":"відхилено",
+        "activated":"активовано",
+        "unvalidated":"непровалідовано"
     }
 }

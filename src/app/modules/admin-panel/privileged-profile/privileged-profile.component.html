@@ -1,18 +1,18 @@
 <div class="row mx-2">
     <div class="col">
         <div class="container bg-white rounded">
-            <b> Username</b> : {{profile.username}}
+            <b> {{'adminDash.username'| translate}}</b> : {{profile.username}}
 	        <img id="image">
-            <b>Role: </b>{{profile.role.substr(5).toLowerCase()}}
-	        <button class="btn mb-1 btncreate" *ngIf="profile.role=='ROLE_SUPERADMIN'" (click)="createAdmin()">Create admin</button>
-            <button class="btn mb-4 btncreate" *ngIf="profile.role!='ROLE_MODERATOR'" (click)="createModerator()">Create moder</button>
+            <b>{{'adminDash.role'| translate}} </b>{{profile.role.substr(5).toLowerCase()}}
+	        <button class="btn mb-1 btncreate" *ngIf="profile.role=='ROLE_SUPERADMIN'" (click)="createAdmin()">{{'adminDash.crAdm'| translate}}</button>
+            <button class="btn mb-4 btncreate" *ngIf="profile.role!='ROLE_MODERATOR'" (click)="createModerator()">{{'adminDash.crMod'| translate}}</button>
         </div>
     </div>
     <div class="col p-2">
         <div class="container text-center bg-white rounded">
             <div class="row">
                 <p class="h5 col">
-                    {{titlePopQuiz}}
+                    {{'adminDash.popularTitle'| translate}}
                 </p>
             </div>
             <div class="row">
@@ -34,7 +34,7 @@
         <div class="container text-center bg-white rounded">
             <div class="row">
                 <p class="h5 col">
-                    {{titleQuizStatus}}
+                    {{'adminDash.statusTitle'| translate}}
                 </p>
             </div>
             <div class="row">
@@ -54,7 +54,7 @@
         <div class="container text-center bg-white rounded">
             <div class="row">
                 <p class="h5 col">
-                    {{titleValidQuiz}}
+                    {{'adminDash.validTitle'| translate}}
                 </p>
             </div>
             <div class="row">
@@ -73,7 +73,7 @@
         <div class="container text-center bg-white rounded">
             <div class="row">
                 <p class="h5 col">
-                    {{titleGamesPerDay}}
+                    {{'adminDash.gamespdTitle'| translate}}
                 </p>
             </div>
             <div class="row">
