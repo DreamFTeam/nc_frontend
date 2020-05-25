@@ -1,7 +1,7 @@
-import { DesearizableWImage } from './deserializable-w-image';
-import { DomSanitizer } from '@angular/platform-browser';
-import { Tag } from './tag';
-import { Category } from './category';
+import {DesearizableWImage} from './deserializable-w-image';
+import {DomSanitizer} from '@angular/platform-browser';
+import {Tag} from './tag';
+import {Category} from './category';
 
 export class ExtendedQuiz implements DesearizableWImage {
     id: string;
@@ -29,18 +29,18 @@ export class ExtendedQuiz implements DesearizableWImage {
         if (input.tagIdList !== undefined) {
             this.tags = [];
             for (let i = 0; i < input.tagIdList.length; i++) {
-                this.tags.push(new Tag(input.tagIdList[i], input.tagNameList[i]))
+                this.tags.push(new Tag(input.tagIdList[i], input.tagNameList[i]));
             }
         }
 
         if (input.categoryIdList !== undefined) {
-        this.categories = [];
+            this.categories = [];
             for (let i = 0; i < input.categoryIdList.length; i++) {
-                this.categories.push(new Category(input.categoryIdList[i], input.categoryNameList[i]))
+                this.categories.push(new Category(input.categoryIdList[i], input.categoryNameList[i]));
             }
         }
 
-        if (this.imageContent !== null && this.imageContent !== undefined && this.imageContent != "") {
+        if (this.imageContent !== null && this.imageContent !== undefined && this.imageContent != '') {
             const objUrl = 'data:image/jpeg;base64,' + this.imageContent;
             this.imageContent = sanitizer.bypassSecurityTrustUrl(objUrl);
             this.unsanitizedImage = this.dataURLtoFile(objUrl);
@@ -54,8 +54,8 @@ export class ExtendedQuiz implements DesearizableWImage {
         while (n--) {
             u8arr[n] = bstr.charCodeAt(n);
         }
-        return new File([u8arr], "img", { type: mime });
+        return new File([u8arr], 'img', {type: mime});
     }
 
-    
+
 }

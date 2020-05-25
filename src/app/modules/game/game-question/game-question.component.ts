@@ -13,6 +13,8 @@ import {GameSettingsService} from '../../core/_services/game/game-settings.servi
 import {Subscription} from 'rxjs';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {faSpinner} from '@fortawesome/free-solid-svg-icons';
+import {ModalMessageService} from '../../core/_services/utils/modal-message.service';
+import {AnonymService} from '../../core/_services/game/anonym.service';
 
 @Component({
     selector: 'app-game-question',
@@ -35,7 +37,7 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
     faSpinner = faSpinner;
 
     timeLeft: number = 100;
-    timerStep: number; 
+    timerStep: number;
     interval;
     subscribeTimer: any;
     isBreak: boolean;
@@ -44,7 +46,7 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
     currQuestNumb: number = 0;
     curq;
     curq_image;
-    shuffled: string[];  
+    shuffled: string[];
     answf: string;
 
     playerRating: number = 0;
@@ -52,14 +54,20 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
 
     waitResult: boolean;
     finishGame: Subscription;
-    
+
 
     constructor(private gameQuestionService: GameQuestionService,
                 private questionService: QuestionService,
                 private activateRoute: ActivatedRoute,
                 private router: Router,
                 private sseService: SseService,
-                private gameSettingsService: GameSettingsService) {
+                private gameSettingsService: GameSettingsService,
+                private messageModal: ModalMessageService,
+                private anonymService: AnonymService) {
+        if (!localStorage.getItem('sessionid')) {
+            this.messageModal.show('Access denied', 'You don\'t have permissions.');
+            this.router.navigateByUrl('/');
+        }
         this.questionsLoading = true;
         this.isBreak = false;
         this.activateRoute.paramMap.pipe(
@@ -87,7 +95,7 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
             if (this.timeLeft > 0) {
                 this.timeLeft--;
             } else {
-                if(this.isBreak = true) {
+                if (this.isBreak = true) {
                     this.isBreak = false;
                     this.timerStep = this.game.roundDuration;
                 }
@@ -235,7 +243,7 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
                 this.playerRating = this.playerRating + oa.points;
             }
         }
-        this.answf = "";
+        this.answf = '';
         this.isBreak = true;
         this.timerStep = this.game.breakTime;
         clearInterval(this.interval);

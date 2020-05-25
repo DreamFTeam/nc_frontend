@@ -1,10 +1,10 @@
 <div *ngFor="let answer of question.rightOptions; let i = index; trackBy: trackByFn" class="grid-container">
     <div class="grid-item">
-        {{ (i+1) }}
+        {{ (i + 1) }}
     </div>
     <div class="grid-item">
       <input maxlength="50" [disabled]="!available" class="form-control"
-       style="width: 100%;"  [(ngModel)]="question.rightOptions[i]">
+             style="width: 100%;" [(ngModel)]="question.rightOptions[i]">
     </div>
     <div class="grid-item">
         <button *ngIf="isRemovable() && available" class="remb" (click)="removeAnswer(i)">
@@ -15,6 +15,8 @@
 
   <div class="container-fluid">
     <div class="col-sm-12 text-center">
-      <button *ngIf="isLimitReached() && available" class="btn addb" (click)="addAnswer()"><img src="../assets/img/plus.png"></button>
+      <button *ngIf="isLimitReached() && available"
+              class="btn addb"
+              (click)="addAnswer()"><img src="../assets/img/plus.png"></button>
     </div>
   </div>

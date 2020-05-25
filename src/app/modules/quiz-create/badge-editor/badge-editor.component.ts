@@ -1,90 +1,89 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Observable, merge, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
-import { QuizService } from '../../core/_services/quiz/quiz.service';
-import { TagCatg } from '../../core/_models/tagcateg';
-import { Tag } from '../../core/_models/tag';
-import { Category } from '../../core/_models/category';
+import {Component, Input, OnInit} from '@angular/core';
+import {merge, Observable, Subject} from 'rxjs';
+import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
+import {QuizService} from '../../core/_services/quiz/quiz.service';
+import {TagCatg} from '../../core/_models/tagcateg';
+import {Tag} from '../../core/_models/tag';
+import {Category} from '../../core/_models/category';
 
 @Component({
-  selector: 'app-badge-editor',
-  templateUrl: './badge-editor.component.html',
-  styleUrls: ['./badge-editor.component.css']
+    selector: 'app-badge-editor',
+    templateUrl: './badge-editor.component.html',
+    styleUrls: ['./badge-editor.component.css']
 })
 export class BadgeEditorComponent implements OnInit {
-  
-  @Input()
-  label: string;
 
-  @Input()
-  tagCateg: TagCatg[];
+    @Input()
+    label: string;
 
-  @Input()
-  available: boolean;
+    @Input()
+    tagCateg: TagCatg[];
 
-  model: TagCatg;
+    @Input()
+    available: boolean;
 
-  allObjects: TagCatg[];
+    model: TagCatg;
+
+    allObjects: TagCatg[];
 
 
-  
-  constructor(private quizService: QuizService) { 
-  }
-
-  ngOnInit(): void {
-    this.allObjects = [];
-    if(this.isTag()){
-      this.mapAllTagsOrCategs(this.quizService.getTagsList())
-    }else{
-      this.mapAllTagsOrCategs(this.quizService.getCategoriesList())
+    constructor(private quizService: QuizService) {
     }
-    console.log(this.available);
-    
-  }
 
-  mapAllTagsOrCategs(ans: Observable<any>){
-    ans.subscribe(
-      ans => ans.forEach( (element) => {
-        this.allObjects.push(element);
-    }), 
-    err => console.log(err));
-  }
+    ngOnInit(): void {
+        this.allObjects = [];
+        if (this.isTag()) {
+            this.mapAllTagsOrCategs(this.quizService.getTagsList());
+        } else {
+            this.mapAllTagsOrCategs(this.quizService.getCategoriesList());
+        }
+        console.log(this.available);
 
-  remove(i) {
-    this.tagCateg.splice(i,1);
-  }
-
-  add(){
-    const index = this.tagCateg.findIndex( el => el.id === this.model.id);
-
-    if(this.model !== undefined && index === -1){
-      if(this.isTag()){
-        this.tagCateg.push(new Tag(this.model.id, this.model.description));
-      }else{
-        this.tagCateg.push(new Category(this.model.id, this.model.description));
-      }
-      this.model = undefined;
     }
-  }
 
-  isTag(){
-    return this.label === "Tags";
-  }
+    mapAllTagsOrCategs(ans: Observable<any>) {
+        ans.subscribe(
+            ans => ans.forEach((element) => {
+                this.allObjects.push(element);
+            }),
+            err => console.log(err));
+    }
 
-  formatter = (object: any) => object.description;
+    remove(i) {
+        this.tagCateg.splice(i, 1);
+    }
 
-  focus$ = new Subject<string>();
-  click$ = new Subject<string>();
+    add() {
+        const index = this.tagCateg.findIndex(el => el.id === this.model.id);
 
-  search = (text$: Observable<string>) => {
-    const debouncedText$ = text$.pipe(debounceTime(200), distinctUntilChanged());
-    const inputFocus$ = this.focus$;
+        if (this.model !== undefined && index === -1) {
+            if (this.isTag()) {
+                this.tagCateg.push(new Tag(this.model.id, this.model.description));
+            } else {
+                this.tagCateg.push(new Category(this.model.id, this.model.description));
+            }
+            this.model = undefined;
+        }
+    }
 
-    return merge(debouncedText$, inputFocus$).pipe(
-      map(term => (term === '' ? this.allObjects
-      : this.allObjects.filter(v => v.description.toLowerCase().indexOf(term.toLowerCase()) > -1)).slice(0, 10))
-    );
-  }
+    isTag() {
+        return this.label === 'Tags';
+    }
+
+    formatter = (object: any) => object.description;
+
+    focus$ = new Subject<string>();
+    click$ = new Subject<string>();
+
+    search = (text$: Observable<string>) => {
+        const debouncedText$ = text$.pipe(debounceTime(200), distinctUntilChanged());
+        const inputFocus$ = this.focus$;
+
+        return merge(debouncedText$, inputFocus$).pipe(
+            map(term => (term === '' ? this.allObjects
+                : this.allObjects.filter(v => v.description.toLowerCase().indexOf(term.toLowerCase()) > -1)).slice(0, 10))
+        );
+    };
 
 
 }

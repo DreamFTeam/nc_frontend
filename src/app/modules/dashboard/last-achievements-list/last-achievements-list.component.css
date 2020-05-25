@@ -1,33 +1,41 @@
-.embed-responsive .pic {
+.embed-responsive .pic
+{
     object-fit: cover;
 }
 
-.embed-responsive {
+.embed-responsive
+{
     max-width: 25%;
 }
 
-.card-header {
+.card-header
+{
     font-size: medium;
 }
 
-.media :hover {
+.media :hover
+{
     cursor: pointer;
 }
 
-.card-body {
+.card-body
+{
     max-height: 21vh;
 }
 
-@media (min-width: 768px) {
-    .embed-responsive {
+@media (min-width: 768px)
+{
+    .embed-responsive
+    {
         min-width: 15% !important;
         max-width: 35% !important;
     }
 }
 
-.emptylabel {
-    width: 100%;
-    padding: 2em;
+.emptylabel
+{
+    width:      100%;
+    padding:    2em;
     text-align: center;
-    font-size: medium;
+    font-size:  medium;
 }

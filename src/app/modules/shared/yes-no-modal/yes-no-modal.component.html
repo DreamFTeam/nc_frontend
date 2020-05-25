@@ -8,10 +8,12 @@
     <p>{{text}}</p>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-primary" 
-    (click)="trueResult()" 
-    [ngClass]="{'btn-outline-danger': style === 'danger',
+    <button type="button" class="btn btn-outline-primary"
+            (click)="trueResult()"
+            [ngClass]="{'btn-outline-danger': style === 'danger',
     'btn-outline-success': style === 'success',
     'btn-outline-warning': style === 'warning'}">{{ 'utils.yes' | translate }}</button>
-    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">{{ 'utils.no' | translate }}</button>
+    <button type="button"
+            class="btn btn-outline-dark"
+            (click)="activeModal.close('Close click')">{{ 'utils.no' | translate }}</button>
   </div>

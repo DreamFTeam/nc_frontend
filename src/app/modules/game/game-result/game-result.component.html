@@ -11,24 +11,26 @@
 
   <div style="display: flex; align-items: center; justify-content: center; flex-direction: column">
     <ngx-charts-bar-vertical
-      [barPadding]="4"
-      [view]=view
-      [showDataLabel]=true
-      [results]="resultsForGraphic"
-      [xAxis]=true
-      [yAxis]=true
-      [legend]=true
-      [showXAxisLabel]=true
-      [showYAxisLabel]=true
-      legendTitle="{{'game.players'| translate}}"
-      legendPosition="right"
-      yAxisLabel="{{'game.points'| translate}}"
-      (select)="onSelect($event)">
+		    [barPadding]="4"
+		    [view]=view
+		    [showDataLabel]=true
+		    [results]="resultsForGraphic"
+		    [xAxis]=true
+		    [yAxis]=true
+		    [legend]=true
+		    [showXAxisLabel]=true
+		    [showYAxisLabel]=true
+		    legendTitle="{{'game.players'| translate}}"
+		    legendPosition="right"
+		    yAxisLabel="{{'game.points'| translate}}"
+		    (select)="onSelect($event)">
     </ngx-charts-bar-vertical>
 
     <div class="btn-group" role="group">
       <button type="button" class="btn btn-secondary" routerLink="/quiz-list">{{'game.other'| translate}}</button>
-      <button class="btn btn-secondary" (click)="rateModal()">{{'game.rate'| translate}}</button>
+      <button *ngIf="loggedIn"
+              class="btn btn-secondary btn-rate"
+              (click)="rateModal()">{{'game.rate'| translate}}</button>
       <button type="button" class="btn btn-secondary" routerLink="/">{{'game.quit'| translate}}</button>
     </div>
   </div>

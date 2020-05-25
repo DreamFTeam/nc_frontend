@@ -4,11 +4,11 @@
       <div class="col-3">
         <div *ngIf="!admin" class="input-group">
           <input type="text" class="rounded-left form-control" [(ngModel)]="accessCode" [disabled]="accessCodeLoading"
-            (keydown.enter)="join()" placeholder="Enter access code" aria-label="Enter access code"
-            aria-describedby="button-addon">
+                 (keydown.enter)="join()" placeholder="Enter access code" aria-label="Enter access code"
+                 aria-describedby="button-addon">
           <div *ngIf="!admin" class="input-group-append">
             <button (click)="join()" class="btn btn-light border-0 btn-outline-secondary" type="button"
-              [disabled]="accessCodeLoading" id="button-addon">
+                    [disabled]="accessCodeLoading" id="button-addon">
               <span *ngIf="!accessCodeLoading">
                 OK
               </span>
@@ -23,18 +23,18 @@
       <div class="col-9 rounded">
         <div class="input-group">
           <input type="text" class="rounded-left form-control text-center" [(ngModel)]="searchInput"
-            (keydown.enter)="search()" placeholder="Search" aria-label="Search" aria-describedby="button-addon1">
+                 (keydown.enter)="search()" placeholder="Search" aria-label="Search" aria-describedby="button-addon1">
           <div class="input-group-append">
             <button (click)="search()" class="btn btn-light border-0 btn-outline-secondary" type="button"
-              id="button-addon1">
+                    id="button-addon1">
               <svg class="bi bi-search" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"
-                xmlns="http://www.w3.org/2000/svg">
+                   xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd"
-                  d="M10.442 10.442a1 1 0 011.415 0l3.85 3.85a1 1 0 01-1.414 1.415l-3.85-3.85a1 1 0 010-1.415z"
-                  clip-rule="evenodd" />
+                      d="M10.442 10.442a1 1 0 011.415 0l3.85 3.85a1 1 0 01-1.414 1.415l-3.85-3.85a1 1 0 010-1.415z"
+                      clip-rule="evenodd"/>
                 <path fill-rule="evenodd"
-                  d="M6.5 12a5.5 5.5 0 100-11 5.5 5.5 0 000 11zM13 6.5a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z"
-                  clip-rule="evenodd" />
+                      d="M6.5 12a5.5 5.5 0 100-11 5.5 5.5 0 000 11zM13 6.5a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z"
+                      clip-rule="evenodd"/>
               </svg>
             </button>
           </div>
@@ -54,7 +54,7 @@
             <a routerLink="/viewquiz/{{item.id}}">
               <div class="embed-responsive embed-responsive-4by3">
                 <img class="card-img-top  embed-responsive-item p-1"
-                [src]="item.imageContent ? item.imageContent : this.mockImageUrl" alt="Quiz icon">
+                     [src]="item.imageContent ? item.imageContent : this.mockImageUrl" alt="Quiz icon">
               </div>
               <div class="card-body text-center">
                 <p class="card-title h5">{{item.title}}</p>
@@ -66,7 +66,7 @@
     </div>
     <div class="pagination-container">
       <ngb-pagination class="d-flex justify-content-center" size="lg" [pageSize]="pageSize" [collectionSize]="totalSize"
-        [(page)]="page" [maxSize]="7" [rotate]="true" (pageChange)="loadPage($event)"></ngb-pagination>
+                      [(page)]="page" [maxSize]="7" [rotate]="true" (pageChange)="loadPage($event)"></ngb-pagination>
     </div>
   </div>
 </div>
