@@ -11,30 +11,60 @@ import {AuthenticationService} from '../../core/_services/authentication/authent
 })
 export class UsersComponent implements OnInit {
 
-    searchResults: Profile[];
-    username: string;
-    currentUsername: string;
+  searchResults: Profile[];
+  username: string;
+  currentUsername: string;
+  privileged: boolean;
 
-    constructor(private getProfileService: ProfileService,
-                private sanitizer: DomSanitizer,
-                private authenticationService: AuthenticationService,
-    ) {
-        this.searchResults = null;
-        this.username = '';
-        this.currentUsername = this.authenticationService.currentUserValue.username;
+  constructor(private getProfileService: ProfileService,
+              private sanitizer: DomSanitizer,
+              private authenticationService: AuthenticationService,
+
+  ) {
+    this.searchResults = null;
+    this.currentUsername = this.authenticationService.currentUserValue.username;
+    this.privileged = authenticationService.currentUserValue.role !== 'ROLE_USER';
+
+  }
+
+
+  ngOnInit(): void {
+    if (this.privileged) {
+      this.getPrivilegedUsers();
+    } else {
+      this.getPopularCreators();
+
     }
+  }
 
+  search() {
+    this.getProfileService.getProfilebyUserName(this.username).subscribe(
+      data => {
+        this.searchResults = data;
+        this.searchResults.forEach(element => {
+          return Profile.deserialize(element, this.sanitizer);
+        });
+      });
+  }
 
-    ngOnInit(): void {
-    }
+  getPopularCreators() {
+    this.getProfileService.getPopularCreators().subscribe(
+      data => {
+        this.searchResults = data;
+        this.searchResults.forEach(element => {
+          return Profile.deserialize(element, this.sanitizer);
+        });
+      });
+  }
 
-    search() {
-        this.getProfileService.getProfilebyUserName(this.username).subscribe(
-            data => {
-                this.searchResults = data;
-                this.searchResults.forEach(element => {
-                    return Profile.deserialize(element, this.sanitizer);
-                });
-            });
-    }
+  getPrivilegedUsers() {
+    this.getProfileService.getPrivilegedUsers().subscribe(
+      data => {
+        this.searchResults = data;
+        this.searchResults.forEach(element => {
+          return Profile.deserialize(element, this.sanitizer);
+        });
+      });
+  }
+
 }

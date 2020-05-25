@@ -1,267 +1,330 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {ProfileService} from '../../core/_services/profile/profile.service';
-import {PrivilegedService} from '../../core/_services/admin/privileged.service';
-import {Profile} from '../../core/_models/profile';
-import {DomSanitizer} from '@angular/platform-browser';
-import {AuthenticationService} from '../../core/_services/authentication/authentication.service';
-import {QuizService} from '../../core/_services/quiz/quiz.service';
-import {FriendsService} from '../../core/_services/profile/friends-service.service';
-import {Achievement} from '../../core/_models/achievement';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ProfileService } from '../../core/_services/profile/profile.service';
+import { PrivilegedService } from '../../core/_services/admin/privileged.service';
+import { Profile } from '../../core/_models/profile';
+import { DomSanitizer } from '@angular/platform-browser';
+import { AuthenticationService } from '../../core/_services/authentication/authentication.service';
+import { QuizService } from '../../core/_services/quiz/quiz.service';
+import { FriendsService } from '../../core/_services/profile/friends-service.service';
+import { Achievement } from '../../core/_models/achievement';
 
 
 @Component({
-    selector: 'app-profile',
-    templateUrl: './profile.component.html',
-    styleUrls: ['./profile.component.css']
+  selector: 'app-profile',
+  templateUrl: './profile.component.html',
+  styleUrls: ['./profile.component.css']
 })
 
 export class ProfileComponent implements OnInit {
-    activeTab: number;
-    MAX_AMOUNT: number; // amount of friends per page
-    role: string; // role of the current user
-    username: string;
-    ready: boolean; // indicates the profile was loaded (doesn't include quizzes)
-    owner: boolean; // indicates which rights the user has concerning this profile
-    quizzes;
-    profile: Profile;
-    tabReady: boolean;
-    friends: Profile[];
-    achievements: Achievement[];
-    friendsSize: number;
-    friendsPage: number;
+  activeTab: number;
+  MAX_AMOUNT: number; // amount of friends per page
+  role: string; // role of the current user
+  username: string;
+  ready: boolean; // indicates the profile was loaded (doesn't include quizzes)
+  owner: boolean; // indicates which rights the user has concerning this profile
+  quizzes;
+  profile: Profile;
+  tabReady: boolean;
+  friends: Profile[];
+  achievements: Achievement[];
+  friendsSize: number;
+  friendsPage: number;
+  outGoingAmount: number;
+  incomingAmount: number;
+  favQuizAmount: number;
+  quizAmount: number;
+  achievementsSize: number;
 
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private friendService: FriendsService,
-        private getProfileService: ProfileService,
-        private privilegedService: PrivilegedService,
-        private sanitizer: DomSanitizer,
-        private quizService: QuizService,
-        private authenticationService: AuthenticationService,
-    ) {
-        this.role = authenticationService.currentUserValue.role;
-        this.username = authenticationService.currentUserValue.username;
-        this.activeTab = 1;
-        this.friendsPage = 1;
-        this.MAX_AMOUNT = getProfileService.AMOUNT_OF_USERS;
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private friendService: FriendsService,
+    private getProfileService: ProfileService,
+    private privilegedService: PrivilegedService,
+    private sanitizer: DomSanitizer,
+    private quizService: QuizService,
+    private authenticationService: AuthenticationService,
+  ) {
+    this.role = authenticationService.currentUserValue.role;
+    this.username = authenticationService.currentUserValue.username;
+    this.activeTab = 1;
+    this.friendsPage = 1;
+    this.MAX_AMOUNT = getProfileService.AMOUNT_OF_USERS;
+  }
+
+  ngOnInit(): void {
+    if (this.authenticationService.currentUserValue == null) {
+      this.router.navigate(['/']);
     }
 
-    ngOnInit(): void {
-        if (this.authenticationService.currentUserValue == null) {
-            this.router.navigate(['/']);
+    this.getProfile();
+  }
+
+  getAllBadgesInfo() {
+    this.getFriendsSize();
+    this.getInvitationsSize();
+    this.getAllQuizzesAmount();
+    this.getAchievementsAmount();
+  }
+
+  getProfile() {
+    this.getProfileService.getProfile(this.getUsername()).subscribe(
+      result => {
+        this.profile = result;
+
+      },
+      error => {
+        console.error(error.error);
+        this.router.navigate(['/']);
+      }).add(() => {
+        this.setRights();
+        if (this.profile.role === 'ROLE_USER') {
+          this.getQuizzes();
         }
+        this.getAllBadgesInfo();
+        this.ready = true;
+      }
+      );
+  }
 
-        this.getProfileService.getProfile(this.getUsername()).subscribe(
-            result => {
-                this.profile = result;
-                this.setRights();
+  getUsername(): string {
+    return this.route.snapshot.paramMap.get('username') || this.authenticationService.currentUserValue.username;
+  }
 
-                if (this.profile.role === 'ROLE_USER') {
-                    this.getQuizzes();
-                }
+  setRights() {
+    this.owner =
+      this.authenticationService.currentUserValue.username === this.profile.username &&
+      this.role === 'ROLE_USER' ||
+      this.getProfileService.compare(this.role, this.profile.role);
 
-                this.ready = true;
+  }
 
-            },
-            error => {
-                console.error(error.error);
-                this.router.navigate(['/']);
-            });
+  edit() {
+    this.router.navigate(['/editprofile'],
+      { state: { data: this.profile.username } });
+  }
+
+  seeeRequests(type: string) {
+    this.router.navigate(['/requests'],
+      { state: { data: type } });
+  }
+
+  editAdmin(isAnUpgrade: boolean) {
+    this.privilegedService.edit(this.profile.id, 'role', isAnUpgrade).subscribe(result => {
+      alert('Privileges have been changed');
+      window.location.reload();
+
+    },
+      error => {
+        console.log(error);
+        alert('An error occured, try again');
+      });
+  }
+
+  deactivate(bool: boolean) {
+    this.privilegedService.deactivate(this.profile.id, bool).subscribe(result => {
+      alert('User`s activation status changed');
+      window.location.reload();
+
+    },
+      error => {
+        console.log(error);
+        alert('An error occured, try again');
+      });
+  }
+
+  getInvitationsSize() {
+    this.friendService.getUsersInvitationsSize('outgoing').subscribe(
+      (result) => {
+        this.outGoingAmount = result;
+      }
+    );
+
+    this.friendService.getUsersInvitationsSize('incoming').subscribe(
+      (result) => {
+        this.incomingAmount = result;
+      }
+    );
+  }
+
+  getQuizzes() {
+
+    this.getProfileService.getProfileQuiz(this.profile.id).subscribe(
+      result => {
+        result.forEach(input => {
+          if (input['imageContent'] !== null) {
+            input['imageContent'] =
+              this.sanitizer.bypassSecurityTrustUrl
+                ('data:image\/(png|jpg|jpeg);base64,'
+                  + input['imageContent']);
+          }
+          return input;
+        });
+        this.quizzes = result;
+        this.tabReady = true;
+      },
+      error => {
+        console.error(error.error);
+      });
+  }
+
+
+  getAchievementsAmount() {
+
+    this.getProfileService.getProfileAchievementAmount(this.profile.id).subscribe(
+      (result) => {
+        this.achievementsSize = result;
+      }
+    );
+  }
+
+  getAllQuizzesAmount() {
+
+    this.getProfileService.getProfileQuizAmount(this.profile.id).subscribe(
+      result => {
+        this.quizAmount = result;
+      },
+      error => {
+        console.error(error.error);
+      });
+
+    this.getProfileService.getProfileFavQuizAmount().subscribe(
+      result => {
+        this.favQuizAmount = result;
+      },
+      error => {
+        console.error(error.error);
+      });
+  }
+
+
+
+
+  getFavQuizzes() {
+
+    this.getProfileService.getProfileFavQuiz().subscribe(
+      result => {
+        result.forEach(input => {
+          if (input['imageContent'] !== null) {
+            input['imageContent'] =
+              this.sanitizer.bypassSecurityTrustUrl
+                ('data:image\/(png|jpg|jpeg);base64,'
+                  + input['imageContent']);
+          }
+          return input;
+        });
+        this.quizzes = result;
+        this.tabReady = true;
+      },
+      error => {
+        console.error(error.error);
+      });
+  }
+
+
+  goToQuiz(id: string) {
+    this.router.navigate(['/viewquiz/' + id]);
+  }
+
+  markQuizFavourite(quiz: any) {
+    quiz.favourite = !quiz.favourite;
+    this.quizService.markAsFavorite(quiz.id).subscribe();
+    this.favQuizAmount += (quiz.favourite) ? 1 : -1;
+
+    if (this.activeTab === 2) {
+      this.quizzes = this.quizzes.filter(item => item !== quiz);
     }
 
-    getUsername(): string {
-        return this.route.snapshot.paramMap.get('username') || this.authenticationService.currentUserValue.username;
-    }
+  }
 
-    setRights() {
-        this.owner =
-            this.authenticationService.currentUserValue.username === this.profile.username &&
-            this.role === 'ROLE_USER' ||
-            this.getProfileService.compare(this.role, this.profile.role);
+  sendFriendRequest(value: boolean) {
+    this.friendService.sendFriendRequest(this.profile.id, value.toString()).subscribe(
+      () => this.profile.outgoingRequest = value
+    );
+  }
 
-    }
+  processFriendRequest(value: boolean) {
+    this.friendService.processFriendRequest(this.profile.id, value.toString()).subscribe(
+      () => {
+        this.profile.friend = value;
+        this.profile.incomingRequest = false;
+      }
+    );
+  }
 
-    edit() {
-        this.router.navigate(['/editprofile'],
-            {state: {data: this.profile.username}});
-    }
+  removeFriend() {
+    this.friendService.removeFriend(this.profile.id).subscribe(
+      () => {
+        this.profile.friend = false;
+        this.profile.incomingRequest = true;
+        this.profile.outgoingRequest = false;
 
-    seeeRequests(type: string) {
-        this.router.navigate(['/requests'],
-            {state: {data: type}});
-    }
-
-    editAdmin(isAnUpgrade: boolean) {
-        this.privilegedService.edit(this.profile.id, 'role', isAnUpgrade).subscribe(result => {
-                alert('Privileges have been changed');
-                window.location.reload();
-
-            },
-            error => {
-                console.log(error);
-                alert('An error occured, try again');
-            });
-    }
-
-    deactivate(bool: boolean) {
-        this.privilegedService.deactivate(this.profile.id, bool).subscribe(result => {
-                alert('User`s activation status changed');
-                window.location.reload();
-
-            },
-            error => {
-                console.log(error);
-                alert('An error occured, try again');
-            });
-    }
+      }
+    );
+  }
 
 
-    getQuizzes() {
+  getFriends(page: number): void {
 
-        this.getProfileService.getProfileQuiz(this.profile.id).subscribe(
-            result => {
-                result.forEach(input => {
-                    if (input['imageContent'] !== null) {
-                        input['imageContent'] =
-                            this.sanitizer.bypassSecurityTrustUrl
-                            ('data:image\/(png|jpg|jpeg);base64,'
-                                + input['imageContent']);
-                    }
-                    return input;
-                });
-                this.quizzes = result;
-                this.tabReady = true;
-            },
-            error => {
-                console.error(error.error);
-            });
-    }
+    this.friendService.getUsersFriends(this.profile.id, page.toString()).subscribe(
+      (friends) => {
+        this.friends = friends;
+        this.tabReady = true;
+      }
+    );
 
 
-    getFavQuizzes() {
+  }
 
-        this.getProfileService.getProfileFavQuiz().subscribe(
-            result => {
-                result.forEach(input => {
-                    if (input['imageContent'] !== null) {
-                        input['imageContent'] =
-                            this.sanitizer.bypassSecurityTrustUrl
-                            ('data:image\/(png|jpg|jpeg);base64,'
-                                + input['imageContent']);
-                    }
-                    return input;
-                });
-                this.quizzes = result;
-                this.tabReady = true;
-            },
-            error => {
-                console.error(error.error);
-            });
-    }
+  getFriendsSize(): void {
+
+    this.friendService.getUsersFriendsSize(this.profile.id).subscribe(
+      (size) => {
+        this.friendsSize = size;
+      }
+    );
+
+  }
 
 
-    goToQuiz(id: string) {
-        this.router.navigate(['/viewquiz/' + id]);
-    }
+  getAchievements(): void {
 
-    markQuizFavourite(quiz: any) {
-        quiz.favourite = !quiz.favourite;
-        this.quizService.markAsFavorite(quiz.id).subscribe();
-        if (this.activeTab === 2) {
-            this.quizzes = this.quizzes.filter(item => item !== quiz);
-        }
-    }
-
-    sendFriendRequest(value: boolean) {
-        this.friendService.sendFriendRequest(this.profile.id, value.toString()).subscribe(
-            () => this.profile.outgoingRequest = value
-        );
-    }
-
-    processFriendRequest(value: boolean) {
-        this.friendService.processFriendRequest(this.profile.id, value.toString()).subscribe(
-            () => {
-                this.profile.friend = value;
-                this.profile.incomingRequest = false;
-            }
-        );
-    }
-
-    removeFriend() {
-        this.friendService.removeFriend(this.profile.id).subscribe(
-            () => {
-                this.profile.friend = false;
-                this.profile.incomingRequest = true;
-                this.profile.outgoingRequest = false;
-
-            }
-        );
-    }
+    this.getProfileService.getProfileAchievement(this.profile.id).subscribe(
+      (result) => {
+        this.achievements = result;
+        this.tabReady = true;
+      }
+    );
+  }
 
 
-    getFriends(page: number): void {
+  changeTab(event): void {
+    this.activeTab = event;
+    this.tabReady = false;
 
-        this.friendService.getUsersFriends(this.profile.id, page.toString()).subscribe(
-            (friends) => {
-                this.friends = friends;
-                this.tabReady = true;
-            }
-        );
-
-
-    }
-
-    getFriendsSize(): void {
-
-        this.friendService.getUsersFriendsSize(this.profile.id).subscribe(
-            (size) => {
-                this.friendsSize = size;
-            }
-        );
-
-    }
-
-
-    getAchievements(): void {
-
-        this.getProfileService.getProfileAchievement(this.profile.id).subscribe(
-            (result) => {
-                this.achievements = result;
-                this.tabReady = true;
-            }
-        );
-    }
-
-
-    changeTab(event): void {
-        this.activeTab = event;
-        this.tabReady = false;
-
-        switch (event.nextId) {
-            case 1:
-                this.getQuizzes();
-                break;
-            case 2:
-                this.getFavQuizzes();
-                break;
-            case 3:
-                this.getAchievements();
-                break;
-            case 4:
-                this.getFriendsSize();
-                this.getFriends(1);
-        }
-    }
-
-    load(event): void {
-        this.tabReady = false;
+    switch (event.nextId) {
+      case 1:
+        this.getQuizzes();
+        break;
+      case 2:
+        this.getFavQuizzes();
+        break;
+      case 3:
+        this.getAchievements();
+        break;
+      case 4:
         this.getFriendsSize();
-        this.getFriends(event);
-        window.scrollTo(0, 250);
-
+        this.getFriends(1);
     }
+  }
+
+  load(event): void {
+    this.tabReady = false;
+    this.getFriendsSize();
+    this.getFriends(event);
+    window.scrollTo(0, 250);
+
+  }
 
 }
-

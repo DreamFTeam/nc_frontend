@@ -34,19 +34,15 @@
             <b>{{profile.username}}</b>
             <span *ngIf="profile.role!='ROLE_USER'" class="blue"> {{profile.role.substr(5).toLowerCase()}}</span>
             <h5 *ngIf="!profile.activated" style="color: red;"> {{'profile.deactivated' | translate }}  </h5>
-            <h3 *ngIf="profile.online; else lastseen" class="blue"> {{'profile.online' | translate }} </h3>
+            <h5 *ngIf="profile.online; else lastseen" class="blue"> {{'profile.online' | translate }} </h5>
             <ng-template #lastseen>
-               <h3 class="blue"> {{'profile.lastSeenOn' | translate }} {{profile.lastTimeOnline  |  date:'medium'}} </h3>
+               <h5 class="blue"> {{'profile.lastSeenOn' | translate }} {{profile.lastTimeOnline  |  date:'medium'}} </h5>
             </ng-template>
-            <h3>{{profile.aboutMe}}</h3>
+            <h5>{{profile.aboutMe}}</h5>
          </div>
-         <div *ngIf="this.role=='ROLE_USER'" class="col-xs-2 col-sm-3 col-md-3 col-lg-3 p-2 ">
-            <a *ngIf="owner"
-               (click)="seeeRequests('incoming')"
-               class="btn btn-outline-info mt-2 w-100"> {{'profile.Incoming' | translate }} {{'profile.friendRequests' | translate }}  </a>
-            <a *ngIf="owner"
-               (click)="seeeRequests('outgoing')"
-               class="btn btn-outline-info mt-2 w-100"> {{'profile.Outgoing' | translate }} {{'profile.friendRequests' | translate }} </a>
+         <div *ngIf= "this.role=='ROLE_USER'" class="col-xs-2 col-sm-3 col-md-3 col-lg-3 p-2 ">
+            <a *ngIf="owner" (click)="seeeRequests('incoming')" class="btn btn-outline-info mt-2 w-100"> {{'profile.Incoming' | translate }} {{'profile.friendRequests' | translate }}<span *ngIf="incomingAmount !== undefined"class="badge badge-info"> {{incomingAmount}}</span></a>
+            <a *ngIf="owner" (click)="seeeRequests('outgoing')" class="btn btn-outline-info mt-2 w-100"> {{'profile.Outgoing' | translate }} {{'profile.friendRequests' | translate }}<span *ngIf="outGoingAmount !== undefined" class="badge badge-info"> {{outGoingAmount}}</span> </a>
          </div>
          <div *ngIf="this.role!='ROLE_USER' && owner && profile.activated" class="col-3 ">
             <button class="btn btn-outline-secondary mt-2"
@@ -69,8 +65,9 @@
           class="nav-tabs w-100 m-2 p-2 border">
       <li [ngbNavItem]="1">
          <a ngbNavLink class="blue p-2 mr-2">
-            <div *ngIf="owner"> {{'profile.your' | translate }}  {{'profile.quizzes' | translate }}</div>
-            <div *ngIf="!owner"> {{profile.username}} {{'profile.whose' | translate }}  {{'profile.quizzes' | translate }}</div>
+            <div *ngIf="owner"> {{'profile.your' | translate }}  {{'profile.quizzes' | translate }}  <div *ngIf="quizAmount !== undefined" class="badge badge-secondary"> {{quizAmount}}</div></div>
+            <div *ngIf="!owner"> {{profile.username}} {{'profile.whose' | translate }}  {{'profile.quizzes' | translate }}  <div *ngIf="quizAmount !== undefined" class="badge badge-secondary"> {{quizAmount}}</div></div>
+           
          </a>
          <ng-template ngbNavContent>
             <p *ngIf="tabReady && !quizzes.length" style="font-style: large; font-weight: bold;" class="ml-5 mt-3 ">
@@ -141,7 +138,8 @@
       <li [ngbNavItem]="2" *ngIf="owner">
       <a ngbNavLink class="blue p-2 mr-2">
       {{'profile.your' | translate }} {{'profile.favourite' | translate }} {{'profile.quizzes' | translate }}
-      </a>
+      <h5 *ngIf="favQuizAmount !== undefined" class="badge badge-secondary"> {{favQuizAmount}}</h5>
+   </a>
       <ng-template ngbNavContent class="blue">
          <p *ngIf="tabReady && !quizzes.length" style="font-style: large; font-weight: bold;" class="ml-5 mt-3">
             {{'profile.nofavourites' | translate }}
@@ -199,9 +197,13 @@
       </ng-template>
       </li>
       <li [ngbNavItem]="3">
-         <a ngbNavLink class="blue p-2 mr-2">
-            <div *ngIf="owner"> {{'profile.your' | translate }} {{'profile.achievements' | translate }}  </div>
-            <div *ngIf="!owner"> {{profile.username}} {{'profile.whose' | translate }} {{'profile.achievements' | translate }}  </div>
+         <a ngbNavLink class="blue p-2 mr-2" >
+            <div *ngIf="owner"> {{'profile.your' | translate }} {{'profile.achievements' | translate }}
+                <h5 *ngIf="achievementsSize !== undefined" class="badge badge-secondary"> {{achievementsSize}}</h5>
+            </div>
+            <div *ngIf="!owner"> {{profile.username}} {{'profile.whose' | translate }} {{'profile.achievements' | translate }} 
+                <h5 *ngIf="achievementsSize !== undefined" class="badge badge-secondary"> {{achievementsSize}}</h5>
+            </div>
          </a>
          <ng-template ngbNavContent class="blue">
             <p *ngIf="tabReady && !achievements?.length"
@@ -225,10 +227,10 @@
          </ng-template>
       </li>
       <li [ngbNavItem]="4">
-         <a ngbNavLink class="blue p-2 mr-2">
-            <div *ngIf="owner"> {{'profile.your' | translate }} {{'profile.friends' | translate }}  </div>
-            <div *ngIf="!owner"> {{profile.username}} {{'profile.whose' | translate }} {{'profile.friends' | translate }}  </div>
-         </a>
+         <a ngbNavLink class="blue p-2 mr-2" >
+            <div *ngIf="owner">    {{ 'profile.your' | translate }}  {{ 'profile.friends' | translate }}<div *ngIf="friendsSize !== undefined" class="badge badge-secondary"> {{friendsSize}}</div> </div> 
+            <div *ngIf="!owner"> {{profile.username}} {{'profile.whose' | translate }}  {{ 'profile.friends' | translate }}           <div *ngIf="friendsSize !== undefined" class="badge badge-secondary"> {{friendsSize}}</div>         </div> 
+            </a> 
          <ng-template ngbNavContent class="blue">
             <p *ngIf="tabReady && !friends?.length" style="font-style: large; font-weight: bold;" class="ml-5 mt-3 ">
                {{'profile.nofriends' | translate }}
@@ -237,15 +239,7 @@
                </a>
             </p>
             <div *ngIf="friends?.length">
-               <h1 class="m-2"
-                   style="font-size: larger; font-weight: bolder;"> {{'profile.found' | translate}}  {{friendsSize}}  {{(friendsSize == 1 ? 'profile.friend_whom' : 'profile.friends_whom')| translate }} </h1>
-               <ngb-pagination *ngIf="friendsSize > 8"
-                               class="d-flex justify-content-center"
-                               [collectionSize]="friendsSize"
-                               [(page)]="friendsPage"
-                               [pageSize]="MAX_AMOUNT"
-                               [rotate]="true"
-                               (pageChange)="load($event)"></ngb-pagination>
+               <ngb-pagination  *ngIf="friendsSize > 8" class="d-flex justify-content-center"  [collectionSize]="friendsSize" [(page)]="friendsPage"  [pageSize]="MAX_AMOUNT" [rotate]="true" (pageChange)="load($event)"></ngb-pagination>
                <div *ngFor="let profile of this.friends" style='font-size: larger;'>
                   <div class="row p-2 m-2 border">
                      <img routerLink="/profile/{{profile.username}}"
