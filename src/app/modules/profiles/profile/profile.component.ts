@@ -12,6 +12,7 @@ import { ToastsService } from '../../core/_services/utils/toasts.service';
 import { LocaleService } from '../../core/_services/utils/locale.service';
 import { YesNoModalComponent } from '../../shared/yes-no-modal/yes-no-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import {faSpinner} from '@fortawesome/free-solid-svg-icons';
 
 
 @Component({
@@ -39,6 +40,8 @@ export class ProfileComponent implements OnInit {
   favQuizAmount: number;
   quizAmount: number;
   achievementsSize: number;
+  faSpinner = faSpinner;
+
 
   constructor(
     private router: Router,

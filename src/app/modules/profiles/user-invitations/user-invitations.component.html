@@ -31,6 +31,9 @@
                    </div>
                 <ngb-pagination class="d-flex justify-content-center"  [collectionSize]="incomingInvitationsSize" [(page)]="invitationsPage"  [pageSize]="MAX_AMOUNT" [rotate]="true" (pageChange)="load($event)"></ngb-pagination>
              </div>
+             <div *ngIf ="!tabReady" style="text-align: center;">
+               <fa-icon [icon]="faSpinner" [spin]="true" size="6x"></fa-icon>
+           </div>
           </ng-template>
        </li>
        <li [ngbNavItem]="2">
@@ -56,6 +59,9 @@
                    </div>
                    <ngb-pagination  class="d-flex justify-content-center"  [collectionSize]="outgoingInvitationsSize" [(page)]="invitationsPage"  [pageSize]="MAX_AMOUNT" [rotate]="true" (pageChange)="load($event)"></ngb-pagination>
                 </div>
+                <div *ngIf ="!tabReady" style="text-align: center;">
+                  <fa-icon [icon]="faSpinner" [spin]="true" size="6x"></fa-icon>
+              </div>
          </ng-template>
       </li>
 
@@ -63,3 +69,8 @@
        <div [ngbNavOutlet]="nav" class="mt-2"></div>
     </div>
  </div>
+ <div role="main" class="container container-sm" *ngIf="!ready;" style="word-wrap: break-word;" >
+   <div style="text-align: center;">
+      <fa-icon [icon]="faSpinner" [spin]="true" size="6x"></fa-icon>
+  </div>
+</div>

@@ -8,6 +8,7 @@ import { ToastsService } from '../../core/_services/utils/toasts.service';
 import { LocaleService } from '../../core/_services/utils/locale.service';
 import { YesNoModalComponent } from '../../shared/yes-no-modal/yes-no-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import {faSpinner} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
     selector: 'app-edit-profile',
@@ -24,6 +25,7 @@ export class EditProfileComponent implements OnInit {
 
     profile: Profile;
     ready: boolean; // indicates the data was loaded and can be shown
+    faSpinner = faSpinner;
 
 
     constructor(private router: Router,
@@ -48,7 +50,7 @@ export class EditProfileComponent implements OnInit {
                 this.ready = true;
             },
             error => {
-                console.error(error.error);
+                this.toastsService.toastAddWarning(this.localeService.getValue('toasterEditor.wentWrong'));
                 this.router.navigate(['/']);
             });
 
@@ -130,7 +132,8 @@ export class EditProfileComponent implements OnInit {
 
     uploadPic(): void {
         if (!this.profilePictureFile) {
-            this.goBackToProfile();
+            this.router.navigate(['/profile/' + this.usernameToChange]);
+
         }
 
         const newPic = new FormData();
@@ -139,7 +142,7 @@ export class EditProfileComponent implements OnInit {
         if (this.profile.role === 'ROLE_USER') {
             this.getProfileService.uploadPicture(newPic).subscribe(
                 () => {
-                    this.goBackToProfile();
+                    this.router.navigate(['/profile/' + this.usernameToChange]);
                 },
                 (error) => {
                     this.toastsService.toastAddWarning(this.localeService.getValue('toasterEditor.wentWrong'));
@@ -152,7 +155,7 @@ export class EditProfileComponent implements OnInit {
 
             this.priviligedService.uploadPicture(newPic).subscribe(
                 () => {
-                    this.goBackToProfile();
+                    this.router.navigate(['/profile/' + this.usernameToChange]);
                 },
                 (error) => {
                     this.toastsService.toastAddWarning(this.localeService.getValue('toasterEditor.wentWrong'));

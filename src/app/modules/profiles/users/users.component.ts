@@ -5,6 +5,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { AuthenticationService } from '../../core/_services/authentication/authentication.service';
 import { ToastsService } from '../../core/_services/utils/toasts.service';
 import { LocaleService } from '../../core/_services/utils/locale.service';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-users',
@@ -17,18 +18,22 @@ export class UsersComponent implements OnInit {
   username: string;
   currentUsername: string;
   privileged: boolean;
+  faSpinner = faSpinner;
+  ready: boolean;
+  init: boolean;
+
 
   constructor(private getProfileService: ProfileService,
-    private sanitizer: DomSanitizer,
-    private authenticationService: AuthenticationService,
-    private toastsService: ToastsService,
-    private localeService: LocaleService
+              private sanitizer: DomSanitizer,
+              private authenticationService: AuthenticationService,
+              private toastsService: ToastsService,
+              private localeService: LocaleService
 
   ) {
     this.searchResults = null;
     this.currentUsername = this.authenticationService.currentUserValue.username;
     this.privileged = authenticationService.currentUserValue.role !== 'ROLE_USER';
-
+    this.init = true;
   }
 
 
@@ -42,12 +47,17 @@ export class UsersComponent implements OnInit {
   }
 
   search() {
-    this.getProfileService.getProfilebyUserName(this.username).subscribe(
+    this.ready = false;
+    this.init = false;
+
+    this.getProfileService.getProfilebyUserName(this.username === undefined ? '' : this.username).subscribe(
       data => {
         this.searchResults = data;
         this.searchResults.forEach(element => {
           return Profile.deserialize(element, this.sanitizer);
         });
+        this.ready = true;
+
       },
       (error) => {
         this.toastsService.toastAddWarning(this.localeService.getValue('toasterEditor.wentWrong'));
@@ -56,12 +66,16 @@ export class UsersComponent implements OnInit {
   }
 
   getPopularCreators() {
+    this.ready = false;
+
     this.getProfileService.getPopularCreators().subscribe(
       data => {
         this.searchResults = data;
         this.searchResults.forEach(element => {
           return Profile.deserialize(element, this.sanitizer);
         });
+        this.ready = true;
+
       },
       (error) => {
         this.toastsService.toastAddWarning(this.localeService.getValue('toasterEditor.wentWrong'));
@@ -70,12 +84,16 @@ export class UsersComponent implements OnInit {
   }
 
   getPrivilegedUsers() {
+    this.ready = false;
+
     this.getProfileService.getPrivilegedUsers().subscribe(
       data => {
         this.searchResults = data;
         this.searchResults.forEach(element => {
           return Profile.deserialize(element, this.sanitizer);
         });
+        this.ready = true;
+
       },
       (error) => {
         this.toastsService.toastAddWarning(this.localeService.getValue('toasterEditor.wentWrong'));

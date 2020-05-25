@@ -25,3 +25,8 @@
      </div>
   </div>
 </div>
+<div role="main" class="container container-sm" *ngIf="!ready;" style="word-wrap: break-word;" >
+   <div style="text-align: center;">
+      <fa-icon [icon]="faSpinner" [spin]="true" size="6x"></fa-icon>
+  </div>
+</div>

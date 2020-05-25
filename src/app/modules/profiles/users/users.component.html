@@ -1,4 +1,4 @@
-<div class="container" role="main">
+<div class="container" role="main" >
   <input class="col-xs-5 col-sm-7 col-md-8 col-lg-10 p-2 p-2"
          type="text"
          name="username"
@@ -9,11 +9,11 @@
           type="button"
           (click)="search()"> {{'utils.search' | translate}}</button>
   <div class="w-100"></div>
-  <div class="container-sm mt-3 p-3" *ngIf="this.searchResults;">
-     <h1 style="font-size: larger; font-weight: bolder;" *ngIf="username!== undefined">{{'profile.found' | translate}}   {{searchResults.length }}  {{(searchResults.length == 1 ? 'profile.user' : 'profile.users') | translate }} </h1>
-     <h1 style="font-size: larger; font-weight: bolder;" *ngIf="username === undefined && privileged">
+  <div class="container-sm mt-3 p-3" *ngIf="ready">
+     <h1 style="font-size: larger; font-weight: bolder;" *ngIf="!init || username !== undefined">{{'profile.found' | translate}}   {{searchResults.length }}  {{(searchResults.length == 1 ? 'profile.user' : 'profile.users') | translate }} </h1>
+     <h1 style="font-size: larger; font-weight: bolder;" *ngIf="init && privileged">
        {{'profile.administration' | translate}} </h1>
-     <h1 style="font-size: larger; font-weight: bolder;" *ngIf="username === undefined && !privileged">
+     <h1 style="font-size: larger; font-weight: bolder;" *ngIf="init && !privileged">
       {{'profile.popularCreators' | translate}} </h1>
      <div *ngFor="let profile of this.searchResults" style='font-size: larger;'>
         <div class="row p-2 m-2 border">
@@ -38,4 +38,9 @@
         </div>
      </div>
   </div>
+  <div  class="container-sm mt-3 p-3" *ngIf="!ready;" style="word-wrap: break-word;" >
+   <div style="text-align: center;">
+      <fa-icon [icon]="faSpinner" [spin]="true" size="6x"></fa-icon>
+  </div>
+</div>
 </div>

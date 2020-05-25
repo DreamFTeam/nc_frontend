@@ -7,6 +7,7 @@ import { ToastsService } from '../../core/_services/utils/toasts.service';
 import { LocaleService } from '../../core/_services/utils/locale.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { YesNoModalComponent } from '../../shared/yes-no-modal/yes-no-modal.component';
+import {faSpinner} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-user-invitations',
@@ -23,6 +24,7 @@ export class UserInvitationsComponent implements OnInit {
   incomingInvitationsSize: number;
   outgoingInvitationsSize: number;
   invitationsPage: number;
+  faSpinner = faSpinner;
 
   constructor(
     private friendService: FriendsService,

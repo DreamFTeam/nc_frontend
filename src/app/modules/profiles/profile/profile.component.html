@@ -1,4 +1,4 @@
-<div role="main" class="container" *ngIf="ready" style="word-wrap: break-word;">
+<div role="main" class="container" *ngIf="ready;" style="word-wrap: break-word;">
    <div class="container-sm mb-2 h-100">
       <div class="row">
          <div class="col-xs-2 col-sm-4 col-md-4 col-lg-3 p-2">
@@ -69,6 +69,7 @@
             <div *ngIf="!owner"> {{profile.username}}'{{'profile.whose' | translate }}  {{'profile.quizzes' | translate }}  <div *ngIf="quizAmount !== undefined" class="badge badge-secondary"> {{quizAmount}}</div></div>
          </a>
          <ng-template ngbNavContent>
+      
             <p *ngIf="tabReady && !quizzes.length" style="font-style: large; font-weight: bold;" class="ml-5 mt-3 ">
                {{'profile.noquizzes' | translate }}
             </p>
@@ -78,6 +79,7 @@
                {{'profile.newquiz' | translate }} 
                </a>
             </div>
+            
             <div *ngIf="tabReady">
                <div *ngFor="let quiz of quizzes">
                   <div *ngIf="owner || quiz.published"
@@ -132,6 +134,10 @@
                   </div>
                </div>
             </div>
+            <div *ngIf ="!tabReady" style="text-align: center;">
+               <fa-icon [icon]="faSpinner" [spin]="true" size="6x"></fa-icon>
+           </div>
+
          </ng-template>
       </li>
       <li [ngbNavItem]="2" *ngIf="owner">
@@ -193,6 +199,9 @@
                </div>
             </div>
          </div>
+         <div *ngIf ="!tabReady" style="text-align: center;">
+            <fa-icon [icon]="faSpinner" [spin]="true" size="6x"></fa-icon>
+        </div>
       </ng-template>
       </li>
       <li [ngbNavItem]="3">
@@ -223,6 +232,9 @@
                   <div class="blue"> {{achieve.title }} x{{achieve.timesGained}} </div>
                </div>
             </div>
+            <div *ngIf ="!tabReady" style="text-align: center;">
+               <fa-icon [icon]="faSpinner" [spin]="true" size="6x"></fa-icon>
+           </div>
          </ng-template>
       </li>
       <li [ngbNavItem]="4">
@@ -267,9 +279,17 @@
                                [rotate]="true"
                                (pageChange)="load($event)"></ngb-pagination>
             </div>
+            <div *ngIf ="!tabReady" style="text-align: center;">
+               <fa-icon [icon]="faSpinner" [spin]="true" size="6x"></fa-icon>
+           </div>
          </ng-template>
       </li>
       </ul>
       <div [ngbNavOutlet]="nav" class="mt-2"></div>
    </div>
+</div>
+<div role="main" class="container container-sm" *ngIf="!ready;" style="word-wrap: break-word;" >
+   <div style="text-align: center;">
+      <fa-icon [icon]="faSpinner" [spin]="true" size="6x"></fa-icon>
+  </div>
 </div>
