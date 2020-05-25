@@ -16,7 +16,8 @@ export class UserInvitationsComponent implements OnInit {
   ready: boolean; // indicates the profile was loaded (doesn't include quizzes)
   tabReady: boolean;
   invitations: Profile[];
-  invitationsSize: number;
+  incomingInvitationsSize: number;
+  outgoingInvitationsSize: number;
   invitationsPage: number;
 
   constructor(
@@ -28,7 +29,8 @@ export class UserInvitationsComponent implements OnInit {
     this.MAX_AMOUNT = friendService.AMOUNT_OF_USERS;
     this.activeTab = history.state.data === 'outgoing' ? 2 : 1;
     this.invitationsPage = 1;
-    this.getInvitationsSize(history.state.data || 'incoming');
+    this.getInvitationsSize('incoming');
+    this.getInvitationsSize('outgoing');
     this.getInvitations(history.state.data || 'incoming', 1);
   }
 
@@ -70,7 +72,11 @@ export class UserInvitationsComponent implements OnInit {
   getInvitationsSize(direction: string) {
     this.friendService.getUsersInvitationsSize(direction).subscribe(
       (result) => {
-        this.invitationsSize = result;
+        if (direction === 'outgoing') {
+          this.outgoingInvitationsSize = result;
+        } else {
+          this.incomingInvitationsSize = result;
+        }
       }
     );
   }

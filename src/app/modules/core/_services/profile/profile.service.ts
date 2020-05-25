@@ -86,8 +86,20 @@ export class ProfileService {
 
   }
 
+  public getProfileQuizAmount(userId: string): Observable<number> {
+    return this.http.get<number>(`${environment.apiUrl}quizzes/user-list/size`,
+      { headers: this.httpOptions.headers, params: { userId } }).pipe();
+
+  }
+
   public getProfileFavQuiz(): Observable<Quiz[]> {
     return this.http.get<Quiz[]>(`${environment.apiUrl}quizzes/user-fav-list`,
+      this.httpOptions).pipe();
+
+  }
+
+  public getProfileFavQuizAmount(): Observable<number> {
+    return this.http.get<number>(`${environment.apiUrl}quizzes/user-fav-list/size`,
       this.httpOptions).pipe();
 
   }
@@ -103,16 +115,22 @@ export class ProfileService {
 
   }
 
-  public getLastAchievements(): Observable<Achievement[]>{
+  public getProfileAchievementAmount(targetId: string): Observable<number> {
+    return this.http.get<number>(this.profilesUrl + targetId + '/achievements/size',
+      this.httpOptions).pipe();
+
+  }
+
+  public getLastAchievements(): Observable<Achievement[]> {
     return this.http.get<Achievement[]>(this.profilesUrl + 'achievements/last-week',
       this.httpOptions).pipe(map((data) => data.map(achievement => {
         return new Achievement().deserialize(achievement, this.sanitizer);
       })), catchError(this.errorHandler.handleError<Achievement[]>('getUserQuizzesRatingsList', [])));
   }
 
-  public getLastPlayedGames(): Observable<QuizLastPlayed[]>{
+  public getLastPlayedGames(): Observable<QuizLastPlayed[]> {
     return this.http.get<QuizLastPlayed[]>(this.quizzesUrl + 'last-played', this.httpOptions)
-    .pipe(catchError(this.errorHandler.handleError<QuizLastPlayed[]>('getUserQuizzesRatingsList', [])));
+      .pipe(catchError(this.errorHandler.handleError<QuizLastPlayed[]>('getUserQuizzesRatingsList', [])));
   }
 
 }

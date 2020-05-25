@@ -30,6 +30,11 @@ export class ProfileComponent implements OnInit {
   achievements: Achievement[];
   friendsSize: number;
   friendsPage: number;
+  outGoingAmount: number;
+  incomingAmount: number;
+  favQuizAmount: number;
+  quizAmount: number;
+  achievementsSize: number;
 
   constructor(
     private router: Router,
@@ -42,7 +47,7 @@ export class ProfileComponent implements OnInit {
     private authenticationService: AuthenticationService,
   ) {
     this.role = authenticationService.currentUserValue.role;
-    this.username =  authenticationService.currentUserValue.username;
+    this.username = authenticationService.currentUserValue.username;
     this.activeTab = 1;
     this.friendsPage = 1;
     this.MAX_AMOUNT = getProfileService.AMOUNT_OF_USERS;
@@ -53,22 +58,34 @@ export class ProfileComponent implements OnInit {
       this.router.navigate(['/']);
     }
 
+    this.getProfile();
+  }
+
+  getAllBadgesInfo() {
+    this.getFriendsSize();
+    this.getInvitationsSize();
+    this.getAllQuizzesAmount();
+    this.getAchievementsAmount();
+  }
+
+  getProfile() {
     this.getProfileService.getProfile(this.getUsername()).subscribe(
       result => {
         this.profile = result;
-        this.setRights();
-
-        if (this.profile.role === 'ROLE_USER') {
-          this.getQuizzes();
-        }
-
-        this.ready = true;
 
       },
       error => {
         console.error(error.error);
         this.router.navigate(['/']);
-      });
+      }).add(() => {
+        this.setRights();
+        if (this.profile.role === 'ROLE_USER') {
+          this.getQuizzes();
+        }
+        this.getAllBadgesInfo();
+        this.ready = true;
+      }
+      );
   }
 
   getUsername(): string {
@@ -117,6 +134,19 @@ export class ProfileComponent implements OnInit {
       });
   }
 
+  getInvitationsSize() {
+    this.friendService.getUsersInvitationsSize('outgoing').subscribe(
+      (result) => {
+        this.outGoingAmount = result;
+      }
+    );
+
+    this.friendService.getUsersInvitationsSize('incoming').subscribe(
+      (result) => {
+        this.incomingAmount = result;
+      }
+    );
+  }
 
   getQuizzes() {
 
@@ -138,6 +168,37 @@ export class ProfileComponent implements OnInit {
         console.error(error.error);
       });
   }
+
+
+  getAchievementsAmount() {
+
+    this.getProfileService.getProfileAchievementAmount(this.profile.id).subscribe(
+      (result) => {
+        this.achievementsSize = result;
+      }
+    );
+  }
+
+  getAllQuizzesAmount() {
+
+    this.getProfileService.getProfileQuizAmount(this.profile.id).subscribe(
+      result => {
+        this.quizAmount = result;
+      },
+      error => {
+        console.error(error.error);
+      });
+
+    this.getProfileService.getProfileFavQuizAmount().subscribe(
+      result => {
+        this.favQuizAmount = result;
+      },
+      error => {
+        console.error(error.error);
+      });
+  }
+
+
 
 
   getFavQuizzes() {
