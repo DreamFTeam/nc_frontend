@@ -1,88 +1,103 @@
 
-.container-sm{
-    border-radius: 8px;
-    background-color:#F7F9FB;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+.container-sm
+{
+    border-radius:    8px;
+    background-color: #F7F9FB;
+    box-shadow:       0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
-textarea{
+textarea
+{
     resize: none;
 }
 
-label{
+label
+{
     font-weight: 600;
-    font-size: 20px;
+    font-size:   20px;
 }
 
-.form-control{
-    color: black;
+.form-control
+{
+    color:       black;
     font-weight: 400;
 }
 
 
-.title{
-    position: relative;  
-    color: rgba(0, 0, 0, 0.63);
-    font-size: 20px;
+.title
+{
+    position:    relative;
+    color:       rgba(0, 0, 0, 0.63);
+    font-size:   20px;
     line-height: 24px;
 }
 
-.btn{
-  border: none;
-  outline:0;
+.btn
+{
+    border:  none;
+    outline: 0;
 }
 
 
-.button{
-    padding: 5px;
+.button
+{
+    padding:     5px;
     line-height: 13px;
-    font-size: 20px;
-    text-align: center;
-    border: none;
-    outline:0;
+    font-size:   20px;
+    text-align:  center;
+    border:      none;
+    outline:     0;
 }
 
-.button:hover{
+.button:hover
+{
     cursor: pointer;
 }
 
-button.removeb {
-  margin-top: 2px;
-  border: 0px;
-  background-color: transparent;
-  border-radius: 0px;
+button.removeb
+{
+    margin-top:       2px;
+    border:           0px;
+    background-color: transparent;
+    border-radius:    0px;
 }
 
-button.removeb:focus{
-  outline: none!important;
-  box-shadow: none;
+button.removeb:focus
+{
+    outline:    none !important;
+    box-shadow: none;
 }
 
 
-.bttnimg{
-    width: 20px;
+.bttnimg
+{
+    width:  20px;
     height: 20px;
-  }
+}
 
-  .badge{
+.badge
+{
     font-size: 12px;
-  }
+}
 
-  .toastpos{
-    position: fixed;
-    right: 0;
+.toastpos
+{
+    position:  fixed;
+    right:     0;
     min-width: 20%;
-    z-index:1000
-  }
+    z-index:   1000
+}
 
-  .questionpos{
-    max-height: 250px;
-    overflow-y: scroll;
+.questionpos
+{
+    max-height:    250px;
+    overflow-y:    scroll;
     overflow-wrap: break-word;
-  }
+}
 
-  .selected{
+.selected
+{
     border: solid gold;
-  }
+}
 
 

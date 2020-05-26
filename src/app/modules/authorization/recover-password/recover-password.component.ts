@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {AuthenticationService} from '../../core/_services/authentication/authentication.service';
-import {TranslateService} from '@ngx-translate/core';
+import { Component, OnInit } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { AuthenticationService } from '../../core/_services/authentication/authentication.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-recover-password',
@@ -36,9 +36,9 @@ export class RecoverPasswordComponent implements OnInit {
       return;
     }
     this.authenticationService.recoverPassword(this.email).subscribe(n => {
-        this.isSent = true;
-        this.loading = false;
-      },
+      this.isSent = true;
+      this.loading = false;
+    },
       error => {
         this.message = error.error ? error.error.message : this.translateService.instant('authorization.login.error');
         this.loading = false;

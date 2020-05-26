@@ -1,34 +1,41 @@
-.embed-responsive .card-img-top {
-    object-fit: cover;
+.embed-responsive .card-img-top
+{
+    object-fit:    cover;
     border-radius: 50%;
-    padding: 0 !important;
-    border: 0.9px solid gray;
+    padding:       0 !important;
+    border:        0.9px solid gray;
 }
 
-.border-secondary {
+.border-secondary
+{
     border-width: 0.75px !important;
 }
 
-.card-title {
-    font-size: small;
+.card-title
+{
+    font-size:      small;
     padding-bottom: 0;
 }
 
-.card-group {
-    padding-top: 0.5em;
+.card-group
+{
+    padding-top:    0.5em;
     padding-bottom: 0.5em;
-    margin-bottom: 0.25rem;
+    margin-bottom:  0.25rem;
 }
 
-.card-body {
+.card-body
+{
     padding: 0;
 }
 
-.noborder {
+.noborder
+{
     border-color: transparent;
 }
 
-.row {
+.row
+{
     margin-right: 0;
-    margin-left: 0;
+    margin-left:  0;
 }

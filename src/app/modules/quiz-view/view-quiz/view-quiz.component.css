@@ -1,70 +1,83 @@
-.container-sm{
-    border-radius: 8px;
-    background-color:#F7F9FB;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+.container-sm
+{
+    border-radius:    8px;
+    background-color: #F7F9FB;
+    box-shadow:       0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
-textarea{
+textarea
+{
     resize: none;
 }
 
-label{
+label
+{
     font-weight: 600;
-    font-size: 20px;
+    font-size:   20px;
 }
 
-.btn{
+.btn
+{
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
 }
 
 
-.button{
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
-    padding: 5px;
+.button
+{
+    box-shadow:  0px 4px 4px rgba(0, 0, 0, 0.1);
+    padding:     5px;
     line-height: 13px;
-    font-size: 11px;
-    text-align: center;
-    outline:0;
-    border: none;
+    font-size:   11px;
+    text-align:  center;
+    outline:     0;
+    border:      none;
 }
 
-a{
-    font-size: 16px;
+a
+{
+    font-size:       16px;
     text-decoration: underline;
 }
 
-a:hover{
+a:hover
+{
     text-decoration: none;
 }
 
-.nonlink:hover{
-    cursor: default;
+.nonlink:hover
+{
+    cursor:          default;
     text-decoration: underline !important;
 }
 
-.cursor:hover{
+.cursor:hover
+{
     cursor: pointer;
 }
 
-.star {
-    position: relative;
-    display: inline-block;
+.star
+{
+    position:  relative;
+    display:   inline-block;
     font-size: 1.5rem;
-    color: #d3d3d3;
-  }
+    color:     #D3D3D3;
+}
 
-  .full {
+.full
+{
     color: black;
-  }
+}
 
-  .half {
+.half
+{
     position: absolute;
-    display: inline-block;
+    display:  inline-block;
     overflow: hidden;
-    color: black;
-  }
+    color:    black;
+}
 
-  ngb-rating:focus{
-    outline: none!important;
+ngb-rating:focus
+{
+    outline:    none !important;
     box-shadow: none;
-  }
+}

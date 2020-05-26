@@ -15,7 +15,6 @@ import { AnnouncementEditComponent } from './modules/admin-panel/announcement-ed
 import { Role } from './modules/core/_models/role';
 import { GameSettingsComponent } from './modules/game/game-settings/game-settings.component';
 import { GameConnectorComponent } from './modules/game/game-connector/game-connector.component';
-import { AnonymInitComponent } from './modules/game/anonym-init/anonym-init.component';
 import { NotificationsComponent } from './modules/notifications/notifications/notifications.component';
 import { QuizFilterComponent } from './modules/quiz-view/quiz-filter/quiz-filter.component';
 import { ActivitiesComponent } from './modules/activities/activities/activities.component';
@@ -44,7 +43,7 @@ const routes: Routes = [
     {
         path: 'profile', component: ProfileComponent,
         canActivate: [AuthGuard],
-        data: { roles: [Role.User, Role.Admin, Role.SuperAdmin, Role.Moderator]  }
+        data: { roles: [Role.User, Role.Admin, Role.SuperAdmin, Role.Moderator] }
     },
     {
         path: 'editprofile', component: EditProfileComponent,
@@ -82,7 +81,7 @@ const routes: Routes = [
     },
     {
         path: 'editannouncements', component: AnnouncementEditComponent,
-        canActivate: [AuthGuard], 
+        canActivate: [AuthGuard],
         data: { roles: [Role.Admin, Role.Moderator, Role.SuperAdmin] }
     },
     {
@@ -102,7 +101,7 @@ const routes: Routes = [
     },
     { path: 'quiz/:id/newgame', canActivate: [GameCreatorGuard], component: GameSettingsComponent },
     { path: 'game/:id/lobby', component: GameConnectorComponent },
-    { path: 'join/:accessId', canActivate: [GameConnectionGuard], component: AnonymInitComponent },
+    { path: 'join/:accessId', canActivate: [GameConnectionGuard], component: QuizListComponent },
     { path: 'notifications', component: NotificationsComponent },
     { path: 'filterquiz', component: QuizFilterComponent },
     { path: 'play/:gameid', component: GameQuestionComponent },

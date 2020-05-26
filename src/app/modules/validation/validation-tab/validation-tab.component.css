@@ -1,45 +1,54 @@
-.mainstyle {
-    border-radius: 8px;
+.mainstyle
+{
+    border-radius:    8px;
     background-color: #F7F9FB;
-    min-height: 10hv;
+    min-height:       10 hv;
 }
 
-.content {
+.content
+{
     padding-top: 60px;
-    min-height: 150em;
+    min-height:  150em;
 }
 
-.message {
+.message
+{
     font-weight: bold;
 }
 
-.pic {
+.pic
+{
     padding: 1em;
 }
 
 
-.fnt-size {
+.fnt-size
+{
     font-size: large;
-    margin: 0;
+    margin:    0;
 }
 
-.pdng {
+.pdng
+{
     padding: 0.5em;
 }
 
-.badge{
-    font-size: large;
+.badge
+{
+    font-size:     large;
     margin-bottom: 0;
 }
 
-.emptylabel {
-    width: 100%;
-    padding: 2em;
+.emptylabel
+{
+    width:      100%;
+    padding:    2em;
     text-align: center;
-    font-size: x-large;
+    font-size:  x-large;
 }
 
-.wrap {
+.wrap
+{
     word-wrap: break-word;
-    width: 100%;
+    width:     100%;
 }

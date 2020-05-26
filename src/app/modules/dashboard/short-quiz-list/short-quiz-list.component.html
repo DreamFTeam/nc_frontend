@@ -7,7 +7,9 @@
             <div class="card noborder h-100">
                 <a routerLink="/viewquiz/{{item.id}}">
                     <div class="embed-responsive embed-responsive-1by1">
-                        <img class="card-img-top embed-responsive-item p-1" [src]="item.imageContent ? item.imageContent : mockImgUrl" alt="Short list card quiz image">
+                        <img class="card-img-top embed-responsive-item p-1"
+                             [src]="item.imageContent ? item.imageContent : mockImgUrl"
+                             alt="Short list card quiz image">
                     </div>
                     <div class="card-body text-center">
                         <p class="card-title h5">{{item.title}}</p>

@@ -1,52 +1,46 @@
 <div class="modal-header">
-    <h4 class="modal-title">{{'authorization.signUp.title'| translate}}</h4>
-    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
+  <h4 class="modal-title">{{'authorization.signUp.title'| translate}}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
 </div>
 <div class="container mt-4 mb-4">
   <div class="row">
     <div class="col">
-    <span>  {{'authorization.signUp.descr1'| translate}}<br><br>
-            {{'authorization.signUp.descr2'| translate}}<br><br>
-            {{'authorization.signUp.descr3'| translate}}<br><br>
-            {{'authorization.signUp.descr4'| translate}}
-    </span>
+      <span> {{'authorization.signUp.descr1'| translate}}<br><br>
+        {{'authorization.signUp.descr2'| translate}}<br><br>
+        {{'authorization.signUp.descr3'| translate}}<br><br>
+        {{'authorization.signUp.descr4'| translate}}
+      </span>
     </div>
     <div class="col">
       <form>
         <div class="form-group">
-          <input type="text"
-                 class="form-control rounded"
-                 placeholder="{{'authorization.login.username'| translate}}"
-                 name="username"
-                 [(ngModel)]="username"
-                 pattern="\w+">
+          <input type="text" class="form-control rounded" placeholder="{{'authorization.login.username'| translate}}"
+            name="username" [(ngModel)]="username" pattern="\w+">
         </div>
         <div class="form-group">
-          <input type="email"
-                 name="email"
-                 placeholder="Email"
-                 class="form-control rounded"
-                 [(ngModel)]="email"
-                 pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"/>
+          <input type="email" name="email" placeholder="Email" class="form-control rounded" [(ngModel)]="email"
+            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" />
         </div>
         <div class="form-group">
-          <input type="password" name="password" class="form-control rounded" placeholder="{{'authorization.login.password'| translate}}" [(ngModel)]="password"/>
+          <input type="password" name="password" class="form-control rounded"
+            placeholder="{{'authorization.login.password'| translate}}" [(ngModel)]="password" />
         </div>
         <div class="form-group">
-          <input type="password" name="password" class="form-control rounded" placeholder="{{'authorization.signUp.confPassword'| translate}}" [(ngModel)]="confirmPassword"/>
+          <input type="password" name="password" class="form-control rounded"
+            placeholder="{{'authorization.signUp.confPassword'| translate}}" [(ngModel)]="confirmPassword" />
         </div>
       </form>
 
-       <button type="button" [disabled]="loading" class="btn btn-primary btn-lg" (click)="signUp()">
-          <span *ngIf="!loading" class="text">{{'authorization.signUp.button'| translate}}</span>
-          <span *ngIf="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-          <span *ngIf="loading" class="sr-only">Loading...</span>
-       </button>
+      <button type="button" [disabled]="loading" class="btn btn-primary btn-lg" (click)="signUp()">
+        <span *ngIf="!loading" class="text">{{'authorization.signUp.button'| translate}}</span>
+        <span *ngIf="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        <span *ngIf="loading" class="sr-only">Loading...</span>
+      </button>
     </div>
   </div>
   <div *ngIf="message" class="mt-2 text-center h4 alert alert-warning">
-        {{message}}
-      </div>
+    {{message}}
+  </div>
 </div>

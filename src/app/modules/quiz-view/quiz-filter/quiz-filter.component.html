@@ -33,15 +33,15 @@
       <div class="form-group">
          <div class="input-group">
               <input type="text" [ngbTypeahead]="searchTag"
-                 [inputFormatter]="formatter"
-                 [resultFormatter]="formatter"
-                 (focus)="focusTag$.next($any($event).target.value)"
-                 (click)="clickTag$.next($any($event).target.value)"
-                 [(ngModel)]="newTag"
-                 (keydown.enter)="addTag()"
-                 class="form-control"
-                 id="tag-input"
-                 aria-describedby="button-add-tag">
+                     [inputFormatter]="formatter"
+                     [resultFormatter]="formatter"
+                     (focus)="focusTag$.next($any($event).target.value)"
+                     (click)="clickTag$.next($any($event).target.value)"
+                     [(ngModel)]="newTag"
+                     (keydown.enter)="addTag()"
+                     class="form-control"
+                     id="tag-input"
+                     aria-describedby="button-add-tag">
               <div class="input-group-append">
                 <button (click)="addTag()" class="btn btn-light btn-outline-secondary" type="button"
                         id="button-add-tag">

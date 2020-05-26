@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {AuthenticationService} from '../../core/_services/authentication/authentication.service';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {ModalMessageService} from '../../core/_services/utils/modal-message.service';
-import {TranslateService} from '@ngx-translate/core';
+import { Component, OnInit } from '@angular/core';
+import { AuthenticationService } from '../../core/_services/authentication/authentication.service';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalMessageService } from '../../core/_services/utils/modal-message.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-sign-up',
@@ -16,9 +16,9 @@ export class SignUpComponent implements OnInit {
     loading: boolean;
 
     constructor(private authenticationService: AuthenticationService,
-                public activeModal: NgbActiveModal,
-                private modalMessageService: ModalMessageService,
-                private translateService: TranslateService) {
+        public activeModal: NgbActiveModal,
+        private modalMessageService: ModalMessageService,
+        private translateService: TranslateService) {
     }
 
     username = '';
@@ -50,13 +50,13 @@ export class SignUpComponent implements OnInit {
         }
         this.authenticationService.signupUser(this.username, this.email, this.password)
             .subscribe(n => {
-                    if (n) {
-                        this.isSent = true;
-                        this.activeModal.close();
-                        this.modalMessageService.show(this.translateService.instant('authorization.signUp.mailTitle'),
-                            this.translateService.instant('authorization.signUp.mailBody'));
-                    }
-                },
+                if (n) {
+                    this.isSent = true;
+                    this.activeModal.close();
+                    this.modalMessageService.show(this.translateService.instant('authorization.signUp.mailTitle'),
+                        this.translateService.instant('authorization.signUp.mailBody'));
+                }
+            },
                 error => {
                     this.message = error.error ? error.error.message : this.translateService.instant('authorization.login.error');
                     console.log(error);

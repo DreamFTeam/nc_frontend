@@ -1,34 +1,42 @@
-.mainstyle {
-    border-radius: 8px;
+.mainstyle
+{
+    border-radius:    8px;
     background-color: #F7F9FB;
 }
 
-.content {
-    padding-top: 1em;
+.content
+{
+    padding-top:   1em;
     margin-bottom: 2em;
 }
 
-.tab-head {
+.tab-head
+{
     font-size: x-large;
 }
 
-.page-heading{
+.page-heading
+{
     word-wrap: break-word;
-    width: 100%;
+    width:     100%;
 }
 
-.page-heading-font-size{
+.page-heading-font-size
+{
     font-size: 3em;
 }
 
 /*less than 575px*/
-@media (max-width: 575px){
-    .page-heading-font-size{
+@media (max-width: 575px)
+{
+    .page-heading-font-size
+    {
         font-size: 2.5em;
-        width: 100%;
+        width:     100%;
     }
 
-    .tab-head{
+    .tab-head
+    {
         font-size: larger;
     }
 }
