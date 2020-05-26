@@ -76,7 +76,10 @@ export class FriendsService {
     public getUsersInvitationsPage(direction: string, page: number): Observable<Profile[]> {
         if (direction === 'outgoing' || direction === 'incoming') {
             return this.http.get<Profile[]>(this.profilesUrl + 'friends/invitations/' + direction + '/page/' + page,
-                this.httpOptions).pipe();
+                this.httpOptions).pipe(map((data) => data.map(friend => {
+                    return Profile.deserialize(friend, this.sanitizer);
+                })
+                ));
         }
     }
 
