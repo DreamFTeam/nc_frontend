@@ -34,7 +34,7 @@ export class Activity implements DesearizableWImage {
              } 
          }
 
-        if (this.imageContent !== null) {
+        if (this.imageContent) {
             const objUrl = 'data:image/jpeg;base64,' + this.imageContent;
             this.imageContent = sanitizer.bypassSecurityTrustUrl(objUrl);
         }
