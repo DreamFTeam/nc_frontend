@@ -41,6 +41,11 @@ const routes: Routes = [
         data: {roles: [Role.User, Role.Admin, Role.SuperAdmin, Role.Moderator]}
     },
     {
+        path: 'profile/:username/:page', component: ProfileComponent,
+        canActivate: [AuthGuard],
+        data: {roles: [Role.User, Role.Admin, Role.SuperAdmin, Role.Moderator]}
+    },
+    {
         path: 'profile', component: ProfileComponent,
         canActivate: [AuthGuard],
         data: {roles: [Role.User, Role.Admin, Role.SuperAdmin, Role.Moderator]}
