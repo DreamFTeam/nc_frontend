@@ -10,6 +10,7 @@ import {Tag} from '../../_models/tag';
 import {environment} from 'src/environments/environment';
 import {AuthenticationService} from '../authentication/authentication.service';
 import { HandleErrorsService } from '../utils/handle-errors.service';
+import { LocaleService } from '../utils/locale.service';
 
 @Injectable({
     providedIn: 'root'
@@ -26,7 +27,8 @@ export class QuizService {
 
     constructor(private http: HttpClient, private sanitizer: DomSanitizer,
                 private authenticationService: AuthenticationService,
-                private handleErrorsService : HandleErrorsService) {
+                private handleErrorsService: HandleErrorsService,
+                private localeService: LocaleService) {
         this.user = authenticationService.currentUserValue;
     }
 
@@ -153,19 +155,19 @@ export class QuizService {
         let res: string[] = [];
 
         if (quiz.title.trim().length < 2) {
-            res.push('Quiz title must be at least 2 symbol length');
+            res.push(this.localeService.getValue('validator.quizTitle'));
         }
 
         if (quiz.description.trim().length < 2) {
-            res.push('Description must be at least 2 symbol length');
+            res.push(this.localeService.getValue('validator.quizDescription'));
         }
 
         if (quiz.tags.length == 0) {
-            res.push('You must add at least one tag');
+            res.push(this.localeService.getValue('validator.tag'));
         }
 
         if (quiz.categories.length == 0) {
-            res.push('You must add at least one category');
+            res.push(this.localeService.getValue('validator.category'));
         }
 
         return res;
