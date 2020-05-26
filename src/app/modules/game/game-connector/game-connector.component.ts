@@ -94,7 +94,7 @@ export class GameConnectorComponent implements OnInit, OnDestroy {
     }
 
     private imageDeser(image) {
-        if (image !== null && image !== undefined && image != '') {
+        if (image) {
             const objUrl = 'data:image/jpeg;base64,' + image;
             image = this.sanitizer.bypassSecurityTrustUrl(objUrl);
         }
