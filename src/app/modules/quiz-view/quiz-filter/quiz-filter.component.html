@@ -1,10 +1,10 @@
 <div class="m-4">
 <div class="form-group">
-  <label for="username">Creator username</label>
+  <label for="username">{{'quizFilter.creator'| translate}}</label>
   <input type="text" [(ngModel)]="settings.userName" class="form-control" id="username">
 </div>
 <div *ngIf="settings.tags" class="form-group">
-  <label for="tags-list">Tags</label>
+  <label for="tags-list">{{'utils.tags'| translate}}</label>
   <div id="tags-list">
       <span class="mr-1" *ngFor="let tag of settings.tags">
         <span class="badge badge-primary p-1">
@@ -45,7 +45,7 @@
               <div class="input-group-append">
                 <button (click)="addTag()" class="btn btn-light btn-outline-secondary" type="button"
                         id="button-add-tag">
-                  Add
+                  {{'quizFilter.add'| translate}}
                 </button>
               </div>
          </div>
@@ -53,7 +53,7 @@
 
 
       <div *ngIf="settings.categories" class="form-group">
-        <label for="categories-list">Categories</label>
+        <label for="categories-list">{{'utils.categories'| translate}}</label>
         <div id="categories-list">
         <span class="mr-1" *ngFor="let categ of settings.categories">
           <span class="badge badge-success p-1">
@@ -96,7 +96,7 @@
               <div class="input-group-append">
                 <button (click)="addCateg()" class="btn btn-light btn-outline-secondary" type="button"
                         id="button-add-cat">
-                  Add
+                  {{'quizFilter.add'| translate}}
                 </button>
               </div>
          </div>
@@ -104,7 +104,7 @@
 
 
       <div class="form-group">
-      <label for="minRating">Rating from</label>
+      <label for="minRating">{{'quizFilter.rateFrom'| translate}}</label>
       <select class="form-control" id="minRating" [(ngModel)]="settings.moreThanRating">
         <option [disabled]="i > settings.lessThanRating" *ngFor="let i of rating">
           {{i}}
@@ -112,7 +112,7 @@
       </select>
       </div>
       <div class="form-group">
-      <label for="maxRating">Rating to</label>
+      <label for="maxRating">{{'quizFilter.rateTo'| translate}}</label>
       <select class="form-control" id="maxRating" [(ngModel)]="settings.lessThanRating">
         <option [disabled]="i < settings.moreThanRating" *ngFor="let i of rating">
           {{i}}
@@ -120,12 +120,12 @@
       </select>
       </div>
     <div class="form-group">
-      <label for="lang">Language</label>
+      <label for="lang">{{'utils.language'| translate}}</label>
       <select class="form-control" id="lang" [(ngModel)]="settings.quizLang">
         <option *ngFor="let i of languages">
           {{i}}
         </option>
       </select>
       </div>
-      <button (click)="filter()" class="form-group btn btn-block btn-primary">Apply</button>
+      <button (click)="filter()" class="form-group btn btn-block btn-primary">{{'utils.save'| translate}}</button>
 </div>

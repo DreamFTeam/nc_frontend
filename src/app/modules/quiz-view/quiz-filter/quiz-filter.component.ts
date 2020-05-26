@@ -8,6 +8,7 @@ import {QuizFilterSettings} from '../../core/_models/quiz-filter-settings';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {TagCatg} from '../../core/_models/tagcateg';
 import {QuizService} from '../../core/_services/quiz/quiz.service';
+import {TranslateService} from '@ngx-translate/core';
 
 
 @Component({
@@ -19,7 +20,10 @@ export class QuizFilterComponent implements OnInit {
 
     readonly RESULTS_SEARCH_AMOUNT = '5';
     readonly rating = ['0', '1', '2', '3', '4', '5'];
-    readonly languages = ['All', 'Ukrainian', 'English'];
+    readonly languages = [this.translateService.instant('quizFilter.langAll'),
+        this.translateService.instant('utils.langEng'),
+        this.translateService.instant('utils.langUkr')
+    ];
     tags: Tag[] = [];
     categories: Category[] = [];
 
@@ -34,11 +38,16 @@ export class QuizFilterComponent implements OnInit {
 
     constructor(private searchFilterQuizService: SearchFilterQuizService,
                 private activeModal: NgbActiveModal,
-                private quizService: QuizService) {
+                private quizService: QuizService,
+                private translateService: TranslateService) {
     }
 
     ngOnInit(): void {
         this.settings = this.searchFilterQuizService.getSettings();
+        if (!this.settings.quizLang) {
+            this.searchFilterQuizService.initSettings();
+            this.settings = this.searchFilterQuizService.getSettings();
+        }
         this.quizService.getTagsList().subscribe(next => this.tags = next);
         this.quizService.getCategoriesList().subscribe(next => this.categories = next);
     }

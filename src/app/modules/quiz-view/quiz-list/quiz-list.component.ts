@@ -7,6 +7,7 @@ import {Role} from '../../core/_models/role';
 import {SearchFilterQuizService} from '../../core/_services/quiz/search-filter-quiz.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {QuizFilterComponent} from '../quiz-filter/quiz-filter.component';
+import {LocaleService} from '../../core/_services/utils/locale.service';
 
 
 const PAGE_SIZE = 16;
@@ -34,7 +35,8 @@ export class QuizListComponent implements OnInit {
                 private gameSettingsService: GameSettingsService,
                 private router: Router,
                 private authenticationService: AuthenticationService,
-                private searchFilterQuizService: SearchFilterQuizService) {
+                private searchFilterQuizService: SearchFilterQuizService,
+                private localeService: LocaleService) {
         this.pageSize = PAGE_SIZE;
         this.page = 1;
     }
