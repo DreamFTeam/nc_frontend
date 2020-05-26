@@ -1,15 +1,15 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {Quiz} from '../../_models/quiz';
 import {User} from '../../_models/user';
 import {ExtendedQuiz} from '../../_models/extended-quiz';
-import {map} from 'rxjs/operators';
+import {map, catchError} from 'rxjs/operators';
 import {DomSanitizer} from '@angular/platform-browser';
 import {Category} from '../../_models/category';
 import {Tag} from '../../_models/tag';
 import {environment} from 'src/environments/environment';
 import {AuthenticationService} from '../authentication/authentication.service';
+import { HandleErrorsService } from '../utils/handle-errors.service';
 
 @Injectable({
     providedIn: 'root'
@@ -25,7 +25,8 @@ export class QuizService {
     user: User;
 
     constructor(private http: HttpClient, private sanitizer: DomSanitizer,
-                private authenticationService: AuthenticationService) {
+                private authenticationService: AuthenticationService,
+                private handleErrorsService : HandleErrorsService) {
         this.user = authenticationService.currentUserValue;
     }
 
@@ -51,7 +52,8 @@ export class QuizService {
         return this.http.post<ExtendedQuiz>(this.url + '/edit', formData)
             .pipe(map(data => {
                 return new ExtendedQuiz().deserialize(data, this.sanitizer);
-            }));
+            }),
+            catchError(this.handleErrorsService.handleError<ExtendedQuiz>('saveQuiz', new ExtendedQuiz())));
     }
 
     createQuiz(quiz: ExtendedQuiz, img: File): Observable<ExtendedQuiz> {
@@ -70,7 +72,9 @@ export class QuizService {
             formData.append('img', img, img.name);
         }
 
-        return this.http.post<ExtendedQuiz>(this.url, formData);
+        return this.http.post<ExtendedQuiz>(this.url, formData).pipe(
+            catchError(this.handleErrorsService.handleError<any>('createQuiz'))
+        );
     }
 
 
@@ -88,7 +92,8 @@ export class QuizService {
         return this.http.get<ExtendedQuiz>(this.url, options)
             .pipe(map(data => {
                 return new ExtendedQuiz().deserialize(data, this.sanitizer);
-            }));
+            }),
+            catchError(this.handleErrorsService.handleError<ExtendedQuiz>('getQuiz', new ExtendedQuiz())));
     }
 
     markAsFavorite(id: string) {
@@ -97,7 +102,9 @@ export class QuizService {
             userId: this.user.id,
         };
 
-        return this.http.post<Quiz>(this.url + '/markasfavourite', JSON.stringify(favoriteInfo), this.httpOptions);
+        return this.http.post<any>(this.url + '/markasfavourite', JSON.stringify(favoriteInfo), this.httpOptions).pipe(
+            catchError(this.handleErrorsService.handleError<any>('markAsFavorite'))
+        );
     }
 
 
@@ -106,15 +113,21 @@ export class QuizService {
             quizId: id
         };
 
-        return this.http.post<ExtendedQuiz>(this.url + '/markaspublished', JSON.stringify(quizInfo), this.httpOptions);
+        return this.http.post<ExtendedQuiz>(this.url + '/markaspublished', JSON.stringify(quizInfo), this.httpOptions).pipe(
+            catchError(this.handleErrorsService.handleError<any>('publishQuiz'))
+        );
     }
 
     delete(id: string) {
-        return this.http.delete(this.url + '/' + id);
+        return this.http.delete(this.url + '/' + id).pipe(
+            catchError(this.handleErrorsService.handleError<any>('deleteQuiz'))
+        );
     }
 
     deactivate(id: string) {
-        return this.http.post(this.url + '/deactivate/' + id, null);
+        return this.http.post(this.url + '/deactivate/' + id, null).pipe(
+            catchError(this.handleErrorsService.handleError<any>('deactivateQuiz'))
+        );
     }
 
     getTagsList(): Observable<Tag[]> {
@@ -122,7 +135,8 @@ export class QuizService {
         return this.http.get<any[]>(this.url + '/tags')
             .pipe(map(data => data.map(x => {
                 return new Tag(x.tag_id, x.description);
-            })));
+            }),
+            catchError(this.handleErrorsService.handleError<Tag[]>('getTagsList', []))));
     }
 
     getCategoriesList(): Observable<Category[]> {
@@ -130,8 +144,8 @@ export class QuizService {
         return this.http.get<any[]>(this.url + '/categories')
             .pipe(map(data => data.map(x => {
                 return new Category(x.category_id, x.title);
-            })));
-        ;
+            }),
+            catchError(this.handleErrorsService.handleError<Category[]>('getCategoriesList', []))));
     }
 
 
