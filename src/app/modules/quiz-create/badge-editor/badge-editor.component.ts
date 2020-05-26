@@ -37,16 +37,13 @@ export class BadgeEditorComponent implements OnInit {
         } else {
             this.mapAllTagsOrCategs(this.quizService.getCategoriesList());
         }
-        console.log(this.available);
-
     }
 
     mapAllTagsOrCategs(ans: Observable<any>) {
         ans.subscribe(
             ans => ans.forEach((element) => {
                 this.allObjects.push(element);
-            }),
-            err => console.log(err));
+            }));
     }
 
     remove(i) {
@@ -68,6 +65,15 @@ export class BadgeEditorComponent implements OnInit {
 
     isTag() {
         return this.label === 'Tags';
+    }
+
+    selectedItem(selectedItem){
+        selectedItem.preventDefault();
+        this.model = this.isTag() ?
+            new Tag(selectedItem.item.id, selectedItem.item.description) : 
+            new Category(selectedItem.item.id, selectedItem.item.description);
+
+        this.add();
     }
 
     formatter = (object: any) => object.description;

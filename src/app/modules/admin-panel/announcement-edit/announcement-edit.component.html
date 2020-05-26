@@ -1,7 +1,4 @@
 <div role="main">
-    <p *ngFor="let alert of alerts">
-        <ngb-alert [type]="alert.type" (close)="close(alert)">{{ alert.message }}</ngb-alert>
-    </p>
     <div class="container-sm mt-2 p-4">
         <div *ngIf="!loading">
             <div *ngIf="!editorEnabled">
@@ -11,7 +8,7 @@
 	        <!-- ANNOUNCEMENT ADD -->
 
             <div *ngIf="inEdit[0] && !saveLoading">
-                <div><label>Adding announcement</label></div>
+                <div><label>{{ 'announcementsEdit.adding' | translate }}</label></div>
                 <label class="mt-4">{{ 'utils.title' | translate }}:</label>
                 <input class="form-control"
                        [(ngModel)]="currentAnnouncement.title"
@@ -86,7 +83,7 @@
                 <div *ngIf="inEdit[i+1] && !saveLoading">
                     <hr class="my-4">
                     <div>
-                        <label>Editing announcement of {{currentAnnouncement.creatorId}}</label>
+                        <label>{{ 'announcementsEdit.editing' | translate }} {{currentAnnouncement.creatorId}}</label>
                         <p style="font-style: italic;">{{announcement.creationDate | date}}</p>
                     </div>
                     <label>{{ 'utils.title' | translate }}:</label>
@@ -122,7 +119,7 @@
 	        <!-- PAGINATION -->
 
             <ngb-pagination [collectionSize]="collectionSize" [pageSize]="pageSize" [(page)]="page"
-                            class="d-flex justify-content-center" (pageChange)="loadPage($event)"></ngb-pagination>
+                            class="d-flex justify-content-center" (pageChange)="loadPage()"></ngb-pagination>
         </div>
         <div style="text-align: center;" *ngIf="loading">
             <fa-icon [icon]="faSpinner" [spin]="true" size="6x"></fa-icon>

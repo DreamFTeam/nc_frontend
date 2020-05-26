@@ -55,11 +55,17 @@ export class ProfileComponent implements OnInit {
     private localeService: LocaleService,
     private modalService: NgbModal
   ) {
+    if (this.route.snapshot.paramMap.get('page')) {
+      this.router.navigate(['/profile/' + this.route.snapshot.paramMap.get('username')],
+        { state: { data: this.route.snapshot.paramMap.get('page').toString() } });
+    }
+
     this.role = authenticationService.currentUserValue.role;
     this.username = authenticationService.currentUserValue.username;
-    this.activeTab = 1;
     this.friendsPage = 1;
     this.MAX_AMOUNT = getProfileService.AMOUNT_OF_USERS;
+    this.activeTab = history.state.data || 1;
+
   }
 
   ngOnInit(): void {
@@ -72,9 +78,11 @@ export class ProfileComponent implements OnInit {
 
   private getAllBadgesInfo() {
     this.getFriendsSize();
-    this.getInvitationsSize();
     this.getAllQuizzesAmount();
     this.getAchievementsAmount();
+    if (this.role === 'ROLE_USER') {
+      this.getInvitationsSize();
+    }
   }
 
   getProfile() {
@@ -89,9 +97,10 @@ export class ProfileComponent implements OnInit {
       }).add(() => {
         this.setRights();
         if (this.profile.role === 'ROLE_USER') {
-          this.getQuizzes();
+          this.getAllBadgesInfo();
+          this.changeTab({ nextId: history.state.data || 1 });
+          this.activeTab = parseInt(history.state.data, 10) || 1;
         }
-        this.getAllBadgesInfo();
         this.ready = true;
       }
       );
@@ -184,7 +193,6 @@ export class ProfileComponent implements OnInit {
   }
 
   private getQuizzes() {
-
     this.getProfileService.getProfileQuiz(this.profile.id).subscribe(
       result => {
         this.quizzes = result;
@@ -383,18 +391,17 @@ export class ProfileComponent implements OnInit {
   changeTab(event): void {
     this.activeTab = event;
     this.tabReady = false;
-
-    switch (event.nextId) {
-      case 1:
+    switch (event.nextId.toString()) {
+      case '1':
         this.getQuizzes();
         break;
-      case 2:
+      case '2':
         this.getFavQuizzes();
         break;
-      case 3:
+      case '3':
         this.getAchievements();
         break;
-      case 4:
+      case '4':
         this.getFriendsSize();
         this.getFriends(1);
     }

@@ -1,11 +1,14 @@
-import {Component, OnInit} from '@angular/core';
-import {Announcement} from '../../core/_models/announcement';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {AnnouncementService} from '../../core/_services/announcements/announcement.service';
-import {Alert} from '../../core/_models/alert';
-import {faSpinner} from '@fortawesome/free-solid-svg-icons';
-import {DomSanitizer} from '@angular/platform-browser';
-import {YesNoModalComponent} from '../../shared/yes-no-modal/yes-no-modal.component';
+import { Component, OnInit } from '@angular/core';
+import { Announcement } from '../../core/_models/announcement';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { AnnouncementService } from '../../core/_services/announcements/announcement.service';
+import { Alert } from '../../core/_models/alert';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { DomSanitizer } from '@angular/platform-browser';
+import { YesNoModalComponent } from '../../shared/yes-no-modal/yes-no-modal.component';
+import { ToastsService } from '../../core/_services/utils/toasts.service';
+import { ModalService } from '../../core/_services/utils/modal.service';
+import { LocaleService } from '../../core/_services/utils/locale.service';
 
 
 const PAGE_SIZE: number = 5;
@@ -21,7 +24,6 @@ export class AnnouncementEditComponent implements OnInit {
     isCollapsed: boolean[];
     inEdit: boolean[];
     editorEnabled: boolean;
-    alerts: Alert[] = [];
 
     collectionSize: number;
     page: number;
@@ -38,12 +40,20 @@ export class AnnouncementEditComponent implements OnInit {
     thumbnail: any;
 
 
-    constructor(private modalService: NgbModal,
-                private announcementService: AnnouncementService, private sanitizer: DomSanitizer) {
-        this.announcementService.getAmount().subscribe(ans => this.collectionSize = ans, err => console.log(err));
-        this.announcementService.getAnnouncements(0, 5).subscribe(ans =>
-                this.setAnnouncements(ans)
-            , err => console.log(err));
+    constructor(private announcementService: AnnouncementService,
+        private sanitizer: DomSanitizer,
+        private toastsService: ToastsService,
+        private modalService: ModalService,
+        private localeService: LocaleService) {
+        this.announcementService.getAmount().subscribe(
+            ans => this.collectionSize = ans,
+            () => this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))
+        );
+
+        this.announcementService.getAnnouncements(0, 5).subscribe(
+            ans => this.setAnnouncements(ans),
+            () => this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))
+        );
     }
 
     ngOnInit(): void {
@@ -56,7 +66,6 @@ export class AnnouncementEditComponent implements OnInit {
 
     //getting announcements on request
     setAnnouncements(ans) {
-        console.log(ans);
         this.announcements = ans;
         this.isCollapsed = [];
 
@@ -83,51 +92,46 @@ export class AnnouncementEditComponent implements OnInit {
 
     //deleting announcement
     delete(i) {
-        const modalRef = this.modalService.open(YesNoModalComponent);
-        modalRef.componentInstance.text = 'Are you sure you want to delete announcement?';
-        modalRef.componentInstance.style = 'danger';
+        this.modalService
+            .openModal(this.localeService.getValue('modal.deleteAnnouncement'), 'danger')
+            .subscribe((receivedEntry) => {
+                if (receivedEntry) {
+                    this.announcementService.deleteAnnouncement(this.announcements[i].announcementId)
+                        .subscribe(
+                            ans => ans,
+                            () => this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))
+                        );
 
-
-        modalRef.componentInstance.passEntry.subscribe((receivedEntry) => {
-            console.log(receivedEntry);
-            if (receivedEntry) {
-                this.announcementService.deleteAnnouncement(this.announcements[i].announcementId)
-                    .subscribe(ans => console.log(ans), err => console.log(err));
-
-                this.announcements.splice(i, 1);
-            }
-        });
+                    this.announcements.splice(i, 1);
+                }
+            });
     }
 
     //saving edited announcement
     saveEdit(i) {
         if (this.announcementService.validateAnnouncement(this.currentAnnouncement)) {
-            const modalRef = this.modalService.open(YesNoModalComponent);
-            modalRef.componentInstance.text = 'Are you sure you want to save this announcement?';
-            modalRef.componentInstance.style = 'warning';
-
-            modalRef.componentInstance.passEntry.subscribe((receivedEntry) => {
-                console.log(receivedEntry);
-                if (receivedEntry) {
-                    this.saveLoading = true;
-                    this.announcementService.editAnnouncement(this.currentAnnouncement, this.img)
-                        .subscribe(ans => {
+            this.modalService
+                .openModal(this.localeService.getValue('modal.saveAnnouncement'), 'warning')
+                .subscribe((receivedEntry) => {
+                    if (receivedEntry) {
+                        this.saveLoading = true;
+                        this.announcementService.editAnnouncement(this.currentAnnouncement, this.img)
+                            .subscribe(ans => {
                                 this.announcements[i] = ans;
                                 this.announcements[i].creatorId = this.announcementService.getAdminName();
                                 this.cancel(i);
                                 this.saveLoading = false;
                             },
-                            err => {
-                                console.log(err);
-                                this.alerts.push({type: 'danger', message: 'Sorry, announcement upload failed :(',});
-                                this.saveLoading = false;
-                            });
+                                err => {
+                                    this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))
+                                    this.saveLoading = false;
+                                });
 
 
-                }
-            });
+                    }
+                });
         } else {
-            this.alerts.push({type: 'warning', message: 'No title or description',});
+            this.toastsService.toastAddDanger(this.localeService.getValue('validator.noTitleOrDescription'));
         }
     }
 
@@ -153,48 +157,40 @@ export class AnnouncementEditComponent implements OnInit {
     //saving added announcement
     saveAdd() {
         if (this.announcementService.validateAnnouncement(this.currentAnnouncement)) {
-            const modalRef = this.modalService.open(YesNoModalComponent);
-            modalRef.componentInstance.text = 'Are you sure you want to add this announcement?';
-            modalRef.componentInstance.style = 'success';
+            this.modalService
+                .openModal(this.localeService.getValue('modal.saveAnnouncement'), 'warning')
+                .subscribe((receivedEntry) => {
+                    if (receivedEntry) {
+                        this.saveLoading = true;
+                        this.announcementService.addAnnouncement(this.currentAnnouncement, this.img)
+                            .subscribe(
+                                ans => {
+                                    this.announcements.unshift(ans);
+                                    this.announcements[0].creatorId = this.announcementService.getAdminName();
+                                    this.cancel(-1);
+                                    this.saveLoading = false;
+                                },
 
-            modalRef.componentInstance.passEntry.subscribe((receivedEntry) => {
-                if (receivedEntry) {
-                    this.saveLoading = true;
-                    this.announcementService.addAnnouncement(this.currentAnnouncement, this.img)
-                        .subscribe(
-                            ans => {
-                                this.announcements.unshift(ans);
-                                this.announcements[0].creatorId = this.announcementService.getAdminName();
-                                this.cancel(-1);
-                                this.saveLoading = false;
-                            },
-
-                            err => {
-                                console.log(err);
-                                this.alerts.push({type: 'danger', message: 'Sorry, announcement upload failed :(',});
-                                this.saveLoading = false;
-                            });
+                                err => {
+                                    this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))
+                                    this.saveLoading = false;
+                                });
 
 
-                }
-            });
+                    }
+                });
         } else {
-            this.alerts.push({type: 'warning', message: 'No title or description',});
+            this.toastsService.toastAddDanger(this.localeService.getValue('validator.noTitleOrDescription'));
         }
     }
 
-    //close alert
-    close(alert: Alert) {
-        this.alerts.splice(this.alerts.indexOf(alert), 1);
-    }
-
-
     //get announcements on page change
-    loadPage(_e) {
+    loadPage() {
         this.loading = true;
-        this.announcementService.getAnnouncements((this.page - 1) * 5, 5).subscribe(ans =>
-                this.setAnnouncements(ans)
-            , err => console.log(err));
+        this.announcementService.getAnnouncements((this.page - 1) * 5, 5).subscribe(
+            ans => this.setAnnouncements(ans),
+            () => this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))
+        );
     }
 
     //upload image click
