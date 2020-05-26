@@ -314,5 +314,8 @@
     "rateFrom": "Rating from",
     "rateTo": "Rating to",
     "langAll": "All"
+  },
+  "notifications": {
+    "empty": "No new notifications"
   }
 }

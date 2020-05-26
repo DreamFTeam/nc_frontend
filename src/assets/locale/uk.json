@@ -311,5 +311,8 @@
     "rateFrom": "Рейтинг з",
     "rateTo": "Рейтинг по",
     "langAll": "Усі"
+  },
+  "notifications": {
+    "empty": "Немає нових сповіщень"
   }
 }
