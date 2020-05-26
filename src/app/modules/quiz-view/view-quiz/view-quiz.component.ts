@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {faSpinner} from '@fortawesome/free-solid-svg-icons';
 import {QuizService} from '../../core/_services/quiz/quiz.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {switchMap} from 'rxjs/operators';
 import {ExtendedQuiz} from '../../core/_models/extended-quiz';
 import {AuthenticationService} from '../../core/_services/authentication/authentication.service';
 import {Role} from '../../core/_models/role';
@@ -12,6 +11,7 @@ import {LocaleService} from '../../core/_services/utils/locale.service';
 import {User} from '../../core/_models/user';
 import {AnonymInitComponent} from '../../game/anonym-init/anonym-init.component';
 import {AnonymService} from '../../core/_services/game/anonym.service';
+import { ToastsService } from '../../core/_services/utils/toasts.service';
 
 @Component({
     selector: 'app-view-quiz',
@@ -37,11 +37,10 @@ export class ViewQuizComponent implements OnInit {
                 private authenticationService: AuthenticationService,
                 private modalService: NgbModal,
                 private localeService: LocaleService,
-                private anonymService: AnonymService) {
+                private anonymService: AnonymService, 
+                public toastsService: ToastsService) {
         this.loading = true;
-        this.activateRoute.paramMap.pipe(
-            switchMap(params => params.getAll('id')))
-            .subscribe(data => this.getAllQuiz(data));
+        this.getAllQuiz(this.activateRoute.snapshot.params.id);
     }
 
     ngOnInit(): void {
@@ -49,8 +48,10 @@ export class ViewQuizComponent implements OnInit {
     }
 
     getAllQuiz(data) {
-        this.quizService.getQuiz(data).subscribe(ans => this.setGettedQuiz(ans),
-            err => this.errHandler(this.localeService.getValue('toasterEditor.wentWrong'), err));
+        this.quizService.getQuiz(data).subscribe(
+            ans => this.setGettedQuiz(ans),
+            () => this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))
+            );
     }
 
     setGettedQuiz(answer) {
@@ -62,9 +63,10 @@ export class ViewQuizComponent implements OnInit {
     }
 
     markAsFavorite() {
-        this.quizService.markAsFavorite(this.quiz.id).subscribe(() => {
-            },
-            err => this.errHandler(this.localeService.getValue('toasterEditor.wentWrong'), err));
+        this.quizService.markAsFavorite(this.quiz.id).subscribe(
+            ans => ans,
+            () => this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))
+            );
         this.quiz.favourite = !this.quiz.favourite;
     }
 
@@ -74,7 +76,8 @@ export class ViewQuizComponent implements OnInit {
                 if (receivedEntry) {
                     this.quizService.deactivate(this.quiz.id).subscribe(
                         () => this.quiz.activated = false,
-                        err => this.errHandler(this.localeService.getValue('toasterEditor.wentWrong'), err));
+                        () => this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))
+                        );
                 }
             });
 
@@ -86,7 +89,8 @@ export class ViewQuizComponent implements OnInit {
                 if (receivedEntry) {
                     this.quizService.delete(this.quiz.id).subscribe(
                         () => this.router.navigate(['/']),
-                        err => this.errHandler(this.localeService.getValue('toasterEditor.wentWrong'), err));
+                        () => this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))
+                        );
                 }
             });
     }
@@ -97,11 +101,6 @@ export class ViewQuizComponent implements OnInit {
         modalRef.componentInstance.style = style;
 
         return modalRef.componentInstance.passEntry;
-    }
-
-    errHandler(text, err) {
-        console.log(err);
-        alert(text);
     }
 
     isMyQuiz() {
@@ -127,7 +126,7 @@ export class ViewQuizComponent implements OnInit {
         }
         const modalRef = this.modalService.open(AnonymInitComponent);
         modalRef.componentInstance.anonymName.subscribe(n => {
-            this.anonymService.anonymLogin(n).subscribe(next =>
+            this.anonymService.anonymLogin(n).subscribe(() =>
                 this.router.navigateByUrl(`quiz/${this.quiz.id}/newgame`)
             );
         });
