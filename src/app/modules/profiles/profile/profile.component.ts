@@ -57,7 +57,7 @@ export class ProfileComponent implements OnInit {
   ) {
     this.role = authenticationService.currentUserValue.role;
     this.username = authenticationService.currentUserValue.username;
-    this.activeTab = 1;
+    this.activeTab = history.state.data || 1;
     this.friendsPage = 1;
     this.MAX_AMOUNT = getProfileService.AMOUNT_OF_USERS;
   }
@@ -89,9 +89,10 @@ export class ProfileComponent implements OnInit {
       }).add(() => {
         this.setRights();
         if (this.profile.role === 'ROLE_USER') {
-          this.getQuizzes();
+          this.getAllBadgesInfo();
+          this.changeTab({ nextId: history.state.data || 1 });
+          this.activeTab = history.state.data || 1;
         }
-        this.getAllBadgesInfo();
         this.ready = true;
       }
       );
@@ -184,7 +185,6 @@ export class ProfileComponent implements OnInit {
   }
 
   private getQuizzes() {
-
     this.getProfileService.getProfileQuiz(this.profile.id).subscribe(
       result => {
         this.quizzes = result;
@@ -383,7 +383,6 @@ export class ProfileComponent implements OnInit {
   changeTab(event): void {
     this.activeTab = event;
     this.tabReady = false;
-
     switch (event.nextId) {
       case 1:
         this.getQuizzes();
