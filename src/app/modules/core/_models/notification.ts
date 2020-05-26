@@ -5,4 +5,5 @@ export interface Notification {
     userId: string;
     content: string;
     link: string;
+    typeId: number;
 }

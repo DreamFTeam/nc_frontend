@@ -1,6 +1,6 @@
 <div class="container">
   <div *ngIf="!newNotification" class="h3 p-3 text-center bg-white rounded">
-    No new notifications
+    {{ 'notifications.empty' | translate }}
   </div>
   <div *ngFor="let not of notifications" class="row m-1">
     <div class="col"></div>
