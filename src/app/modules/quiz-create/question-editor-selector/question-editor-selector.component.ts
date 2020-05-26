@@ -34,8 +34,6 @@ export class QuestionEditorSelectorComponent implements OnInit {
             && this.question.imageContent !== '') {
             this.thumbnail = this.question.imageContent;
         }
-
-
     }
 
     ngOnChanges() {
@@ -60,9 +58,7 @@ export class QuestionEditorSelectorComponent implements OnInit {
         this.typeTemp = this.question.typeId;
     }
 
-    ngOnInit(): void {
-
-    }
+    ngOnInit(): void {}
 
     //Changed question type
     onChange(deviceValue) {
@@ -74,8 +70,6 @@ export class QuestionEditorSelectorComponent implements OnInit {
         //Change question type
         this.typeTemp = parseInt(deviceValue);
         this.question.typeId = this.typeTemp;
-
-        console.log(this.temp);
 
         //Reinit from temp
         this.question.rightOptions = (this.temp[this.question.typeId - 1].rightOptions);

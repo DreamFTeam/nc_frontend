@@ -13,8 +13,7 @@ export class Announcement implements DesearizableWImage {
     deserialize(input: any, sanitizer: DomSanitizer): this {
         Object.assign(this, input);
 
-        let img = this.image;
-        if (img !== null && img !== undefined && img !== '') {
+        if (this.image) {
             const objUrl = 'data:image/jpeg;base64,' + this.image;
             this.image = sanitizer.bypassSecurityTrustUrl(objUrl);
         }

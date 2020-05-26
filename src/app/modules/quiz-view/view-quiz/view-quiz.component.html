@@ -84,7 +84,7 @@
                         <div *ngIf="isMyQuiz()" class="btn buttonsec ml-1" routerLink="/quizedit/{{quiz.id}}">
                             {{ 'utils.edit' | translate }}
                         </div>
-                        <div *ngIf="isLinkAvailable()" class="btn buttonsuc ml-1" (click)="markAsFavorite()">
+                        <div *ngIf="isLinkAvailable() && !isPrivileged()" class="btn buttonsuc ml-1" (click)="markAsFavorite()">
                             <svg *ngIf="quiz.favourite" class="bi bi-star-fill" width="1.5em" height="1.5em"
                                  viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
             
