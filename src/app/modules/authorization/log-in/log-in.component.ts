@@ -1,8 +1,9 @@
-import {Component} from '@angular/core';
-import {AuthenticationService} from '../../core/_services/authentication/authentication.service';
-import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {RecoverPasswordComponent} from '../recover-password/recover-password.component';
-import {Router} from '@angular/router';
+import { Component } from '@angular/core';
+import { AuthenticationService } from '../../core/_services/authentication/authentication.service';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { RecoverPasswordComponent } from '../recover-password/recover-password.component';
+import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-log-in',
@@ -11,9 +12,10 @@ import {Router} from '@angular/router';
 })
 export class LogInComponent {
     constructor(private authenticationService: AuthenticationService,
-                public activeModal: NgbActiveModal,
-                private modalService: NgbModal,
-                private _router: Router) {
+        public activeModal: NgbActiveModal,
+        private modalService: NgbModal,
+        private _router: Router,
+        private translateService: TranslateService) {
     }
 
     email = '';
@@ -24,27 +26,27 @@ export class LogInComponent {
 
     logIn() {
         if (this.email === '' || this.email == null) {
-            this.message = ('Enter the username!');
+            this.message = this.translateService.instant('authorization.login.emptyName');
             return;
         }
         if (this.password === '' || this.password == null) {
-            this.message = ('Enter the password!');
+            this.message = this.translateService.instant('authorization.login.emptyPassword');
             return;
         }
 
         /*Code for comunication with back-end*/
         this.authenticationService.loginUser(this.email, this.password)
             .subscribe(n => {
-                    location.reload();
-                    this.loading = false;
-                },
+                location.reload();
+                this.loading = false;
+            },
                 error => {
-                    this.message = error.error ? error.error.message : 'An error occurred';
+                    this.message = error.error ? error.error.message : this.translateService.instant('authorization.login.error');
                     console.log(error);
                     this.loading = false;
                 }
             )
-        ;
+            ;
         this.loading = true;
     }
 

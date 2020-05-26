@@ -4,12 +4,14 @@
       <div class="col-8">
         <div class="row bg-white rounded">
           <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 text-center">
-            <p class="mt-4 h4 text-center">{{game.accessId}}</p>
-            <qrcode [margin]="3"
-                    [qrdata]="connectUrl + game.accessId"
-                    [width]="256"
-                    [errorCorrectionLevel]="'M'"
-                    [elementType]="'url'"></qrcode>
+            <div *ngIf="game.maxUsersCount > 1">
+              <p class="mt-4 h4 text-center">{{game.accessId}}</p>
+              <qrcode [margin]="3"
+                      [qrdata]="connectUrl + game.accessId"
+                      [width]="256"
+                      [errorCorrectionLevel]="'M'"
+                      [elementType]="'url'"></qrcode>
+            </div>
             <button [disabled]="started"
                     *ngIf="creator && ready"
                     (click)="startGame()"
@@ -25,13 +27,13 @@
             <div class="container mb-4 mt-4">
               <div *ngFor="let session of sessions"
                    class="border border-secondary rounded mx-3 my-1 p-2"
-                   [ngClass]="{'border-success': session.is_creator, 'alert-success': usersSessionsReady.includes(session.game_session_id)}">
-                <img class="rounded-circle"
+                   [ngClass]="{'border-success': session._creator, 'alert-success': usersSessionsReady.includes(session.game_session_id)}">
+                <img class="rounded mr-2"
                      width="35px"
-                     [src]="session.imageContent ? session.imageContent : mockImageUrl"
-                     alt="Quiz icon">
-                <span class="p-2 m-2">{{session.username}} {{'game.connected'| translate}}</span>
-
+                     [src]="session.image ? session.imageContent : mockImageUrl"
+                     alt="{{session.username}}'s avatar">
+                <a *ngIf="session.user_id && loggedIn; else anonym" target="_blank" href="{{location}}/profile/{{session.username}}" class="p-2 m-2">{{session.username}} {{'game.connected'| translate}}</a>
+                <ng-template #anonym class="p-2 m-2">{{session.username}} {{'game.connected'| translate}}</ng-template>
               </div>
             </div>
           </div>
