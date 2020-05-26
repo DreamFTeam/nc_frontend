@@ -301,5 +301,21 @@
       "incorrect": "You wrote an incorrect email!",
       "button": "Reset password"
     }
+  },
+  "quizList": {
+    "accessCode": "Enter access code",
+    "search": "Search",
+    "filter": "Filter",
+    "createQuiz": "Create quiz"
+  },
+  "quizFilter": {
+    "creator": "Creator username",
+    "add": "Add",
+    "rateFrom": "Rating from",
+    "rateTo": "Rating to",
+    "langAll": "All"
+  },
+  "notifications": {
+    "empty": "No new notifications"
   }
 }

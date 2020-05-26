@@ -4,7 +4,7 @@
       <div class="col-lg-3 col-xl-3 col-md-6 col-sm-12 m-xl-0 m-lg-0 m-md-0 m-sm-2">
         <div *ngIf="!admin" class="input-group">
           <input type="text" class="rounded-left form-control" [(ngModel)]="accessCode" [disabled]="accessCodeLoading"
-                 (keydown.enter)="join()" placeholder="Enter access code" aria-label="Enter access code"
+                 (keydown.enter)="join()" placeholder="{{'quizList.accessCode'| translate}}" aria-label="Enter access code"
                  aria-describedby="button-addon">
           <div *ngIf="!admin" class="input-group-append">
             <button (click)="join()" class="btn btn-light border-0 btn-outline-secondary" type="button"
@@ -23,7 +23,7 @@
       <div class="col-lg-9 col-xl-9 col-md-6 col-sm-12 m-xl-0 m-lg-0 m-md-0 m-sm-2 rounded">
         <div class="input-group">
           <input type="text" class="rounded-left form-control text-center" [(ngModel)]="searchInput"
-                 (keydown.enter)="search()" placeholder="Search" aria-label="Search" aria-describedby="button-addon1">
+                 (keydown.enter)="search()" placeholder="{{'quizList.search'| translate}}" aria-label="Search" aria-describedby="button-addon1">
           <div class="input-group-append">
             <button (click)="search()" class="btn btn-light border-0 btn-outline-secondary" type="button"
                     id="button-addon1">
@@ -44,8 +44,8 @@
   </div>
   <div class="container mt-4 p-2 bg-white rounded">
     <div class="row m-2 justify-content-center">
-      <button *ngIf="canCreate" class="btn col-8 btn-primary m-2 p-2" routerLink="/quizcreate">Create quiz</button>
-      <button (click)="showFilter()" class="btn col-3 btn-info m-2 p-2">Filter</button>
+      <button *ngIf="canCreate" class="btn col-8 btn-primary m-2 p-2" routerLink="/quizcreate">{{'quizList.createQuiz'| translate}}</button>
+      <button (click)="showFilter()" class="btn col-3 btn-info m-2 p-2">{{'quizList.filter'| translate}}</button>
     </div>
     <div class="row">
       <div class="container">

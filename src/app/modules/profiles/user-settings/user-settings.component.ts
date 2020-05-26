@@ -5,6 +5,7 @@ import {faSpinner} from '@fortawesome/free-solid-svg-icons';
 import {ToastsService} from '../../core/_services/utils/toasts.service';
 import {environment} from 'src/environments/environment';
 import {LocaleService} from '../../core/_services/utils/locale.service';
+import {SearchFilterQuizService} from '../../core/_services/quiz/search-filter-quiz.service';
 
 
 @Component({
@@ -28,7 +29,9 @@ export class UserSettingsComponent implements OnInit {
     faSpinner = faSpinner;
 
     constructor(private settingsService: SettingsService,
-                public toastService: ToastsService, private localeService: LocaleService) {
+                public toastService: ToastsService,
+                private localeService: LocaleService,
+                private searchFilterQuizService: SearchFilterQuizService) {
 
     }
 
@@ -59,6 +62,7 @@ export class UserSettingsComponent implements OnInit {
             () => {
                 this.init();
                 this.toastService.toastAddSuccess(this.localeService.getValue('toasterEditor.saved'));
+                this.searchFilterQuizService.initSettings();
             },
             err => this.errHandler(this.localeService.getValue('toasterEditor.wentWrong'), err),
             () => this.buttonLoading = false

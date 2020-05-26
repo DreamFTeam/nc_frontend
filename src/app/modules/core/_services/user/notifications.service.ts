@@ -39,6 +39,7 @@ export class NotificationsService {
     getUnseen(): Observable<Notification[]> {
         return this.http.get<Notification[]>(this.notificationsUrl, this.httpOptions).pipe(
             map(nots => {
+                nots.map(this.generateLinkNotification);
                 this.notificationsSubject.next(nots);
                 return nots;
             })
@@ -63,5 +64,21 @@ export class NotificationsService {
         this.getById(notificationId).subscribe(n => {
             this.toastsService.toastAdd(n.content, {header: ''});
         });
+    }
+
+    private generateLinkNotification(notification: Notification): Notification {
+        switch (notification.typeId) {
+            case 1:
+                notification.link = '/requests';
+                return notification;
+            case 2:
+                notification.link = `/viewquiz/${notification.link}`;
+                return notification;
+            case 3:
+                notification.link = `/profiles/${notification.link}/3`;
+                return notification;
+            default:
+                return notification;
+        }
     }
 }
