@@ -1,23 +1,23 @@
 <div class="modal-header">
-  <h4 class="modal-title">LogIn</h4>
+  <h4 class="modal-title">{{'authorization.login.logIn'| translate}}</h4>
   <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
 <div class="container p-3">
   <div class="form-group form-row">
-    <input type="text" class="form-control rounded" placeholder="Username" name="username" [(ngModel)]="email">
+    <input type="text" class="form-control rounded" placeholder="{{'authorization.login.username'| translate}}" name="username" [(ngModel)]="email">
   </div>
   <div class="form-group form-row">
-    <input type="password" name="password" class="form-control rounded" placeholder="Password" [(ngModel)]="password" />
+    <input type="password" name="password" class="form-control rounded" placeholder="{{'authorization.login.password'| translate}}" [(ngModel)]="password" />
   </div>
   <div class="row">
     <div class="col">
-      <p class="btn btn-link"><a (click)="openRecover()">Forgot your password?</a></p>
+      <p class="btn btn-link"><a (click)="openRecover()">{{'authorization.login.forgotPass'| translate}}</a></p>
     </div>
     <div class="col text-right">
       <button type="button" [disabled]="loading" class="btn btn-primary ml-3" (click)="logIn()">
-        <span *ngIf="!loading" class="text">Log In</span>
+        <span *ngIf="!loading" class="text">{{'authorization.login.logIn'| translate}}</span>
         <span *ngIf="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
       </button>
     </div>

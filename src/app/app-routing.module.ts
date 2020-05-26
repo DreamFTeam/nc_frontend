@@ -30,7 +30,7 @@ import { UserSettingsComponent } from './modules/profiles/user-settings/user-set
 
 const routes: Routes = [
     { path: '', component: LandingPageComponent },
-    { path: 'recovery', component: ChangePasswordComponent },
+    { path: 'recovery/:id', component: ChangePasswordComponent },
     {
         path: 'quizedit/:id', component: QuizComponent,
         canActivate: [AuthGuard],

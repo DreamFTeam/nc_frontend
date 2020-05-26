@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {AuthenticationService} from '../../core/_services/authentication/authentication.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-recover-password',
@@ -16,7 +17,8 @@ export class RecoverPasswordComponent implements OnInit {
 
   constructor(
     private authenticationService: AuthenticationService,
-    public activeModal: NgbActiveModal) {
+    public activeModal: NgbActiveModal,
+    private translateService: TranslateService) {
   }
 
   ngOnInit(): void {
@@ -26,11 +28,11 @@ export class RecoverPasswordComponent implements OnInit {
 
   requestPasswordChange() {
     if (this.email == '' || this.email == null) {
-      this.message = ('Enter the email!');
+      this.message = this.translateService.instant('authorization.recoverPassword.empty');
       return;
     }
     if (!this.email.match(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/)) {
-      this.message = ('You wrote an incorrect email!');
+      this.message = this.translateService.instant('authorization.recoverPassword.incorrect');
       return;
     }
     this.authenticationService.recoverPassword(this.email).subscribe(n => {
@@ -38,7 +40,7 @@ export class RecoverPasswordComponent implements OnInit {
         this.loading = false;
       },
       error => {
-        this.message = error.error ? error.error.message : 'An error occurred';
+        this.message = error.error ? error.error.message : this.translateService.instant('authorization.login.error');
         this.loading = false;
       });
     this.loading = true;
