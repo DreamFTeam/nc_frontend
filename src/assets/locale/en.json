@@ -127,7 +127,7 @@
         "deactivate":"Deactivate",
         "downgrade":"Downgrade to Moderator",
         "upgrade":"Upgrade to Admin",
-        "whose":"s",
+        "whose":"'s",
         "quizzes":"quizzes",
         "noquizzes":" No quizzes yet",
         "newquiz":" NEW QUIZ ",

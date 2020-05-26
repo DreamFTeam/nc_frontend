@@ -72,9 +72,11 @@ export class ProfileComponent implements OnInit {
 
   private getAllBadgesInfo() {
     this.getFriendsSize();
-    this.getInvitationsSize();
     this.getAllQuizzesAmount();
     this.getAchievementsAmount();
+    if (this.role === 'ROLE_USER') {
+      this.getInvitationsSize();
+    }
   }
 
   getProfile() {
