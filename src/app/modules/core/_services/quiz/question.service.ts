@@ -9,6 +9,7 @@ import {map, catchError} from 'rxjs/operators';
 import {environment} from '../../../../../environments/environment';
 import {AuthenticationService} from '../authentication/authentication.service';
 import { HandleErrorsService } from '../utils/handle-errors.service';
+import { LocaleService } from '../utils/locale.service';
 
 @Injectable({
     providedIn: 'root'
@@ -20,7 +21,8 @@ export class QuestionService {
 
     constructor(private http: HttpClient, private sanitizer: DomSanitizer,
                 private authenticationService: AuthenticationService,
-                private handleErrorsService : HandleErrorsService) {
+                private handleErrorsService : HandleErrorsService,
+                private localeService: LocaleService) {
         this.user = authenticationService.currentUserValue;
 
     }
@@ -106,19 +108,19 @@ export class QuestionService {
 
 
         if (question.title.trim().length < 2) {
-            res.push('Question title must be at least 2 symbol length');
+            res.push(this.localeService.getValue('validator.questionTitle'));
         }
 
         if (question.content.trim().length < 2) {
-            res.push('Content must be at least 2 symbol length');
+            res.push(this.localeService.getValue('validator.questionContent'));
         }
 
         if (question.rightOptions.includes('') || (question.typeId === 1 && question.otherOptions.includes(''))) {
-            res.push('One of answers is empty');
+            res.push(this.localeService.getValue('validator.emptyAnswer'));
         }
 
         if (!(question.points > 0)) {
-            res.push('Points has value < 0 or has text value');
+            res.push(this.localeService.getValue('validator.points'));
         }
 
 

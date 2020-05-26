@@ -1,14 +1,14 @@
-import {Component, OnInit} from '@angular/core';
-import {QuizService} from '../../core/_services/quiz/quiz.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {QuestionService} from '../../core/_services/quiz/question.service';
-import {DomSanitizer} from '@angular/platform-browser';
-import {ExtendedQuiz} from '../../core/_models/extended-quiz';
-import {faSpinner} from '@fortawesome/free-solid-svg-icons';
-import {ExtendedQuestion} from '../../core/_models/question/extendedquestion';
-import {ModalService} from '../../core/_services/utils/modal.service';
-import {ToastsService} from '../../core/_services/utils/toasts.service';
-import {LocaleService} from '../../core/_services/utils/locale.service';
+import { Component, OnInit } from '@angular/core';
+import { QuizService } from '../../core/_services/quiz/quiz.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { QuestionService } from '../../core/_services/quiz/question.service';
+import { DomSanitizer } from '@angular/platform-browser';
+import { ExtendedQuiz } from '../../core/_models/extended-quiz';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { ExtendedQuestion } from '../../core/_models/question/extendedquestion';
+import { ModalService } from '../../core/_services/utils/modal.service';
+import { ToastsService } from '../../core/_services/utils/toasts.service';
+import { LocaleService } from '../../core/_services/utils/locale.service';
 
 @Component({
     selector: 'app-quiz',
@@ -35,9 +35,9 @@ export class QuizComponent implements OnInit {
 
 
     constructor(private quizService: QuizService, private questionService: QuestionService,
-                private activateRoute: ActivatedRoute, private router: Router, private sanitizer: DomSanitizer,
-                private modalService: ModalService, public toastsService: ToastsService,
-                private localeService: LocaleService) {
+        private activateRoute: ActivatedRoute, private router: Router, private sanitizer: DomSanitizer,
+        private modalService: ModalService, public toastsService: ToastsService,
+        private localeService: LocaleService) {
         this.quizLoading = true;
         this.questionLoading = false;
         this.questions = [];
@@ -105,17 +105,17 @@ export class QuizComponent implements OnInit {
         this.questionService.getAllQuestionsNew(data)
             .subscribe(
                 ans => this.mapGettedQuestions(ans),
-                () => 
+                () =>
                     this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))
-                );
+            );
 
         //Find quiz
         this.quizService.getQuiz(data)
             .subscribe(
                 ans => this.setGettedQuiz(ans),
-                () => 
+                () =>
                     this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))
-                );
+            );
 
     }
 
@@ -156,13 +156,13 @@ export class QuizComponent implements OnInit {
                 this.questionService.sendQuestion(this.questionSelector, true).subscribe(
                     ans => this.setSavedQuestion(ans),
                     () => this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))
-                    );
+                );
 
             } else {
                 this.questionService.sendQuestion(this.questionSelector, false).subscribe(
                     ans => this.setSavedQuestion(ans),
                     () => this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))
-                    );
+                );
             }
 
         } else {
@@ -210,7 +210,7 @@ export class QuizComponent implements OnInit {
                 this.quizLoading = false;
                 this.router.navigate(['/quizedit/' + ans.id]);
             },
-            () => 
+            () =>
                 this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong')));
     }
 
@@ -225,7 +225,7 @@ export class QuizComponent implements OnInit {
                 }
 
             },
-            () => 
+            () =>
                 this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong')));
     }
 
@@ -241,7 +241,7 @@ export class QuizComponent implements OnInit {
                                 this.toastsService.toastAddSuccess(this.localeService.getValue('toasterEditor.published'));
                                 this.quiz.published = true;
                             },
-                            () => 
+                            () =>
                                 this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong')));
                 }
             });
@@ -259,9 +259,9 @@ export class QuizComponent implements OnInit {
                         this.questionService.deleteQuestion(this.questions[i].id)
                             .subscribe(
                                 () => this.removeQuestionFromList(i, onCreatorDelete),
-                                () => 
+                                () =>
                                     this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))
-                                );
+                            );
                     }
                 }
             });

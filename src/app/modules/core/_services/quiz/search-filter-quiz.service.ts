@@ -6,6 +6,8 @@ import {map} from 'rxjs/operators';
 import {ExtendedQuizPreview} from '../../_models/extendedquiz-preview';
 import {DomSanitizer} from '@angular/platform-browser';
 import {QuizFilterSettings} from '../../_models/quiz-filter-settings';
+import {TranslateService} from '@ngx-translate/core';
+import {LocaleService} from '../utils/locale.service';
 
 @Injectable({
     providedIn: 'root'
@@ -28,13 +30,14 @@ export class SearchFilterQuizService {
     private currentQuizzesSizeSubject: BehaviorSubject<number>;
     public currentQuizzesSize: Observable<number>;
 
-    constructor(private http: HttpClient, private sanitizer: DomSanitizer) {
+    constructor(private http: HttpClient,
+                private sanitizer: DomSanitizer,
+                private localeService: LocaleService) {
         this.currentQuizzesSubject = new BehaviorSubject<ExtendedQuizPreview[]>([]);
         this.currentQuizzes = this.currentQuizzesSubject.asObservable();
 
         this.currentQuizzesSizeSubject = new BehaviorSubject<number>(0);
         this.currentQuizzesSize = this.currentQuizzesSizeSubject.asObservable();
-
         this.initSettings();
     }
 
@@ -52,16 +55,7 @@ export class SearchFilterQuizService {
     }
 
     filterTotalSize(): Observable<number> {
-        const sett = {
-            quizName: this.settings.quizName,
-            userName: this.settings.userName,
-            moreThanRating: this.settings.moreThanRating,
-            lessThanRating: this.settings.lessThanRating,
-            orderByRating: this.settings.orderByRating,
-            tags: this.settings.tags.length > 0 ? this.settings.tags.map(x => x.id) : null,
-            categories: this.settings.categories.length > 0 ? this.settings.categories.map(x => x.id) : null,
-            quizLang: this.settings.quizLang === 'All' ? null : this.languageEditor(this.settings.quizLang)
-        };
+        const sett = this.generateSettingsForRequest(this.settings);
         return this.http.post<number>(this.filterUrlTotalSize, sett, this.httpOptions);
     }
 
@@ -82,22 +76,13 @@ export class SearchFilterQuizService {
             orderByRating: null,
             tags: [],
             categories: [],
-            quizLang: 'All'
+            quizLang: this.localeService.getValue('quizFilter.langAll')
         };
+        console.log(this.settings);
     }
 
     private sendReq(settings: QuizFilterSettings, page: number): Observable<ExtendedQuizPreview[]> {
-        const sett = {
-            quizName: settings.quizName,
-            userName: settings.userName,
-            moreThanRating: settings.moreThanRating,
-            lessThanRating: settings.lessThanRating,
-            orderByRating: settings.orderByRating,
-            tags: settings.tags.length > 0 ? settings.tags.map(x => x.id) : null,
-            categories: settings.categories.length > 0 ? settings.categories.map(x => x.id) : null,
-            quizLang: settings.quizLang === 'All' ? null : this.languageEditor(settings.quizLang)
-        };
-        console.log(sett);
+        const sett = this.generateSettingsForRequest(settings);
         return this.http.post<ExtendedQuizPreview[]>(`${this.filterUrl}/${page}`, JSON.stringify(sett),
             this.httpOptions).pipe(map(data => {
                 const quizzes = data.map(x => {
@@ -110,12 +95,25 @@ export class SearchFilterQuizService {
         ));
     }
 
+    private generateSettingsForRequest(settings: QuizFilterSettings) {
+        return {
+            quizName: settings.quizName,
+            userName: settings.userName,
+            moreThanRating: settings.moreThanRating,
+            lessThanRating: settings.lessThanRating,
+            orderByRating: settings.orderByRating,
+            tags: settings.tags.length > 0 ? settings.tags.map(x => x.id) : null,
+            categories: settings.categories.length > 0 ? settings.categories.map(x => x.id) : null,
+            quizLang: settings.quizLang === this.localeService.getValue('quizFilter.langAll') ?
+                null : this.languageEditor(settings.quizLang)
+        };
+    }
+
     private languageEditor(lang: string) {
-        console.log(lang);
         switch (lang) {
-            case 'English':
+            case this.localeService.getValue('utils.langEng'):
                 return 'eng';
-            case 'Ukrainian':
+            case this.localeService.getValue('utils.langUkr'):
                 return 'ukr';
             default:
                 return lang;

@@ -1,6 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {AuthenticationService} from '../../core/_services/authentication/authentication.service';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { AuthenticationService } from '../../core/_services/authentication/authentication.service';
+import { ToastsService } from '../../core/_services/utils/toasts.service';
+import { TranslateService } from '@ngx-translate/core';
 
 // import {switchMap} from 'rxjs/operators';
 
@@ -19,49 +21,49 @@ export class ChangePasswordComponent implements OnInit {
     loading: boolean;
 
     constructor(private route: ActivatedRoute,
-                private authenticationService: AuthenticationService) {
+        private authenticationService: AuthenticationService,
+        private toastsService: ToastsService,
+        private translateService: TranslateService) {
     }
 
     ngOnInit(): void {
-        this.route.queryParams.subscribe(params => {
-            if (params.message) {
-                this.id = params.message;
-                console.log(this.id);
-            }
-        });
+        this.id = this.route.snapshot.paramMap.get('id');
+        console.log(this.id);
         this.isSent = false;
         this.loading = false;
     }
 
     changePassword() {
         if (this.password.length < 6) {
-            alert('Password must be at least 6 symbols long!');
+            this.toastsService.toastAddWarning(this.translateService.instant('authorization.signUp.shortPassword'));
             return;
         }
         if (!this.password.match(/([a-zA-Z]+[0-9]+)|([0-9]+[a-zA-Z]+)/)) {
-            alert('Your password must contain 1 number and 1 letter!');
+            this.toastsService.toastAddWarning(this.translateService.instant('authorization.signUp.matchPasswordRegExp'));
             return;
         }
         if (this.password !== this.confirmPassword) {
-            alert('Your passwords don\'t match!');
+            this.toastsService.toastAddWarning(this.translateService.instant('authorization.signUp.matchPasswords'));
             return;
         }
 
         this.authenticationService.changePassword(this.id, this.password).subscribe((n) => {
-                this.answer = 'Successfully changed';
-                this.isSent = true;
-                this.loading = false;
-                setInterval(function() {
+            this.toastsService.toastAddSuccess(this.translateService.instant('authorization.changePassword.success'));
+            setInterval(function () {
+                location.replace('');
+                clearInterval(this);
+            }, 3000);
+            console.log(n);
+        },
+            err => {
+                this.toastsService.toastAddDanger(this.translateService.instant('authorization.login.error'));
+                if (err.error) {
+                    this.toastsService.toastAddDanger(err.error.message);
+                }
+                setInterval(function () {
                     location.replace('');
                     clearInterval(this);
-                }, 5000);
-                console.log(n);
-            },
-            err => {
-                this.loading = false;
-                console.error(err.error.message);
-                this.answer = 'An error occurred';
-                this.isSent = true;
+                }, 3000);
             });
         this.loading = true;
     }

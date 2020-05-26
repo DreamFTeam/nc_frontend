@@ -7,6 +7,7 @@ import {AuthenticationService} from '../../core/_services/authentication/authent
 import {Role} from '../../core/_models/role';
 import {ModalMessageService} from '../../core/_services/utils/modal-message.service';
 import {AnonymService} from '../../core/_services/game/anonym.service';
+import {DomSanitizer} from '@angular/platform-browser';
 
 
 @Component({
@@ -25,6 +26,8 @@ export class GameConnectorComponent implements OnInit, OnDestroy {
     creator: boolean;
     ready: boolean;
     sessionId: string;
+    location = location.origin;
+    loggedIn: boolean;
 
     started: boolean;
 
@@ -34,10 +37,12 @@ export class GameConnectorComponent implements OnInit, OnDestroy {
                 private sseService: SseService,
                 private authenticationService: AuthenticationService,
                 private messageModal: ModalMessageService,
-                private anonymService: AnonymService) {
+                private anonymService: AnonymService,
+                private sanitizer: DomSanitizer) {
     }
 
     ngOnInit(): void {
+        this.loggedIn = !!this.authenticationService.currentUserValue;
         this.sessionId = localStorage.getItem('sessionid');
         if (this.authenticationService.currentUserValue
             && this.authenticationService.currentUserValue.role !== Role.User
@@ -66,6 +71,7 @@ export class GameConnectorComponent implements OnInit, OnDestroy {
                 if (this.sessionId === session.game_session_id) {
                     this.creator = session._creator;
                 }
+                session.imageContent = this.imageDeser(session.image);
             }
         });
         this.gameSettingsService.readyList.subscribe(ls => {
@@ -85,6 +91,14 @@ export class GameConnectorComponent implements OnInit, OnDestroy {
         this.gameSettingsService.startGame(this.game.id).subscribe(next => {
             console.log(next);
         });
+    }
+
+    private imageDeser(image) {
+        if (image) {
+            const objUrl = 'data:image/jpeg;base64,' + image;
+            image = this.sanitizer.bypassSecurityTrustUrl(objUrl);
+        }
+        return image;
     }
 
 

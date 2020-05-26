@@ -90,6 +90,7 @@ export class NavBarComponent implements OnInit {
 
     onChange() {
         localStorage.setItem('anonymousLang', this.localeService.setLang(this.language));
+        this.searchFilterQuizService.initSettings();
     }
 
     playAudio() {
