@@ -55,11 +55,17 @@ export class ProfileComponent implements OnInit {
     private localeService: LocaleService,
     private modalService: NgbModal
   ) {
+    if (this.route.snapshot.paramMap.get('page')) {
+      this.router.navigate(['/profile/' + this.route.snapshot.paramMap.get('username')],
+        { state: { data: this.route.snapshot.paramMap.get('page').toString() } });
+    }
+
     this.role = authenticationService.currentUserValue.role;
     this.username = authenticationService.currentUserValue.username;
-    this.activeTab = history.state.data || 1;
     this.friendsPage = 1;
     this.MAX_AMOUNT = getProfileService.AMOUNT_OF_USERS;
+    this.activeTab = history.state.data || 1;
+
   }
 
   ngOnInit(): void {
@@ -93,7 +99,7 @@ export class ProfileComponent implements OnInit {
         if (this.profile.role === 'ROLE_USER') {
           this.getAllBadgesInfo();
           this.changeTab({ nextId: history.state.data || 1 });
-          this.activeTab = history.state.data || 1;
+          this.activeTab = parseInt(history.state.data, 10) || 1;
         }
         this.ready = true;
       }
@@ -385,17 +391,17 @@ export class ProfileComponent implements OnInit {
   changeTab(event): void {
     this.activeTab = event;
     this.tabReady = false;
-    switch (event.nextId) {
-      case 1:
+    switch (event.nextId.toString()) {
+      case '1':
         this.getQuizzes();
         break;
-      case 2:
+      case '2':
         this.getFavQuizzes();
         break;
-      case 3:
+      case '3':
         this.getAchievements();
         break;
-      case 4:
+      case '4':
         this.getFriendsSize();
         this.getFriends(1);
     }
