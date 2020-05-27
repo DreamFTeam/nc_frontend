@@ -31,10 +31,11 @@ export class LocaleService {
 
     setAnonymousLang() {
         if (localStorage.getItem('anonymousLang')) { //If language in local storage
-            this.setLang(localStorage.getItem('anonymousLang'));
+            return this.setLang(localStorage.getItem('anonymousLang'));
         } else {  //check locale
-            const lang = this.setLang(this.getUsersLocale().substring(0, 2));
+            const lang = this.setLang(this.getUsersLocale().substring(0, 2).toLocaleLowerCase());
             localStorage.setItem('anonymousLang', lang);
+            return lang;
         }
     }
 
@@ -59,8 +60,17 @@ export class LocaleService {
         if (localStorage.getItem('anonymousLang')) {
             return localStorage.getItem('anonymousLang');
         } else {
-            this.setAnonymousLang();
-            return localStorage.getItem('anonymousLang');
+            return this.setAnonymousLang();
+        }
+    }
+
+    getUserLanguage(){
+        if (localStorage.getItem('userLang')) {
+            return localStorage.getItem('userLang');
+        } else {
+            const lang = this.translateService.currentLang
+            localStorage.setItem('userLang',lang);
+            return lang;
         }
     }
 
@@ -76,9 +86,7 @@ export class LocaleService {
         if (typeof window === 'undefined' || typeof window.navigator === 'undefined') {
             return environment.defaultLocale;
         }
-        const wn = window.navigator as any;
-        let lang = wn.languages ? wn.languages[0] : environment.defaultLocale;
-        lang = wn.language || wn.browserLanguage || wn.userLanguage || lang;
+        let lang = window.navigator.language ||  environment.defaultLocale;
         return lang;
     }
 
