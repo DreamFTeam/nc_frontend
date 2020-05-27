@@ -65,7 +65,7 @@ export class CreateChatComponent implements OnInit {
   //add user from model to the list of friends to be added to chat
   addCurrentUserModel(){
     if(this.model !== undefined && this.model !== null){
-      if(this.usersToAdd.filter(x => x.id == this.model.id).length == 0){
+      if(true){
         this.usersToAdd.push(this.model);
         console.log(this.usersToAdd);
         this.model = null;
@@ -75,5 +75,11 @@ export class CreateChatComponent implements OnInit {
 
   removeUser(userId: string){
     this.usersToAdd = this.usersToAdd.filter(obj => obj.id !== userId)
+  }
+
+  selectedItem(selectedItem){
+    selectedItem.preventDefault();
+    this.model = selectedItem.item;
+    this.addCurrentUserModel();
   }
 }
