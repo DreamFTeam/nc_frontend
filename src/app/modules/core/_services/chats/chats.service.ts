@@ -42,6 +42,9 @@ export class ChatsService {
   createOrGetPersonalChat(userId: string): Observable<string>{
     let params = new HttpParams().set('userId', userId);
     const options = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }),
         params: params
     };
     return this.http.post<string>(this.baseUrl + "personal", options);

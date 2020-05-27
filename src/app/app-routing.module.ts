@@ -27,6 +27,7 @@ import { GameCreatorGuard } from './modules/core/_helpers/game-creator.guard';
 import { UserSettingsComponent } from './modules/profiles/user-settings/user-settings.component';
 import { ChatsPageComponent } from './modules/chats/chats-page/chats-page.component';
 import { CreateChatComponent } from './modules/chats/create-chat/create-chat.component';
+import { ChatComponent } from './modules/chats/chat/chat.component';
 
 
 const routes: Routes = [
@@ -113,6 +114,11 @@ const routes: Routes = [
     },
     {
         path: 'chats/create', component: CreateChatComponent,
+        canActivate: [AuthGuard],
+        data: {roles: [Role.User]}
+    },
+    {
+        path: 'chats/:id', component: ChatComponent,
         canActivate: [AuthGuard],
         data: {roles: [Role.User]}
     },

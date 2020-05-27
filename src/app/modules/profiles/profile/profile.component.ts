@@ -13,6 +13,7 @@ import { YesNoModalComponent } from '../../shared/yes-no-modal/yes-no-modal.comp
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { ExtendedQuiz } from '../../core/_models/extended-quiz';
+import { ChatsService } from '../../core/_services/chats/chats.service';
 
 
 @Component({
@@ -53,7 +54,8 @@ export class ProfileComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private toastsService: ToastsService,
     private localeService: LocaleService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private chatsService: ChatsService
   ) {
     if (this.route.snapshot.paramMap.get('page')) {
       this.router.navigate(['/profile/' + this.route.snapshot.paramMap.get('username')],
@@ -415,4 +417,16 @@ export class ProfileComponent implements OnInit {
 
   }
 
+  goToPersonalChat():void{
+    let id;
+    this.chatsService.createOrGetPersonalChat(this.profile.id).subscribe(
+      data => {
+        id = data;
+      }
+    );
+    //TODO - add toast
+    if(id){
+      this.router.navigate(['/chats/'+id]);
+    }
+  }
 }
