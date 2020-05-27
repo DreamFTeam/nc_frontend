@@ -23,7 +23,6 @@ export class LanguageInterceptor implements HttpInterceptor {
           Lang: this.localeService.getUserLanguage()
         }
       });
-      console.log(request);
 
     }else{
       request = request.clone({
