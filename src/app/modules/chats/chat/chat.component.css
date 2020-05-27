@@ -1,5 +1,6 @@
 .parent {
-    height: 80vh;
+    height: 86vh;
+    background-color: #F7F9FB;
 }
 
 .write {
@@ -7,5 +8,24 @@
 }
 
 .show {
-    height: 85%;
+    height: 75%;
+}
+
+.head {
+    height: 10%;
+}
+
+.break {
+    word-wrap: break-word;
+}
+
+.avatar {
+    vertical-align: middle;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+.send {
+    min-width: 20%;
 }

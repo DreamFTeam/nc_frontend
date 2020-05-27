@@ -1,11 +1,32 @@
 <div class="container-lg parent d-flex flex-column">
     <div class="row head" style="background-color: green;">
-        title i knopka nastroiki
+        <div class="col-8">
+            <img *ngIf="currentChat && currentChat.image" [src]='currentChat.image' class="img-thumbnail avatar">
+            <span class="h4 py-1 ml-1" *ngIf="currentChat; else loading">{{currentChat.title}}</span>
+        </div>
+        <div class="col-4">
+            <button class="btn buttonpr">
+                Settings
+            </button>
+        </div>
     </div>
     <div class="row flex-grow show" style="background-color: magenta;">
-        sam chat
+
     </div>
-    <div class="row write" style="background-color: maroon;">
-        write message
+    <div class="row write d-flex">
+        <div class="flex-grow-1">
+            <textarea class="form-control h-100 break" type="text" maxlength="500" [(ngModel)]="message" placeholder="Input message"></textarea>
+        </div>
+        <div class="send d-flex align-items-stretch">
+            <button class="btn buttonpr m-3 flex-fill" (click)="sendMessage()">
+                <strong>Send</strong>
+            </button>
+        </div>
     </div>
 </div>
+
+<ng-template #loading>
+    <div style="text-align: center;" class="h-100 py-1">
+        <fa-icon [icon]="faSpinner" [spin]="true" size="3x"></fa-icon>
+    </div>
+</ng-template>

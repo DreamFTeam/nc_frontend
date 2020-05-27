@@ -78,4 +78,14 @@ export class ChatsService {
     })),
     catchError(this.handleErrorsService.handleError<UserView[]>("searchFriends", [])));   
   }
+
+  getChatById(chatId: string): Observable<Chat>{
+    return this.http.get<Chat>(this.baseUrl+chatId, this.httpOptions)
+    .pipe(
+      map(data =>  {
+        return new Chat().deserialize(data, this.sanitizer);
+      }),
+      catchError(this.handleErrorsService.handleError<Chat>("getChatById", null))
+    );
+  }
 }
