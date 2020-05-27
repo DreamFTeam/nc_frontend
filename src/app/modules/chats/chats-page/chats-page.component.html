@@ -1,0 +1,32 @@
+<div class="container-lg parent">
+    <div class="row mb-2" style="background-color: maroon;">
+        <div class="col-md-6 justify-content-center">
+            <button class="btn btn-primary" routerLink="/chats/create">Create new group chat</button>
+        </div>
+    </div>
+    <div class="row h-100" style="background-color: magenta;">
+        <div class="col-md-4 p-0 h-100 overflow-auto">
+            <ul *ngIf="(!isEmpty && !isLoading) ; else ((isLoading) ? loading : empty)" class="list-group">
+                <li *ngFor="let item of (chatsList$ | async);" [class.active]="activeId === item.id" class="list-group-item list-group-item-action pl-3" (click)="onClick(item.id)">
+                    <img [src]='item.image ? item.image : "../assets/img/nopicture.jpg"' class="img-thumbnail avatar">
+                    <strong class="ml-2">{{item.title}}</strong>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-8">
+            <app-chat></app-chat>
+        </div>
+    </div>
+</div>
+
+<!-- Showing this when the list is empty -->
+<ng-template #empty>
+    <p *ngIf="isEmpty" class="lead emptylabel">"The list is empty"</p>
+</ng-template>
+
+<!-- Showing this when the data is loading -->
+<ng-template #loading>
+    <div style="text-align: center;">
+        <fa-icon [icon]="faSpinner" [spin]="true" size="6x"></fa-icon>
+    </div>
+</ng-template>

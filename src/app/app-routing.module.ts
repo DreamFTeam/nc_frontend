@@ -25,6 +25,8 @@ import { AuthGuard } from './modules/core/_helpers/auth.guard';
 import { GameConnectionGuard } from './modules/core/_helpers/game-connection.guard';
 import { GameCreatorGuard } from './modules/core/_helpers/game-creator.guard';
 import { UserSettingsComponent } from './modules/profiles/user-settings/user-settings.component';
+import { ChatsPageComponent } from './modules/chats/chats-page/chats-page.component';
+import { CreateChatComponent } from './modules/chats/create-chat/create-chat.component';
 
 
 const routes: Routes = [
@@ -103,6 +105,16 @@ const routes: Routes = [
         path: 'activities', component: ActivitiesComponent,
         canActivate: [AuthGuard],
         data: { roles: [Role.User] }
+    },
+    {
+        path: 'chats', component: ChatsPageComponent,
+        canActivate: [AuthGuard],
+        data: {roles: [Role.User]}
+    },
+    {
+        path: 'chats/create', component: CreateChatComponent,
+        canActivate: [AuthGuard],
+        data: {roles: [Role.User]}
     },
     { path: 'quiz/:id/newgame', canActivate: [GameCreatorGuard], component: GameSettingsComponent },
     { path: 'game/:id/lobby', component: GameConnectorComponent },

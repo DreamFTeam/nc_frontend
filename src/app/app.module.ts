@@ -26,6 +26,7 @@ import {QuizViewModule} from './modules/quiz-view/quiz-view.module';
 import {SharedModule} from './modules/shared/shared.module';
 import {ValidationModule} from './modules/validation/validation.module';
 import {AnonymInitComponent} from './modules/game/anonym-init/anonym-init.component';
+import { ChatsModule } from './modules/chats/chats.module';
 
 const appRoutes: Routes = [];
 
@@ -65,7 +66,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
         QuizViewModule,
         AuthorizationModule,
         ActivitiesModule,
-        NotificationsModule
+        NotificationsModule,
+        ChatsModule
     ],
     entryComponents: [LogInComponent, SignUpComponent, RecoverPasswordComponent, AnonymInitComponent],
     providers: [
