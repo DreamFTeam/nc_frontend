@@ -47,15 +47,16 @@ export class ChatsService {
     return this.http.post<string>(this.baseUrl + "personal", options);
   }
 
-  createGroupChat(titleIn: string, participantsArr: string[]): Observable<string>{
+  createGroupChat(titleIn: string, participantsArr: string[]): any{
     const data = {
       title: titleIn, 
       participants: participantsArr
     };
     console.log(data);
-    console.log(this.baseUrl + "group")
-    return this.http.post<string>(this.baseUrl + "group", JSON.stringify(data), this.httpOptions)
-    .pipe(catchError(this.handleErrorsService.handleError<string>("createGroupChat", null)));
+    console.log(this.baseUrl + "group");
+    console.log(this);
+    return this.http.post(this.baseUrl + "group", JSON.stringify(data), this.httpOptions)
+    .pipe(catchError(this.handleErrorsService.handleError<any>("createGroupChat", null)));
   }
 
   searchFriends(term: string): Observable<UserView[]>{

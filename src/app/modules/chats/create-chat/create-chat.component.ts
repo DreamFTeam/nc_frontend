@@ -45,7 +45,7 @@ export class CreateChatComponent implements OnInit {
       console.log(this.title);
     }
     let participantsArr = Array.from(this.usersToAdd, x => x.id);
-    this.chatsService.createGroupChat(this.title, participantsArr)
+    this.chatsService.createGroupChat(this.title, participantsArr).subscribe();
   }
 
   formatter = (userView: UserView) => userView.username;
