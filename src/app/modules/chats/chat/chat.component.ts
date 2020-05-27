@@ -21,12 +21,16 @@ export class ChatComponent implements OnInit {
     private router: Router,
     public toastsService: ToastsService,
     private localeService: LocaleService) {
+
     this.currentChatId = this.route.snapshot.paramMap.get('id');
   }
 
   ngOnInit(): void {
+    
   }
 
   
+
+
 
 }

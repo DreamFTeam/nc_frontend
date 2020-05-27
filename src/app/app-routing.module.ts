@@ -113,17 +113,12 @@ const routes: Routes = [
         data: {roles: [Role.User]}
     },
     {
-        path: 'chats/:id', component: ChatComponent,
+        path: 'chat/:id', component: ChatComponent,
         canActivate: [AuthGuard],
         data: {roles: [Role.User]}
     },
     {
         path: 'chats/create', component: CreateChatComponent,
-        canActivate: [AuthGuard],
-        data: {roles: [Role.User]}
-    },
-    {
-        path: 'chats/:id', component: ChatComponent,
         canActivate: [AuthGuard],
         data: {roles: [Role.User]}
     },
