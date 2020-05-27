@@ -44,7 +44,8 @@ export class CreateChatComponent implements OnInit {
     if(this.title){
       console.log(this.title);
     }
-    //this.chatsService.createOrGetPersonalChat()
+    let participantsArr = Array.from(this.usersToAdd, x => x.id);
+    this.chatsService.createGroupChat(this.title, participantsArr)
   }
 
   formatter = (userView: UserView) => userView.username;
@@ -52,8 +53,9 @@ export class CreateChatComponent implements OnInit {
   //add user from model to the list of friends to be added to chat
   addCurrentUserModel(){
     if(this.model !== undefined && this.model !== null){
-      if(this.usersToAdd.filter(x => x.id === this.model.id).length == 0){
+      if(this.usersToAdd.filter(x => x.id == this.model.id).length == 0){
         this.usersToAdd.push(this.model);
+        console.log(this.usersToAdd);
         this.model = null;
       }
     }
