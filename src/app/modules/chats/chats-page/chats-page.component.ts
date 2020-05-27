@@ -10,7 +10,6 @@ import { ChatsService } from '../../core/_services/chats/chats.service';
   styleUrls: ['./chats-page.component.css']
 })
 export class ChatsPageComponent implements OnInit {
-  activeId: string;
   chatsList$: Observable<Chat[]>;
   isLoading: boolean;
   isEmpty: boolean;
@@ -19,7 +18,6 @@ export class ChatsPageComponent implements OnInit {
   constructor(private chatsService: ChatsService) { 
     this.isLoading = true;
     this.isEmpty = false;
-    this.activeId = "";
   }
 
   ngOnInit(): void {
@@ -35,9 +33,4 @@ export class ChatsPageComponent implements OnInit {
       this.isLoading = false;
     });
   }
-
-  onClick(chatId: string){
-    this.activeId = chatId;
-  }
-
 }
