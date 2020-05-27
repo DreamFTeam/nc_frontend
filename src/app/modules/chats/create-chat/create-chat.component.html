@@ -1,5 +1,5 @@
 <div class="container-lg parent p-3 d-flex flex-column">
-    <h3>Creating the chat</h3>
+    <h1 class="title">Creating the chat</h1>
     <div class="row mx-0 mt-2">
         <label class="h4">Title<span style="color: red;">*</span></label>
         <input class="form-control" type="text" maxlength="50" [(ngModel)]="title" placeholder="Input title of the chat">
@@ -10,26 +10,26 @@
             <fieldset class="form-inline">
                 <div class="form-group">
                     <label for="typeahead-http">Search for a friend:</label>
-                    <input id="typeahead-http" type="text" class="form-control mx-sm-3" [class.is-invalid]="searchFailed" [(ngModel)]="model" [ngbTypeahead]="search" placeholder="Friends search" [resultTemplate]="rt" [inputFormatter]="formatter" [editable]="false" />
+                    <input id="typeahead-http" type="text" class="form-control mx-sm-3" 
+                    [class.is-invalid]="searchFailed" [(ngModel)]="model" 
+                    [ngbTypeahead]="search" placeholder="Friends search" 
+                    [resultTemplate]="rt" [inputFormatter]="formatter" [editable]="false" 
+                    (selectItem)="selectedItem($event)"/>
+
                     <div><small *ngIf=" searching " class="form-text text-muted ">searching...</small></div>
                     <div class="invalid-feedback " *ngIf="searchFailed ">Sorry, suggestions could not be loaded.</div>
                 </div>
             </fieldset>
-            <div *ngIf="model" class="mt-2">
-                <img [src]='model.imageContent ? model.imageContent : "../assets/img/nopicture.jpg "' class="img-thumbnail avatar ">
-                <strong class="h5 ml-2 break">{{model.username}}</strong>
-            </div>
-            <button *ngIf="model" class="btn buttonpr mt-2" (click)="addCurrentUserModel()">Add</button>
         </div>
-        <div class="col col-6-md w-100">
-            <ul *ngIf="usersToAdd.length != 0" class="list-group">
-                <li *ngFor="let item of usersToAdd;" class="list-group-item list-group-item-action pl-3">
-                    <img [src]='item.imageContent ? item.imageContent : "../assets/img/nopicture.jpg"' class="img-thumbnail avatar">
-                    <strong class="ml-2">{{item.username}}</strong>
-                    <button class="btn btn-danger" (click)="removeUser(item.id)">x</button>
-                </li>
-            </ul>
-        </div>
+    </div>
+    <div class="my-2 w-100 h-100 overflow-auto">
+        <ul *ngIf="usersToAdd.length != 0" class="list-group">
+            <li *ngFor="let item of usersToAdd;" class="list-group-item list-group-item-action pl-3">
+                <button class="btn btn-danger" (click)="removeUser(item.id)">x</button>
+                <img [src]='item.imageContent ? item.imageContent : "../assets/img/nopicture.jpg"' class="img-thumbnail avatar">
+                <strong class="ml-2">{{item.username}}</strong>        
+            </li>
+        </ul>
     </div>
     <div class="row mx-0 mt-auto d-flex align-items-end justify-content-end ">
         <button class="btn buttonpr " routerLink="/chats">

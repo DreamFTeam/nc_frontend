@@ -28,6 +28,7 @@ import { UserSettingsComponent } from './modules/profiles/user-settings/user-set
 import { ChatsPageComponent } from './modules/chats/chats-page/chats-page.component';
 import { CreateChatComponent } from './modules/chats/create-chat/create-chat.component';
 import {ChatComponent} from './modules/chats/chat/chat.component';
+import { ChatSettingsComponent } from './modules/chats/chat-settings/chat-settings.component';
 
 
 const routes: Routes = [
@@ -122,6 +123,11 @@ const routes: Routes = [
         canActivate: [AuthGuard],
         data: {roles: [Role.User]}
     },
+    {
+        path: 'chats/settings/:id', component: ChatSettingsComponent,
+        canActivate: [AuthGuard],
+        data: {roles: [Role.User]}
+    },
     { path: 'quiz/:id/newgame', canActivate: [GameCreatorGuard], component: GameSettingsComponent },
     { path: 'game/:id/lobby', component: GameConnectorComponent },
     { path: 'join/:accessId', canActivate: [GameConnectionGuard], component: QuizListComponent },
@@ -129,6 +135,7 @@ const routes: Routes = [
     { path: 'filterquiz', component: QuizFilterComponent },
     { path: 'play/:gameid', component: GameQuestionComponent },
     { path: 'game/result/:id', component: GameResultComponent },
+    
 
     { path: '**', redirectTo: '' }
 ];
