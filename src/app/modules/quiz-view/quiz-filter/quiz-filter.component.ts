@@ -43,11 +43,10 @@ export class QuizFilterComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.settings = this.searchFilterQuizService.getSettings();
-        if (!this.settings.quizLang) {
+        if (!this.searchFilterQuizService.getSettings().quizLang) {
             this.searchFilterQuizService.initSettings();
-            this.settings = this.searchFilterQuizService.getSettings();
         }
+        this.settings = this.searchFilterQuizService.getSettings();
         this.quizService.getTagsList().subscribe(next => this.tags = next);
         this.quizService.getCategoriesList().subscribe(next => this.categories = next);
     }

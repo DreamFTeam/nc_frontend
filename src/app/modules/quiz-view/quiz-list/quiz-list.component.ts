@@ -42,6 +42,9 @@ export class QuizListComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        if (!this.searchFilterQuizService.getSettings().quizLang) {
+            this.searchFilterQuizService.initSettings();
+        }
         this.searchFilterQuizService.filterQuiz(this.page).subscribe();
         this.searchFilterQuizService.currentQuizzes.subscribe(quizzes => {
             if (quizzes) {
