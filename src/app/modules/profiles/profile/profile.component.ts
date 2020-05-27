@@ -418,15 +418,13 @@ export class ProfileComponent implements OnInit {
   }
 
   goToPersonalChat():void{
-    let id;
     this.chatsService.createOrGetPersonalChat(this.profile.id).subscribe(
       data => {
-        id = data;
+      //TODO - add toast
+        if(data){
+          this.router.navigate(['/chat/'+data]);
+        }
       }
     );
-    //TODO - add toast
-    if(id){
-      this.router.navigate(['/chats/'+id]);
-    }
   }
 }

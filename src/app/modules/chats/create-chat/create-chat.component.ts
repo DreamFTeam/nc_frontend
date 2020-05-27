@@ -3,6 +3,7 @@ import { ChatsService } from '../../core/_services/chats/chats.service';
 import {Observable, of} from 'rxjs';
 import {catchError, debounceTime, distinctUntilChanged, map, tap, switchMap} from 'rxjs/operators';
 import { UserView } from '../../core/_models/userview';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -17,7 +18,9 @@ export class CreateChatComponent implements OnInit {
   searchFailed = false;
   usersToAdd : UserView[] = [];
 
-  constructor(private chatsService: ChatsService) {
+  constructor(private chatsService: ChatsService,
+    private router: Router,
+    ) {
     this.model = null;
    }
 
@@ -42,10 +45,19 @@ export class CreateChatComponent implements OnInit {
 
   createChat(): void{
     if(this.title){
-      console.log(this.title);
+      let participantsArr = Array.from(this.usersToAdd, x => x.id);
+      this.chatsService.createGroupChat(this.title, participantsArr).subscribe(
+        data => {
+          //TODO - add toast
+            if(data){
+              this.router.navigate(['/chat/'+data]);
+            }
+          }
+      );  
     }
-    let participantsArr = Array.from(this.usersToAdd, x => x.id);
-    this.chatsService.createGroupChat(this.title, participantsArr).subscribe();
+    else{
+      //SHOW TOAST
+    }
   }
 
   formatter = (userView: UserView) => userView.username;
