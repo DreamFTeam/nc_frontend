@@ -13,7 +13,7 @@
     <!--#scrollMe-->
     <div class="row flex-grow show overflow-auto" (scroll)="onScroll($event)">
         <div *ngFor="let item of messages" [ngClass]="getMessageClass(item.authorId)">
-            <div>
+            <div class="border msg-container">
                 <p><strong>{{item.authorUsername}}</strong></p>
                 <p>{{item.content}}</p>
                 <p>{{item.sentDate}}</p>

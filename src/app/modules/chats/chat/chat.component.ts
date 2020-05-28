@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, AfterViewChecked, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, HostListener, AfterViewChecked, ElementRef, ViewChild, OnDestroy } from '@angular/core';
 import { Message } from '../../core/_models/message';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalService } from '../../core/_services/utils/modal.service';
@@ -23,7 +23,7 @@ const MESSAGES_PAGE_SIZE = 6;
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css']
 })
-export class ChatComponent{
+export class ChatComponent implements OnDestroy{
   //@ViewChild('scrollMe') private myScrollContainer: ElementRef;
 
   currentChatId: string;
@@ -62,10 +62,12 @@ export class ChatComponent{
     this.currentUserId = this.authenticationService.currentUserValue.id;
     this.currentUsername = this.authenticationService.currentUserValue.username;
     this.currentChatId = this.route.snapshot.paramMap.get('id');
-    console.log("Constructor");
-    console.log(this.currentChatId);
     this.getChatInfo();
     this.loadMessages();
+  }
+  ngOnDestroy(): void {
+    this.socket.unsubscribe();
+    this.stompClient.disconnect();
   }
 
   openWebSocket(){
@@ -76,11 +78,8 @@ export class ChatComponent{
     let that = this;
 
     stompClient.connect({}, function(){
-      console.log("CURRENT STOMP CLIENT");
-      console.log(stompClient);
       const url = '/topic/messages/' + that.currentChatId;
       that.socket = stompClient.subscribe(url, (message) => {
-        console.log("message came");
         if(message.body){
           let receivedEvent = JSON.parse(message.body);
           console.log(receivedEvent);
@@ -102,8 +101,6 @@ export class ChatComponent{
     }
 
   getChatInfo():void{
-    console.log("CURRENT CHAT ID");
-    console.log(this.currentChatId);
     this.chatsService.getChatById(this.currentChatId)
     .subscribe(x => {
       this.currentChat = x;
@@ -129,13 +126,8 @@ export class ChatComponent{
       
       const pageToSend: number = Math.floor(this.messages.length / MESSAGES_PAGE_SIZE) + 1;
       
-      console.log("PAGE");
-      console.log(pageToSend);
-
       this.chatsService.getMessagesByPage(this.currentChatId, pageToSend)
       .subscribe(data => {
-        console.log("DATA: ");
-        console.log(data);
         if(data.length < MESSAGES_PAGE_SIZE){
           this.isEndOfMessagesList = true;
           console.log("END");

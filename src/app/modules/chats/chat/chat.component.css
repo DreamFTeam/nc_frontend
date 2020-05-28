@@ -33,3 +33,8 @@
 .head-title {
     overflow-x: hidden;
 }
+
+.msg-container {
+    border-radius: 2%;
+    background-color: gray;
+}
