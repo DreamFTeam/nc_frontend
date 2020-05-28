@@ -82,10 +82,9 @@ export class ChatComponent{
       that.socket = stompClient.subscribe(url, (message) => {
         console.log("message came");
         if(message.body){
-          that.receivedEvent = JSON.parse(message.body);
-          if(that.receivedEvent.type === EventType.MESSAGE){
-            that.messages.push(that.receivedEvent.message);
-          }
+          let receivedEvent = JSON.parse(message.body);
+          console.log(receivedEvent);
+          that.messages.push(receivedEvent);
         }
       });
     }, this);
