@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, AfterViewChecked, ElementRef, ViewChild } from '@angular/core';
 import { Message } from '../../core/_models/message';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalService } from '../../core/_services/utils/modal.service';
@@ -18,6 +18,8 @@ const MESSAGES_PAGE_SIZE = 6;
   styleUrls: ['./chat.component.css']
 })
 export class ChatComponent implements OnInit {
+  //@ViewChild('scrollMe') private myScrollContainer: ElementRef;
+
   currentChatId: string;
   currentUserId: string;
   currentChat: Chat;
@@ -25,6 +27,9 @@ export class ChatComponent implements OnInit {
   message: string;
   faSpinner = faSpinner;
   isLoading: boolean;
+  isLoadingMessages: boolean;
+  isEndOfMessagesList: boolean;
+  isFirstLoading: boolean;
 
   constructor(
       private authenticationService: AuthenticationService,
@@ -35,7 +40,12 @@ export class ChatComponent implements OnInit {
       private localeService: LocaleService,
       private chatsService: ChatsService) {
 
+    this.isLoading = true;
+    this.isLoadingMessages = false;
+    this.isEndOfMessagesList = false;
+    this.isFirstLoading = true;
     this.messages = [];
+
     this.currentUserId = this.authenticationService.currentUserValue.id;
     this.currentChatId = this.route.snapshot.paramMap.get('id');
     this.getChatInfo();
@@ -62,16 +72,41 @@ export class ChatComponent implements OnInit {
 
   @HostListener('scroll', ['$event'])
   onScroll(event){
-    console.log(event);
+    if (event.target.scrollHeight - event.target.scrollTop > event.target.scrollHeight - 10 ) {
+      if (!this.isEndOfMessagesList && !this.isLoadingMessages){
+        this.loadMessages();
+      }
+    }
   }
 
   loadMessages(){
-    const pageToSend: number = Math.floor(this.messages.length / MESSAGES_PAGE_SIZE) + 1;
-    this.chatsService.getMessagesByPage(this.currentChatId, pageToSend)
-    .subscribe(data => {
-      this.messages = data.concat(this.messages);
-      console.log(this.messages);
-    });  
+    if(!this.isLoadingMessages){
+      this.isLoadingMessages = true;
+      
+      const pageToSend: number = Math.floor(this.messages.length / MESSAGES_PAGE_SIZE) + 1;
+      
+      console.log("PAGE");
+      console.log(pageToSend);
+
+      this.chatsService.getMessagesByPage(this.currentChatId, pageToSend)
+      .subscribe(data => {
+        console.log("DATA: ");
+        console.log(data);
+        if(data.length < MESSAGES_PAGE_SIZE){
+          this.isEndOfMessagesList = true;
+          console.log("END");
+        }
+        this.messages = data.concat(this.messages);
+        this.isLoadingMessages = false;
+        if(this.isFirstLoading){
+          //this.scrollToBottom();
+          this.isFirstLoading = false;
+        }
+      },
+      error => {
+        //show toast
+      });
+    }  
   }
 
   isAuthor(authorId: string){
@@ -84,4 +119,12 @@ export class ChatComponent implements OnInit {
     }
     return 'd-flex justify-content-start w-100';
   }
+
+  
+
+  // scrollToBottom(): void {
+  //   try {
+  //       this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+  //   } catch(err) { }                 
+  // }
 }

@@ -10,6 +10,7 @@
             </button>
         </div>
     </div>
+    <!--#scrollMe-->
     <div class="row flex-grow show overflow-auto" (scroll)="onScroll($event)" style="background-color: magenta;">
         <div *ngFor="let item of messages" [ngClass]="getMessageClass(item.authorId)">
             <div>
