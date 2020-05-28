@@ -9,6 +9,12 @@ import { ChatsService } from '../../core/_services/chats/chats.service';
 import { Observable } from 'rxjs';
 import {faSpinner} from '@fortawesome/free-solid-svg-icons';
 import { AuthenticationService } from '../../core/_services/authentication/authentication.service';
+import * as Stomp from '@stomp/stompjs';
+import * as SockJS from 'sockjs-client';
+import { ReceivedEvent } from '../../core/_models/receivedevent';
+import { environment } from 'src/environments/environment';
+import { EventType } from '../../core/_models/eventtype';
+
 
 const MESSAGES_PAGE_SIZE = 6;
 
@@ -17,11 +23,12 @@ const MESSAGES_PAGE_SIZE = 6;
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css']
 })
-export class ChatComponent implements OnInit {
+export class ChatComponent{
   //@ViewChild('scrollMe') private myScrollContainer: ElementRef;
 
   currentChatId: string;
   currentUserId: string;
+  currentUsername: string;
   currentChat: Chat;
   messages: Message[];
   message: string;
@@ -30,6 +37,12 @@ export class ChatComponent implements OnInit {
   isLoadingMessages: boolean;
   isEndOfMessagesList: boolean;
   isFirstLoading: boolean;
+
+  //for sockets
+  stompClient: any;
+  socket: any;
+  stomp: any;
+  receivedEvent: ReceivedEvent;
 
   constructor(
       private authenticationService: AuthenticationService,
@@ -47,23 +60,55 @@ export class ChatComponent implements OnInit {
     this.messages = [];
 
     this.currentUserId = this.authenticationService.currentUserValue.id;
+    this.currentUsername = this.authenticationService.currentUserValue.username;
     this.currentChatId = this.route.snapshot.paramMap.get('id');
+    console.log("Constructor");
+    console.log(this.currentChatId);
     this.getChatInfo();
     this.loadMessages();
   }
 
-  ngOnInit(): void {
+  openWebSocket(){
+    let ws = new SockJS(`${environment.socketUrl}/ws`);
+    let stompClient = Stomp.Stomp.over(ws);
+    this.stompClient = stompClient;
     
+    let that = this;
+
+    stompClient.connect({}, function(){
+      console.log("CURRENT STOMP CLIENT");
+      console.log(stompClient);
+      const url = '/topic/messages/' + that.currentChatId;
+      that.socket = stompClient.subscribe(url, (message) => {
+        console.log("message came");
+        if(message.body){
+          that.receivedEvent = JSON.parse(message.body);
+          if(that.receivedEvent.type === EventType.MESSAGE){
+            that.messages.push(that.receivedEvent.message);
+          }
+        }
+      });
+    }, this);
   }
 
   sendMessage():void{
-    console.log(this.message);
-  }
+      if (!this.message) {
+        this.toastsService.toastAddDanger("Message field is empty.\n Please type something");
+      }else{
+        let messageToSend = new Message(this.currentUserId, this.currentUsername, this.message);
+        this.stompClient.send('/app/chat/' + this.currentChatId, {}, JSON.stringify(messageToSend));
+        this.message= '';
+        // this.scrollToBottom();
+      }
+    }
 
   getChatInfo():void{
+    console.log("CURRENT CHAT ID");
+    console.log(this.currentChatId);
     this.chatsService.getChatById(this.currentChatId)
     .subscribe(x => {
-      this.currentChat = x
+      this.currentChat = x;
+      this.openWebSocket();
     },
     err => {
       this.toastsService.toastAddDanger("Something went wrong while fetching chat info");

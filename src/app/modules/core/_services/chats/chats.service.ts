@@ -32,6 +32,7 @@ export class ChatsService {
 }
 
   getChatsList(): Observable<Chat[]> {
+    console.log(this.info.id);
     return this.http.get<Chat[]>(this.baseUrl, this.httpOptions)
     .pipe(
       map(data => data.map(x => {

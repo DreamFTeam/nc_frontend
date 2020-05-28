@@ -7,7 +7,9 @@ export const environment = {
   defaultLocale: 'en',
   production: false,
   //apiUrl: 'https://qznetbc.herokuapp.com/api/'
-  apiUrl: 'http://localhost:8081/api/'
+  apiUrl: 'http://localhost:8081/api/',
+  //socketUrl: 'https://qznetbc.herokuapp.com',
+  socketUrl: 'http://localhost:8081'
 };
 
 /*
