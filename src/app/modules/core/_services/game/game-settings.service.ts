@@ -45,13 +45,13 @@ export class GameSettingsService {
         this.eventSource = this.sseService.getEventSource(this.sseConnectorUrl + gameId);
         this.eventSource.addEventListener('join', event => {
             const ev: any = event;
-            console.log('Join ' + ev.data);
+            // console.log('Join ' + ev.data);
             this.setSubjSessions(gameId);
         });
 
         this.eventSource.addEventListener('ready', event => {
             const ev: any = event;
-            console.log('Ready ' + ev.data);
+            // console.log('Ready ' + ev.data);
             if (!this.readySubject.value.includes(ev.data)) {
                 this.readySubject.value.push(ev.data);
                 this.readySubject.next(this.readySubject.value);
@@ -79,7 +79,7 @@ export class GameSettingsService {
         if (!settings.additionalPoints) {
             settings.additionalPoints = false;
         }
-        console.log(settings);
+        // console.log(settings);
         return this.http.post<Game>(this.gameUrl, JSON.stringify(settings), this.httpOptions);
     }
 
@@ -114,7 +114,7 @@ export class GameSettingsService {
     }
 
     quitGame(sessionId: string) {
-        console.log('quit ' + sessionId);
+        // console.log('quit ' + sessionId);
         this.readySubject.next([]);
         this.sessionsSubject.next([]);
         return this.http.delete(this.gameUrl + `remove/${sessionId}`,

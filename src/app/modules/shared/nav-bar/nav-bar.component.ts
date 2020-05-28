@@ -57,11 +57,6 @@ export class NavBarComponent implements OnInit {
     openLogin() {
         this.isMenuCollapsed = true;
         const modalRef = this.modalService.open(LogInComponent);
-        modalRef.result.then((result) => {
-            if (result) {
-                console.log(result);
-            }
-        });
     }
 
     openReg() {

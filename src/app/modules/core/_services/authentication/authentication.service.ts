@@ -49,7 +49,7 @@ export class AuthenticationService {
                 const tokenJSON: any = data;
                 localStorage.setItem('userData', tokenJSON.token);
                 const userDecode: User = jwt_decode(tokenJSON.token);
-                console.log(userDecode);
+                // console.log(userDecode);
                 this.currentUserSubject.next(userDecode);
                 this.localeService.initUserLang(this.settingsService.getLanguage());
                 return userDecode;

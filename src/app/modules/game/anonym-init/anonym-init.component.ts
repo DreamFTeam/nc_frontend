@@ -18,30 +18,6 @@ export class AnonymInitComponent implements OnInit {
     ngOnInit(): void {
     }
 
-
-    // joinGame() {
-    //
-    //     if (this.anonymName) {
-    //         this.loading = true;
-    //         console.log(this.anonymName);
-    //         this.anonymService.anonymLogin(this.anonymName).subscribe(anon => {
-    //             console.log(anon);
-    //             this.gameSettingsService.join(this.activeRouter.snapshot.paramMap.get('accessId'))
-    //                 .subscribe(session => {
-    //                         console.log(session);
-    //                         localStorage.setItem('sessionid', session.id);
-    //                         this.router.navigateByUrl(`game/${session.gameId}/lobby`);
-    //                     },
-    //                     error => {
-    //                         // this.modal.show('An error occurred', 'An error occurred.');
-    //                         // this.router.navigateByUrl('/');
-    //                         console.error(error);
-    //                         return false;
-    //                     }
-    //                 );
-    //         });
-    //     }
-    // }
     initAnon() {
         this.activeModal.close('Close click');
         this.anonymName.emit(this.nameStr);

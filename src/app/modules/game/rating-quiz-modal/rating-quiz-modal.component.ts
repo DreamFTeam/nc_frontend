@@ -24,7 +24,7 @@ export class RatingQuizModalComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        console.log(this.gameId);
+        // console.log(this.gameId);
         this.gameQuestionService.getGameData(this.gameId).subscribe(x => {
             this.quizId = x.quizId;
             this.gameResultService.getRating(this.quizId).subscribe(rating => {

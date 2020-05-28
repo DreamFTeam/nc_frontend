@@ -100,6 +100,6 @@ export class QuizFilterComponent implements OnInit {
         this.activeModal.close();
         this.searchFilterQuizService.setSettings(this.settings);
         this.searchFilterQuizService.filterQuiz().subscribe();
-        this.searchFilterQuizService.filterTotalSize().subscribe(n => console.log(n));
+        this.searchFilterQuizService.filterTotalSize().subscribe();
     }
 }

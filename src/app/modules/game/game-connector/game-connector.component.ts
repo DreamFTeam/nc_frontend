@@ -59,14 +59,14 @@ export class GameConnectorComponent implements OnInit, OnDestroy {
                         this.messageModal.show('Access denied', 'The game has already started or has not been created.');
                         this.router.navigateByUrl('/');
                     }
-                    console.log(game);
+                    // console.log(game);
                     this.game = game;
                 }
             );
         this.gameSettingsService.setSubjSessions(gameId);
         this.gameSettingsService.sessions.subscribe(ses => {
             Object.assign(this.sessions, ses);
-            console.log(ses);
+            // console.log(ses);
             for (const session of this.sessions) {
                 if (this.sessionId === session.game_session_id) {
                     this.creator = session._creator;
@@ -82,14 +82,14 @@ export class GameConnectorComponent implements OnInit, OnDestroy {
 
     setReady() {
         this.ready = true;
-        console.log(this.sessionId);
+        // console.log(this.sessionId);
         this.gameSettingsService.setReady(this.game.id, this.sessionId).subscribe();
     }
 
     startGame() {
         this.started = true;
         this.gameSettingsService.startGame(this.game.id).subscribe(next => {
-            console.log(next);
+            // console.log(next);
         });
     }
 
