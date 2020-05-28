@@ -317,5 +317,10 @@
   },
   "notifications": {
     "empty": "No new notifications"
+  },
+  "rating": {
+    "title": "Rating",
+    "alreadyRateMes": "You have already rated this quiz before. You can change your mind now.",
+    "notRatedYetMes": "Rate quiz please"
   }
 }

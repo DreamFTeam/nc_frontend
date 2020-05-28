@@ -2,6 +2,7 @@ import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {GameResultService} from '../../core/_services/game/game-result.service';
 import {GameQuestionService} from '../../core/_services/game/game-question.service';
+import {LocaleService} from '../../core/_services/utils/locale.service';
 
 @Component({
     selector: 'app-rating-quiz-modal',
@@ -11,14 +12,15 @@ import {GameQuestionService} from '../../core/_services/game/game-question.servi
 export class RatingQuizModalComponent implements OnInit, OnDestroy {
     currentRate: number;
     message: string;
-    readonly alreadyRateMes = 'You have already rated this quiz before. You can change your mind now.';
-    readonly notRatedYetMes = 'Rate quiz please';
+    readonly alreadyRateMes = this.localeService.getValue('rating.alreadyRateMes');
+    readonly notRatedYetMes = this.localeService.getValue('rating.notRatedYetMes');
     @Input() gameId: string;
     private quizId: string;
 
     constructor(public activeModal: NgbActiveModal,
                 private gameResultService: GameResultService,
-                private gameQuestionService: GameQuestionService) {
+                private gameQuestionService: GameQuestionService,
+                private localeService: LocaleService) {
     }
 
     ngOnInit(): void {
