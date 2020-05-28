@@ -119,9 +119,7 @@
     <div *ngIf="isQuizCreated() && questionSelector !== undefined" class="container-sm mt-2 mb-2 p-4">
         <div *ngIf="!questionLoading">
             <div *ngIf="!quiz.published">
-                <button class="btn buttondel" (click)="removeQuestion()">
-                    {{ 'quizCreation.remove' | translate }} {{ 'quizCreation.question' | translate }}
-                </button>
+                <button class="btn buttondel" (click)="removeQuestion()">{{ 'utils.remove' | translate }} {{ 'quizCreation.question' | translate }}</button>
 
             </div>
 
