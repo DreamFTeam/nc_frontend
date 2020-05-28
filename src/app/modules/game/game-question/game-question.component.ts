@@ -55,6 +55,9 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
     waitResult: boolean;
     finishGame: Subscription;
 
+    gameloader: Subscription;
+    questionloader: Subscription;
+
 
     constructor(private gameQuestionService: GameQuestionService,
                 private questionService: QuestionService,
@@ -83,11 +86,11 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
     }
 
     loadGameData(data) {
-        this.gameQuestionService.getGameData(data).subscribe(ans => this.mapGettedGameData(ans));
+        this.gameloader = this.gameQuestionService.getGameData(data).subscribe(ans => this.mapGettedGameData(ans));
     }
 
     loadQuestionData() {
-        this.questionService.getAllQuestions(this.game.quizId).subscribe(ans => this.mapGettedQuestions(ans), err => this.getQuestionsErr(err));
+        this.questionloader = this.questionService.getAllQuestions(this.game.quizId).subscribe(ans => this.mapGettedQuestions(ans), err => this.getQuestionsErr(err));
     }
 
     timer() {
@@ -118,6 +121,7 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
         this.loadQuestionData();
         this.timerStep = this.game.roundDuration;
         console.log('Mapped game data: quizId - ' + this.game.quizId + ' startTime - ' + this.game.startDatetime);
+        this.gameloader.unsubscribe();
     }
 
     mapGettedQuestions(ans) {
@@ -161,13 +165,18 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
         this.curq = this.questions[this.currQuestNumb];
         this.curq_image = this.questions[this.currQuestNumb].image;
         if (this.curq.typeId == 4) {
-            let sqq: SequenceAnswer = this.curq;
-            this.shuffled = sqq.rightAnswers.map((a) => ({
+            this.shuffled = this.curq.rightAnswers.map((a) => ({
                 sort: Math.random(),
                 value: a
             })).sort((a, b) => a.sort - b.sort).map((a) => a.value);
         }
+        if (this.curq.typeId == 1) {
+            let rndTo = Math.floor(Math.random() * (this.curq.answers.length));
+            moveItemInArray(this.curq.answers, this.curq.answers.length - 1, rndTo);
+            moveItemInArray(this.curq.rightAnswers, this.curq.answers.length - 1, rndTo);
+        }
         this.questionsLoading = false;
+        this.questionloader.unsubscribe();
         this.timer();
     }
 
@@ -177,11 +186,15 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
             this.curq = this.questions[this.currQuestNumb];
             this.curq_image = this.questions[this.currQuestNumb].image;
             if (this.curq.typeId == 4) {
-                let sqq: SequenceAnswer = this.curq;
-                this.shuffled = sqq.rightAnswers.map((a) => ({
+                this.shuffled = this.curq.rightAnswers.map((a) => ({
                     sort: Math.random(),
                     value: a
                 })).sort((a, b) => a.sort - b.sort).map((a) => a.value);
+            }
+            if (this.curq.typeId == 1) {
+                let rndTo = Math.floor(Math.random() * (this.curq.answers.length));
+                moveItemInArray(this.curq.answers, this.curq.answers.length - 1, rndTo);
+                moveItemInArray(this.curq.rightAnswers, this.curq.answers.length - 1, rndTo);
             }
             clearInterval(this.interval);
             this.timer();
@@ -198,14 +211,13 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
     }
 
     oneToFourAns(answ: String) {
-        let otf: OneToFour = this.curq;
         this.timeSpend = this.timeSpend + Math.round((100 - this.timeLeft) * this.game.roundDuration / 100);
-        for (let i = 0; i < otf.answers.length; i++) {
-            if (answ == otf.answers[i] && otf.rightAnswers[i] == true) {
+        for (let i = 0; i < this.curq.answers.length; i++) {
+            if (answ == this.curq.answers[i] && this.curq.rightAnswers[i] == true) {
                 if (this.game.additionalPoints == true && this.timeSpend < this.timeLeft) {
-                    this.playerRating = this.playerRating + otf.points * 2;
+                    this.playerRating = this.playerRating + this.curq.points * 2;
                 } else {
-                    this.playerRating = this.playerRating + otf.points;
+                    this.playerRating = this.playerRating + this.curq.points;
                 }
             }
         }
@@ -217,13 +229,12 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
     }
 
     trueFalseAns(answ: String) {
-        let tf: TrueFalse = this.curq;
         this.timeSpend = this.timeSpend + Math.round((100 - this.timeLeft) * this.game.roundDuration / 100);
-        if (answ == tf.rightAnswer) {
+        if (answ == this.curq.rightAnswer) {
             if (this.game.additionalPoints == true && this.timeSpend < this.timeLeft) {
-                this.playerRating = this.playerRating + tf.points * 2;
+                this.playerRating = this.playerRating + this.curq.points * 2;
             } else {
-                this.playerRating = this.playerRating + tf.points;
+                this.playerRating = this.playerRating + this.curq.points;
             }
         }
         this.isBreak = true;
@@ -234,13 +245,12 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
     }
 
     manualAns() {
-        let oa: OpenAnswer = this.curq;
         this.timeSpend = this.timeSpend + Math.round((100 - this.timeLeft) * this.game.roundDuration / 100);
-        if (oa.rightAnswer == this.answf) {
+        if (this.curq.rightAnswer == this.answf) {
             if (this.game.additionalPoints == true && this.timeSpend < this.timeLeft) {
-                this.playerRating = this.playerRating + oa.points * 2;
+                this.playerRating = this.playerRating + this.curq.points * 2;
             } else {
-                this.playerRating = this.playerRating + oa.points;
+                this.playerRating = this.playerRating + this.curq.points;
             }
         }
         this.answf = '';
@@ -256,19 +266,18 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
     }
 
     seqAns() {
-        let sq: SequenceAnswer = this.curq;
         let check: boolean = true;
         this.timeSpend = this.timeSpend + Math.round((100 - this.timeLeft) * this.game.roundDuration / 100);
-        for (let i = 0; i < sq.rightAnswers.length; i++) {
-            if (this.shuffled[i] != sq.rightAnswers[i]) {
+        for (let i = 0; i < this.curq.rightAnswers.length; i++) {
+            if (this.shuffled[i] != this.curq.rightAnswers[i]) {
                 check = false;
             }
         }
         if (check == true) {
             if (this.game.additionalPoints == true && this.timeSpend < this.timeLeft) {
-                this.playerRating = this.playerRating + sq.points * 2;
+                this.playerRating = this.playerRating + this.curq.points * 2;
             } else {
-                this.playerRating = this.playerRating + sq.points;
+                this.playerRating = this.playerRating + this.curq.points;
             }
         }
         this.isBreak = true;

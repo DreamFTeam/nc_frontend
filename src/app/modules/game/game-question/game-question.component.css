@@ -1,6 +1,6 @@
 p
 {
-    word-break: break-all;
+    word-break: break-word;
     text-align: center;
 }
 
@@ -132,5 +132,5 @@ img
 
 .tx
 {
-    word-break: break-all;
+    word-break: break-word;
 }
