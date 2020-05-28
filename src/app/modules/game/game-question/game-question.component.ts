@@ -221,11 +221,7 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
                 }
             }
         }
-        this.isBreak = true;
-        this.timerStep = this.game.breakTime;
-        clearInterval(this.interval);
-        this.timer();
-        this.timeLeft = 100;
+        this.break();
     }
 
     trueFalseAns(answ: String) {
@@ -237,11 +233,7 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
                 this.playerRating = this.playerRating + this.curq.points;
             }
         }
-        this.isBreak = true;
-        this.timerStep = this.game.breakTime;
-        clearInterval(this.interval);
-        this.timer();
-        this.timeLeft = 100;
+        this.break();
     }
 
     manualAns() {
@@ -254,11 +246,7 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
             }
         }
         this.answf = '';
-        this.isBreak = true;
-        this.timerStep = this.game.breakTime;
-        clearInterval(this.interval);
-        this.timer();
-        this.timeLeft = 100;
+        this.break();
     }
 
     drop(event: CdkDragDrop<string[]>) {
@@ -280,6 +268,10 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
                 this.playerRating = this.playerRating + this.curq.points;
             }
         }
+        this.break();
+    }
+
+    break() {
         this.isBreak = true;
         this.timerStep = this.game.breakTime;
         clearInterval(this.interval);
