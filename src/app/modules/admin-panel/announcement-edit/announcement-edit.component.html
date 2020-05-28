@@ -18,7 +18,7 @@
                           placeholder="{{ 'utils.content' | translate }}"></textarea>
 
                 <button *ngIf="thumbnail !== null" class="btn buttondel mt-2" (click)="removeImage()">
-                    {{ 'quizCreation.remove' | translate }} {{ 'quizCreation.image' | translate }}
+                    {{ 'utils.remove' | translate }} {{ 'quizCreation.image' | translate }}
                 </button>
                 <div class="mt-2">
                     <img [src]='thumbnail' alt="Upload" class="img-thumbnail" (click)="imageInput.click()">
