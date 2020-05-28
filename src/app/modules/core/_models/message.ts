@@ -1,7 +1,6 @@
 export class Message{
-    id: string;
     authorId: string;
-    username: string;
+    authorUsername: string;
     content: string;
-    datetime: Date;
+    sentDate: Date;
 }

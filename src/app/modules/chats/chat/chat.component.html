@@ -1,17 +1,23 @@
 <div class="container-lg parent d-flex flex-column">
     <div class="row head" style="background-color: green;">
-        <div class="col-8">
+        <div class="col-8 head-title">
             <img *ngIf="currentChat && currentChat.image" [src]='currentChat.image' class="img-thumbnail avatar">
             <span class="h4 py-1 ml-1" *ngIf="currentChat; else loading">{{currentChat.title}}</span>
         </div>
-        <div class="col-4">
+        <div class="col-4 d-flex align-items-stretch justify-content-end">
             <button class="btn buttonpr">
                 Settings
             </button>
         </div>
     </div>
-    <div class="row flex-grow show" style="background-color: magenta;">
-
+    <div class="row flex-grow show overflow-auto" (scroll)="onScroll($event)" style="background-color: magenta;">
+        <div *ngFor="let item of messages" [ngClass]="getMessageClass(item.authorId)">
+            <div>
+                <p><strong>{{item.authorUsername}}</strong></p>
+                <p>{{item.content}}</p>
+                <p>{{item.sentDate}}</p>
+            </div>
+        </div>
     </div>
     <div class="row write d-flex">
         <div class="flex-grow-1">

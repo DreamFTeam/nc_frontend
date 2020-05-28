@@ -29,3 +29,7 @@
 .send {
     min-width: 20%;
 }
+
+.head-title {
+    overflow-x: hidden;
+}

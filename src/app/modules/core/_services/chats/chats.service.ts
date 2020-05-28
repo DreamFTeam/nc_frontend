@@ -9,6 +9,7 @@ import { Observable, of } from 'rxjs';
 import { Chat } from '../../_models/chat';
 import { catchError, map } from 'rxjs/operators';
 import { UserView } from '../../_models/userview';
+import { Message } from '../../_models/message';
 
 @Injectable({
   providedIn: 'root'
@@ -88,4 +89,18 @@ export class ChatsService {
       catchError(this.handleErrorsService.handleError<Chat>("getChatById", null))
     );
   }
+
+  getMessagesByPage(chatId: string, page:number): Observable<Message[]>{
+    let params = new HttpParams().set('page', page.toString());
+    const options = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        }),
+        params: params
+    };   
+    return this.http.get<Message[]>(this.baseUrl + chatId + "/messages/" + page, this.httpOptions)
+    .pipe(
+      catchError(this.handleErrorsService.handleError<Message[]>("getMessagesByPage", []))
+    );   
+  } 
 }

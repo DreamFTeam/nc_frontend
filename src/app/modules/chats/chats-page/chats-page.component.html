@@ -7,14 +7,13 @@
     <div class="row h-100">
         <div class="col"></div>
         <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 p-0 h-100 overflow-auto">
-            <ul *ngIf="(!isEmpty && !isLoading) ; else ((isLoading) ? loading : empty)" class="list-group">
-                <li *ngFor="let item of (chatsList$ | async);" class="list-group-item list-group-item-action pl-3" routerLink="/chat/{{item.id}}">
+            <ul *ngIf="(!isEmpty && !isLoading) ; else ((isLoading) ? loading : empty)" class="list-group cursor">
+                <li *ngFor="let item of chatsList;" class="list-group-item list-group-item-action pl-3" routerLink="/chat/{{item.id}}">
                     <img [src]='item.image ? item.image : "../assets/img/nopicture.jpg"' class="img-thumbnail avatar">
                     <strong class="ml-2">{{item.title}}</strong>
                 </li>
             </ul>
         </div>
-        <div class="col"></div>
     </div>
 </div>
 

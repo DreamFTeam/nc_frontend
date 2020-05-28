@@ -9,9 +9,10 @@ export class HandleErrorsService {
     constructor() {
     }
 
-    public handleError<T>(operation = 'operation', result?: T) {
+    public handleError<T>(operation = 'operation not specified', result?: T) {
         return (error: any): Observable<T> => {
 
+            console.error("Operation: " + operation);
             console.error(error); // log to console instead
 
             return of(result as T);

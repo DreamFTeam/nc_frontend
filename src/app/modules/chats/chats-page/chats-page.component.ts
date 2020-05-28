@@ -10,7 +10,7 @@ import { ChatsService } from '../../core/_services/chats/chats.service';
   styleUrls: ['./chats-page.component.css']
 })
 export class ChatsPageComponent implements OnInit {
-  chatsList$: Observable<Chat[]>;
+  chatsList: Chat[];
   isLoading: boolean;
   isEmpty: boolean;
   faSpinner = faSpinner;
@@ -18,19 +18,20 @@ export class ChatsPageComponent implements OnInit {
   constructor(private chatsService: ChatsService) { 
     this.isLoading = true;
     this.isEmpty = false;
-  }
-
-  ngOnInit(): void {
     this.getChatsList();
   }
 
+  ngOnInit(): void {
+  }
+
   getChatsList(): void {
-    this.chatsList$ = this.chatsService.getChatsList();
-    this.chatsList$.subscribe(data => {
+    this.chatsService.getChatsList().subscribe(
+    (data => {
       if(data.length == 0){
         this.isEmpty = true;
       }
       this.isLoading = false;
-    });
+      this.chatsList = data;
+    }));
   }
 }
