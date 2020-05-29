@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Profile } from '../../core/_models/profile';
 import { FriendsService } from '../../core/_services/profile/friends-service.service';
 import { Router } from '@angular/router';
@@ -8,13 +8,16 @@ import { LocaleService } from '../../core/_services/utils/locale.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { YesNoModalComponent } from '../../shared/yes-no-modal/yes-no-modal.component';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-user-invitations',
   templateUrl: './user-invitations.component.html',
   styleUrls: ['./user-invitations.component.css']
 })
-export class UserInvitationsComponent implements OnInit {
+export class UserInvitationsComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription[] = [];
+
   MAX_AMOUNT: number;
   activeTab: number;
   role: string; // role of the current user
@@ -70,7 +73,7 @@ export class UserInvitationsComponent implements OnInit {
   }
 
   getInvitations(direction: string, page: number) {
-    this.friendService.getUsersInvitationsPage(direction, page).subscribe(
+    this.subscriptions.push(this.friendService.getUsersInvitationsPage(direction, page).subscribe(
       (result) => {
         this.invitations = result;
         this.tabReady = true;
@@ -78,12 +81,12 @@ export class UserInvitationsComponent implements OnInit {
       (error) => {
         this.toastsService.toastAddWarning(this.localeService.getValue('toasterEditor.wentWrong'));
 
-      });
+      }));
 
   }
 
   private getInvitationsSize(direction: string) {
-    this.friendService.getUsersInvitationsSize(direction).subscribe(
+    this.subscriptions.push(this.friendService.getUsersInvitationsSize(direction).subscribe(
       (result) => {
         if (direction === 'outgoing') {
           this.outgoingInvitationsSize = result;
@@ -91,7 +94,7 @@ export class UserInvitationsComponent implements OnInit {
           this.incomingInvitationsSize = result;
         }
       }
-    );
+    ));
   }
 
 
@@ -100,7 +103,7 @@ export class UserInvitationsComponent implements OnInit {
       .subscribe((receivedEntry) => {
         if (receivedEntry) {
 
-          this.friendService.processFriendRequest(profile.id, value.toString()).subscribe(
+          this.subscriptions.push(this.friendService.processFriendRequest(profile.id, value.toString()).subscribe(
             () => {
               this.invitations = this.invitations.filter(item => item !== profile);
               this.load(this.invitationsPage);
@@ -110,7 +113,7 @@ export class UserInvitationsComponent implements OnInit {
             (error) => {
               this.toastsService.toastAddWarning(this.localeService.getValue('toasterEditor.wentWrong'));
 
-            });
+            }));
         }
       });
 
@@ -121,7 +124,7 @@ export class UserInvitationsComponent implements OnInit {
       .subscribe((receivedEntry) => {
         if (receivedEntry) {
 
-          this.friendService.sendFriendRequest(profile.id, value.toString()).subscribe(
+          this.subscriptions.push(this.friendService.sendFriendRequest(profile.id, value.toString()).subscribe(
             () => {
               this.invitations = this.invitations.filter(item => item !== profile);
               this.load(this.invitationsPage);
@@ -130,7 +133,7 @@ export class UserInvitationsComponent implements OnInit {
             (error) => {
               this.toastsService.toastAddWarning(this.localeService.getValue('toasterEditor.wentWrong'));
 
-            });
+            }));
         }
       });
 
@@ -143,6 +146,10 @@ export class UserInvitationsComponent implements OnInit {
     modalRef.componentInstance.text = text;
     modalRef.componentInstance.style = style;
     return modalRef.componentInstance.passEntry;
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
 }

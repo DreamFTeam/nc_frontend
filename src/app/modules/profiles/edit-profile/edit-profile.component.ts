@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProfileService } from '../../core/_services/profile/profile.service';
 import { PrivilegedService } from '../../core/_services/admin/privileged.service';
@@ -9,17 +9,18 @@ import { LocaleService } from '../../core/_services/utils/locale.service';
 import { YesNoModalComponent } from '../../shared/yes-no-modal/yes-no-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-edit-profile',
     templateUrl: './edit-profile.component.html',
     styleUrls: ['./edit-profile.component.css']
 })
-export class EditProfileComponent implements OnInit {
+export class EditProfileComponent implements OnInit, OnDestroy {
 
     @ViewChild('fileinput')
     fileInput: ElementRef;
-
+    private subscriptions: Subscription[] = [];
     private usernameToChange: string;
     private profilePictureFile: File;
 
@@ -29,12 +30,12 @@ export class EditProfileComponent implements OnInit {
 
 
     constructor(private router: Router,
-        private getProfileService: ProfileService,
-        private priviligedService: PrivilegedService,
-        private authenticationService: AuthenticationService,
-        private toastsService: ToastsService,
-        private localeService: LocaleService,
-        private modalService: NgbModal
+                private getProfileService: ProfileService,
+                private priviligedService: PrivilegedService,
+                private authenticationService: AuthenticationService,
+                private toastsService: ToastsService,
+                private localeService: LocaleService,
+                private modalService: NgbModal
     ) {
 
         if (!this.setUsername()) {
@@ -44,7 +45,7 @@ export class EditProfileComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.getProfileService.getProfile(this.usernameToChange).subscribe(
+       this.subscriptions.push(this.getProfileService.getProfile(this.usernameToChange).subscribe(
             result => {
                 this.profile = result;
                 this.ready = true;
@@ -52,7 +53,7 @@ export class EditProfileComponent implements OnInit {
             error => {
                 this.toastsService.toastAddWarning(this.localeService.getValue('toasterEditor.wentWrong'));
                 this.router.navigate(['/']);
-            });
+            }));
 
     }
 
@@ -75,23 +76,23 @@ export class EditProfileComponent implements OnInit {
                 if (receivedEntry) {
                     if (this.profile.role === 'ROLE_USER') {
 
-                        this.getProfileService.editProfile('aboutMe', this.profile.aboutMe).subscribe(
+                        this.subscriptions.push(this.getProfileService.editProfile('aboutMe', this.profile.aboutMe).subscribe(
                             () => {
                                 this.uploadPic();
                             },
                             (error) => {
                                 this.toastsService.toastAddWarning(this.localeService.getValue('toasterEditor.wentWrong'));
-                            });
+                            }));
 
                     } else {
-                        this.priviligedService.edit(this.profile.id, 'aboutMe', this.profile.aboutMe).subscribe(
+                        this.subscriptions.push(this.priviligedService.edit(this.profile.id, 'aboutMe', this.profile.aboutMe).subscribe(
                             () => {
                                 this.uploadPic();
                             },
                             (error) => {
                                 this.toastsService.toastAddWarning(this.localeService.getValue('toasterEditor.wentWrong'));
 
-                            });
+                            }));
                     }
                 }
             });
@@ -141,27 +142,27 @@ export class EditProfileComponent implements OnInit {
         newPic.append('key', this.profilePictureFile);
 
         if (this.profile.role === 'ROLE_USER') {
-            this.getProfileService.uploadPicture(newPic).subscribe(
+            this.subscriptions.push(this.getProfileService.uploadPicture(newPic).subscribe(
                 () => {
                     this.router.navigate(['/profile/' + this.usernameToChange]);
                 },
                 (error) => {
                     this.toastsService.toastAddWarning(this.localeService.getValue('toasterEditor.wentWrong'));
 
-                });
+                }));
 
         } else {
 
             newPic.append('userId', this.profile.id); // required to change moderator's or admin's profile
 
-            this.priviligedService.uploadPicture(newPic).subscribe(
+            this.subscriptions.push(this.priviligedService.uploadPicture(newPic).subscribe(
                 () => {
                     this.router.navigate(['/profile/' + this.usernameToChange]);
                 },
                 (error) => {
                     this.toastsService.toastAddWarning(this.localeService.getValue('toasterEditor.wentWrong'));
 
-                });
+                }));
         }
     }
 
@@ -173,4 +174,9 @@ export class EditProfileComponent implements OnInit {
 
         return modalRef.componentInstance.passEntry;
     }
+
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
 }

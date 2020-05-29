@@ -19,11 +19,12 @@
      </h1>
      <div *ngFor="let profile of this.searchResults" style='font-size: larger;'>
        <div class="row p-2 m-2 border">
+       <div class="col-xs-2 col-sm-4 col-md-4 col-lg-4">
          <img routerLink="/profile/{{profile.username}}"
-           class="img-thumbnail col-xs-5 col-sm-5 col-md-4 col-lg-3  float-left"
-           [src]="profile.image ? profile.image : '../../assets/img/nopicture.jpg'"
-           style="background-color:rgba(243, 202, 165, 0.863);">
-         <div class="col-xs-5 col-sm-7 col-md-8 col-lg-9 p-2 p-2">
+           class="img-thumbnail"
+           [src]="profile.image ? profile.image : '../../assets/img/nopicture.jpg'"  style="cursor:pointer;">
+          </div>
+         <div class="col">
            <a routerLink="/profile/{{profile.username}}" style="font-weight: bolder;">{{profile.username}}</a>
            <span *ngIf="profile.role!='ROLE_USER'" class="blue"> {{profile.role.substr(5).toLowerCase()}}</span> 
            <h3 *ngIf="!profile.activated"
@@ -33,16 +34,16 @@
            </h2>
            <ng-template #lastseen>
              <h2 class="blue">
-               {{'profile.lastSeenOn' | translate }} {{profile.lastTimeOnline |  date:'medium'}} 
+               {{'profile.lastSeenOn' | translate }} {{profile.lastTimeOnline |  date:'h:mm d.MM.y'}} 
              </h2>
            </ng-template>
          </div>
-       </div>
-     </div>
-   </div>
-   <div  class="container-sm mt-3 p-3" *ngIf="!ready;" style="word-wrap: break-word;" >
-     <div style="text-align: center;">
-       <fa-icon [icon]="faSpinner" [spin]="true" size="6x"></fa-icon>
      </div>
    </div>
  </div>
+ <div  class="container-sm mt-3 p-3" *ngIf="!ready;" style="word-wrap: break-word;" >
+  <div style="text-align: center;">
+    <fa-icon [icon]="faSpinner" [spin]="true" size="6x"></fa-icon>
+  </div>
+</div>
+</div>
