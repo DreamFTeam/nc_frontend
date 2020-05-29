@@ -15,9 +15,9 @@
            <ngb-pagination class="d-flex justify-content-center"  [collectionSize]="incomingInvitationsSize" [(page)]="invitationsPage"  [pageSize]="MAX_AMOUNT" [rotate]="true" (pageChange)="load($event)"></ngb-pagination>
            <div *ngFor="let profile of this.invitations" style='font-size: larger;' class="row p-2 border m-2">
              <img routerLink="/profile/{{profile.username}}"
-               class="img-thumbnail col-xs-5 col-sm-5 col-md-4 col-lg-3 float-left"
+               class="img-thumbnail col-xs-5 col-sm-5 col-md-4 col-lg-3 "
                [src]="profile.image ? profile.image : '../../assets/img/nopicture.jpg'"
-               style="background-color:rgba(243, 202, 165, 0.863);">
+               style="cursor:pointer;">
              <div class="col-xs-5 col-sm-7 col-md-8 col-lg-9">
                <a routerLink="/profile/{{profile.username}}"
                  style="font-weight: bolder;">{{profile.username}}</a>
@@ -49,7 +49,7 @@
              <img routerLink="/profile/{{profile.username}}"
                class="img-thumbnail col-xs-5 col-sm-5 col-md-4 col-lg-3  float-left"
                [src]="profile.image ? profile.image : '../../assets/img/nopicture.jpg'"
-               style="background-color:rgba(243, 202, 165, 0.863);">
+               style="cursor:pointer;">
              <div class="col-xs-5 col-sm-7 col-md-8 col-lg-9 p-2 p-2">
                <a routerLink="/profile/{{profile.username}}"
                  style="font-weight: bolder;">{{profile.username}}</a>

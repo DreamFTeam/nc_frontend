@@ -2,9 +2,8 @@
    <div class="container-sm mb-2 h-100">
      <div class="row">
        <div class="col-xs-2 col-sm-4 col-md-4 col-lg-3 p-2">
-         <img class="col p-3"
-           [src]="profile.image ? profile.image : '../../assets/img/nopicture.jpg'"
-           style="background-color:rgba(243, 202, 165, 0.863);">
+         <img class="img-thumbnail"
+           [src]="profile.image ? profile.image : '../../assets/img/nopicture.jpg'">
          <a *ngIf="owner && profile.activated"
          (click)="edit()"
          class="btn btn-outline-secondary mt-2 w-100">{{ 'utils.edit'| translate}} {{'profile.profile' | translate }} </a>
@@ -41,8 +40,8 @@
          <h5>{{profile.aboutMe}}</h5>
        </div>
        <div *ngIf= "this.role=='ROLE_USER'" class="col-xs-2 col-sm-3 col-md-3 col-lg-3 p-2 ">
-         <a *ngIf="owner" (click)="seeeRequests('incoming')" class="btn btn-outline-info mt-2 w-100"> {{'profile.Incoming' | translate }} {{'profile.friendRequests' | translate }}<span *ngIf="incomingAmount !== undefined"class="badge badge-info"> {{incomingAmount}}</span></a>
-         <a *ngIf="owner" (click)="seeeRequests('outgoing')" class="btn btn-outline-info mt-2 w-100"> {{'profile.Outgoing' | translate }} {{'profile.friendRequests' | translate }}<span *ngIf="outGoingAmount !== undefined" class="badge badge-info"> {{outGoingAmount}}</span> </a>
+         <a *ngIf="owner" (click)="seeeRequests('incoming')" class="btn btn-outline-info mt-2 w-100"> {{'profile.Incoming' | translate }} {{'profile.friendRequests' | translate }}<span *ngIf="incomingAmount !== undefined"class="badge badge-info ml-2"> {{incomingAmount}}</span></a>
+         <a *ngIf="owner" (click)="seeeRequests('outgoing')" class="btn btn-outline-info mt-2 w-100"> {{'profile.Outgoing' | translate }} {{'profile.friendRequests' | translate }}<span *ngIf="outGoingAmount !== undefined" class="badge badge-info ml-2"> {{outGoingAmount}}</span> </a>
        </div>
        <div *ngIf="this.role!='ROLE_USER' && owner && profile.activated" class="col-3 ">
          <button class="btn btn-outline-secondary mt-2"
@@ -64,15 +63,9 @@
      (navChange)="changeTab($event)"
      class="nav-tabs w-100 m-2 p-2 border">
      <li [ngbNavItem]="1">
-       <a ngbNavLink class="blue p-2 mr-2">
-         <div *ngIf="owner">
-           {{'profile.your' | translate }}  {{'profile.quizzes' | translate }}  
+       <a ngbNavLink class="blue p-2 mr-2 square">
+       {{'profile.quizzes' | translate }}  
            <div *ngIf="quizAmount !== undefined" class="badge badge-secondary"> {{quizAmount}}</div>
-         </div>
-         <div *ngIf="!owner">
-           {{profile.username}}{{'profile.whose' | translate }}  {{'profile.quizzes' | translate }}  
-           <div *ngIf="quizAmount !== undefined" class="badge badge-secondary"> {{quizAmount}}</div>
-         </div>
        </a>
        <ng-template ngbNavContent>
          <p *ngIf="tabReady && !quizzes.length" style="font-style: large; font-weight: bold;" class="ml-5 mt-3 ">
@@ -89,8 +82,8 @@
              <div *ngIf="owner || quiz.published"
                class="row container-fluid m-2 border p-2"
                style="word-wrap: break-word;">
-               <img class="col-xs-5 col-sm-5 col-md-4 col-lg-3 p-2"
-               style="background-color:rgba(243, 202, 165, 0.863);"
+               <img class="img-thumbnail col-xs-5 col-sm-5 col-md-4 col-lg-3 p-2"
+               
                [src]="quiz.imageContent ? quiz.imageContent : '../../assets/img/quiz.jpg'"
                (click)="goToQuiz(quiz.id)">
                <div class="col-xs-5 col-sm-7 col-md-8 col-lg-9 p-1 ">
@@ -146,7 +139,7 @@
      </li>
      <li [ngbNavItem]="2" *ngIf="owner">
      <a ngbNavLink class="blue p-2 mr-2">
-       {{'profile.your' | translate }} {{'profile.favourite' | translate }} {{'profile.quizzes' | translate }}
+      {{'profile.favourite' | translate }} {{'profile.quizzes' | translate }}
        <h5 *ngIf="favQuizAmount !== undefined" class="badge badge-secondary"> {{favQuizAmount}}</h5>
      </a>
      <ng-template ngbNavContent class="blue">
@@ -161,8 +154,8 @@
            <div *ngIf="owner || quiz.published"
              class="row container-fluid m-2 border p-2"
              style="word-wrap: break-word;">
-             <img class="col-xs-5 col-sm-5 col-md-4 col-lg-3 p-2"
-             style="background-color:rgba(243, 202, 165, 0.863);"
+             <img class="img-thumbnail col-xs-5 col-sm-5 col-md-4 col-lg-3"
+             
              [src]="quiz.imageContent ? quiz.imageContent : '../../assets/img/quiz.jpg'"
              (click)="goToQuiz(quiz.id)">
              <div class="col-xs-5 col-sm-7 col-md-8 col-lg-9 p-1 ">
@@ -210,14 +203,8 @@
      </li>
      <li [ngbNavItem]="3">
        <a ngbNavLink class="blue p-2 mr-2" >
-         <div *ngIf="owner">
-           {{'profile.your' | translate }} {{'profile.achievements' | translate }}
+       {{'profile.achievements' | translate }}
            <h5 *ngIf="achievementsSize !== undefined" class="badge badge-secondary"> {{achievementsSize}}</h5>
-         </div>
-         <div *ngIf="!owner">
-           {{profile.username}}{{'profile.whose' | translate }} {{'profile.achievements' | translate }} 
-           <h5 *ngIf="achievementsSize !== undefined" class="badge badge-secondary"> {{achievementsSize}}</h5>
-         </div>
        </a>
        <ng-template ngbNavContent class="blue">
          <p *ngIf="tabReady && !achievements?.length"
@@ -245,14 +232,9 @@
      </li>
      <li [ngbNavItem]="4">
        <a ngbNavLink class="blue p-2 mr-2" >
-         <div *ngIf="owner">
-           {{'profile.your' | translate }}  {{ 'profile.friends' | translate }}
+         {{ 'profile.friends' | translate }}
            <div *ngIf="friendsSize !== undefined" class="badge badge-secondary"> {{friendsSize}}</div>
-         </div>
-         <div *ngIf="!owner">
-           {{profile.username}}{{'profile.whose' | translate }}  {{ 'profile.friends' | translate }}           
-           <div *ngIf="friendsSize !== undefined" class="badge badge-secondary"> {{friendsSize}}</div>
-         </div>
+      
        </a>
        <ng-template ngbNavContent class="blue">
          <p *ngIf="tabReady && !friends?.length" style="font-style: large; font-weight: bold;" class="ml-5 mt-3 ">
@@ -264,14 +246,15 @@
          <div *ngIf="friends?.length">
            <ngb-pagination  *ngIf="friendsSize > 8" class="d-flex justify-content-center"  [collectionSize]="friendsSize" [(page)]="friendsPage"  [pageSize]="MAX_AMOUNT" [rotate]="true" (pageChange)="load($event)"></ngb-pagination>
            <div *ngFor="let profile of this.friends" style='font-size: larger;'>
-             <div class="row p-2 m-2 border">
+             <div class="row container-fluid m-2 border p-2">
+              <div class="col-xs-2 col-sm-4 col-md-4 col-lg-3 ">
                <img routerLink="/profile/{{profile.username}}"
-                 class="img-thumbnail col-xs-5 col-sm-5 col-md-4 col-lg-3  float-left"
-                 [src]="profile.image ? profile.image : '../../assets/img/nopicture.jpg'"
-                 style="background-color:rgba(243, 202, 165, 0.863);">
-               <div class="col-xs-5 col-sm-7 col-md-8 col-lg-9 p-2 p-2">
+                 class="img-thumbnail"
+                 [src]="profile.image ? profile.image : '../../assets/img/nopicture.jpg'" style="cursor:pointer;">
+              </div>
+                 <div class="col-xs-5 col-sm-7 col-md-8 col-lg-9 p-2 p-2">
                  <a routerLink="/profile/{{profile.username}}"
-                   style="font-weight: bolder;">{{profile.username}}</a>
+                   style="font-weight: bolder; ">{{profile.username}}</a>
                  <h2 *ngIf="profile.online; else lastseen" class="blue" style="font-weight: lighter;">
                    {{'profile.online' | translate }} 
                  </h2>

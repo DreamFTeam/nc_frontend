@@ -1,8 +1,7 @@
 <div class="container" role="main" *ngIf="ready">
    <div class="row p-3">
      <div class="col-xs-2 col-sm-4 col-md-4 col-lg-3 ">
-       <img class="col p-3"
-         style="background-color:rgba(243, 202, 165, 0.863);"
+       <img class="img-thumbnail"
          [src]="profile.image ? profile.image : '../../assets/img/nopicture.jpg'">
        <input #fileinput class="mt-2 mw-100 btn-secondary p-3" type='file' name='file' (change)="onSelectFile($event)">
      </div>
@@ -20,7 +19,7 @@
          pattern=".{0,300}"
          #nameref="ngModel"/>
        </h3>
-       <a class="btn btn-outline-success p-2 mt-5 mr-4" (click)="saveProfile()"> {{'utils.save' | translate}}</a>
+       <a class="btn p-2 mt-5 mr-4 buttonsuc" (click)="saveProfile()"> {{'utils.save' | translate}}</a>
        <a class="btn btn-outline-secondary p-2 mt-5" (click)="goBackToProfile()"> {{'utils.cancel' | translate}}</a>
      </div>
    </div>

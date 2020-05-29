@@ -86,6 +86,7 @@ export class ProfileService {
                 ('data:image\/(png|jpg|jpeg);base64,'
                   + input.imageContent);
           }
+          input.rating = Number(input.rating.toFixed(2));
           return input;
         }
         ))
@@ -110,6 +111,7 @@ export class ProfileService {
                 ('data:image\/(png|jpg|jpeg);base64,'
                   + input.imageContent);
           }
+          input.rating = Number(input.rating.toFixed(2));
           return input;
         }
         ))
