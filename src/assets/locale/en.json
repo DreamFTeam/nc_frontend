@@ -121,6 +121,7 @@
   },
   "managaAnn": "Manage announcements",
   "profile": {
+    "rejected":"rejected",
     "profile": "profile",
     "friend": "friend",
     "friends": "friends",
@@ -133,7 +134,7 @@
     "Message": "Mesage",
     "Unfriend": "Unfriend",
     "deactivated": "deactivated",
-    "lastSeenOn": "Last seen on",
+    "lastSeenOn": "Last seen at",
     "Incoming": "Incoming ",
     "Outgoing": "Outgoing",
     "friendRequests": "Friend Requests",
@@ -167,7 +168,7 @@
     "requests": "requests",
     "requests_whom": "requests",
     "request": "request",
-    "requestSent": "Request sent on",
+    "requestSent": "Request sent at",
     "administration": "Administration",
     "popularCreators": "Popular creators"
   },

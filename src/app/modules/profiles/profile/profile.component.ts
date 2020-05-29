@@ -26,6 +26,7 @@ export class ProfileComponent implements OnInit {
   MAX_AMOUNT: number; // amount of friends per page
   role: string; // role of the current user
   username: string;
+  targetUsername: string;
   ready: boolean; // indicates the profile was loaded (doesn't include quizzes)
   owner: boolean; // indicates which rights the user has concerning this profile
   quizzes: ExtendedQuiz[];
@@ -73,7 +74,13 @@ export class ProfileComponent implements OnInit {
       this.router.navigate(['/']);
     }
 
-    this.getProfile();
+    this.route.params
+    .subscribe(params => {
+        this.targetUsername = params.username || this.username;
+        this.getProfile();
+
+     });
+
   }
 
   private getAllBadgesInfo() {
@@ -86,7 +93,7 @@ export class ProfileComponent implements OnInit {
   }
 
   getProfile() {
-    this.getProfileService.getProfile(this.getUsername()).subscribe(
+    this.getProfileService.getProfile(this.targetUsername).subscribe(
       result => {
         this.profile = result;
 
@@ -104,10 +111,6 @@ export class ProfileComponent implements OnInit {
         this.ready = true;
       }
       );
-  }
-
-  getUsername(): string {
-    return this.route.snapshot.paramMap.get('username') || this.authenticationService.currentUserValue.username;
   }
 
   private setRights() {
