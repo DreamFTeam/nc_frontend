@@ -39,17 +39,6 @@
     font-family: "Comic Sans MS", cursive, sans-serif;
 }
 
-#bookmarks
-{
-    position:      relative;
-    left:          15%;
-    width:         auto;
-    margin-bottom: 1.5em;
-    text-align:    center;
-    font-weight:   bold;
-    font-size:     large;
-}
-
 #allquizzes
 {
     float:  left;
@@ -59,8 +48,11 @@
 
 .cards
 {
-    margin-top:    1em;
-    margin-bottom: 1em;
+    margin-top:    0.5em;
+    margin-bottom: 0.5em;
+    padding-top: 0.25rem;
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
 }
 
 #notplayed
@@ -84,11 +76,15 @@
 
 .content
 {
-    padding-top: 60px;
+    padding-top: 1em;
     width:       100%;
 }
 
 .pagination-container
 {
     width: 100%;
+}
+
+.img-thumbnail{
+    border: 1px solid #dee2e6;
 }
