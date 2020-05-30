@@ -29,7 +29,7 @@ export class PrivilegedService {
         const userInfo = {
             username,
             email,
-            password,
+            password: this.authenticationService.passwordHashing(password, this.authenticationService.PASSWORD_HASHING_ITERATIONS_AMOUNT),
             role: userrole,
         };
         return this.http.post<User>(this.url, JSON.stringify(userInfo), this.httpOptions).pipe(

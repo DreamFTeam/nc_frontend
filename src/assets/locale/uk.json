@@ -300,13 +300,14 @@
     }
   },
   "quizList": {
-    "accessCode": "Введіть код доступу",
+    "accessCode": "Код доступу до гри",
     "search": "Пошук",
     "filter": "Фільтр",
-    "createQuiz": "Створити квіз"
+    "createQuiz": "Створити квіз",
+    "join": "Приєднатися"
   },
   "quizFilter": {
-    "creator": "Ім'я користувача творця",
+    "creator": "Творець",
     "add": "Додати",
     "rateFrom": "Рейтинг з",
     "rateTo": "Рейтинг по",

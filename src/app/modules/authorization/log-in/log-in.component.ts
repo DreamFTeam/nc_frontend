@@ -34,19 +34,20 @@ export class LogInComponent {
             return;
         }
 
-        /*Code for comunication with back-end*/
-        this.authenticationService.loginUser(this.email, this.password)
-            .subscribe(n => {
-                location.reload();
-                this.loading = false;
-            },
+        const subscription = this.authenticationService.loginUser(this.email, this.password)
+            .subscribe(
+                n => {
+                    location.reload();
+                    this.loading = false;
+                    subscription.unsubscribe();
+                },
                 error => {
                     this.message = error.error ? error.error.message : this.translateService.instant('authorization.login.error');
                     console.log(error);
                     this.loading = false;
+                    subscription.unsubscribe();
                 }
-            )
-            ;
+            );
         this.loading = true;
     }
 
