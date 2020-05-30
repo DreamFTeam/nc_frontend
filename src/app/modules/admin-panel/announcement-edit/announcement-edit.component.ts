@@ -117,7 +117,6 @@ export class AnnouncementEditComponent implements OnInit {
                         this.saveLoading = true;
                         this.announcementService.editAnnouncement(this.currentAnnouncement, this.img)
                             .subscribe(ans => {
-                                this.announcements[i] = ans;
                                 this.announcements[i].creatorId = this.announcementService.getAdminName();
                                 this.cancel(i);
                                 this.saveLoading = false;
