@@ -101,3 +101,20 @@ button.removeb:focus
 }
 
 
+.caption {
+    opacity: 1; 
+    background-color: black;
+    color: white;
+    position: absolute;
+    margin: 0;
+    bottom: 0;
+    margin-right: -50%;
+    width: 100%;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius:  5px;
+}
+
+.caption:hover {
+    opacity: .7; 
+    cursor: pointer;
+}

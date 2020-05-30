@@ -55,7 +55,8 @@
     "rightAnswer": "Вірна відповідь",
     "rightAnswers": "Вірні відповіді",
     "otherAnswers": "Інші відповіді",
-    "add": "Додати"
+    "add": "Додати",
+    "rightSequence":"Вірна послідовність"
   },
   "viewQuiz": {
     "deactivated": "Деактивований",

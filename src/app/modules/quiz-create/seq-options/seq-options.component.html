@@ -1,22 +1,28 @@
-<div *ngFor="let answer of question.rightOptions; let i = index; trackBy: trackByFn" class="grid-container">
-    <div class="grid-item">
+<div class="mt-3">
+  <label>
+    {{ 'quizCreation.rightSequence' | translate }}
+  </label>
+  <div *ngFor="let answer of question.rightOptions; let i = index; trackBy: trackByFn" class="input-group mt-1">
+
+    <div class="input-group-prepend">
+      <button *ngIf="isRemovable() && available" class="im" (click)="removeAnswer(i)">
+        <img src="../assets/img/close-button.png">
+      </button>
+    </div>
+
+    <div class="input-group-prepend">
+      <span class="input-group-text">
         {{ (i + 1) }}
+      </span>
     </div>
-    <div class="grid-item">
-      <input maxlength="50" [disabled]="!available" class="form-control"
-             style="width: 100%;" [(ngModel)]="question.rightOptions[i]">
-    </div>
-    <div class="grid-item">
-        <button *ngIf="isRemovable() && available" class="remb" (click)="removeAnswer(i)">
-          <img src="../assets/img/close-button.png">
-        </button>
-      </div>
+
+    <input maxlength="50" [disabled]="!available" class="form-control" [(ngModel)]="question.rightOptions[i]">
   </div>
 
   <div class="container-fluid">
     <div class="col-sm-12 text-center">
-      <button *ngIf="isLimitReached() && available"
-              class="btn addb"
-              (click)="addAnswer()"><img src="../assets/img/plus.png"></button>
+      <button *ngIf="isLimitReached() && available" class="btn im" (click)="addAnswer()"><img
+          src="../assets/img/plus.png"></button>
     </div>
   </div>
+</div>

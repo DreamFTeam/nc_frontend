@@ -58,7 +58,8 @@
     "rightAnswers": "Right answers",
     "otherAnswers": "Other answers",
     "answer": "answer",
-    "add": "Add"
+    "add": "Add",
+    "rightSequence":"Right sequence"
   },
   "viewQuiz": {
     "deactivated": "Deactivated",

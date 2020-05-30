@@ -6,8 +6,13 @@
 
                 <div class="col-sm-3 ">
                     <div *ngIf="!quiz.published; else elseBlock">
-                        <img [src]="thumbnail ? thumbnail : '../assets/img/quizupl.jpg'" class="img-thumbnail"
-                             (click)="imageInput.click()">
+                        <div style="position: relative;">
+                            <img [src]="thumbnail ? thumbnail : '../assets/img/default-image.jpg'" class="img-fluid">
+                             <div class="caption p-2" (click)="imageInput.click()">
+                                Upload
+                            </div>
+                        </div>
+                        
 
                         <input style="display: none" #imageInput type="file" accept="image/*"
                                (change)="quizImage($event)">

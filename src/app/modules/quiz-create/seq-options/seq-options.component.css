@@ -1,27 +1,14 @@
-.grid-container
-{
-    display:               grid;
-    grid-template-columns: auto auto auto;
-    padding:               5px;
-}
-
-button.addb
-{
-
-    margin-top:       2px;
+button.im{
     border:           0px;
     background-color: transparent;
 }
 
-button.remb
-{
-    margin-top:       2px;
-    border:           0px;
-    background-color: transparent;
-}
-
-img
-{
+img{
     width:  35px;
     height: 35px;
+}
+
+label{
+    font-weight: 600;
+    font-size:   20px;
 }

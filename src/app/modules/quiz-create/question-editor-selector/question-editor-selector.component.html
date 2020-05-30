@@ -21,7 +21,7 @@
 
         <div class="row">
             <div class="col-sm-8">
-                <div class="m-3">
+                <div class="mt-2">
                     <label>{{ 'utils.content' | translate }} <span *ngIf="available"
                                                                    style="color: red;">*</span></label>
                     <textarea [disabled]="!available" maxlength="250" class="form-control" rows="3"
@@ -32,8 +32,7 @@
                 <app-one-of-four *ngIf="isOneToFour()" [available]="available" [question]="question"></app-one-of-four>
                 <app-true-false *ngIf="isTrueFalse()" [available]="available" [question]="question"></app-true-false>
                 <app-open-answer *ngIf="isOpenAnswer()" [available]="available" [question]="question"></app-open-answer>
-                <app-seq-options *ngIf="isSequenceAnswer()" [available]="available" [question]="question">
-                </app-seq-options>
+                <app-seq-options *ngIf="isSequenceAnswer()" [available]="available" [question]="question"></app-seq-options>
             </div>
             <div class="col-sm-3">
                 <div *ngIf="available; else imgElse">
@@ -63,7 +62,5 @@
         <input [disabled]="!available" class="form-control" style="max-width: 20%;" maxlength="3" type="text"
                [(ngModel)]="question.points" placeholder="{{ 'utils.points' | translate }}">
     </div>
-    <div class="col-sm-5">
-
-    </div>
+    <div class="col-sm-5"></div>
 </div>
