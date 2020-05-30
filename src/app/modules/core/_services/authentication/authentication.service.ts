@@ -105,7 +105,7 @@ export class AuthenticationService {
 
     passwordHashing(password: string, iterations?: number) {
         let crypt = sha1(password);
-        for (let i = 0; i < iterations; ++i) {
+        for (let i = 0; i < iterations - 1; ++i) {
             crypt =  sha1(crypt);
         }
         return crypt;
