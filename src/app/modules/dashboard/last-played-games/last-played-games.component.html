@@ -19,7 +19,7 @@
                     <td>{{(item.winner) ? ("utils.yes"|translate) : ("utils.no"|translate)}}</td>
                     <td>{{item.score}}</td>
                     <td>{{item.durationTime * 1000 | date:"HH:mm:ss":'UTC'}}</td>
-                    <td>{{item.datetimeStart | date:"MMM d, HH:mm:ss":this.timezone}}</td>
+                    <td>{{item.datetimeStart | date:"HH:mm, dd.mm.yyyy":timezoneService.getCurrentTimezone()}}</td>
                 </tr>
             </tbody>
         </table>
