@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Announcement} from '../../core/_models/announcement';
 import {AnnouncementService} from '../../core/_services/announcements/announcement.service';
 
@@ -6,42 +6,41 @@ import {faSpinner} from '@fortawesome/free-solid-svg-icons';
 import {AuthenticationService} from '../../core/_services/authentication/authentication.service';
 import {Role} from '../../core/_models/role';
 import {ToastsService} from '../../core/_services/utils/toasts.service';
+import { Subscription } from 'rxjs';
+import { LocaleService } from '../../core/_services/utils/locale.service';
 
-const PAGE_SIZE: number = 5;
 
 @Component({
     selector: 'app-announcement-view',
     templateUrl: './announcement-view.component.html',
     styleUrls: ['./announcement-view.component.css']
 })
-export class AnnouncementViewComponent implements OnInit {
+export class AnnouncementViewComponent implements OnInit, OnDestroy {
+    
+    readonly pageSize: number = 5;
 
     announcements: Announcement[];
 
     collectionSize: number;
-    page: number;
-    pageSize: number;
-
-    loading: boolean = true;
-
+    page: number = 1;
+    
+    loading: boolean;
     faSpinner = faSpinner;
 
+    subscriptions: Subscription = new Subscription();
+
     constructor(private authenticationService: AuthenticationService,
-                private announcementService: AnnouncementService,
-                public toastsService: ToastsService) {
-        this.announcementService.getAmount().subscribe(ans => this.collectionSize = ans, err => console.log(err));
-        this.announcementService.getAnnouncements(0, 5).subscribe(ans =>
-                this.setAnnouncements(ans)
-            , err => {
-                console.log(err);
-                this.toastsService.toastAddDanger('Error occured while fetching site announcements.\n We are sorry for that');
-            });
+        private announcementService: AnnouncementService,
+        public toastsService: ToastsService,
+        private localeService: LocaleService) {
+    }
+
+    ngOnDestroy(): void {
+        this.subscriptions.unsubscribe();
     }
 
     ngOnInit(): void {
-        this.page = 1;
-        this.pageSize = PAGE_SIZE;
-        this.loading = true;
+        this.loadPage();
     }
 
     setAnnouncements(ans) {
@@ -49,16 +48,24 @@ export class AnnouncementViewComponent implements OnInit {
         this.loading = false;
     }
 
-    loadPage(e) {
+    loadPage() {
         this.loading = true;
-        this.announcementService.getAnnouncements((this.page - 1) * 5, 5).subscribe(ans =>
+
+        this.subscriptions.add(this.announcementService.getAmount().subscribe(
+            ans => this.collectionSize = ans, 
+            () => this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))));
+
+            this.subscriptions.add(this.announcementService.getAnnouncements((this.page - 1) * 5, 5).subscribe(
+            ans =>
                 this.setAnnouncements(ans)
-            , err => console.log(err));
+            , 
+            () => this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))));
     }
 
     isPrivileged() {
         const user = this.authenticationService.currentUserValue;
         return user && (user.role !== Role.User);
     }
+    
 
 }
