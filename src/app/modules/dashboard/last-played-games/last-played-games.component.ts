@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ProfileService} from '../../core/_services/profile/profile.service';
 import {QuizLastPlayed} from '../../core/_models/quiz-last-played';
 import {Observable} from 'rxjs';
-import { TimezoneService } from '../../core/_services/utils/timezone.service';
+import { DateService } from '../../core/_services/utils/date.service';
 
 @Component({
     selector: 'app-last-played-games',
@@ -15,7 +15,7 @@ export class LastPlayedGamesComponent implements OnInit {
     isEmpty: boolean;
 
     constructor(private profileService: ProfileService,
-        public timezoneService: TimezoneService) {
+        public dateService: DateService) {
         this.isEmpty = false;
     }
 
