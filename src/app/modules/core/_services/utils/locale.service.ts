@@ -54,6 +54,16 @@ export class LocaleService {
         this.translateService.setDefaultLang(environment.defaultLocale);
     }
 
+    getUserLanguage(){
+        if (localStorage.getItem('userLang')) {
+            return localStorage.getItem('userLang');
+        } else {
+            const lang = this.translateService.currentLang
+            localStorage.setItem('userLang',lang);
+            return lang;
+        }
+    }
+
     private checkLang(): boolean {
         if (this.translateService.currentLang) {
             return true;
