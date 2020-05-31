@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ProfileService} from '../../core/_services/profile/profile.service';
 import {QuizLastPlayed} from '../../core/_models/quiz-last-played';
 import {Observable} from 'rxjs';
+import { TimezoneService } from '../../core/_services/utils/timezone.service';
 
 @Component({
     selector: 'app-last-played-games',
@@ -13,13 +14,13 @@ export class LastPlayedGamesComponent implements OnInit {
     gamesList$: Observable<QuizLastPlayed[]>;
     isEmpty: boolean;
 
-    constructor(private profileService: ProfileService) {
+    constructor(private profileService: ProfileService,
+        public timezoneService: TimezoneService) {
         this.isEmpty = false;
     }
 
-    timezone: string;
-
     ngOnInit(): void {
+
         this.gamesList$ = this.profileService.getLastPlayedGames();
         this.gamesList$.subscribe(v => {
             if (v.length == 0) {
@@ -29,7 +30,6 @@ export class LastPlayedGamesComponent implements OnInit {
             console.error(error);
         });
 
-        this.timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     }
 
 }
