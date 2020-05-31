@@ -17,20 +17,12 @@ export class LanguageInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
 
-    if(this.authenticationService.currentUserValue){
-      request = request.clone({
-        setHeaders: {
-          Lang: this.localeService.getUserLanguage()
-        }
-      });
+    request = request.clone({
+      setHeaders: {
+        Lang: this.localeService.getLanguage()
+      }
+    });
 
-    }else{
-      request = request.clone({
-        setHeaders: {
-          Lang: this.localeService.getAnonymousLanguage()
-        }
-      });
-    }
     return next.handle(request);
   }
 }

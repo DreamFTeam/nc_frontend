@@ -44,7 +44,7 @@ export class NavBarComponent implements OnInit {
         if (this.signedIn) {
             this.subscribeNotifications();
         }
-        this.language = this.localeService.getAnonymousLanguage();
+        this.language = this.localeService.anonymousLang();
     }
 
     search() {
