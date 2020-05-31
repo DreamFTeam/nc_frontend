@@ -63,7 +63,7 @@ export class AuthenticationService {
             username,
             password: this.passwordHashing(password, this.PASSWORD_HASHING_ITERATIONS_AMOUNT),
             email,
-            language: this.localeService.getAnonymousLanguage()
+            language: this.localeService.getLanguage()
         };
         return this.http.post<User>(this.url + 'sign-up', JSON.stringify(userInfo), this.httpOptions);
     }
@@ -91,7 +91,7 @@ export class AuthenticationService {
         localStorage.removeItem('userLang');
         this.currentUserSubject.next(null);
 
-        this.localeService.setAnonymousLang();
+        this.localeService.anonymousLang();
     }
 
     /* PATCH: change user password (using current password) */

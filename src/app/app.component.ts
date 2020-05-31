@@ -27,7 +27,7 @@ export class AppComponent implements OnInit {
         if (this.authenticationService.currentUserValue) {
             this.localeService.initUserLang(this.settingsService.getLanguage());
         } else {
-            this.localeService.setAnonymousLang();
+            this.localeService.anonymousLang();
         }
     }
 }
