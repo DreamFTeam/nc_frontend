@@ -19,15 +19,9 @@ export class GameResultComponent implements OnInit, OnDestroy {
 
     results: GameResult[];
     gameId: string;
-    maxPoints: number;
     winner: string;
-    view = [600, 400];
     resultsForGraphic: any[];
     loggedIn: boolean;
-
-    // colorScheme = {
-    //   domain: ['#e5de09', '#9e0505', '#05b4ff', '#FF5005']
-    // };
 
     constructor(private gameResultService: GameResultService,
                 private activatedRoute: ActivatedRoute,
