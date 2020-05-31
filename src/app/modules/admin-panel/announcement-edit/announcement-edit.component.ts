@@ -1,43 +1,39 @@
-import { Component, OnInit } from '@angular/core';
-import { Announcement } from '../../core/_models/announcement';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { AnnouncementService } from '../../core/_services/announcements/announcement.service';
-import { Alert } from '../../core/_models/alert';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { YesNoModalComponent } from '../../shared/yes-no-modal/yes-no-modal.component';
-import { ToastsService } from '../../core/_services/utils/toasts.service';
-import { ModalService } from '../../core/_services/utils/modal.service';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { Announcement } from '../../core/_models/announcement';
+import { AnnouncementService } from '../../core/_services/announcements/announcement.service';
 import { LocaleService } from '../../core/_services/utils/locale.service';
+import { ModalService } from '../../core/_services/utils/modal.service';
+import { ToastsService } from '../../core/_services/utils/toasts.service';
+import { Subscription } from 'rxjs';
 
-
-const PAGE_SIZE: number = 5;
 
 @Component({
     selector: 'app-announcement-edit',
     templateUrl: './announcement-edit.component.html',
     styleUrls: ['./announcement-edit.component.css']
 })
-export class AnnouncementEditComponent implements OnInit {
+export class AnnouncementEditComponent implements OnInit, OnDestroy {
+    faSpinner = faSpinner;
+
+    readonly pageSize: number = 5;
+    page: number = 1;
+    collectionSize: number;
+    
+
     announcements: Announcement[];
     currentAnnouncement: Announcement;
     isCollapsed: boolean[];
-    inEdit: boolean[];
-    editorEnabled: boolean;
-
-    collectionSize: number;
-    page: number;
-    pageSize: number;
-
-    loading: boolean = true;
-
+    inEdit: number;
+    
+    loading: boolean;
     saveLoading: boolean = false;
 
-    faSpinner = faSpinner;
-
     img: File;
-
     thumbnail: any;
+
+    subscriptions: Subscription = new Subscription();
 
 
     constructor(private announcementService: AnnouncementService,
@@ -45,42 +41,36 @@ export class AnnouncementEditComponent implements OnInit {
         private toastsService: ToastsService,
         private modalService: ModalService,
         private localeService: LocaleService) {
-        this.announcementService.getAmount().subscribe(
-            ans => this.collectionSize = ans,
-            () => this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))
-        );
 
-        this.announcementService.getAnnouncements(0, 5).subscribe(
-            ans => this.setAnnouncements(ans),
-            () => this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))
-        );
     }
 
+    ngOnDestroy(): void {
+        this.subscriptions.unsubscribe();
+    }
+
+
     ngOnInit(): void {
-        this.page = 1;
-        this.pageSize = PAGE_SIZE;
-        this.inEdit = [false];  //EVERY TIME +1 in code, first element for adding
-        this.editorEnabled = false;
+        this.loadPage();
     }
 
 
     //getting announcements on request
     setAnnouncements(ans) {
         this.announcements = ans;
+
         this.isCollapsed = [];
 
-        for (const _key in this.announcements) {
+        for (let index = 0; index < this.announcements.length; index++) {
             this.isCollapsed.push(true);
-            this.inEdit.push(false);
         }
+
         this.loading = false;
     }
 
     //start editing announcement
     edit(i) {
         this.img = undefined;
-        this.editorEnabled = true;
-        this.inEdit[i + 1] = true;
+        this.inEdit = i + 1;
         this.currentAnnouncement = Object.assign({}, this.announcements[i]);
 
         if (this.currentAnnouncement.image !== null) {
@@ -116,15 +106,15 @@ export class AnnouncementEditComponent implements OnInit {
                     if (receivedEntry) {
                         this.saveLoading = true;
                         this.announcementService.editAnnouncement(this.currentAnnouncement, this.img)
-                            .subscribe(ans => {
-                                this.announcements[i].creatorId = this.announcementService.getAdminName();
-                                this.cancel(i);
-                                this.saveLoading = false;
-                            },
-                                err => {
+                            .subscribe(
+                                () => {
+                                    this.announcements[i].creatorId = this.announcementService.getAdminName();
+                                    this.cancel(i);
+                                },
+                                () => {
                                     this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))
-                                    this.saveLoading = false;
-                                });
+                                },
+                                () => this.saveLoading = false)
 
 
                     }
@@ -136,16 +126,14 @@ export class AnnouncementEditComponent implements OnInit {
 
     //cancel editing or adding
     cancel(i) {
-        this.inEdit[i + 1] = false;
+        this.inEdit = undefined;
         this.currentAnnouncement = null;
-        this.editorEnabled = false;
     }
 
     //start adding announcement
     add() {
         this.img = undefined;
-        this.editorEnabled = true;
-        this.inEdit[0] = true;
+        this.inEdit = 0;
         this.thumbnail = null;
         this.currentAnnouncement = new Announcement().deserialize({
             'announcementId': '', 'creatorId': '',
@@ -170,10 +158,11 @@ export class AnnouncementEditComponent implements OnInit {
                                     this.saveLoading = false;
                                 },
 
-                                err => {
+                                () => {
                                     this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))
                                     this.saveLoading = false;
-                                });
+                                },
+                                () => this.saveLoading = false);
 
 
                     }
@@ -186,6 +175,12 @@ export class AnnouncementEditComponent implements OnInit {
     //get announcements on page change
     loadPage() {
         this.loading = true;
+
+        this.subscriptions.add(this.announcementService.getAmount().subscribe(
+            ans => this.collectionSize = ans,
+            () => this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))
+        ));
+
         this.announcementService.getAnnouncements((this.page - 1) * 5, 5).subscribe(
             ans => this.setAnnouncements(ans),
             () => this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))
@@ -203,8 +198,6 @@ export class AnnouncementEditComponent implements OnInit {
                 this.thumbnail = reader.result;
             };
         }
-
-
     }
 
 
