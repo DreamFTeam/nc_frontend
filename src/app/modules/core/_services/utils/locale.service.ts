@@ -12,24 +12,17 @@ export class LocaleService {
     }
 
     initUserLang(langA) {
-        if (localStorage.getItem('userLang')) {
-            this.setLang(localStorage.getItem('userLang'));
-        } else {
-            let lang;
-            langA.subscribe(
-                ans => lang = this.setLang(ans.value),
-                err => {
-                    console.log(err);
-                    lang = this.setLang(environment.defaultLocale);
-                },
-                () => {
-                    localStorage.setItem('userLang', lang);
-                }
-            );
-        }
+        let lang;
+        langA.subscribe(
+            ans => lang = this.setLang(ans.value),
+            err => {
+                console.log(err);
+                lang = this.setLang(environment.defaultLocale);
+            }
+        );
     }
 
-    setAnonymousLang() {
+    anonymousLang() {
         if (localStorage.getItem('anonymousLang')) { //If language in local storage
             return this.setLang(localStorage.getItem('anonymousLang'));
         } else {  //check locale
@@ -45,33 +38,20 @@ export class LocaleService {
         return lang;
     }
 
-    initLangs() {
-        this.translateService.addLangs(environment.locales);
-        this.translateService.setDefaultLang(environment.defaultLocale);
-    }
-
     getValue(keys): string {
         if (this.checkLang) {
             return this.translateService.instant(keys);
         }
     }
 
-    getAnonymousLanguage() {
-        if (localStorage.getItem('anonymousLang')) {
-            return localStorage.getItem('anonymousLang');
-        } else {
-            return this.setAnonymousLang();
-        }
+    getLanguage(){
+        return this.translateService.currentLang;
     }
 
-    getUserLanguage(){
-        if (localStorage.getItem('userLang')) {
-            return localStorage.getItem('userLang');
-        } else {
-            const lang = this.translateService.currentLang
-            localStorage.setItem('userLang',lang);
-            return lang;
-        }
+    //Sets languages of application
+    initLangs() {
+        this.translateService.addLangs(environment.locales);
+        this.translateService.setDefaultLang(environment.defaultLocale);
     }
 
     private checkLang(): boolean {
