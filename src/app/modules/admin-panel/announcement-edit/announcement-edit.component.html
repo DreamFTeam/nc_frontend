@@ -11,10 +11,10 @@
                 <div><label>{{ 'announcementsEdit.adding' | translate }}</label></div>
                 <label class="mt-4">{{ 'utils.title' | translate }}:</label>
                 <input class="form-control" [(ngModel)]="currentAnnouncement.title"
-                    placeholder="{{ 'utils.title' | translate }}">
+                    placeholder="{{ 'utils.title' | translate }}" maxlength="50">
                 <label>{{ 'utils.content' | translate }}:</label>
                 <textarea class="form-control" rows="5" [(ngModel)]="currentAnnouncement.textContent"
-                    placeholder="{{ 'utils.content' | translate }}"></textarea>
+                    placeholder="{{ 'utils.content' | translate }}" maxlength="2048"></textarea>
 
                 <button *ngIf="thumbnail !== null" class="btn buttondel mt-2" (click)="removeImage()">
                     {{ 'utils.remove' | translate }} {{ 'quizCreation.image' | translate }}
@@ -99,10 +99,10 @@
                     </div>
                     <label>{{ 'utils.title' | translate }}:</label>
                     <input class="form-control" [(ngModel)]="currentAnnouncement.title"
-                        placeholder="{{ 'utils.title' | translate }}">
+                        placeholder="{{ 'utils.title' | translate }}" maxlength="50">
                     <label>{{ 'utils.content' | translate }}:</label>
                     <textarea class="form-control" rows="5" [(ngModel)]="currentAnnouncement.textContent"
-                        placeholder="{{ 'utils.content' | translate }}"></textarea>
+                        placeholder="{{ 'utils.content' | translate }}" maxlength="2048"></textarea>
 
 
                     <button *ngIf="thumbnail !== null" class="btn buttondel mt-2" (click)="removeImage()">
