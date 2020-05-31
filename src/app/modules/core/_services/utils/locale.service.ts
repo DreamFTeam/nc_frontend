@@ -64,6 +64,8 @@ export class LocaleService {
         }
     }
 
+    
+
     getUserLanguage(){
         if (localStorage.getItem('userLang')) {
             return localStorage.getItem('userLang');
