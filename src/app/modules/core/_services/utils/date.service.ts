@@ -3,15 +3,18 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class TimezoneService {
+export class DateService {
 
-  options: Intl.ResolvedDateTimeFormatOptions;  
+  private options: Intl.ResolvedDateTimeFormatOptions;  
   
+  readonly datePattern = "dd.MM.yyyy";
+  readonly datetimePattern = "HH:mm, dd.MM.yyyy";
+
   constructor() { 
     this.options = Intl.DateTimeFormat().resolvedOptions();
   }
 
-  getCurrentTimezone(): string{
+  get currentTimezone(): string{
     if(this.options.timeZone !== undefined){
       return this.options.timeZone;
     }
