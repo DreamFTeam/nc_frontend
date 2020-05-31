@@ -9,6 +9,7 @@ import {NotificationsService} from '../../core/_services/user/notifications.serv
 import {SearchFilterQuizService} from '../../core/_services/quiz/search-filter-quiz.service';
 import {environment} from 'src/environments/environment';
 import {LocaleService} from '../../core/_services/utils/locale.service';
+import {Observable} from 'rxjs';
 
 @Component({
     selector: 'app-nav-bar',
@@ -28,6 +29,7 @@ export class NavBarComponent implements OnInit {
     searchArea: string;
 
     language: string;
+    notificationsAmount: Observable<number>;
 
     constructor(private modalService: NgbModal,
                 private authenticationService: AuthenticationService,
@@ -42,6 +44,7 @@ export class NavBarComponent implements OnInit {
         this.privileged = (this.signedIn &&
             this.authenticationService.currentUserValue.role !== Role.User);
         if (this.signedIn) {
+            this.notification = true;
             this.subscribeNotifications();
         }
         this.language = this.localeService.getAnonymousLanguage();
@@ -78,6 +81,7 @@ export class NavBarComponent implements OnInit {
                 this.notification = n && n.length > 0;
                 if (this.notification) {
                     this.playAudio();
+                    this.notificationsAmount = this.notificationsService.getAmounts();
                 }
             });
 
