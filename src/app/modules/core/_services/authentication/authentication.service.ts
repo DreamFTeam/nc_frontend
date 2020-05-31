@@ -1,10 +1,11 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable, of} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {User} from '../../_models/user';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import {environment} from '../../../../../environments/environment';
 import * as jwt_decode from 'jwt-decode';
+import * as sha1 from 'js-sha1';
 import {SettingsService} from '../profile/settings.service';
 import {LocaleService} from '../utils/locale.service';
 
@@ -13,6 +14,7 @@ import {LocaleService} from '../utils/locale.service';
     providedIn: 'root'
 })
 export class AuthenticationService {
+    public readonly PASSWORD_HASHING_ITERATIONS_AMOUNT = 5;
     private currentUserSubject: BehaviorSubject<User>;
     public currentUser: Observable<User>;
     url = environment.apiUrl;
@@ -37,34 +39,29 @@ export class AuthenticationService {
 
     /* POST: login user */
     loginUser(username: string, password: string): Observable<User> {
-
         const userInfo = {
             username,
             email: username,
-            password
+            password: this.passwordHashing(password, this.PASSWORD_HASHING_ITERATIONS_AMOUNT)
         };
 
-        let res = this.http.post<User>(this.url + 'log-in', JSON.stringify(userInfo), this.httpOptions).pipe(
+        return this.http.post<User>(this.url + 'log-in', JSON.stringify(userInfo), this.httpOptions).pipe(
             map(data => {
                 const tokenJSON: any = data;
                 localStorage.setItem('userData', tokenJSON.token);
                 const userDecode: User = jwt_decode(tokenJSON.token);
-                // console.log(userDecode);
                 this.currentUserSubject.next(userDecode);
                 this.localeService.initUserLang(this.settingsService.getLanguage());
                 return userDecode;
             })
         );
-
-
-        return res;
     }
 
     /* POST: signup user */
     signupUser(username: string, email: string, password: string): Observable<User> {
         const userInfo = {
             username,
-            password,
+            password: this.passwordHashing(password, this.PASSWORD_HASHING_ITERATIONS_AMOUNT),
             email,
             language: this.localeService.getAnonymousLanguage()
         };
@@ -83,7 +80,7 @@ export class AuthenticationService {
     changePassword(recoverUrl: string, password: string): Observable<any> {
         const userInfo = {
             recoverUrl,
-            password
+            password: this.passwordHashing(password, this.PASSWORD_HASHING_ITERATIONS_AMOUNT)
         };
         return this.http.post(this.url + 'recovery/changePassword', JSON.stringify(userInfo), this.httpOptions);
     }
@@ -100,23 +97,17 @@ export class AuthenticationService {
     /* PATCH: change user password (using current password) */
     changeUserPassword(currentPassword: string, newPassword: string): Observable<any> {
         const userInfo = {
-            currentPassword,
-            newPassword
+            currentPassword: this.passwordHashing(currentPassword, this.PASSWORD_HASHING_ITERATIONS_AMOUNT),
+            newPassword: this.passwordHashing(newPassword, this.PASSWORD_HASHING_ITERATIONS_AMOUNT)
         };
         return this.http.patch(this.url + 'account/changePassword', JSON.stringify(userInfo), this.httpOptions);
     }
 
-
-    private handleError<T>(operation = 'operation', result?: T) {
-        return (error: any): Observable<T> => {
-
-            console.error(error); // log to console instead
-
-            return of(result as T);
-        };
-    }
-
-    private extractData(res: Response) {
-        return res || {};
+    passwordHashing(password: string, iterations?: number) {
+        let crypt = sha1(password);
+        for (let i = 0; i < iterations; ++i) {
+            crypt =  sha1(crypt);
+        }
+        return crypt;
     }
 }

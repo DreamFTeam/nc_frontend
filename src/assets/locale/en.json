@@ -304,13 +304,14 @@
     }
   },
   "quizList": {
-    "accessCode": "Enter access code",
+    "accessCode": "Game access code",
     "search": "Search",
     "filter": "Filter",
-    "createQuiz": "Create quiz"
+    "createQuiz": "Create quiz",
+    "join": "Join"
   },
   "quizFilter": {
-    "creator": "Creator username",
+    "creator": "Creator",
     "add": "Add",
     "rateFrom": "Rating from",
     "rateTo": "Rating to",
