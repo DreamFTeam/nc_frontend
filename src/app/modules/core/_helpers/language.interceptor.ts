@@ -8,6 +8,7 @@ import {
 import { Observable } from 'rxjs';
 import { AuthenticationService } from '../_services/authentication/authentication.service';
 import { LocaleService } from '../_services/utils/locale.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class LanguageInterceptor implements HttpInterceptor {
@@ -17,20 +18,15 @@ export class LanguageInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
 
-    if(this.authenticationService.currentUserValue){
+    const lang = this.localeService.getLanguage();
+    if(request.url.startsWith(environment.apiUrl)){
       request = request.clone({
         setHeaders: {
-          Lang: this.localeService.getUserLanguage()
-        }
-      });
-
-    }else{
-      request = request.clone({
-        setHeaders: {
-          Lang: this.localeService.getAnonymousLanguage()
+          Lang: lang
         }
       });
     }
+    
     return next.handle(request);
   }
 }
