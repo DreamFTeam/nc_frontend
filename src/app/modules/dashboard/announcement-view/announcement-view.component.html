@@ -22,14 +22,16 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div *ngIf="announcement.image" class="img-thumbnail embed-responsive embed-responsive-4by3 col-sm-5">
-                            <img class="embed-responsive-item"
-                                 [src]="announcement.image"
-                                 alt="Announcement icon">
+                        <div *ngIf="announcement.image" class="col-sm-5 px-0">
+                            <div class="img-thumbnail embed-responsive embed-responsive-4by3">
+                                <img class="embed-responsive-item"
+                                [src]="announcement.image"
+                                alt="Announcement icon">
+                            </div>
                         </div>
                         <div [ngClass]="{'col-sm-7': announcement.image,
                         'col': !announcement.image}">
-                            <p>{{announcement.textContent}}</p>
+                            <p class="announcement-text">{{announcement.textContent}}</p>
                         </div>
                     </div>
                 </div>
