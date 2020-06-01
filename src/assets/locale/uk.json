@@ -257,11 +257,11 @@
     "admins": "Адміністратири",
     "moderators": "Модератори",
     "games": "Ігор",
-    "total": "всього",
-    "published": "опубліковано",
-    "rejected": "відхилено",
-    "activated": "активовано",
-    "unvalidated": "непровалідовано"
+    "total": "Всього",
+    "published": "Опубліковано",
+    "rejected": "Відхилено",
+    "activated": "Активовано",
+    "unvalidated": "Непровалідовано"
   },
   "authorization": {
     "login": {
