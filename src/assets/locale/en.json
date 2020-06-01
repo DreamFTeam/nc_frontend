@@ -260,11 +260,11 @@
     "admins": "Admins",
     "moderators": "Moderators",
     "games": "Games",
-    "total": "total",
-    "published": "published",
-    "rejected": "rejected",
-    "activated": "activated",
-    "unvalidated": "unvalidated"
+    "total": "Total",
+    "published": "Published",
+    "rejected": "Rejected",
+    "activated": "Activated",
+    "unvalidated": "Unvalidated"
   },
   "authorization": {
     "login": {
