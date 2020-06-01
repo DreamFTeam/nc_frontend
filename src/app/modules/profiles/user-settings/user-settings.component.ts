@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Setting} from '../../core/_models/setting';
 import {SettingsService} from '../../core/_services/profile/settings.service';
 import {faSpinner} from '@fortawesome/free-solid-svg-icons';
@@ -6,6 +6,7 @@ import {ToastsService} from '../../core/_services/utils/toasts.service';
 import {environment} from 'src/environments/environment';
 import {LocaleService} from '../../core/_services/utils/locale.service';
 import {SearchFilterQuizService} from '../../core/_services/quiz/search-filter-quiz.service';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -13,7 +14,7 @@ import {SearchFilterQuizService} from '../../core/_services/quiz/search-filter-q
     templateUrl: './user-settings.component.html',
     styleUrls: ['./user-settings.component.css']
 })
-export class UserSettingsComponent implements OnInit {
+export class UserSettingsComponent implements OnInit, OnDestroy {
     readonly languages = [
         {name: 'English', value: `${environment.locales[0]}`},
         {name: 'Українська', value: `${environment.locales[1]}`}
@@ -21,12 +22,14 @@ export class UserSettingsComponent implements OnInit {
 
     language: Setting;
 
-    loading: boolean;
-    buttonLoading: boolean;
+    loading: boolean = true;
+    buttonLoading: boolean = false;
 
     settings: Setting[];
 
     faSpinner = faSpinner;
+
+    subscriptions: Subscription = new Subscription();
 
     constructor(private settingsService: SettingsService,
                 public toastService: ToastsService,
@@ -34,11 +37,14 @@ export class UserSettingsComponent implements OnInit {
                 private searchFilterQuizService: SearchFilterQuizService) {
 
     }
+    ngOnDestroy(): void {
+        this.subscriptions.unsubscribe();
+    }
 
     ngOnInit(): void {
-        this.loading = true;
-        this.buttonLoading = false;
-        this.init();
+        this.subscriptions.add(this.settingsService.getSettings()
+        .subscribe(ans => this.setSettings(ans),
+            err => this.errHandler(this.localeService.getValue('toasterEditor.wentWrong'), err)));
 
     }
 
@@ -58,22 +64,16 @@ export class UserSettingsComponent implements OnInit {
 
     save() {
         this.buttonLoading = true;
-        this.settingsService.saveSettings(this.settings, this.language).subscribe(
+        this.subscriptions.add(this.settingsService.saveSettings(this.settings, this.language).subscribe(
             () => {
-                this.init();
                 this.toastService.toastAddSuccess(this.localeService.getValue('toasterEditor.saved'));
                 this.searchFilterQuizService.initSettings();
             },
             err => this.errHandler(this.localeService.getValue('toasterEditor.wentWrong'), err),
             () => this.buttonLoading = false
-        );
+        ));
     }
 
-    init() {
-        this.settingsService.getSettings()
-            .subscribe(ans => this.setSettings(ans),
-                err => this.errHandler(this.localeService.getValue('toasterEditor.wentWrong'), err));
-    }
 
     errHandler(text, err) {
         console.log(err);
