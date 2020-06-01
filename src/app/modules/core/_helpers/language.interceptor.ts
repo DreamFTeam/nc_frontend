@@ -18,11 +18,10 @@ export class LanguageInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
 
-    const lang = this.localeService.getLanguage();
     if(request.url.startsWith(environment.apiUrl)){
       request = request.clone({
         setHeaders: {
-          Lang: lang
+          Lang: this.localeService.getLanguage()
         }
       });
     }

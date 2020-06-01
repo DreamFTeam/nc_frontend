@@ -18,12 +18,10 @@ export class LocaleService {
     }
 
     initUserLang(langA) {
-        let lang;
         langA.subscribe(
-            ans => lang = this.setLang(ans.value),
-            err => {
-                console.log(err);
-                lang = this.setLang(environment.defaultLocale);
+            ans => this.setLang(ans.value),
+            () => {
+                this.setLang(environment.defaultLocale);
             }
         );
 
