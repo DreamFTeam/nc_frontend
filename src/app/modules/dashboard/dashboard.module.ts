@@ -8,6 +8,7 @@ import {LastPlayedGamesComponent} from './last-played-games/last-played-games.co
 import {ShortQuizListComponent} from './short-quiz-list/short-quiz-list.component';
 import {SuggestionsComponent} from './suggestions/suggestions.component';
 import {UserQuizzesRatingsComponent} from './user-quizzes-ratings/user-quizzes-ratings.component';
+import { CoreModule } from '../core/core.module';
 
 
 @NgModule({
