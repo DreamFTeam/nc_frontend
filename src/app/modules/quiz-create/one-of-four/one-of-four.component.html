@@ -11,7 +11,7 @@
     </div>
 
     <input maxlength="50" [disabled]="!available" class="form-control" [(ngModel)]="question.rightOptions[i]"
-      placeholder="{{ 'utils.answer' | translate }} {{i+1}}">
+      placeholder="{{ 'utils.answer' | translate }} {{i+1}}"  autocomplete="off">
 
   </div>
 

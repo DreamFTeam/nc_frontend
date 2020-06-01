@@ -73,7 +73,8 @@
     "quizzes": "КВІЗИ",
     "login": "УВІЙТИ",
     "signup": "РЕЄСТРАЦІЯ",
-    "logout": "ВИЙТИ"
+    "logout": "ВИЙТИ",
+    "main":"ДАШБОРД"
   },
   "toasterEditor": {
     "wentWrong": "Щось пішло не так :(",

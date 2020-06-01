@@ -110,11 +110,15 @@ button.removeb:focus
     bottom: 0;
     margin-right: -50%;
     width: 100%;
-    border-bottom-right-radius: 5px;
-    border-bottom-left-radius:  5px;
+
 }
 
 .caption:hover {
     opacity: .7; 
     cursor: pointer;
+}
+
+.bottom{
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius:  5px;
 }

@@ -6,9 +6,10 @@
 
                 <div class="col-sm-3 ">
                     <div *ngIf="!quiz.published; else elseBlock">
-                        <div style="position: relative;">
-                            <img [src]="thumbnail ? thumbnail : '../assets/img/default-image.jpg'" class="img-fluid">
-                             <div class="caption p-2" (click)="imageInput.click()">
+                        <div style="position: relative; background-color: white;">
+                            <img [src]="thumbnail ? thumbnail : '../assets/img/default-image.jpg'" 
+                            class="img-fluid mx-auto d-block bottom">
+                             <div class="caption p-2 bottom" (click)="imageInput.click()">
                                 Upload
                             </div>
                         </div>
@@ -41,7 +42,8 @@
                            type="text"
                            maxlength="50"
                            [(ngModel)]="quiz.title"
-                           placeholder="{{ 'utils.title' | translate }} {{ 'quizCreation.ofQuiz' | translate }}">
+                           placeholder="{{ 'utils.title' | translate }} {{ 'quizCreation.ofQuiz' | translate }}"
+                           autocomplete="off">
 
 
                     <div class="mt-2">
@@ -68,7 +70,8 @@
                                                                        style="color: red;">*</span></label>
                     <textarea class="form-control" rows="5" [disabled]="quiz.published" maxlength="250"
                               [(ngModel)]="quiz.description"
-                              placeholder="{{ 'utils.description' | translate }} {{ 'quizCreation.ofQuiz' | translate }}">
+                              placeholder="{{ 'utils.description' | translate }} {{ 'quizCreation.ofQuiz' | translate }}"
+                              autocomplete="off">
                     </textarea>
                 </div>
             </div>

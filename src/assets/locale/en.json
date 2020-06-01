@@ -76,7 +76,8 @@
     "quizzes": "QUIZZES",
     "login": "LOG IN",
     "signup": "SIGN IN",
-    "logout": "LOG OUT"
+    "logout": "LOG OUT",
+    "main":"DASHBOARD"
   },
   "toasterEditor": {
     "wentWrong": "Sorry, something went wrong :(",
