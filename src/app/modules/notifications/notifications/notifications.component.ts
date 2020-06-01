@@ -15,8 +15,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
     language: string;
     locales: string[];
 
-    constructor(private notificationsService: NotificationsService,
-        private localeService: LocaleService) {
+    constructor(private notificationsService: NotificationsService, private localeService: LocaleService) {
     }
 
     ngOnInit(): void {

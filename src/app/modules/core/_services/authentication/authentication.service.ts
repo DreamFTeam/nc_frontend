@@ -88,10 +88,9 @@ export class AuthenticationService {
 
     signoutUser(): void {
         localStorage.removeItem('userData');
-        localStorage.removeItem('userLang');
         this.currentUserSubject.next(null);
 
-        this.localeService.anonymousLang();
+        this.localeService.initAnonymousLang();
     }
 
     /* PATCH: change user password (using current password) */

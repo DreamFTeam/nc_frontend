@@ -1,5 +1,5 @@
 <div class="card mb-2">
-    <div class="card-header lead">
+    <div class="card-header lead cardblock-title">
         {{'lastPlayed.title' | translate}}
     </div>
     <div class="card-body overflow-auto p-0" *ngIf="!isEmpty ; else empty">
@@ -19,7 +19,7 @@
                     <td>{{(item.winner) ? ("utils.yes"|translate) : ("utils.no"|translate)}}</td>
                     <td>{{item.score}}</td>
                     <td>{{item.durationTime * 1000 | date:"HH:mm:ss":'UTC'}}</td>
-                    <td>{{item.datetimeStart | date:"MMM d, HH:mm:ss":this.timezone}}</td>
+                    <td>{{item.datetimeStart | date:dateService.datetimePattern:dateService.currentTimezone}}</td>
                 </tr>
             </tbody>
         </table>
