@@ -6,8 +6,13 @@
 }
 
 .w{
-    width: 60%;
+    width: 100%;
 }
 
+@media (min-width: 768px){
+    .w{
+        width: 60%;
+    }
+}
 
 
