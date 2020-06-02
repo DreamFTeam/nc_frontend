@@ -26,10 +26,8 @@ label
 
 .title
 {
-    position:    relative;
     color:       rgba(0, 0, 0, 0.63);
     font-size:   20px;
-    line-height: 24px;
 }
 
 .btn
@@ -93,6 +91,7 @@ button.removeb:focus
     max-height:    250px;
     overflow-y:    scroll;
     overflow-wrap: break-word;
+    direction: rtl;
 }
 
 .selected
@@ -119,6 +118,14 @@ button.removeb:focus
 }
 
 .bottom{
-    border-bottom-right-radius: 5px;
-    border-bottom-left-radius:  5px;
+    border-bottom-right-radius: .25rem;
+    border-bottom-left-radius:  .25rem;
+}
+
+.bordr{
+    border-radius:  .25rem;
+}
+
+.btn-sized{
+    width: 140px;
 }

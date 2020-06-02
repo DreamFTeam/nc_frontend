@@ -31,5 +31,6 @@
 <input type="text" class="form-control" [(ngModel)]="model" [ngbTypeahead]="search"
        [inputFormatter]="formatter" [resultFormatter]="formatter" [editable]='false'
        (focus)="focus$.next($any($event).target.value)" (click)="click$.next($any($event).target.value)"
-       (keyup.enter)="add()" (selectItem)="selectedItem($event)" autocomplete="off"/>
+       (keyup.enter)="add()" (selectItem)="selectedItem($event)" autocomplete="off"
+       placeholder="{{ 'quizCreation.startTyping' | translate }}"/>
 </div>

@@ -59,7 +59,12 @@
     "otherAnswers": "Other answers",
     "answer": "answer",
     "add": "Add",
-    "rightSequence":"Right sequence"
+    "rightSequence":"Right sequence",
+    "publishHelp":"To publish your quiz you need to have 4 saved questions (marked with dark blue color)",
+    "questionHelp":"Select question for edit by clicking on it`s title and delete it by clicking on cross",
+    "emptyList":"Quiz doesn`t have questions yet",
+    "startTyping":"Start typing something",
+    "upload":"Upload image"
   },
   "viewQuiz": {
     "deactivated": "Deactivated",
