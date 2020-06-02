@@ -5,10 +5,8 @@
     <div class="card-body p-1 overflow-auto" *ngIf="!isEmpty ; else empty">
         <ul class="list-unstyled mb-0">
             <li class="media" *ngFor="let item of achievements$ | async" routerLink='/profile'>
-                <div class="embed-responsive embed-responsive-1by1" placement="right" ngbTooltip="{{item.description}}">
-                    <img class="mr-2 embed-responsive-item align-self-center pic"
-                         [src]="item.imageContent ? item.imageContent : this.mockImgUrl"
-                         alt="Achievement icon">
+                <div class="embed-responsive embed-responsive-1by1 bg" placement="right" ngbTooltip="{{item.description}}">
+                    <img class="mr-2 embed-responsive-item align-self-center pic" [src]="item.imageContent ? item.imageContent : this.mockImgUrl" alt="Achievement icon">
                 </div>
                 <div class="media-body">
                     <p class="bold p-2">{{item.title}}</p>

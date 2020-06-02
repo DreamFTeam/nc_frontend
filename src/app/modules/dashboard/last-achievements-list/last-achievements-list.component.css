@@ -26,3 +26,6 @@
         max-width: 35% !important;
     }
 }
+.bg :hover {
+    background-color: #ebe8e8;
+}

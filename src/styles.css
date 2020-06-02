@@ -94,4 +94,6 @@ a:active {
     padding:    2em;
     text-align: center;
     font-size:  medium;
+    margin-bottom: auto;
+    margin-top: auto;
 }
