@@ -68,6 +68,9 @@
   },
   "viewQuiz": {
     "deactivated": "Deactivated",
+    "rejected":"Rejected",
+    "waitingForValidation":"Waiting for validation",
+    "draft":"Draft",
     "deactivate": "Deactivate",
     "danger": "Danger zone",
     "asFavorite": "Favorite",

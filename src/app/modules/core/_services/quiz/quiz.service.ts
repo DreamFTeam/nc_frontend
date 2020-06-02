@@ -81,15 +81,13 @@ export class QuizService {
 
 
     getQuiz(quizId: string): Observable<ExtendedQuiz> {
-        let params = new HttpParams().set('quizId', quizId);
-
-        if (this.user) {
-            params.set('userId', this.user.id);
-        }
 
         const options = {
-            params: params
+            params: this.user ? 
+            new HttpParams().set('quizId', quizId).set('userId', this.user.id) :
+            new HttpParams().set('quizId', quizId)
         };
+
 
         return this.http.get<ExtendedQuiz>(this.url, options)
             .pipe(map(data => {
@@ -103,6 +101,7 @@ export class QuizService {
             quizId: id,
             userId: this.user.id,
         };
+        console.log(favoriteInfo)
 
         return this.http.post<any>(this.url + '/markasfavourite', JSON.stringify(favoriteInfo), this.httpOptions).pipe(
             catchError(this.handleErrorsService.handleError<any>('markAsFavorite'))
