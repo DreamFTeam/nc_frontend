@@ -3,6 +3,7 @@ import { NotificationsService } from '../../core/_services/user/notifications.se
 import { environment } from '../../../../environments/environment';
 import { Notification } from '../../core/_models/notification';
 import { LocaleService } from '../../core/_services/utils/locale.service';
+import {first} from 'rxjs/operators';
 
 @Component({
     selector: 'app-notifications',
@@ -29,7 +30,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
 
     @HostListener('window:beforeunload', ['$event'])
     ngOnDestroy(): void {
-        this.notificationsService.setSeen().subscribe();
+        this.notificationsService.setSeen().pipe(first()).subscribe();
     }
 
 }

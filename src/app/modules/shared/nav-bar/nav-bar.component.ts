@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LogInComponent } from '../../authorization/log-in/log-in.component';
@@ -9,14 +9,14 @@ import { NotificationsService } from '../../core/_services/user/notifications.se
 import { SearchFilterQuizService } from '../../core/_services/quiz/search-filter-quiz.service';
 import { environment } from 'src/environments/environment';
 import { LocaleService } from '../../core/_services/utils/locale.service';
-import { Observable } from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 
 @Component({
     selector: 'app-nav-bar',
     templateUrl: './nav-bar.component.html',
     styleUrls: ['./nav-bar.component.css']
 })
-export class NavBarComponent implements OnInit {
+export class NavBarComponent implements OnInit, OnDestroy {
     readonly languages = [
         { name: 'English', value: `${environment.locales[0]}` },
         { name: 'Українська', value: `${environment.locales[1]}` }
@@ -30,6 +30,7 @@ export class NavBarComponent implements OnInit {
 
     language: string;
     notificationsAmount: Observable<number>;
+    private notificationSubscription: Subscription;
 
     constructor(private modalService: NgbModal,
         private authenticationService: AuthenticationService,
@@ -76,7 +77,7 @@ export class NavBarComponent implements OnInit {
     }
 
     subscribeNotifications() {
-        this.notificationsService.notifications
+        this.notificationSubscription = this.notificationsService.notifications
             .subscribe(n => {
                 this.notification = n && n.length > 0;
                 if (this.notification) {
@@ -100,5 +101,10 @@ export class NavBarComponent implements OnInit {
             console.log(error);
         }).then(() => {
         });
+    }
+
+    @HostListener('window:beforeunload', ['$event'])
+    ngOnDestroy(): void {
+        this.notificationSubscription.unsubscribe();
     }
 }
