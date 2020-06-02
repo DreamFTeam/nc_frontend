@@ -8,6 +8,7 @@ import {Role} from '../../core/_models/role';
 import {ToastsService} from '../../core/_services/utils/toasts.service';
 import { Subscription } from 'rxjs';
 import { LocaleService } from '../../core/_services/utils/locale.service';
+import { DateService } from '../../core/_services/utils/date.service';
 
 
 @Component({
@@ -32,7 +33,8 @@ export class AnnouncementViewComponent implements OnInit, OnDestroy {
     constructor(private authenticationService: AuthenticationService,
         private announcementService: AnnouncementService,
         public toastsService: ToastsService,
-        private localeService: LocaleService) {
+        private localeService: LocaleService,
+        public dateService: DateService) {
     }
 
     ngOnDestroy(): void {

@@ -15,7 +15,9 @@
             
                     </div>
                     <div class="col-sm-2 float-right">
-                        <p style="font-style: italic;">{{act.datetime | date}}</p>
+                        <p style="font-style: italic;">
+                            {{act.datetime | date:dateService.datePattern:dateService.currentTimezone}}
+                        </p>
                     </div>
                 </div>
                 <p class="mt-2">{{act.content}}</p>
