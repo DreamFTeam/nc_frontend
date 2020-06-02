@@ -1,111 +1,103 @@
 <nav class="navbar navbar-light navbar-expand-md bg-light justify-content-md-center justify-content-start mb-3">
-  
+
   <button class="navbar-toggler ml-1" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">
-      <span class="navbar-toggler-icon"></span>
+    <span class="navbar-toggler-icon"></span>
   </button>
-  <a class="navbar-brand d-none d-md-block" [routerLink]="'/'">QUIZ-NET</a> 
+  <a class="navbar-brand d-none d-md-block" [routerLink]="'/'">QUIZ-NET</a>
   <a class="navbar-brand d-md-none ml-auto" [routerLink]="'/'">QUIZ-NET</a>
   <div class="navbar-collapse collapse justify-content-between align-items-center w-100"
-       [ngbCollapse]="isMenuCollapsed">
-      <ul class="navbar-nav mx-auto text-md-center text-left">
-          <ng-template [ngIf]="privileged">
-            <li class="nav-item">
-              <a class="nav-link" [routerLink]="'/privileged/main'" (click)="isMenuCollapsed = true">MAIN</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" [routerLink]="'/validation'" (click)="isMenuCollapsed = true">
-                {{ 'navbar.validation' | translate }}
-              </a>
-            </li>
-          </ng-template>
-          <ng-template [ngIf]="!privileged && signedIn">
-            <li class="nav-item">
-              <a class="nav-link" [routerLink]="'/activities'" (click)="isMenuCollapsed = true">
-                {{ 'navbar.activities' | translate }}
-              </a>
-            </li>
-          </ng-template>
-          <ng-template [ngIf]="signedIn">
-            <li class="nav-item">
-              <a class="nav-link" [routerLink]="'/profile'" (click)="isMenuCollapsed = true">
-                {{ 'navbar.profile' | translate }}
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" [routerLink]="'/users'" (click)="isMenuCollapsed = true">
-                {{ 'navbar.users' | translate }}
-              </a>
-            </li>
-          </ng-template>
+    [ngbCollapse]="isMenuCollapsed">
+    <ul class="navbar-nav mx-auto text-md-center text-left">
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="privileged ? '/privileged/main' : '/'" (click)="isMenuCollapsed = true">
+          {{ 'navbar.main' | translate }}
+        </a>
+      </li>
 
-         
-          <li class="nav-item">
-            <a class="nav-link" [routerLink]="'/quiz-list'" (click)="isMenuCollapsed = true">
-              {{ 'navbar.quizzes' | translate }}
-            </a>
-          </li>
-          
-          <li class="nav-item">
-            <input class="form-control mr-sm-2 mt-1" type="text" name="search" [(ngModel)]="searchArea"
-                   (keydown.enter)="search()" placeholder="{{ 'utils.search' | translate }}">
-          </li>
-
-          <ng-template [ngIf]="!signedIn">
-            <li class="nav-item">
-              <select class="custom-select mt-1" [(ngModel)]="language" (change)="onChange()">
-                <option *ngFor="let lang of languages" [value]="lang.value">
-                  {{lang.name}}
-                </option>
-              </select>
-            </li>
-          </ng-template>
+      <ng-template [ngIf]="privileged">
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="'/validation'" (click)="isMenuCollapsed = true">
+            {{ 'navbar.validation' | translate }}
+          </a>
+        </li>
+      </ng-template>
+      <ng-template [ngIf]="!privileged && signedIn">
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="'/activities'" (click)="isMenuCollapsed = true">
+            {{ 'navbar.activities' | translate }}
+          </a>
+        </li>
+      </ng-template>
+      <ng-template [ngIf]="signedIn">
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="'/profile'" (click)="isMenuCollapsed = true">
+            {{ 'navbar.profile' | translate }}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="'/users'" (click)="isMenuCollapsed = true">
+            {{ 'navbar.users' | translate }}
+          </a>
+        </li>
+      </ng-template>
 
 
-          <li class="nav-item">
-            <a *ngIf="signedIn" class="navbar-brand" [routerLink]="'/notifications'">
-              <svg *ngIf="!notification"
-                   class="bi bi-bell"
-                   width="1em"
-                   height="1em"
-                   viewBox="0 0 16 16"
-                   fill="currentColor"
-                   xmlns="http://www.w3.org/2000/svg">
-                <path d="M8 16a2 2 0 002-2H6a2 2 0 002 2z"/>
-                <path fill-rule="evenodd"
-                      d="M8 1.918l-.797.161A4.002 4.002 0 004 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 00-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 111.99 0A5.002 5.002 0 0113 6c0 .88.32 4.2 1.22 6z"
-                      clip-rule="evenodd"/>
-              </svg>
-              <span class="notif">
-                  <svg *ngIf="notification"
-                       class="bi bi-bell-fill"
-                       width="1em"
-                       height="1em"
-                       viewBox="0 0 16 16"
-                       fill="currentColor"
-                       xmlns="http://www.w3.org/2000/svg">
-                    <path
-                            d="M8 16a2 2 0 002-2H6a2 2 0 002 2zm.995-14.901a1 1 0 10-1.99 0A5.002 5.002 0 003 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z"/>
-                  </svg>
-                  <span class="num rounded-circle">{{notificationsAmount | async}}</span>
-              </span>
-            </a>
-          </li>
-      </ul>
-      <ul class="nav navbar-nav justify-content-md-center justify-content-start">
-        <ng-template [ngIf]="signedIn" [ngIfElse]="loggedOut">
-          <li class="nav-item">
-            <a class="nav-link" [routerLink]="'/'" (click)="logout()">{{ 'navbar.logout' | translate }}</a>
-          </li>
-        </ng-template>
-        <ng-template #loggedOut>
-          <li class="nav-item">
-            <a class="nav-link clickable" (click)="openLogin()">{{ 'navbar.login' | translate }}</a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link clickable" (click)="openReg()">{{ 'navbar.signup' | translate }}</a>
-          </li>
-        </ng-template>
-      </ul>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="'/quiz-list'" (click)="isMenuCollapsed = true">
+          {{ 'navbar.quizzes' | translate }}
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <input class="form-control mr-sm-2 mt-1" type="text" name="search" [(ngModel)]="searchArea"
+          (keydown.enter)="search()" placeholder="{{ 'utils.search' | translate }}">
+      </li>
+
+      <ng-template [ngIf]="!signedIn">
+        <li class="nav-item">
+          <select class="custom-select mt-1" [(ngModel)]="language" (change)="onChange()">
+            <option *ngFor="let lang of languages" [value]="lang.value">
+              {{lang.name}}
+            </option>
+          </select>
+        </li>
+      </ng-template>
+
+
+      <li class="nav-item">
+        <a *ngIf="signedIn" class="navbar-brand" [routerLink]="'/notifications'">
+          <svg *ngIf="!notification" class="bi bi-bell" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"
+            xmlns="http://www.w3.org/2000/svg">
+            <path d="M8 16a2 2 0 002-2H6a2 2 0 002 2z" />
+            <path fill-rule="evenodd"
+              d="M8 1.918l-.797.161A4.002 4.002 0 004 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 00-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 111.99 0A5.002 5.002 0 0113 6c0 .88.32 4.2 1.22 6z"
+              clip-rule="evenodd" />
+          </svg>
+          <span class="notif">
+            <svg *ngIf="notification" class="bi bi-bell-fill" width="1em" height="1em" viewBox="0 0 16 16"
+              fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M8 16a2 2 0 002-2H6a2 2 0 002 2zm.995-14.901a1 1 0 10-1.99 0A5.002 5.002 0 003 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z" />
+            </svg>
+            <span class="num rounded-circle">{{notificationsAmount | async}}</span>
+          </span>
+        </a>
+      </li>
+    </ul>
+    <ul class="nav navbar-nav justify-content-md-center justify-content-start">
+      <ng-template [ngIf]="signedIn" [ngIfElse]="loggedOut">
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="'/'" (click)="logout()">{{ 'navbar.logout' | translate }}</a>
+        </li>
+      </ng-template>
+      <ng-template #loggedOut>
+        <li class="nav-item">
+          <a class="nav-link clickable" (click)="openLogin()">{{ 'navbar.login' | translate }}</a>
+        </li>
+        <li class="nav-item ">
+          <a class="nav-link clickable" (click)="openReg()">{{ 'navbar.signup' | translate }}</a>
+        </li>
+      </ng-template>
+    </ul>
   </div>
 </nav>
-
