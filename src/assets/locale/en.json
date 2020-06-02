@@ -83,7 +83,7 @@
     "users": "USERS",
     "quizzes": "QUIZZES",
     "login": "LOG IN",
-    "signup": "SIGN IN",
+    "signup": "SIGN UP",
     "logout": "LOG OUT",
     "main":"DASHBOARD"
   },
