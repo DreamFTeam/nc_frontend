@@ -2,24 +2,32 @@
     <div class="cardblock-title card-header lead">
         {{'userQuizzesRating.title'|translate}}
     </div>
-    <div class="card-body p-1 overflow-auto" *ngIf="!isEmpty ; else empty">
+    <div class="card-body pt-1 pl-1 pr-1 pb-0 overflow-auto" *ngIf="(!isLoading && !isEmpty) ; else ((isLoading) ? loading : empty)">
         <ul class="list-unstyled mb-0">
-            <li class="media" *ngFor="let item of quizList$ | async" routerLink='/viewquiz/{{item.id}}'>
-                <div class="align-self-center embed-responsive embed-responsive-1by1">
-                    <img class="mr-2 embed-responsive-item align-self-center pic"
-                         [src]="item.imageContent ? item.imageContent : this.mockImgUrl"
-                         alt="Quiz icon">
-                </div>
-                <div class="media-body pl-2">
-                    <i><p class="lead quiztitle">{{item.title}}</p></i>
-                    <strong><p class="">{{'userQuizzesRating.rating'|translate}}: {{item.rating}}</p></strong>
+            <li class="media" *ngFor="let item of quizList; let i = index" routerLink='/viewquiz/{{item.id}}'>
+                <div class="bg w-100">
+                    <div class="row w-100 mx-0">
+                        <div class="col-4 align-self-center embed-responsive embed-responsive-1by1">
+                            <img class="mr-2 embed-responsive-item align-self-center pic" [src]="item.imageContent ? item.imageContent : this.mockImgUrl" alt="Quiz icon">
+                        </div>
+                        <div class="col-8 media-body pl-2 pr-0 w-100">
+                            <i><p class="lead quiztitle">{{item.title}}</p></i>
+                            <strong><p>{{'userQuizzesRating.rating'|translate}}: {{item.rating | number:'1.0-2'}} &#9733;</p></strong>
+                        </div>
+                    </div>
                 </div>
             </li>
         </ul>
     </div>
 </div>
 
-<!-- Showing this when the list is empty -->
+<ng-template #loading>
+        <div class="text-center h-100 loading">
+            <fa-icon [icon]="faSpinner" [spin]="true" size="6x"></fa-icon>
+        </div>    
+</ng-template>
+
+
 <ng-template #empty>
     <p *ngIf="isEmpty" class="lead emptylabel">{{'userQuizzesRating.empty'|translate}}</p>
 </ng-template>

@@ -13,9 +13,9 @@
     cursor: pointer;
 }
 
-.card-body
+.card
 {
-    max-height: 21vh;
+    height: 40vh;
 }
 
 @media (min-width: 768px)
@@ -26,11 +26,6 @@
         max-width: 35% !important;
     }
 }
-
-.emptylabel
-{
-    width:      100%;
-    padding:    2em;
-    text-align: center;
-    font-size:  medium;
+.bg :hover {
+    background-color: #ebe8e8;
 }
