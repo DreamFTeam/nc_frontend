@@ -13,7 +13,6 @@
     <div class="chart-wrapper">
     <ngx-charts-bar-vertical
 		    [barPadding]="4"
-		    [view]=view
 		    [showDataLabel]=true
 		    [results]="resultsForGraphic"
 		    [xAxis]=true
@@ -22,7 +21,7 @@
 		    [showXAxisLabel]=true
 		    [showYAxisLabel]=true
 		    legendTitle="{{'game.players'| translate}}"
-		    legendPosition="right"
+		    legendPosition="below"
 		    yAxisLabel="{{'game.points'| translate}}"
 		    (select)="onSelect($event)">
     </ngx-charts-bar-vertical>
