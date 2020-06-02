@@ -52,3 +52,7 @@ li{
     outline:    none !important;
     box-shadow: none;   
 }
+
+.loading{
+    padding-top: 3.5em;
+}
