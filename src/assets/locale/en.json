@@ -68,6 +68,9 @@
   },
   "viewQuiz": {
     "deactivated": "Deactivated",
+    "rejected":"Rejected",
+    "waitingForValidation":"Waiting for validation",
+    "draft":"Draft",
     "deactivate": "Deactivate",
     "danger": "Danger zone",
     "asFavorite": "Favorite",
@@ -80,7 +83,7 @@
     "users": "USERS",
     "quizzes": "QUIZZES",
     "login": "LOG IN",
-    "signup": "SIGN IN",
+    "signup": "SIGN UP",
     "logout": "LOG OUT",
     "main":"DASHBOARD"
   },
