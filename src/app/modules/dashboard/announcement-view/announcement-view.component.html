@@ -18,7 +18,9 @@
                             <p style="font-size: 20px;"><strong>{{announcement.title}}</strong></p>
                         </div>
                         <div class="col-sm-2">
-                            <p class="float-right">{{announcement.creationDate | date: "dd.MM.y"}}</p>
+                            <p class="float-right">
+                                {{announcement.creationDate | date:dateService.datePattern:dateService.currentTimezone}}
+                            </p>
                         </div>
                     </div>
                     <div>

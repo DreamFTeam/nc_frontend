@@ -6,9 +6,10 @@
             <div class="col-sm-8">
 
                 <input [disabled]="!available" maxlength="50" class="form-control" type="text"
-                       [(ngModel)]="question.title" placeholder="{{ 'quizCreation.questiontitle' | translate }}">
+                       [(ngModel)]="question.title" placeholder="{{ 'quizCreation.questiontitle' | translate }}"
+                       autocomplete="off">
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-4">
                 <select [disabled]="!available" (change)="onChange($event.target.value)" class="form-control"
                         [(ngModel)]="typeTemp">
                     <option *ngFor="let type of types" [value]="type.value">
@@ -18,12 +19,12 @@
             </div>
         </div>
 
-
+        <label class="mt-2">{{ 'utils.content' | translate }} <span *ngIf="available"
+            style="color: red;">*</span></label>
         <div class="row">
-            <div class="col-sm-8">
-                <div class="m-3">
-                    <label>{{ 'utils.content' | translate }} <span *ngIf="available"
-                                                                   style="color: red;">*</span></label>
+            <div class="col-sm-8 mb-2">
+                <div >
+                    
                     <textarea [disabled]="!available" maxlength="250" class="form-control" rows="3"
                               [(ngModel)]="question.content" placeholder="{{ 'utils.content' | translate }}">
                     </textarea>
@@ -32,22 +33,29 @@
                 <app-one-of-four *ngIf="isOneToFour()" [available]="available" [question]="question"></app-one-of-four>
                 <app-true-false *ngIf="isTrueFalse()" [available]="available" [question]="question"></app-true-false>
                 <app-open-answer *ngIf="isOpenAnswer()" [available]="available" [question]="question"></app-open-answer>
-                <app-seq-options *ngIf="isSequenceAnswer()" [available]="available" [question]="question">
-                </app-seq-options>
+                <app-seq-options *ngIf="isSequenceAnswer()" [available]="available" [question]="question"></app-seq-options>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-4">
                 <div *ngIf="available; else imgElse">
-                    <input style="display: none" #questionInput type="file" accept="image/*"
-                           (change)="questionImage($event)">
-                    <img [src]='thumbnail' alt="Upload" class="img-thumbnail mt-5 mx-auto d-block"
-                         (click)="questionInput.click()">
+                    <div style="position: relative; background-color: white;">
+                        <img [src]="thumbnail ? thumbnail : '../assets/img/default-image.jpg'" 
+                        class="img-fluid mx-auto d-block bordr">
+    
+                        <input style="display: none" #questionInput type="file" accept="image/*"
+                               (change)="questionImage($event)">
+    
+                        <div class="caption p-2 bottom" (click)="questionInput.click()">
+                            {{ 'quizCreation.upload' | translate }}
+                        </div>
+    
+                    </div>
                     <button *ngIf="thumbnail !== null && thumbnail !== undefined" class="btn buttondel mt-2"
                             (click)="removeImage()">
                         {{ 'utils.remove' | translate }} {{ 'utilsOther.image' | translate }}
                     </button>
                 </div>
                 <ng-template #imgElse>
-                    <img *ngIf="thumbnail !== undefined && thumbnail !== null" class="img-thumbnail" [src]='thumbnail'>
+                    <img *ngIf="thumbnail" class="img-thumbnail" [src]='thumbnail'>
                 </ng-template>
 
             </div>
@@ -61,9 +69,7 @@
 <div class="row">
     <div class="col-sm-6">
         <input [disabled]="!available" class="form-control" style="max-width: 20%;" maxlength="3" type="text"
-               [(ngModel)]="question.points" placeholder="{{ 'utils.points' | translate }}">
+               [(ngModel)]="question.points" placeholder="{{ 'utils.points' | translate }}"  autocomplete="off">
     </div>
-    <div class="col-sm-5">
-
-    </div>
+    <div class="col-sm-5"></div>
 </div>

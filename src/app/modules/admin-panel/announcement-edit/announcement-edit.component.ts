@@ -7,6 +7,7 @@ import { LocaleService } from '../../core/_services/utils/locale.service';
 import { ModalService } from '../../core/_services/utils/modal.service';
 import { ToastsService } from '../../core/_services/utils/toasts.service';
 import { Subscription } from 'rxjs';
+import { DateService } from '../../core/_services/utils/date.service';
 
 
 @Component({
@@ -40,7 +41,8 @@ export class AnnouncementEditComponent implements OnInit, OnDestroy {
         private sanitizer: DomSanitizer,
         private toastsService: ToastsService,
         private modalService: ModalService,
-        private localeService: LocaleService) {
+        private localeService: LocaleService,
+        public dateService: DateService) {
 
     }
 

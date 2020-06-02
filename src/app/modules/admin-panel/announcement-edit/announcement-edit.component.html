@@ -11,10 +11,10 @@
                 <div><label>{{ 'announcementsEdit.adding' | translate }}</label></div>
                 <label class="mt-4">{{ 'utils.title' | translate }}:</label>
                 <input class="form-control" [(ngModel)]="currentAnnouncement.title"
-                    placeholder="{{ 'utils.title' | translate }}" maxlength="50">
+                    placeholder="{{ 'utils.title' | translate }}" maxlength="50"  autocomplete="off">
                 <label>{{ 'utils.content' | translate }}:</label>
                 <textarea class="form-control" rows="5" [(ngModel)]="currentAnnouncement.textContent"
-                    placeholder="{{ 'utils.content' | translate }}" maxlength="2048"></textarea>
+                    placeholder="{{ 'utils.content' | translate }}" maxlength="2048"  autocomplete="off"></textarea>
 
                 <button *ngIf="thumbnail !== null" class="btn buttondel mt-2" (click)="removeImage()">
                     {{ 'utils.remove' | translate }} {{ 'quizCreation.image' | translate }}
@@ -47,7 +47,7 @@
                             </div>
                             <div class="col">
                                 <div class="float-right">
-                                    <p style="margin: 0;">{{announcement.creationDate | date: "dd.MM.y"}}</p>
+                                    <p style="margin: 0;">{{announcement.creationDate | date:dateService.datetimePattern:dateService.currentTimezone}}</p>
                                     <a style="font-weight: bold; color: black;" routerLink="/profile/{{announcement.creatorId}}">
                                         {{announcement.creatorId}}
                                     </a>
@@ -95,14 +95,14 @@
                     <hr class="my-4">
                     <div>
                         <label>{{ 'announcementsEdit.editing' | translate }} {{currentAnnouncement.creatorId}}</label>
-                        <p style="font-style: italic;">{{announcement.creationDate | date}}</p>
+                        <p style="font-style: italic;">{{announcement.creationDate | date:dateService.datetimePattern:dateService.currentTimezone}}</p>
                     </div>
                     <label>{{ 'utils.title' | translate }}:</label>
                     <input class="form-control" [(ngModel)]="currentAnnouncement.title"
-                        placeholder="{{ 'utils.title' | translate }}" maxlength="50">
+                        placeholder="{{ 'utils.title' | translate }}" maxlength="50"  autocomplete="off">
                     <label>{{ 'utils.content' | translate }}:</label>
                     <textarea class="form-control" rows="5" [(ngModel)]="currentAnnouncement.textContent"
-                        placeholder="{{ 'utils.content' | translate }}" maxlength="2048"></textarea>
+                        placeholder="{{ 'utils.content' | translate }}" maxlength="2048"  autocomplete="off"></textarea>
 
 
                     <button *ngIf="thumbnail !== null" class="btn buttondel mt-2" (click)="removeImage()">
