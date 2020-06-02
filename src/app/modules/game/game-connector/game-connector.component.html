@@ -1,14 +1,16 @@
-<div *ngIf="game" class="container">
+<div *ngIf="game; else loading" class="container">
   <div class="row">
     <div class="col-2"></div>
       <div class="col-8">
         <div class="row bg-white rounded">
           <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 text-center">
             <div *ngIf="game.maxUsersCount > 1">
-              <p class="mt-4 h4 text-center">{{game.accessId}}</p>
+              <p class="mt-4 mb-1 h5">{{'quizList.accessCode' | translate}}:</p>
+              <input id="accessCode" ngbTooltip="{{'game.accessCodeHint' | translate}}"
+                     [ngStyle]="{'width':'140px'}" type="text" (click)="copyInputMessage($event.target)" readonly class="border-0 mt-0 h4 text-center btn-link" value="{{game.accessId}}">
               <qrcode [margin]="3"
                       [qrdata]="connectUrl + game.accessId"
-                      [width]="256"
+                      [width]="200"
                       [errorCorrectionLevel]="'M'"
                       [elementType]="'url'"></qrcode>
             </div>
@@ -32,7 +34,10 @@
                      width="35px"
                      [src]="session.image ? session.imageContent : mockImageUrl"
                      alt="{{session.username}}'s avatar">
-                <a *ngIf="session.user_id && loggedIn; else anonym" target="_blank" href="{{location}}/profile/{{session.username}}" class="p-2 m-2">{{session.username}} {{'game.connected'| translate}}</a>
+                <a *ngIf="session.user_id && loggedIn; else anonym"
+                   target="_blank"
+                   href="{{location}}/profile/{{session.username}}"
+                   class="p-2 m-2">{{session.username}} {{'game.connected'| translate}}</a>
                 <ng-template #anonym class="p-2 m-2">{{session.username}} {{'game.connected'| translate}}</ng-template>
               </div>
             </div>
@@ -42,3 +47,8 @@
     <div class="col-2"></div>
   </div>
 </div>
+<ng-template #loading>
+  <div class="text-center container bg-white rounded p-4">
+              <fa-icon [icon]="faSpinner" [spin]="true" size="6x"></fa-icon>
+    </div>
+</ng-template>

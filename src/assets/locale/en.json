@@ -212,7 +212,8 @@
     "minQuesError": "There should be more than 4 questions.",
     "minUserError": "Incorrect number of players.",
     "questAmountError": "Too many questions. There are only ",
-    "maxUserError": "Too many users. Must be less than "
+    "maxUserError": "Too many users. Must be less than ",
+    "accessCodeHint": "This is the game access code. You can show it to your friends. It should be entered at the top of quizzes page. Click to copy join url."
   },
   "validationPage": {
     "title": "'s quiz validation list"
