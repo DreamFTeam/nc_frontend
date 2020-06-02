@@ -12,7 +12,6 @@ import { LocaleService } from '../../core/_services/utils/locale.service';
 export class NotificationsComponent implements OnInit, OnDestroy {
     notifications: Notification[];
     newNotification: boolean;
-    language: string;
     locales: string[];
 
     constructor(private notificationsService: NotificationsService, private localeService: LocaleService) {
@@ -21,7 +20,6 @@ export class NotificationsComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
 
         this.locales = environment.locales;
-        this.language = this.localeService.getLanguage();
         this.notificationsService.notifications
             .subscribe(notifications => {
                 this.notifications = notifications;

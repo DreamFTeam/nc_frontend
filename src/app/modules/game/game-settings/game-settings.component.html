@@ -1,7 +1,18 @@
 <div class="container bg-white rounded p-2">
   <form #settingsForm="ngForm">
   <div class="form-group row">
-    <label for="roundDuration" class="col text-right col-form-label">{{'game.qtime'| translate}}</label>
+    <div class="col col-form-label text-right">
+      <label for="roundDuration">{{'game.qtime'| translate}}</label>
+      <span class="ml-2  question" placement="right" ngbTooltip="{{'game.qtimeDesc'| translate}}">
+            <svg class="bi bi-question-circle" width="1.5em" height="1.5em" viewBox="0 0 16 16"
+                 fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z"
+                      clip-rule="evenodd"/>
+                <path
+                        d="M5.25 6.033h1.32c0-.781.458-1.384 1.36-1.384.685 0 1.313.343 1.313 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.007.463h1.307v-.355c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.326 0-2.786.647-2.754 2.533zm1.562 5.516c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
+            </svg>
+        </span>
+    </div>
     <div class="col">
       <select name="roundDuration" required ngModel class="form-control" id="roundDuration">
         <option *ngFor="let time of roundDurations" value="{{time}}">{{time}} {{'game.sec'| translate}}</option>
@@ -9,7 +20,18 @@
     </div>
   </div>
   <div class="row form-group">
-    <label for="numberOfQuestions" class="col text-right col-form-label">{{'game.qamount'| translate}}</label>
+    <div class="col col-form-label text-right">
+      <label for="numberOfQuestions" >{{'game.qamount'| translate}}</label>
+      <span class="ml-2  question" placement="right" ngbTooltip="{{'game.qamountDesc1'| translate}} {{minQuestion}} {{'game.qamountDesc2'| translate}}">
+            <svg class="bi bi-question-circle" width="1.5em" height="1.5em" viewBox="0 0 16 16"
+                 fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z"
+                      clip-rule="evenodd"/>
+                <path
+                        d="M5.25 6.033h1.32c0-.781.458-1.384 1.36-1.384.685 0 1.313.343 1.313 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.007.463h1.307v-.355c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.326 0-2.786.647-2.754 2.533zm1.562 5.516c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
+            </svg>
+        </span>
+    </div>
     <div class="col">
       <input class="form-control"
              ngModel
@@ -22,9 +44,20 @@
     </div>
   </div>
    <div class="row form-group">
-    <label for="maxUsersCount" class="col text-right col-form-label">{{'game.uamount'| translate}}</label>
-    <div class="col">
-      <input class="form-control"
+      <div class="col col-form-label text-right">
+        <label for="maxUsersCount">{{'game.uamount'| translate}}</label>
+        <span class="ml-2  question" placement="right" ngbTooltip="{{'game.uamountDesc1'| translate}} {{maxUser}} {{'game.uamountDesc2'| translate}}">
+            <svg class="bi bi-question-circle" width="1.5em" height="1.5em" viewBox="0 0 16 16"
+                 fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z"
+                      clip-rule="evenodd"/>
+                <path
+                        d="M5.25 6.033h1.32c0-.781.458-1.384 1.36-1.384.685 0 1.313.343 1.313 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.007.463h1.307v-.355c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.326 0-2.786.647-2.754 2.533zm1.562 5.516c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
+            </svg>
+        </span>
+      </div>
+      <div class="col">
+        <input class="form-control"
              ngModel
              required
              name="maxUsersCount"
@@ -32,10 +65,21 @@
              pattern="\d{1,2}"
              type="text"
              placeholder="Max: {{maxUser}}">
-    </div>
+      </div>
   </div>
     <div class="row form-group">
-      <label for="breakTime" class="col text-right col-form-label">{{'game.btime'| translate}}</label>
+      <div class="col col-form-label text-right">
+        <label for="breakTime">{{'game.btime'| translate}}</label>
+        <span class="ml-2  question" placement="right" ngbTooltip="{{'game.btimeDesc'| translate}}">
+          <svg class="bi bi-question-circle" width="1.5em" height="1.5em" viewBox="0 0 16 16"
+               fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z"
+                    clip-rule="evenodd"/>
+              <path
+                      d="M5.25 6.033h1.32c0-.781.458-1.384 1.36-1.384.685 0 1.313.343 1.313 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.007.463h1.307v-.355c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.326 0-2.786.647-2.754 2.533zm1.562 5.516c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
+          </svg>
+        </span>
+      </div>
       <div class="col">
         <select name="breakTime" required ngModel class="form-control" id="breakTime">
           <option *ngFor="let time of breaks" value="{{time}}">{{time}} {{'game.sec'| translate}}</option>
@@ -43,7 +87,18 @@
       </div>
     </div>
     <div class="row form-group">
-      <label for="additionalPoints" class="col text-right col-form-label">{{'game.epoints'| translate}}</label>
+      <div class="col col-form-label text-right">
+        <label for="additionalPoints">{{'game.epoints'| translate}}</label>
+        <span class="ml-2  question" placement="right" ngbTooltip="{{'game.epointsDesc'| translate}}">
+            <svg class="bi bi-question-circle" width="1.5em" height="1.5em" viewBox="0 0 16 16"
+                 fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z"
+                      clip-rule="evenodd"/>
+                <path
+                        d="M5.25 6.033h1.32c0-.781.458-1.384 1.36-1.384.685 0 1.313.343 1.313 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.007.463h1.307v-.355c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.326 0-2.786.647-2.754 2.533zm1.562 5.516c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
+            </svg>
+        </span>
+      </div>
       <div class="col">
         <input class="form-control"
                ngModel
@@ -67,7 +122,7 @@
     <span *ngIf="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
     <span *ngIf="loading" class="sr-only">{{'game.loading'| translate}}</span></button></div>
   </div>
-  <div *ngIf="error" class="mt-4 alert alert-danger font-weight-bolder text-center" role="alert">
+  <div *ngIf="errorMessage" class="mt-4 alert alert-danger font-weight-bolder text-center" role="alert">
     {{errorMessage}}
   </div>
 </div>
