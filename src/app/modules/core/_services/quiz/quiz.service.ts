@@ -101,7 +101,6 @@ export class QuizService {
             quizId: id,
             userId: this.user.id,
         };
-        console.log(favoriteInfo)
 
         return this.http.post<any>(this.url + '/markasfavourite', JSON.stringify(favoriteInfo), this.httpOptions).pipe(
             catchError(this.handleErrorsService.handleError<any>('markAsFavorite'))
