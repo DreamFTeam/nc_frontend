@@ -6,6 +6,7 @@ import { ToastsService } from '../../core/_services/utils/toasts.service';
 import { LocaleService } from '../../core/_services/utils/locale.service';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { Subscription } from 'rxjs';
+import { DateService } from '../../core/_services/utils/date.service';
 
 @Component({
   selector: 'app-users',
@@ -26,7 +27,8 @@ export class UsersComponent implements OnInit, OnDestroy {
   constructor(private getProfileService: ProfileService,
               private authenticationService: AuthenticationService,
               private toastsService: ToastsService,
-              private localeService: LocaleService
+              private localeService: LocaleService,
+              public dateService: DateService
 
   ) {
     this.searchResults = null;
