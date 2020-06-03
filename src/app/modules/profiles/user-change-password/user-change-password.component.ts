@@ -3,6 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 import {AuthenticationService} from '../../core/_services/authentication/authentication.service';
 import {TranslateService} from '@ngx-translate/core';
 import {ToastsService} from '../../core/_services/utils/toasts.service';
+import {Subscription} from 'rxjs';
 
 @Component({
     selector: 'app-user-change-password',
@@ -16,6 +17,7 @@ export class UserChangePasswordComponent implements OnInit {
     confirmPassword: string;
     answer: string;
     loading: boolean;
+    passLoader: Subscription;
 
     constructor(private route: ActivatedRoute,
                 private authenticationService: AuthenticationService,
@@ -45,22 +47,26 @@ export class UserChangePasswordComponent implements OnInit {
             return;
         }
 
-        this.authenticationService.changeUserPassword(this.currentPassword, this.password).subscribe((n) => {
-                this.answer = this.translate.instant('authorization.changePassword.success');
+        this.passLoader = this.authenticationService.changeUserPassword(this.currentPassword, this.password).subscribe((n) => {
+                this.toastsService.toastAddSuccess(this.translate.instant('authorization.changePassword.success'));
                 this.isSent = true;
                 this.loading = false;
                 setInterval(function() {
                     this.isSent = false;
+                    this.toastsService.removeAll();
+                    this.passLoader.unsubscribe();   
                     clearInterval(this);
                 }, 5000);
                 console.log(n);
             },
             err => {
                 this.loading = false;
-                console.error(err.error.message);
-                this.answer = 'An error occurred';
-                this.isSent = true;
-            });
+                this.toastsService.toastAddDanger('Some error occured!');
+                if (err.error) {
+                    this.toastsService.toastAddDanger(err.error.message);
+                }
+                this.isSent = false;
+            }); 
         this.loading = true;
     }
 }
