@@ -3,6 +3,10 @@
     font-size: 20px;
 }
 
+.bg-none {
+    background-color: revert;
+}
+
 #profile
 {
     font-size:        smaller;

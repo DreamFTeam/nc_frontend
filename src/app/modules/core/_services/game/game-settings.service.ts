@@ -9,6 +9,7 @@ import {catchError, map} from 'rxjs/operators';
 import {HandleErrorsService} from '../utils/handle-errors.service';
 import {AnonymService} from './anonym.service';
 import {Router} from '@angular/router';
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Injectable({
     providedIn: 'root'
@@ -34,7 +35,8 @@ export class GameSettingsService {
                 private sseService: SseService,
                 private errorsService: HandleErrorsService,
                 private anonymService: AnonymService,
-                private router: Router) {
+                private router: Router,
+                private sanitizer: DomSanitizer) {
         this.sessionsSubject = new BehaviorSubject<any[]>([]);
         this.sessions = this.sessionsSubject.asObservable();
         this.readySubject = new BehaviorSubject<string[]>([]);
@@ -92,9 +94,15 @@ export class GameSettingsService {
             this.httpOptions);
     }
 
-    // TODO Set images
     getSessions(gameId: string): Observable<any> {
-        return this.http.get<any>(this.gameUrl + `sessions/${gameId}`, this.httpOptions);
+        return this.http.get<any>(this.gameUrl + `sessions/${gameId}`, this.httpOptions).pipe(
+            map(sessions => {
+                sessions.forEach(x => {
+                    x.imageContent = this.imageDeser(x.image);
+                });
+                return sessions;
+            })
+        );
     }
 
     setSubjSessions(gameId: string) {
@@ -124,5 +132,13 @@ export class GameSettingsService {
                     this.anonymService.removeAnonym();
                 }
             }), catchError(this.errorsService.handleError('quitGame')));
+    }
+
+    private imageDeser(image) {
+        if (image) {
+            const objUrl = 'data:image/jpeg;base64,' + image;
+            image = this.sanitizer.bypassSecurityTrustUrl(objUrl);
+        }
+        return image;
     }
 }

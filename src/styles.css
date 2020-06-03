@@ -35,11 +35,13 @@ a:active {
   }
 
 .buttonpr {
-    background: #74BDE6;
+    background: #74BDE6
+    !important;
 }
 
 .buttonpr:hover {
-    background: #8cc5e6;
+    background: #8cc5e6
+    !important;
 }
 
 .buttonpn {
@@ -51,11 +53,13 @@ a:active {
 }
 
 .buttonsec {
-    background: #E6B174;
+    background: #E6B174
+    !important;
 }
 
 .buttonsec:hover {
-    background: #e3be94;
+    background: #e3be94
+    !important;
 }
 
 .buttondel {

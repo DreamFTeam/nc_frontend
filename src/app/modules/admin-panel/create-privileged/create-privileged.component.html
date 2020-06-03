@@ -1,32 +1,43 @@
-<div class="part col" id="right">
-    <span class="header-text"> Create {{userrole.substr(5).toLowerCase()}}</span><br><br>
-    <div>
-        <button class="close-btn"
-                type="button"
-                name="button"
-                (click)="activeModal.dismiss('Cross click')"><img src="../assets/img/close-button.jpg"></button>
-      <span class="text">Username</span><br>
-      <input type="text" name="username" size=30px [(ngModel)]="username" pattern="[a-zA-Z]+" #nameref="ngModel"/><br>
-      <div *ngIf="nameref.errors &&(nameref.touched || nameref.dirty)" class="alert alert-danger">
-        <div [hidden]="!nameref.errors?.pattern">Invalid username!</div>
-      </div>
-      <span class="text">Email</span><br>
-      <input type="email"
-             name="email"
-             id="email"
-             size=30px
-             [(ngModel)]="email"
-             pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
-             #emailref="ngModel"/><br>
-      <div *ngIf="emailref.errors &&(emailref.touched || emailref.dirty)" class="alert alert-danger">
-        <div [hidden]="!emailref.errors?.pattern">Invalid email!</div>
-      </div>
-      <span class="text">Password</span><br>
-      <input type="password" name="password" size=30px [(ngModel)]="password"/><br>
-      <span class="text">Confirm password</span><br>
-      <input type="password" name="confirm-password" size=30px [(ngModel)]="confirmPassword"/><br><br>
-      <button type="button"
-              class="btn btn-primary btn-lg"
-              (click)="create()"><span class="text"> Create </span></button><br>
-    </div><br>
+<div class="modal-header">
+  <h4 *ngIf="Role.Admin == userrole" class="modal-title">{{'adminDash.crAdm' | translate}}</h4>
+  <h4 *ngIf="Role.Moderator == userrole" class="modal-title">{{'adminDash.crMod' | translate}}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="container mt-4 mb-4">
+  <div class="row">
+    <div class="col">
+      <form>
+        <div class="form-group">
+          <input type="text"
+                 ngbAutofocus
+                 class="form-control rounded"
+                 placeholder="{{'authorization.login.username'| translate}}"
+                 name="username"
+                 [(ngModel)]="username"
+                 pattern="\w+">
+        </div>
+        <div class="form-group">
+          <input type="email" name="email" placeholder="Email" class="form-control rounded" [(ngModel)]="email"
+                 pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"/>
+        </div>
+        <div class="form-group">
+          <input type="password" name="password" class="form-control rounded"
+                 placeholder="{{'authorization.login.password'| translate}}" [(ngModel)]="password"/>
+        </div>
+        <div class="form-group">
+          <input type="password" name="password" class="form-control rounded"
+                 placeholder="{{'authorization.signUp.confPassword'| translate}}" [(ngModel)]="confirmPassword"/>
+        </div>
+        <button type="submit" class="btn buttonpr border-0 btn-lg" (click)="create()">
+          <span *ngIf="Role.Admin == userrole" class="text">{{'adminDash.crAdm' | translate}}</span>
+          <span *ngIf="Role.Moderator == userrole" class="text">{{'adminDash.crMod' | translate}}</span>
+        </button>
+      </form>
+    </div>
   </div>
+  <div *ngIf="message" class="mt-2 text-center h4 alert alert-warning">
+    {{message}}
+  </div>
+</div>

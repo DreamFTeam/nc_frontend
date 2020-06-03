@@ -1,6 +1,6 @@
-import {Injectable} from '@angular/core';
-import {TranslateService} from '@ngx-translate/core';
-import {environment} from 'src/environments/environment';
+import { Injectable } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { environment } from 'src/environments/environment';
 
 
 @Injectable({
@@ -49,7 +49,7 @@ export class LocaleService {
         }
     }
 
-    getLanguage(){
+    getLanguage() {
         return this.translateService.currentLang || environment.defaultLocale;
     }
 

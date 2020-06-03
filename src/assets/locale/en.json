@@ -38,7 +38,8 @@
     "validated": "Validated",
     "dateofcreation": "Date of creation",
     "langEng": "English",
-    "langUkr": "Ukrainian"
+    "langUkr": "Ukrainian",
+    "emptyList":"The list is empty"
   },
   "utilsOther": {
     "image": "image"
@@ -211,7 +212,27 @@
     "startg": "Start game",
     "loading": "Loading...",
     "players": "Players",
-    "points": "Points"
+    "points": "Points",
+    "qtimeDesc": "The time that player will have to answer one question.",
+    "qamountDesc1": "The number of questions the player will have. There should be more than ",
+    "qamountDesc2": " questions. The questions will be chosen at randomly from all the questions of the selected quiz.",
+    "uamountDesc1": "The maximum number of players in the game. Maximum - ",
+    "uamountDesc2": " players. The game can be started even if the number of players is less than the maximum",
+    "btimeDesc": "The time the player will have to take a break between questions.",
+    "epointsDesc": "Doubles the given points per question if the player answers during the first half period of the given time.",
+    "minQuesError": "There should be more than 4 questions.",
+    "minUserError": "Incorrect number of players.",
+    "questAmountError": "Too many questions. There are only ",
+    "maxUserError": "Too many users. Must be less than ",
+    "accessCodeHint": "This is the game access code. You can show it to your friends. It should be entered at the top of quizzes page. Click to copy join url.",
+    "hostStart": "The host should start the game!",
+    "waitPlayers": "Waiting for other players ...",
+    "accessDen": "Access denied",
+    "permissions": "You don't have permissions.",
+    "gameStarted": "The game has already started or has not been created.",
+    "urlCopied": "URL copied.",
+    "refreshWarning": "If you refresh the page or go to another page, you will not be able to return.",
+    "accountError": "You cannot play on this account."
   },
   "validationPage": {
     "title": "'s quiz validation list"
@@ -270,11 +291,11 @@
     "admins": "Admins",
     "moderators": "Moderators",
     "games": "Games",
-    "total": "total",
-    "published": "published",
-    "rejected": "rejected",
-    "activated": "activated",
-    "unvalidated": "unvalidated"
+    "total": "Total",
+    "published": "Published",
+    "rejected": "Rejected",
+    "activated": "Activated",
+    "unvalidated": "Unvalidated"
   },
   "authorization": {
     "login": {
@@ -332,6 +353,7 @@
   "rating": {
     "title": "Rating",
     "alreadyRateMes": "You have already rated this quiz before. You can change your mind now.",
-    "notRatedYetMes": "Rate quiz please"
+    "notRatedYetMes": "Rate quiz please",
+    "acceptRating": "Successfully evaluated"
   }
 }
