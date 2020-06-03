@@ -93,3 +93,13 @@ a:active {
         font-size: 1.10rem;
     }
 }
+
+.emptylabel
+{
+    width:      100%;
+    padding:    2em;
+    text-align: center;
+    font-size:  medium;
+    margin-bottom: auto;
+    margin-top: auto;
+}
