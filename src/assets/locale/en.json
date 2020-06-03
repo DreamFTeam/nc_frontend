@@ -38,7 +38,8 @@
     "validated": "Validated",
     "dateofcreation": "Date of creation",
     "langEng": "English",
-    "langUkr": "Ukrainian"
+    "langUkr": "Ukrainian",
+    "emptyList":"The list is empty"
   },
   "utilsOther": {
     "image": "image"

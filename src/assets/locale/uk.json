@@ -38,7 +38,8 @@
     "validated": "Валідовані",
     "dateofcreation": "Дата створення",
     "langEng": "Англійська",
-    "langUkr": "Українська"
+    "langUkr": "Українська",
+    "emptyList":"Список пустий"
   },
   "utilsOther": {
     "image": "світлину"

@@ -78,7 +78,6 @@ export class SearchFilterQuizService {
             categories: [],
             quizLang: this.localeService.getValue('quizFilter.langAll')
         };
-        // console.log(this.settings);
     }
 
     private sendReq(settings: QuizFilterSettings, page: number): Observable<ExtendedQuizPreview[]> {
