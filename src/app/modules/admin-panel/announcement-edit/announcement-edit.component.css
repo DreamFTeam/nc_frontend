@@ -67,3 +67,49 @@ button img
 .pointer:hover{
     cursor: pointer;
 }
+
+.caption {
+    opacity: 1; 
+    background-color: black;
+    color: white;
+    position: absolute;
+    margin: 0;
+    bottom: 0;
+    margin-right: -50%;
+    width: 100%;
+
+}
+
+.caption:hover {
+    opacity: .7; 
+    cursor: pointer;
+}
+
+.bottom{
+    border-bottom-right-radius: .25rem;
+    border-bottom-left-radius:  .25rem;
+}
+
+.bordr{
+    border-radius:  .25rem;
+}
+
+.pic{
+    max-width: 90%;
+}
+
+@media (min-width: 768px)
+{
+    .pic
+    {
+        max-width: 60% !important;
+    }
+}
+
+@media (min-width: 1180px)
+{
+    .pic
+    {
+        max-width: 50% !important;
+    }
+}
