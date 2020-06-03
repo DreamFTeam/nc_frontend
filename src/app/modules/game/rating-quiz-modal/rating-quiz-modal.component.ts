@@ -3,6 +3,8 @@ import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {GameResultService} from '../../core/_services/game/game-result.service';
 import {GameQuestionService} from '../../core/_services/game/game-question.service';
 import {LocaleService} from '../../core/_services/utils/locale.service';
+import {first} from 'rxjs/operators';
+import {ToastsService} from '../../core/_services/utils/toasts.service';
 
 @Component({
     selector: 'app-rating-quiz-modal',
@@ -20,7 +22,8 @@ export class RatingQuizModalComponent implements OnInit, OnDestroy {
     constructor(public activeModal: NgbActiveModal,
                 private gameResultService: GameResultService,
                 private gameQuestionService: GameQuestionService,
-                private localeService: LocaleService) {
+                private localeService: LocaleService,
+                private toastsService: ToastsService) {
     }
 
     ngOnInit(): void {
@@ -35,7 +38,8 @@ export class RatingQuizModalComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.gameResultService.sendRating(this.gameId, this.currentRate).subscribe();
+        this.gameResultService.sendRating(this.gameId, this.currentRate).pipe(first())
+            .subscribe(() => this.toastsService.toastAddSuccess(this.localeService.getValue('rating.acceptRating')));
     }
 
 }

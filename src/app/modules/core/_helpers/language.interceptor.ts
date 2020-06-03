@@ -10,15 +10,13 @@ export class LanguageInterceptor implements HttpInterceptor {
   constructor(private localeService: LocaleService) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-
-    if(request.url.startsWith(environment.apiUrl)){
+    if (request.url.startsWith(environment.apiUrl)) {
       request = request.clone({
         setHeaders: {
           Lang: this.localeService.getLanguage()
         }
       });
     }
-    console.log("inter")
     return next.handle(request);
   }
 }

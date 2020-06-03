@@ -1,9 +1,11 @@
 <div role="main" class="container" *ngIf="ready;" style="word-wrap: break-word;">
-   <div class="container-sm mb-2 h-100">
-     <div class="row">
-       <div class="col-xs-2 col-sm-4 col-md-4 col-lg-3 p-2">
-       <img class="col p-1 border"
+   <div class="container-sm row ml-1 h-100 p-3">
+      <div class="col-xs-2 col-sm-4 col-md-4 col-lg-3 ">
+         <div class="embed-responsive embed-responsive-1by1">
+          <img class="embed-responsive-item pic border"
            [src]="profile.image ? profile.image : '../../assets/img/nopicture.jpg'">
+          </div>
+          <div>
          <a *ngIf="owner && profile.activated"
          (click)="edit()"
          class="btn btn-outline-secondary mt-2 w-100">{{ 'utils.edit'| translate}} {{'profile.profile' | translate }} </a>
@@ -23,19 +25,20 @@
          <button *ngIf="!owner && this.role=='ROLE_USER' && !profile.friend && profile.incomingRequest "
          class="btn btn-outline-danger mt-2 w-100"
          (click)="processFriendRequest(false)"> {{'profile.Reject' | translate }}  {{'profile.friendrequest' | translate }}</button>
-         <a *ngIf="!owner && this.role=='ROLE_USER' && profile.friend"
-           class="btn btn-outline-secondary mt-2 w-100">  {{'profile.Message' | translate }} </a>
+         <!--a *ngIf="!owner && this.role=='ROLE_USER' && profile.friend"
+           class="btn btn-outline-secondary mt-2 w-100">  {{'profile.Message' | translate }} </a-->
          <button *ngIf="!owner && this.role=='ROLE_USER' && profile.friend"
          class="btn btn-outline-danger mt-2 w-100"
          (click)="removeFriend()"> {{'profile.Unfriend' | translate }} </button>
        </div>
-       <div class="col p-3">
+      </div>
+       <div class="col">
          <b>{{profile.username}}</b>
          <span *ngIf="profile.role!='ROLE_USER'" class="blue"> {{profile.role.substr(5).toLowerCase()}}</span>
          <h5 *ngIf="!profile.activated" style="color: red;"> {{'profile.deactivated' | translate }}  </h5>
          <h5 *ngIf="profile.online; else lastseen" class="blue"> {{'profile.online' | translate }} </h5>
          <ng-template #lastseen>
-           <h5 class="blue"> {{'profile.lastSeenOn' | translate }} {{profile.lastTimeOnline  |   date:'h:mm d.MM.y'}} </h5>
+           <h5 class="blue"> {{'profile.lastSeenOn' | translate }} {{profile.lastTimeOnline  |   date:dateService.datetimePattern:dateService.currentTimezone}} </h5>
          </ng-template>
          <h5>{{profile.aboutMe}}</h5>
        </div>
@@ -54,9 +57,8 @@
          class="btn btn-outline-secondary mt-2"
          (click)="editAdmin(true)"> {{'profile.upgrade' | translate }} </button>
        </div>
-     </div>
-   </div>
-   <div class="container-sm mt-2 mb-2 p-3" *ngIf="profile.role=='ROLE_USER'">    
+    </div>
+   <div class="container-sm mt-2 mb-2 ml-1 p-3" *ngIf="profile.role=='ROLE_USER'">    
      <ul ngbNav
      #nav="ngbNav"
      [(activeId)]="activeTab"
@@ -81,7 +83,7 @@
            <div *ngFor="let quiz of quizzes">
              <div
             class="row container-fluid m-2 border p-2"
-               style="word-wrap: break-word;">
+               style="word-wrap: break-word; ">
               <img class="border p-1 col-xs-5 col-sm-5 col-md-4 col-lg-3"
                [src]="quiz.imageContent ? quiz.imageContent : '../../assets/img/quiz.jpg'"
                (click)="goToQuiz(quiz.id)">
@@ -92,7 +94,7 @@
                    <br/>
                    </a> 
                    <b>{{'profile.descrip' | translate }} :</b> {{quiz.description}}  <br/>
-                   <b>{{'profile.timeModif' | translate }}: </b> {{quiz.creationDate | date: 'd.MM.y'}} <br/>
+                   <b>{{'profile.timeModif' | translate }}: </b> {{quiz.creationDate | date:dateService.datePattern:dateService.currentTimezone}} <br/>
                    <div *ngIf="owner">
                      <b>{{'profile.status' | translate }}
                      :</b> {{((quiz.published && quiz.activated && quiz.validated) ? 'profile.published' : !quiz.validated && !quiz.activated ? 'profile.notvalidated' : (!quiz.activated && quiz.published && quiz.validated) ? 'profile.deactivated': 'profile.rejected') | translate }}
@@ -152,8 +154,7 @@
         <div *ngFor="let quiz of quizzes"
             class="row container-fluid m-2 border p-2"
              style="word-wrap: break-word;">
-             <img class="thumbnail col-xs-5 col-sm-5 col-md-4 col-lg-3"
-             
+             <img class="border p-1 thumbnail col-xs-5 col-sm-5 col-md-4 col-lg-3"
              [src]="quiz.imageContent ? quiz.imageContent : '../../assets/img/quiz.jpg'"
              (click)="goToQuiz(quiz.id)">
              <div class="col-xs-5 col-sm-7 col-md-8 col-lg-9 p-1 ">
@@ -163,7 +164,7 @@
                  <br/>
                  </a> 
                  <b>{{'profile.descrip' | translate }} :</b> {{quiz.description}}  <br/>
-                 <b>{{'profile.timeModif' | translate }}:</b> {{quiz.creationDate | date: 'd.MM.y'}}<br/>
+                 <b>{{'profile.timeModif' | translate }}:</b> {{quiz.creationDate | date:dateService.datePattern:dateService.currentTimezone}}<br/>
                  <b>{{'profile.rating' | translate }}:</b> {{quiz.rating}}  <br/>
                  <div class="col-xs-2 col-sm-3 col-md-2 col-lg-1 p-2 float-right"
                    (click)="markQuizFavourite(quiz)">
@@ -216,9 +217,11 @@
            <div *ngFor="let achieve of this.achievements"
              style='font-size: larger;'
              class="col-xs-5 col-sm-5 col-md-4 col-lg-3 card text-center cards mt-1 mb-1 p-2">
-             <img class=" img-fluid card-img-top thumbn"
+             <div class="embed-responsive embed-responsive-1by1">
+              <img class="embed-responsive-item pic"
              [src]="achieve.imageContent ? achieve.imageContent : '../../assets/img/achievement.png'"
              [ngbTooltip]="achieve.description">
+             </div>
              <div class="blue"> {{achieve.title }} x{{achieve.timesGained}} </div>
            </div>
          </div>
@@ -244,12 +247,12 @@
           <ngb-pagination  *ngIf="friendsSize > 8" class="d-flex justify-content-center"  [collectionSize]="friendsSize" [(page)]="friendsPage"  [pageSize]="MAX_AMOUNT" [rotate]="true" (pageChange)="load($event)"></ngb-pagination>
            <div *ngFor="let profile of this.friends"
               class="row container-fluid m-2 border p-2">
-              <div class="col-xs-5 col-sm-5 col-md-4 col-lg-3">
-               <img routerLink="/profile/{{profile.username}}"
-                class="img-thumbnail border "
+              <div class="col-xs-2 col-sm-4 col-md-4 col-lg-3 p-2 embed-responsive embed-responsive-1by1">
+                <img class="embed-responsive-item pic border"
+                routerLink="/profile/{{profile.username}}"
                  [src]="profile.image ? profile.image : '../../assets/img/nopicture.jpg'" style="cursor:pointer;">
                 </div>
-                 <div class="col-xs-5 col-sm-7 col-md-8 col-lg-9 p-2">
+                 <div class="col">
                  <a routerLink="/profile/{{profile.username}}"
                    style="font-weight: bolder; ">{{profile.username}}</a>
                  <h2 *ngIf="profile.online; else lastseen" class="blue" style="font-weight: lighter;">
@@ -257,7 +260,7 @@
                  </h2>
                  <ng-template #lastseen>
                    <h2 class="blue">
-                     {{'profile.lastSeenOn' | translate }} {{profile.lastTimeOnline |  date:'h:mm d.MM.y'}} 
+                     {{'profile.lastSeenOn' | translate }} {{profile.lastTimeOnline | date:dateService.datetimePattern:dateService.currentTimezone}} 
                    </h2>
                  </ng-template>
                </div>

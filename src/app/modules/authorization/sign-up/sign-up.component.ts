@@ -3,6 +3,7 @@ import { AuthenticationService } from '../../core/_services/authentication/authe
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalMessageService } from '../../core/_services/utils/modal-message.service';
 import { TranslateService } from '@ngx-translate/core';
+import {first} from 'rxjs/operators';
 
 @Component({
     selector: 'app-sign-up',
@@ -28,15 +29,15 @@ export class SignUpComponent implements OnInit {
     message: string;
 
     signUp() {
-        if (this.username == '' || this.username == null) {
+        if (!this.username) {
             this.message = this.translateService.instant('authorization.login.emptyName');
             return;
         }
-        if (!this.email.match(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/)) {
+        if (!this.email || !this.email.match(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/)) {
             this.message = this.translateService.instant('authorization.signUp.incEmail');
             return;
         }
-        if (this.password.length < 6) {
+        if (!this.password || this.password.length < 6) {
             this.message = this.translateService.instant('authorization.signUp.shortPassword');
             return;
         }
@@ -44,11 +45,11 @@ export class SignUpComponent implements OnInit {
             this.message = this.translateService.instant('authorization.signUp.matchPasswordRegExp');
             return;
         }
-        if (this.password != this.confirmPassword) {
+        if (this.password !== this.confirmPassword) {
             this.message = this.translateService.instant('authorization.signUp.matchPasswords');
             return;
         }
-        this.authenticationService.signupUser(this.username, this.email, this.password)
+        this.authenticationService.signupUser(this.username, this.email, this.password).pipe(first())
             .subscribe(n => {
                 if (n) {
                     this.isSent = true;

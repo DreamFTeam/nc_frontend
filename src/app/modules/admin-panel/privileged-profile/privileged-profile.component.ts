@@ -6,6 +6,8 @@ import {AuthenticationService} from '../../core/_services/authentication/authent
 import {User} from '../../core/_models/user';
 import {AdminDashboardService} from '../../core/_services/admin/admin-dashboard.service';
 import {TranslateService} from '@ngx-translate/core';
+import {Role} from '../../core/_models/role';
+import {first} from 'rxjs/operators';
 
 @Component({
     selector: 'app-privileged-profile',
@@ -16,6 +18,7 @@ export class PrivilegedProfileComponent implements OnInit {
     ready: boolean;
     privilege: string;
     profile: User;
+    Role = Role;
 
     // Popular quizzes chart
     showXAxisPopQuiz = true;
@@ -27,12 +30,18 @@ export class PrivilegedProfileComponent implements OnInit {
 
     // Quizzes statuses chart
     dataQuizStatus: any[];
-    view = [400, 200];
+    labelQuizStatus = true;
+    legendQuizStatus = true;
+    legendTitleQuizStatus = '';
+
+
 
     // Quizzes valid/invalid chart
     legendValidQuiz = true;
     dataValidQuiz: any[];
     noBarWhenZeroValidQuiz = false;
+    legendTitleValidQuiz = '';
+
 
     // Games per day chart
     timeline = true;
@@ -53,38 +62,42 @@ export class PrivilegedProfileComponent implements OnInit {
             this.router.navigate(['/']);
         }
         this.ready = true;
-        this.adminDashboardService.getPopularQuizWeek(this.quizPopAmount).subscribe(data => {
-            this.dataPopQuiz = data.map(x => {
-                return {name: x.title, value: x.gamesAmount, id: x.quizId};
+        this.adminDashboardService.getPopularQuizWeek(this.quizPopAmount).pipe(first())
+            .subscribe(data => {
+                this.dataPopQuiz = data.map(x => {
+                    return {name: x.title, value: x.gamesAmount, id: x.quizId};
+                });
             });
-        });
-        this.adminDashboardService.getQuizzesStatuses().subscribe(data => {
-            this.dataQuizStatus = [];
-            for (const stat in data) {
-                this.dataQuizStatus.push({name: this.translate.instant('adminDash.' + stat), value: data[stat]});
-            }
-        });
-        this.adminDashboardService.getQuizzesValidInvalid().subscribe(data => {
-            this.dataValidQuiz = [
-                {
-                    name: this.translate.instant('adminDash.admins'),
-                    value: data.countValidatedByAdmin
-                },
-                {
-                    name: this.translate.instant('adminDash.moderators'),
-                    value: data.countValidatedByModerator
+        this.adminDashboardService.getQuizzesStatuses().pipe(first())
+            .subscribe(data => {
+                this.dataQuizStatus = [];
+                for (const stat in data) {
+                    this.dataQuizStatus.push({name: this.translate.instant('adminDash.' + stat), value: data[stat]});
                 }
-            ];
-        });
+            });
+        this.adminDashboardService.getQuizzesValidInvalid().pipe(first())
+            .subscribe(data => {
+                this.dataValidQuiz = [
+                    {
+                        name: this.translate.instant('adminDash.admins'),
+                        value: data.countValidatedByAdmin
+                    },
+                    {
+                        name: this.translate.instant('adminDash.moderators'),
+                        value: data.countValidatedByModerator
+                    }
+                ];
+            });
 
-        this.adminDashboardService.getGamesAmountPerDay().subscribe(data => {
-            this.dataGamesPerDay = [{
-                name: this.translate.instant('adminDash.games'),
-                series: data.map(x => {
-                    return {name: x.date, value: x.gamesAmount};
-                })
-            }];
-        });
+        this.adminDashboardService.getGamesAmountPerDay().pipe(first())
+            .subscribe(data => {
+                this.dataGamesPerDay = [{
+                    name: this.translate.instant('adminDash.games'),
+                    series: data.map(x => {
+                        return {name: x.date, value: x.gamesAmount};
+                    })
+                }];
+            });
     }
 
     selectQuiz(data) {
@@ -94,13 +107,13 @@ export class PrivilegedProfileComponent implements OnInit {
 
     createAdmin() {
         const modalRef = this.modalService.open(CreatePrivilegedComponent);
-        modalRef.componentInstance.userrole = 'ROLE_ADMIN';
+        modalRef.componentInstance.userrole = Role.Admin;
 
     }
 
     createModerator() {
         const modalRef = this.modalService.open(CreatePrivilegedComponent);
-        modalRef.componentInstance.userrole = 'ROLE_MODERATOR';
+        modalRef.componentInstance.userrole = Role.Moderator;
 
     }
 }

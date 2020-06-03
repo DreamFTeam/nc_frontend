@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {AuthenticationService} from '../../core/_services/authentication/authentication.service';
 import {TranslateService} from '@ngx-translate/core';
+import {first} from 'rxjs/operators';
 
 @Component({
     selector: 'app-recover-password',
@@ -35,16 +36,15 @@ export class RecoverPasswordComponent implements OnInit {
             this.message = this.translateService.instant('authorization.recoverPassword.incorrect');
             return;
         }
-        const subscription = this.authenticationService.recoverPassword(this.email).subscribe(n => {
-                this.isSent = true;
-                this.loading = false;
-                subscription.unsubscribe();
-            },
-            error => {
-                subscription.unsubscribe();
-                this.message = error.error ? error.error.message : this.translateService.instant('authorization.login.error');
-                this.loading = false;
-            });
+        this.authenticationService.recoverPassword(this.email).pipe(first())
+            .subscribe(n => {
+                    this.isSent = true;
+                    this.loading = false;
+                },
+                error => {
+                    this.message = error.error ? error.error.message : this.translateService.instant('authorization.login.error');
+                    this.loading = false;
+                });
         this.loading = true;
     }
 

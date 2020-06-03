@@ -9,6 +9,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { YesNoModalComponent } from '../../shared/yes-no-modal/yes-no-modal.component';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { Subscription } from 'rxjs';
+import { DateService } from '../../core/_services/utils/date.service';
 
 @Component({
   selector: 'app-user-invitations',
@@ -36,6 +37,8 @@ export class UserInvitationsComponent implements OnInit, OnDestroy {
     private toastsService: ToastsService,
     private localeService: LocaleService,
     private modalService: NgbModal,
+    public dateService: DateService
+
   ) {
     this.ready = true;
     this.MAX_AMOUNT = friendService.AMOUNT_OF_USERS;
