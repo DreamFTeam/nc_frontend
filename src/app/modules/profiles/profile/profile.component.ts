@@ -14,6 +14,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { ExtendedQuiz } from '../../core/_models/extended-quiz';
 import { Subscription } from 'rxjs';
+import { DateService } from '../../core/_services/utils/date.service';
 
 
 @Component({
@@ -56,7 +57,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private authenticationService: AuthenticationService,
     private toastsService: ToastsService,
     private localeService: LocaleService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    public dateService: DateService
   ) {
     if (this.route.snapshot.paramMap.get('page')) {
       this.router.navigate(['/profile/' + this.route.snapshot.paramMap.get('username')],
