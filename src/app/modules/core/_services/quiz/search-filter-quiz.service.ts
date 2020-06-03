@@ -2,11 +2,10 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {environment} from '../../../../../environments/environment';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {map} from 'rxjs/operators';
+import {first, map} from 'rxjs/operators';
 import {ExtendedQuizPreview} from '../../_models/extendedquiz-preview';
 import {DomSanitizer} from '@angular/platform-browser';
 import {QuizFilterSettings} from '../../_models/quiz-filter-settings';
-import {TranslateService} from '@ngx-translate/core';
 import {LocaleService} from '../utils/locale.service';
 
 @Injectable({
@@ -26,18 +25,22 @@ export class SearchFilterQuizService {
 
     private settings: QuizFilterSettings;
     private currentQuizzesSubject: BehaviorSubject<ExtendedQuizPreview[]>;
-    public currentQuizzes: Observable<ExtendedQuizPreview[]>;
+    public currentQuizzes$: Observable<ExtendedQuizPreview[]>;
     private currentQuizzesSizeSubject: BehaviorSubject<number>;
-    public currentQuizzesSize: Observable<number>;
+    public currentQuizzesSize$: Observable<number>;
+    private loadingSubject: BehaviorSubject<boolean>;
+    public loading$: Observable<boolean>;
 
     constructor(private http: HttpClient,
                 private sanitizer: DomSanitizer,
                 private localeService: LocaleService) {
         this.currentQuizzesSubject = new BehaviorSubject<ExtendedQuizPreview[]>([]);
-        this.currentQuizzes = this.currentQuizzesSubject.asObservable();
+        this.currentQuizzes$ = this.currentQuizzesSubject.asObservable();
 
         this.currentQuizzesSizeSubject = new BehaviorSubject<number>(0);
-        this.currentQuizzesSize = this.currentQuizzesSizeSubject.asObservable();
+        this.currentQuizzesSize$ = this.currentQuizzesSizeSubject.asObservable();
+        this.loadingSubject = new BehaviorSubject<boolean>(false);
+        this.loading$ = this.loadingSubject.asObservable();
         this.initSettings();
     }
 
@@ -46,11 +49,11 @@ export class SearchFilterQuizService {
             this.initSettings();
         }
         this.settings.quizName = term;
-        this.filterQuiz().subscribe();
+        this.filterQuiz().pipe(first()).subscribe();
     }
 
     filterQuiz(page?: number): Observable<ExtendedQuizPreview[]> {
-        this.filterTotalSize().subscribe(n => this.currentQuizzesSizeSubject.next(n));
+        this.filterTotalSize().pipe(first()).subscribe(n => this.currentQuizzesSizeSubject.next(n));
         return this.sendReq(this.settings, page ? page : 1);
     }
 
@@ -82,6 +85,7 @@ export class SearchFilterQuizService {
 
     private sendReq(settings: QuizFilterSettings, page: number): Observable<ExtendedQuizPreview[]> {
         const sett = this.generateSettingsForRequest(settings);
+        this.loadingSubject.next(true);
         return this.http.post<ExtendedQuizPreview[]>(`${this.filterUrl}/${page}`, JSON.stringify(sett),
             this.httpOptions).pipe(map(data => {
                 const quizzes = data.map(x => {
@@ -89,6 +93,7 @@ export class SearchFilterQuizService {
                 });
                 this.currentQuizzesSubject.next(quizzes);
                 console.log(this.currentQuizzesSubject.value);
+                this.loadingSubject.next(false);
                 return quizzes;
             }
         ));
