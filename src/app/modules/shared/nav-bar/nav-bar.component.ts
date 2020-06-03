@@ -109,7 +109,9 @@ export class NavBarComponent implements OnInit, OnDestroy {
 
     @HostListener('window:beforeunload', ['$event'])
     ngOnDestroy(): void {
-        this.notificationSubscription.unsubscribe();
+        if (this.notificationSubscription) {
+            this.notificationSubscription.unsubscribe();
+        }
     }
 
     changeName() {
