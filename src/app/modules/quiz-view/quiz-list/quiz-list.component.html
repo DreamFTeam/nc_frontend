@@ -68,7 +68,7 @@
         </div>
         <div class="row">
             <div class="container">
-                <div class="row">
+                <div class="row" *ngIf="(!isEmpty && !isLoading) ; else (isLoading ? loading : empty)">
                     <div *ngFor="let item of quizList" class="col-lg-3 col-md-4 col-sm-6 text-center p-2">
                         <div class="col-md-12 card cards h-100">
                             <a routerLink="/viewquiz/{{item.id}}">
@@ -98,3 +98,13 @@
         </div>
     </div>
 </div>
+
+<ng-template #empty>
+    <p *ngIf="isEmpty" class="lead emptylabel">{{'utils.emptyList'|translate}}</p>
+</ng-template>
+
+<ng-template #loading>
+    <div class="card-body text-center">
+        <fa-icon [icon]="faSpinner" [spin]="true" size="6x"></fa-icon>
+    </div>
+</ng-template>

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {ExtendedQuizPreview} from '../../core/_models/extendedquiz-preview';
 import {GameSettingsService} from '../../core/_services/game/game-settings.service';
 import {Router} from '@angular/router';
@@ -8,6 +8,8 @@ import {SearchFilterQuizService} from '../../core/_services/quiz/search-filter-q
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {QuizFilterComponent} from '../quiz-filter/quiz-filter.component';
 import {LocaleService} from '../../core/_services/utils/locale.service';
+import {faSpinner} from '@fortawesome/free-solid-svg-icons';
+import { Subscription } from 'rxjs';
 
 
 const PAGE_SIZE = 16;
@@ -17,7 +19,7 @@ const PAGE_SIZE = 16;
     templateUrl: './quiz-list.component.html',
     styleUrls: ['./quiz-list.component.css']
 })
-export class QuizListComponent implements OnInit {
+export class QuizListComponent implements OnInit, OnDestroy {
     accessCode: string;
     accessCodeLoading: boolean;
     admin: boolean;
@@ -30,6 +32,11 @@ export class QuizListComponent implements OnInit {
     quizList: ExtendedQuizPreview[] = [];
     mockImageUrl = '../../assets/img/quiz.jpg';
     totalSize: number;
+    isEmpty:boolean;
+    isLoading:boolean;
+    faSpinner = faSpinner;
+    
+    subscriptions: Subscription = new Subscription();
 
     constructor(private modalService: NgbModal,
                 private gameSettingsService: GameSettingsService,
@@ -39,21 +46,27 @@ export class QuizListComponent implements OnInit {
                 private localeService: LocaleService) {
         this.pageSize = PAGE_SIZE;
         this.page = 1;
+        this.isEmpty = false;
+        this.isLoading = true;
+    }
+
+    ngOnDestroy(): void {
+        this.subscriptions.unsubscribe();
     }
 
     ngOnInit(): void {
         if (!this.searchFilterQuizService.getSettings().quizLang) {
             this.searchFilterQuizService.initSettings();
         }
-        this.searchFilterQuizService.filterQuiz(this.page).subscribe();
-        this.searchFilterQuizService.currentQuizzes.subscribe(quizzes => {
-            if (quizzes) {
+        this.subscriptions.add(this.searchFilterQuizService.filterQuiz(this.page).subscribe());
+        this.subscriptions.add(this.searchFilterQuizService.currentQuizzes.subscribe(quizzes => {
+            if(quizzes){
                 this.quizList = quizzes;
             }
-        });
+        }));
         this.searchInput = this.searchFilterQuizService.getSettings().quizName;
-        this.searchFilterQuizService.currentQuizzesSize.subscribe(size =>
-            this.totalSize = size);
+        this.subscriptions.add(this.searchFilterQuizService.currentQuizzesSize.subscribe(size =>
+            this.totalSize = size));
 
         const user = this.authenticationService.currentUserValue;
 
@@ -63,7 +76,7 @@ export class QuizListComponent implements OnInit {
     }
 
     loadPage(event) {
-        this.searchFilterQuizService.filterQuiz(event).subscribe();
+        this.subscriptions.add(this.searchFilterQuizService.filterQuiz(event).subscribe());
         this.scrollToTop();
     }
 
