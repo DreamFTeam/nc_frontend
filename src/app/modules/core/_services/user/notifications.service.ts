@@ -81,4 +81,13 @@ export class NotificationsService {
                 return notification;
         }
     }
+
+    getAmounts(): Observable<number> {
+        return this.http.get<number>(this.notificationsUrl + 'amount', this.httpOptions).pipe(
+            map(jsonObject => {
+                const obj: any = jsonObject;
+                return obj.amount;
+            })
+        );
+    }
 }

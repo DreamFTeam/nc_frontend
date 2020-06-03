@@ -1,24 +1,25 @@
-import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {LogInComponent} from '../../authorization/log-in/log-in.component';
-import {SignUpComponent} from '../../authorization/sign-up/sign-up.component';
-import {AuthenticationService} from '../../core/_services/authentication/authentication.service';
-import {Role} from '../../core/_models/role';
-import {NotificationsService} from '../../core/_services/user/notifications.service';
-import {SearchFilterQuizService} from '../../core/_services/quiz/search-filter-quiz.service';
-import {environment} from 'src/environments/environment';
-import {LocaleService} from '../../core/_services/utils/locale.service';
+import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
+import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { LogInComponent } from '../../authorization/log-in/log-in.component';
+import { SignUpComponent } from '../../authorization/sign-up/sign-up.component';
+import { AuthenticationService } from '../../core/_services/authentication/authentication.service';
+import { Role } from '../../core/_models/role';
+import { NotificationsService } from '../../core/_services/user/notifications.service';
+import { SearchFilterQuizService } from '../../core/_services/quiz/search-filter-quiz.service';
+import { environment } from 'src/environments/environment';
+import { LocaleService } from '../../core/_services/utils/locale.service';
+import {Observable, Subscription} from 'rxjs';
 
 @Component({
     selector: 'app-nav-bar',
     templateUrl: './nav-bar.component.html',
     styleUrls: ['./nav-bar.component.css']
 })
-export class NavBarComponent implements OnInit {
+export class NavBarComponent implements OnInit, OnDestroy {
     readonly languages = [
-        {name: 'English', value: `${environment.locales[0]}`},
-        {name: 'Українська', value: `${environment.locales[1]}`}
+        { name: 'English', value: `${environment.locales[0]}` },
+        { name: 'Українська', value: `${environment.locales[1]}` }
     ];
     private readonly NEW_FILTER_SETTINGS = true;
     public isMenuCollapsed = true;
@@ -28,13 +29,15 @@ export class NavBarComponent implements OnInit {
     searchArea: string;
 
     language: string;
+    notificationsAmount: number;
+    private notificationSubscription: Subscription;
 
     constructor(private modalService: NgbModal,
-                private authenticationService: AuthenticationService,
-                private searchFilterQuizService: SearchFilterQuizService,
-                private notificationsService: NotificationsService,
-                private localeService: LocaleService,
-                private router: Router) {
+        private authenticationService: AuthenticationService,
+        private searchFilterQuizService: SearchFilterQuizService,
+        private notificationsService: NotificationsService,
+        private localeService: LocaleService,
+        private router: Router) {
     }
 
     ngOnInit(): void {
@@ -42,6 +45,7 @@ export class NavBarComponent implements OnInit {
         this.privileged = (this.signedIn &&
             this.authenticationService.currentUserValue.role !== Role.User);
         if (this.signedIn) {
+            this.notification = true;
             this.subscribeNotifications();
         }
         this.language = this.localeService.getLanguage();
@@ -61,7 +65,7 @@ export class NavBarComponent implements OnInit {
 
     openReg() {
         this.isMenuCollapsed = true;
-        const modalRef = this.modalService.open(SignUpComponent, {size: 'lg'});
+        const modalRef = this.modalService.open(SignUpComponent, { size: 'lg' });
 
     }
 
@@ -73,11 +77,12 @@ export class NavBarComponent implements OnInit {
     }
 
     subscribeNotifications() {
-        this.notificationsService.notifications
+        this.notificationSubscription = this.notificationsService.notifications
             .subscribe(n => {
                 this.notification = n && n.length > 0;
                 if (this.notification) {
                     this.playAudio();
+                    this.notificationsAmount = n.length;
                 }
             });
 
@@ -96,5 +101,10 @@ export class NavBarComponent implements OnInit {
             console.log(error);
         }).then(() => {
         });
+    }
+
+    @HostListener('window:beforeunload', ['$event'])
+    ngOnDestroy(): void {
+        this.notificationSubscription.unsubscribe();
     }
 }

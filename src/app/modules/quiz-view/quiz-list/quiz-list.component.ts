@@ -1,13 +1,17 @@
 import {Component, OnInit} from '@angular/core';
-import {ExtendedQuizPreview} from '../../core/_models/extendedquiz-preview';
 import {GameSettingsService} from '../../core/_services/game/game-settings.service';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {AuthenticationService} from '../../core/_services/authentication/authentication.service';
 import {Role} from '../../core/_models/role';
 import {SearchFilterQuizService} from '../../core/_services/quiz/search-filter-quiz.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {QuizFilterComponent} from '../quiz-filter/quiz-filter.component';
 import {LocaleService} from '../../core/_services/utils/locale.service';
+import {ToastsService} from '../../core/_services/utils/toasts.service';
+import {first} from 'rxjs/operators';
+import {faSpinner} from '@fortawesome/free-solid-svg-icons';
+import {AnonymInitComponent} from '../../game/anonym-init/anonym-init.component';
+import {AnonymService} from '../../core/_services/game/anonym.service';
 
 
 const PAGE_SIZE = 16;
@@ -18,7 +22,7 @@ const PAGE_SIZE = 16;
     styleUrls: ['./quiz-list.component.css']
 })
 export class QuizListComponent implements OnInit {
-    accessCode: string;
+    accessId: string;
     accessCodeLoading: boolean;
     admin: boolean;
     searchInput: string;
@@ -27,33 +31,33 @@ export class QuizListComponent implements OnInit {
 
     page: number;
     pageSize: number;
-    quizList: ExtendedQuizPreview[] = [];
     mockImageUrl = '../../assets/img/quiz.jpg';
-    totalSize: number;
+    isLoading: boolean;
+    faSpinner = faSpinner;
 
     constructor(private modalService: NgbModal,
                 private gameSettingsService: GameSettingsService,
                 private router: Router,
+                private activatedRoute: ActivatedRoute,
                 private authenticationService: AuthenticationService,
-                private searchFilterQuizService: SearchFilterQuizService,
-                private localeService: LocaleService) {
+                public searchFilterQuizService: SearchFilterQuizService,
+                private localeService: LocaleService,
+                private toastsService: ToastsService,
+                private anonymService: AnonymService) {
         this.pageSize = PAGE_SIZE;
         this.page = 1;
+        this.isLoading = true;
     }
 
+
     ngOnInit(): void {
+        this.checkGame();
+
         if (!this.searchFilterQuizService.getSettings().quizLang) {
             this.searchFilterQuizService.initSettings();
         }
-        this.searchFilterQuizService.filterQuiz(this.page).subscribe();
-        this.searchFilterQuizService.currentQuizzes.subscribe(quizzes => {
-            if (quizzes) {
-                this.quizList = quizzes;
-            }
-        });
+        this.searchFilterQuizService.filterQuiz(this.page).pipe(first()).subscribe();
         this.searchInput = this.searchFilterQuizService.getSettings().quizName;
-        this.searchFilterQuizService.currentQuizzesSize.subscribe(size =>
-            this.totalSize = size);
 
         const user = this.authenticationService.currentUserValue;
 
@@ -62,8 +66,25 @@ export class QuizListComponent implements OnInit {
         this.admin = user && user.role !== Role.User;
     }
 
+    private checkGame() {
+        this.accessId = this.activatedRoute.snapshot.paramMap.get('accessId');
+        if (this.accessId) {
+            if (this.authenticationService.currentUserValue || this.anonymService.currentAnonymValue) {
+                this.join();
+            } else {
+                const modalRef = this.modalService.open(AnonymInitComponent);
+                modalRef.componentInstance.anonymName.pipe(first()).subscribe(n => {
+                        this.anonymService.anonymLogin(n).pipe(first()).subscribe(() => {
+                            this.join();
+                        });
+                    }
+                );
+            }
+        }
+    }
+
     loadPage(event) {
-        this.searchFilterQuizService.filterQuiz(event).subscribe();
+        this.searchFilterQuizService.filterQuiz(event).pipe(first()).subscribe();
         this.scrollToTop();
     }
 
@@ -80,7 +101,20 @@ export class QuizListComponent implements OnInit {
 
     join() {
         this.accessCodeLoading = true;
-        this.router.navigateByUrl('/join/' + this.accessCode);
+        this.gameSettingsService.join(this.accessId).pipe(first()).subscribe(
+            n => {
+                console.log('Joining');
+                localStorage.setItem('sessionid', n.id);
+                this.router.navigateByUrl(`game/${n.gameId}/lobby`);
+            },
+            error => {
+                this.toastsService.toastAddDanger('An error occurred.');
+                this.accessId = '';
+                this.router.navigateByUrl('quiz-list');
+                console.error(error);
+            }
+        );
+        this.router.navigateByUrl('/join/' + this.accessId);
     }
 
     search() {
