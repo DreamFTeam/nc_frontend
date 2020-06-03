@@ -15,7 +15,7 @@
                         <button (click)="join()"
                                 class="btn btn-light btn-outline-secondary"
                                 type="button"
-                                [disabled]="accessCodeLoading"
+                                [disabled]="accessCodeLoading || !accessId"
                                 id="button-addon">
                           <span *ngIf="!accessCodeLoading">
                             {{'quizList.join'| translate}}

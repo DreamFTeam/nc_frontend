@@ -1,13 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {ExtendedQuizPreview} from '../../core/_models/extendedquiz-preview';
-import {GameSettingsService} from '../../core/_services/game/game-settings.service';
-import {Router} from '@angular/router';
-import {AuthenticationService} from '../../core/_services/authentication/authentication.service';
-import {Role} from '../../core/_models/role';
-import {SearchFilterQuizService} from '../../core/_services/quiz/search-filter-quiz.service';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {QuizFilterComponent} from '../quiz-filter/quiz-filter.component';
-import {LocaleService} from '../../core/_services/utils/locale.service';
+import { Component, OnInit } from '@angular/core';
+import { ExtendedQuizPreview } from '../../core/_models/extendedquiz-preview';
+import { GameSettingsService } from '../../core/_services/game/game-settings.service';
+import { Router } from '@angular/router';
+import { AuthenticationService } from '../../core/_services/authentication/authentication.service';
+import { Role } from '../../core/_models/role';
+import { SearchFilterQuizService } from '../../core/_services/quiz/search-filter-quiz.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { QuizFilterComponent } from '../quiz-filter/quiz-filter.component';
+import { LocaleService } from '../../core/_services/utils/locale.service';
 
 
 const PAGE_SIZE = 16;
@@ -32,11 +32,11 @@ export class QuizListComponent implements OnInit {
     totalSize: number;
 
     constructor(private modalService: NgbModal,
-                private gameSettingsService: GameSettingsService,
-                private router: Router,
-                private authenticationService: AuthenticationService,
-                private searchFilterQuizService: SearchFilterQuizService,
-                private localeService: LocaleService) {
+        private gameSettingsService: GameSettingsService,
+        private router: Router,
+        private authenticationService: AuthenticationService,
+        private searchFilterQuizService: SearchFilterQuizService,
+        private localeService: LocaleService) {
         this.pageSize = PAGE_SIZE;
         this.page = 1;
     }
@@ -80,7 +80,20 @@ export class QuizListComponent implements OnInit {
 
     join() {
         this.accessCodeLoading = true;
-        this.router.navigateByUrl('/join/' + this.accessCode);
+        this.gameSettingsService.join(this.accessId).pipe(first()).subscribe(
+            n => {
+                console.log('Joining');
+                localStorage.setItem('sessionid', n.id);
+                this.router.navigateByUrl(`game/${n.gameId}/lobby`);
+            },
+            error => {
+                this.toastsService.toastAddDanger(error.error ? error.error.message : this.localeService.getValue('authorization.login.error'));
+                this.accessId = '';
+                this.accessCodeLoading = false;
+                this.router.navigateByUrl('quiz-list');
+                console.error(error);
+            }
+        );
     }
 
     search() {
@@ -88,6 +101,6 @@ export class QuizListComponent implements OnInit {
     }
 
     showFilter() {
-        const modal = this.modalService.open(QuizFilterComponent, {size: 'sm'});
+        const modal = this.modalService.open(QuizFilterComponent, { size: 'sm' });
     }
 }
