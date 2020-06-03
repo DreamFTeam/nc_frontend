@@ -34,7 +34,6 @@ export class NavBarComponent implements OnInit, OnDestroy {
     language: string;
     notificationsAmount: number;
     private notificationSubscription: Subscription;
-    isAnonym: boolean;
 
     constructor(private modalService: NgbModal,
                 private authenticationService: AuthenticationService,
@@ -42,11 +41,10 @@ export class NavBarComponent implements OnInit, OnDestroy {
                 private notificationsService: NotificationsService,
                 private localeService: LocaleService,
                 private router: Router,
-                private anonymService: AnonymService) {
+                public anonymService: AnonymService) {
     }
 
     ngOnInit(): void {
-        this.isAnonym = !!this.anonymService.currentAnonymValue;
         this.signedIn = (this.authenticationService.currentUserValue === undefined) ? false : true;
         this.privileged = (this.signedIn &&
             this.authenticationService.currentUserValue.role !== Role.User);
@@ -121,7 +119,6 @@ export class NavBarComponent implements OnInit, OnDestroy {
                     this.anonymService.anonymLogin(n).pipe(first()).subscribe();
                 }
                 else {
-                    this.isAnonym = false;
                     this.anonymService.removeAnonym();
                 }
             }

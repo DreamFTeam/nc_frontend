@@ -48,7 +48,7 @@
         </a>
       </li>
 
-      <li *ngIf="isAnonym && !signedIn" class="nav-item clickable">
+      <li *ngIf="(anonymService.currentAnonym | async) && !signedIn" class="nav-item clickable">
           <a class="nav-link" (click)="changeName()">{{ 'navbar.rename' | translate }}</a>
       </li>
 
