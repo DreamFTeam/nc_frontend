@@ -8,6 +8,7 @@ import {ModalMessageService} from '../_services/utils/modal-message.service';
 import {AnonymService} from '../_services/game/anonym.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {AnonymInitComponent} from '../../game/anonym-init/anonym-init.component';
+import {LocaleService} from '../_services/utils/locale.service';
 
 
 @Injectable({
@@ -21,7 +22,8 @@ export class GameConnectionGuard implements CanActivate {
         private gameSettingsService: GameSettingsService,
         private modal: ModalMessageService,
         private modalService: NgbModal,
-        private anonymService: AnonymService
+        private anonymService: AnonymService,
+        private localeService: LocaleService
     ) {
     }
 
@@ -33,7 +35,7 @@ export class GameConnectionGuard implements CanActivate {
         const accessId = next.paramMap.get('accessId');
 
         if (currentUser && currentUser.role !== Role.User) {
-            this.modal.show('Access denied', 'You cannot play on this account.');
+            this.modal.show(this.localeService.getValue('game.accessDen'),this.localeService.getValue('game.accountError'));
         }
 
         if (currentUser && currentUser.role === Role.User || currentAnonym) {

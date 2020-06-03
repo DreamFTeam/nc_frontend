@@ -227,7 +227,8 @@
     "permissions": "You don't have permissions.",
     "gameStarted": "The game has already started or has not been created.",
     "urlCopied": "URL copied.",
-    "refreshWarning": "If you refresh the page or go to another page, you will not be able to return."
+    "refreshWarning": "If you refresh the page or go to another page, you will not be able to return.",
+    "accountError": "You cannot play on this account."
   },
   "validationPage": {
     "title": "'s quiz validation list"

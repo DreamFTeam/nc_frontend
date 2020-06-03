@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ExtendedQuizPreview} from '../../core/_models/extendedquiz-preview';
 import {GameSettingsService} from '../../core/_services/game/game-settings.service';
 import {Router} from '@angular/router';
@@ -8,6 +8,8 @@ import {SearchFilterQuizService} from '../../core/_services/quiz/search-filter-q
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {QuizFilterComponent} from '../quiz-filter/quiz-filter.component';
 import {LocaleService} from '../../core/_services/utils/locale.service';
+import {ToastsService} from '../../core/_services/utils/toasts.service';
+import {first} from 'rxjs/operators';
 
 
 const PAGE_SIZE = 16;
@@ -18,7 +20,7 @@ const PAGE_SIZE = 16;
     styleUrls: ['./quiz-list.component.css']
 })
 export class QuizListComponent implements OnInit {
-    accessCode: string;
+    @Input() accessId: string;
     accessCodeLoading: boolean;
     admin: boolean;
     searchInput: string;
@@ -36,7 +38,8 @@ export class QuizListComponent implements OnInit {
                 private router: Router,
                 private authenticationService: AuthenticationService,
                 private searchFilterQuizService: SearchFilterQuizService,
-                private localeService: LocaleService) {
+                private localeService: LocaleService,
+                private toastsService: ToastsService) {
         this.pageSize = PAGE_SIZE;
         this.page = 1;
     }
@@ -80,7 +83,20 @@ export class QuizListComponent implements OnInit {
 
     join() {
         this.accessCodeLoading = true;
-        this.router.navigateByUrl('/join/' + this.accessCode);
+        this.gameSettingsService.join(this.accessId).pipe(first()).subscribe(
+            n => {
+                console.log('Joining');
+                localStorage.setItem('sessionid', n.id);
+                this.router.navigateByUrl(`game/${n.gameId}/lobby`);
+            },
+            error => {
+                this.toastsService.toastAddDanger('An error occurred.');
+                this.accessId = '';
+                // TODO router accessId
+                console.error(error);
+            }
+        );
+        this.router.navigateByUrl('/join/' + this.accessId);
     }
 
     search() {
