@@ -29,7 +29,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
     searchArea: string;
 
     language: string;
-    notificationsAmount: Observable<number>;
+    notificationsAmount: number;
     private notificationSubscription: Subscription;
 
     constructor(private modalService: NgbModal,
@@ -82,7 +82,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
                 this.notification = n && n.length > 0;
                 if (this.notification) {
                     this.playAudio();
-                    this.notificationsAmount = this.notificationsService.getAmounts();
+                    this.notificationsAmount = n.length;
                 }
             });
 

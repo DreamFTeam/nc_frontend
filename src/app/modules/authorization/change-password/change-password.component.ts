@@ -1,11 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {AuthenticationService} from '../../core/_services/authentication/authentication.service';
 import {ToastsService} from '../../core/_services/utils/toasts.service';
 import {TranslateService} from '@ngx-translate/core';
 import {first} from 'rxjs/operators';
-
-// import {switchMap} from 'rxjs/operators';
 
 @Component({
     selector: 'app-change-password',
@@ -22,14 +20,17 @@ export class ChangePasswordComponent implements OnInit {
     loading: boolean;
 
     constructor(private route: ActivatedRoute,
+                private router: Router,
                 private authenticationService: AuthenticationService,
                 private toastsService: ToastsService,
                 private translateService: TranslateService) {
     }
 
     ngOnInit(): void {
-        this.id = this.route.snapshot.paramMap.get('id');
-        console.log(this.id);
+        this.id = this.route.snapshot.paramMap.get('key');
+        if (!this.id) {
+            this.router.navigateByUrl('');
+        }
         this.isSent = false;
         this.loading = false;
     }

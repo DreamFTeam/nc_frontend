@@ -9,8 +9,9 @@ import {ModalMessageService} from '../../core/_services/utils/modal-message.serv
 import {AnonymService} from '../../core/_services/game/anonym.service';
 import {faSpinner} from '@fortawesome/free-solid-svg-icons';
 import {first} from 'rxjs/operators';
-import {Observable, Subscription} from 'rxjs';
+import {Subscription} from 'rxjs';
 import {ToastsService} from '../../core/_services/utils/toasts.service';
+import {LocaleService} from '../../core/_services/utils/locale.service';
 
 
 @Component({
@@ -36,6 +37,7 @@ export class GameConnectorComponent implements OnInit, OnDestroy {
     faSpinner = faSpinner;
     private sessionsSubscription: Subscription;
     private readySubscription: Subscription;
+    gameStatus: string;
 
     constructor(private activateRoute: ActivatedRoute,
                 private gameSettingsService: GameSettingsService,
@@ -43,16 +45,18 @@ export class GameConnectorComponent implements OnInit, OnDestroy {
                 private sseService: SseService,
                 private authenticationService: AuthenticationService,
                 private messageModal: ModalMessageService,
-                private toastsService: ToastsService) {
+                private toastsService: ToastsService,
+                private anonymService: AnonymService,
+                private localeService: LocaleService) {
+        this.loggedIn = !!this.authenticationService.currentUserValue;
+        this.sessionId = localStorage.getItem('sessionid');
     }
 
     ngOnInit(): void {
-        this.loggedIn = !!this.authenticationService.currentUserValue;
-        this.sessionId = localStorage.getItem('sessionid');
         if (this.authenticationService.currentUserValue
             && this.authenticationService.currentUserValue.role !== Role.User
             || !this.sessionId) {
-            this.messageModal.show('Access denied', 'You don\'t have permissions.');
+            this.messageModal.show(this.localeService.getValue('game.accessDen'), this.localeService.getValue('game.permissions'));
             this.router.navigateByUrl('/');
         }
         const gameId = this.activateRoute.snapshot.paramMap.get('id');
@@ -62,13 +66,15 @@ export class GameConnectorComponent implements OnInit, OnDestroy {
             .pipe(first())
             .subscribe(game => {
                     if (!game.accessId) {
-                        this.messageModal.show('Access denied', 'The game has already started or has not been created.');
+                        this.messageModal.show(this.localeService.getValue('game.accessDen'), this.localeService.getValue('game.gameStarted'));
                         this.router.navigateByUrl('/');
                     }
                     this.game = game;
+                    this.gameStatus = this.localeService.getValue('game.waitingpl');
                 }
             );
         this.gameSettingsService.setSubjSessions(gameId);
+
         this.sessionsSubscription = this.gameSettingsService.sessions
             .subscribe(ses => {
                 Object.assign(this.sessions, ses);
@@ -77,9 +83,13 @@ export class GameConnectorComponent implements OnInit, OnDestroy {
                         this.creator = session._creator;
                     }
                 }
+                if (this.game && ses.length === this.game.maxUsersCount) {
+                    this.gameStatus = this.localeService.getValue('game.hostStart');
+                }
             });
         this.readySubscription = this.gameSettingsService.readyList.subscribe(ready => {
             Object.assign(this.usersSessionsReady, ready);
+            console.log(ready);
             this.ready = this.usersSessionsReady.includes(this.sessionId);
         });
     }
@@ -100,7 +110,7 @@ export class GameConnectorComponent implements OnInit, OnDestroy {
         document.execCommand('copy');
         inputElement.value = this.game.accessId;
         this.toastsService.removeAll();
-        this.toastsService.toastAddSuccess('URL copied.');
+        this.toastsService.toastAddSuccess(this.localeService.getValue('game.urlCopied'));
     }
 
 
@@ -111,7 +121,7 @@ export class GameConnectorComponent implements OnInit, OnDestroy {
         this.readySubscription.unsubscribe();
         this.gameSettingsService.stopSse();
         // if (!this.gameSettingsService.gameStart) {
-        //     this.gameSettingsService.quitGame(this.sessionId).subscribe();
+        //     this.gameSettingsService.quitGame(this.sessionId).pipe(first()).subscribe();
         //     localStorage.removeItem('sessionid');
         //     if (this.anonymService.currentAnonymValue) {
         //         this.anonymService.removeAnonym();

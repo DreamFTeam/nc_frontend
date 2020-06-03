@@ -220,7 +220,14 @@
     "minUserError": "Incorrect number of players.",
     "questAmountError": "Too many questions. There are only ",
     "maxUserError": "Too many users. Must be less than ",
-    "accessCodeHint": "This is the game access code. You can show it to your friends. It should be entered at the top of quizzes page. Click to copy join url."
+    "accessCodeHint": "This is the game access code. You can show it to your friends. It should be entered at the top of quizzes page. Click to copy join url.",
+    "hostStart": "The host should start the game!",
+    "waitPlayers": "Waiting for other players ...",
+    "accessDen": "Access denied",
+    "permissions": "You don't have permissions.",
+    "gameStarted": "The game has already started or has not been created.",
+    "urlCopied": "URL copied.",
+    "refreshWarning": "If you refresh the page or go to another page, you will not be able to return."
   },
   "validationPage": {
     "title": "'s quiz validation list"
