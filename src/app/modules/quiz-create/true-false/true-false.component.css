@@ -1,9 +1,13 @@
 
-.answer
-{
+.answer{
     font-style:  normal;
     font-weight: 600;
-    font-size:   13px;
+    font-size:   14px;
     line-height: 16px;
-    margin:      20px;
+}
+
+label
+{
+    font-weight: 600;
+    font-size:   20px;
 }

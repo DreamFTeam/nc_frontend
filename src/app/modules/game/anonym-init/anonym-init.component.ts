@@ -1,5 +1,6 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {AnonymService} from '../../core/_services/game/anonym.service';
 
 @Component({
     selector: 'app-anonim-init',
@@ -12,10 +13,14 @@ export class AnonymInitComponent implements OnInit {
     nameStr: string;
     loading: boolean;
 
-    constructor(public activeModal: NgbActiveModal) {
+    constructor(public activeModal: NgbActiveModal,
+                private anonymService: AnonymService) {
     }
 
     ngOnInit(): void {
+        if (this.anonymService.currentAnonymValue) {
+            this.nameStr = this.anonymService.currentAnonymValue.username;
+        }
     }
 
     initAnon() {

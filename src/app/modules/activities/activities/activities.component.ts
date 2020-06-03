@@ -1,14 +1,16 @@
-import {Component, OnInit} from '@angular/core';
-import {Activity} from '../../core/_models/activity';
-import {ActivityService} from '../../core/_services/user/activity.service';
-import {faSpinner} from '@fortawesome/free-solid-svg-icons';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { Activity } from '../../core/_models/activity';
+import { ActivityService } from '../../core/_services/user/activity.service';
+import { DateService } from '../../core/_services/utils/date.service';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-activities',
     templateUrl: './activities.component.html',
     styleUrls: ['./activities.component.css']
 })
-export class ActivitiesComponent implements OnInit {
+export class ActivitiesComponent implements OnInit, OnDestroy {
 
     activities: Activity[];
 
@@ -16,16 +18,21 @@ export class ActivitiesComponent implements OnInit {
 
     faSpinner = faSpinner;
 
+    subscriptions: Subscription = new Subscription();
 
-    constructor(private activityService: ActivityService) {
+    constructor(private activityService: ActivityService,
+        public dateService: DateService) {
         this.activities = [];
         this.loading = true;
     }
+    ngOnDestroy(): void {
+        this.subscriptions.unsubscribe();
+    }
 
     ngOnInit(): void {
-        this.activityService.getActivityList().subscribe(
+        this.subscriptions.add(this.activityService.getActivityList().subscribe(
             ans => this.activities = ans,
-            err => console.log(err), () => this.loading = false);
+        () => {}, () => this.loading = false));
     }
 
 }

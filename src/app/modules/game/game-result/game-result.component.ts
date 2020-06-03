@@ -15,19 +15,13 @@ import {AnonymService} from '../../core/_services/game/anonym.service';
     encapsulation: ViewEncapsulation.None
 })
 
-export class GameResultComponent implements OnInit, OnDestroy {
+export class GameResultComponent implements OnInit {
 
     results: GameResult[];
     gameId: string;
-    maxPoints: number;
     winner: string;
-    view = [600, 400];
     resultsForGraphic: any[];
     loggedIn: boolean;
-
-    // colorScheme = {
-    //   domain: ['#e5de09', '#9e0505', '#05b4ff', '#FF5005']
-    // };
 
     constructor(private gameResultService: GameResultService,
                 private activatedRoute: ActivatedRoute,
@@ -69,9 +63,4 @@ export class GameResultComponent implements OnInit, OnDestroy {
         modal.componentInstance.gameId = this.gameId;
     }
 
-    ngOnDestroy(): void {
-        if (this.anonymService.currentAnonymValue) {
-            this.anonymService.removeAnonym();
-        }
-    }
 }

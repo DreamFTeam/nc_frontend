@@ -1,12 +1,12 @@
-<div class="container-sm p-4">
+<div class="container-sm p-4 ">
     <div *ngIf="activities.length > 0; else elseBlock">
         <div *ngFor="let act of activities; let i = index" >
-            <div [routerLink]="act.link" class="pointer">
+            <div [routerLink]="act.link" class="pointer no-outline">
                 <hr class="my-4" *ngIf="i != 0">
                 <div class="row">
                     <div class="col-sm-10">
                         <p style="font-size: 20px;" >
-                            <span routerLink="/profile/{{act.username}}">
+                            <span class="no-outline" routerLink="/profile/{{act.username}}">
                                 <img *ngIf="act.imageContent !== null" [src]='act.imageContent' class="img-thumbnail avatar">
                                 <img *ngIf="act.imageContent === null" src="../assets/img/nopicture.jpg" class="img-thumbnail avatar">
                                 <strong class="ml-2">{{act.username}}</strong>
@@ -15,7 +15,9 @@
             
                     </div>
                     <div class="col-sm-2 float-right">
-                        <p style="font-style: italic;">{{act.datetime | date}}</p>
+                        <p style="font-style: italic;">
+                            {{act.datetime | date:dateService.datePattern:dateService.currentTimezone}}
+                        </p>
                     </div>
                 </div>
                 <p class="mt-2">{{act.content}}</p>

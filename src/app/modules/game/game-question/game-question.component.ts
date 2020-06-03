@@ -290,9 +290,9 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
         if (this.finishGame) {
             this.finishGame.unsubscribe();
         }
-        if (!this.waitResult) {
-            this.gameSettingsService.quitGame(localStorage.getItem('sessionid')).subscribe();
-        }
-        localStorage.removeItem('sessionid');
+        // if (!this.waitResult) {
+        //     this.gameSettingsService.quitGame(localStorage.getItem('sessionid')).subscribe();
+        // }
+        // localStorage.removeItem('sessionid');
     }
 }

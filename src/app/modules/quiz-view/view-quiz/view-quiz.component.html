@@ -8,8 +8,8 @@
 
             <div class="row">
                 <div class="col">
-                    
-                    
+
+
                     <label style="word-wrap: break-word;" class="mt-2">{{quiz.title}}</label>
                     <div></div>
                     <ng-template #t let-fill="fill">
@@ -17,16 +17,39 @@
                             <span class="half" [style.width.%]="fill">&#9733;</span>&#9733;
                         </span>
                     </ng-template>
-                    
-                    <ngb-rating [(rate)]="quiz.rating" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating>
-                    <span class="ml-1" style="font-size: 14px;">{{quiz.rating}}</span>
 
-                    <p *ngIf="!quiz.activated" style="color: red;">{{ 'viewQuiz.deactivated' | translate }}</p>
+                    <ngb-rating [(rate)]="quiz.rating" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating>
+                    <span class="ml-1" style="font-size: 14px;">{{quiz.rating | number:'1.0-2' }}</span>
+
+                    <!-- Deactivated -->
+                    <p *ngIf="!quiz.activated && quiz.published && quiz.validated" style="color: red;">
+                        
+                        {{ 'viewQuiz.deactivated' | translate }}
+                    </p>
                     
-                    </div>
-                    <div class="col">
+                    <!-- Rejected -->
+                    <p *ngIf="!quiz.activated && !quiz.published && quiz.validated"  style="color: red;">
+                        
+                        {{ 'viewQuiz.rejected' | translate }}
+                    </p>
+
+                    <!-- Waiting for validation -->
+                    <p *ngIf="!quiz.activated && quiz.published && !quiz.validated"  style="color: orange;">
+                        
+                        {{ 'viewQuiz.waitingForValidation' | translate }}
+                    </p>
+
+                    <!-- Draft -->
+                    <p *ngIf="!quiz.activated && !quiz.published && !quiz.validated"  style="color: green;">
+                        
+                        {{ 'viewQuiz.draft' | translate }}
+                    </p>
+
+                </div>
+                <div class="col">
                     <div class="float-right">
-                        <div style="font-style: italic;">{{quiz.creationDate}}</div>
+                        <div style="font-style: italic;">
+                            {{quiz.creationDate | date:dateService.datePattern:dateService.currentTimezone}}</div>
                     </div>
 
                 </div>
@@ -40,7 +63,7 @@
 
                     <div>
                         <label>{{ 'utils.author' | translate }}: </label>
-                        <ng-template [ngIf]="isLinkAvailable()" [ngIfElse]="elseLink">
+                        <ng-template [ngIf]="user" [ngIfElse]="elseLink">
                             <a class="ml-2 cursor" routerLink="/profile/{{quiz.author}}">{{quiz.author}}</a>
                         </ng-template>
                         <ng-template #elseLink>
@@ -69,64 +92,49 @@
             </div>
 
             <div *ngIf="isMyQuiz()" class="row">
-                <div *ngIf="isCommentShown()" class="col-6">
+                <div *ngIf="this.quiz.adminComment" class="col-6">
                     <label>{{ 'viewQuiz.comment' | translate }}:</label>
                     <div style="word-wrap: break-word;">{{quiz.adminComment}}</div>
-                </div> 
+                </div>
             </div>
 
             <div class="row">
                 <div class="col">
-                    <div class="mt-3" style="display: inline-flex;">
-                        <div *ngIf="!isPrivileged()" class="btn buttonpr ml-1" (click)="newGame()">
+                    <div class="mt-3" >
+                        <div *ngIf="!isPrivileged() && quiz.activated && quiz.published && quiz.validated" 
+                        class="btn buttonpr ml-1" (click)="newGame()">
                             {{ 'utils.play' | translate }}
                         </div>
                         <div *ngIf="isMyQuiz()" class="btn buttonsec ml-1" routerLink="/quizedit/{{quiz.id}}">
                             {{ 'utils.edit' | translate }}
                         </div>
-                        <div *ngIf="isLinkAvailable() && !isPrivileged()" class="btn buttonsuc ml-1" (click)="markAsFavorite()">
+                        <div *ngIf="user && !isPrivileged()" class="btn buttonsuc ml-1"
+                            (click)="markAsFavorite()">
                             <svg *ngIf="quiz.favourite" class="bi bi-star-fill" width="1.5em" height="1.5em"
-                                 viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-            
+                                viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+
                                 <path
-		                                d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                                    d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
                             </svg>
-                            <svg *ngIf="!quiz.favourite"
-                                 class="bi bi-star"
-                                 width="1.5em"
-                                 height="1.5em"
-                                 viewBox="0 0 16 16"
-                                 fill="currentColor"
-                                 xmlns="http://www.w3.org/2000/svg">
+                            <svg *ngIf="!quiz.favourite" class="bi bi-star" width="1.5em" height="1.5em"
+                                viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd"
-                                      d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.523-3.356c.329-.314.158-.888-.283-.95l-4.898-.696L8.465.792a.513.513 0 00-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767l-3.686 1.894.694-3.957a.565.565 0 00-.163-.505L1.71 6.745l4.052-.576a.525.525 0 00.393-.288l1.847-3.658 1.846 3.658a.525.525 0 00.393.288l4.052.575-2.906 2.77a.564.564 0 00-.163.506l.694 3.957-3.686-1.894a.503.503 0 00-.461 0z"
-                                      clip-rule="evenodd"/>
+                                    d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.523-3.356c.329-.314.158-.888-.283-.95l-4.898-.696L8.465.792a.513.513 0 00-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767l-3.686 1.894.694-3.957a.565.565 0 00-.163-.505L1.71 6.745l4.052-.576a.525.525 0 00.393-.288l1.847-3.658 1.846 3.658a.525.525 0 00.393.288l4.052.575-2.906 2.77a.564.564 0 00-.163.506l.694 3.957-3.686-1.894a.503.503 0 00-.461 0z"
+                                    clip-rule="evenodd" />
                             </svg>
                             <span class="ml-1 cursor">{{ 'viewQuiz.asFavorite' | translate }}</span>
                         </div>
                     </div>
-                    <div class="row ml-1 mt-2 ">
-                        <div *ngIf="isMyQuiz() || isPrivileged() " class="border border-danger rounded p-2">
-                            <label style="color: red">{{ 'viewQuiz.danger' | translate }}</label>
-                            <div class="mt-1">
-                                <button *ngIf="quiz.activated" class="btn buttondel" (click)="deactivate()">
-                                    {{ 'viewQuiz.deactivate' | translate }}
-                                </button>
-                            </div>
-                            <div class="mt-1">
-                                <button class="btn buttondel" (click)="delete()">
-                                    {{ 'utils.delete' | translate }}
-                                </button>
-                            </div>
-                        </div>
+                    <div *ngIf="isMyQuiz()" class="ml-1 mt-3 ">
+                        <button *ngIf="quiz.activated" class="btn buttondel mr-1" (click)="deactivate()">
+                            {{ 'viewQuiz.deactivate' | translate }}
+                        </button>
+                        <button class="btn buttondel" (click)="delete()">
+                            {{ 'utils.delete' | translate }}
+                        </button>
                     </div>
                 </div>
             </div>
-            
-            
-
-            
-
         </div>
     </div>
 </div>

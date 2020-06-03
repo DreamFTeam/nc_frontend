@@ -3,3 +3,25 @@ label
     font-weight: 600;
     font-size:   20px;
 }
+.announcement-text{
+    font-size: large;
+}
+.pic{
+    max-width: 90%;
+}
+
+@media (min-width: 768px)
+{
+    .pic
+    {
+        max-width: 60% !important;
+    }
+}
+
+@media (min-width: 1180px)
+{
+    .pic
+    {
+        max-width: 50% !important;
+    }
+}

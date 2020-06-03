@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
-import { AuthenticationService } from '../../core/_services/authentication/authentication.service';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { RecoverPasswordComponent } from '../recover-password/recover-password.component';
-import { Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import {Component} from '@angular/core';
+import {AuthenticationService} from '../../core/_services/authentication/authentication.service';
+import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {RecoverPasswordComponent} from '../recover-password/recover-password.component';
+import {Router} from '@angular/router';
+import {TranslateService} from '@ngx-translate/core';
+import {first} from 'rxjs/operators';
 
 @Component({
     selector: 'app-log-in',
@@ -12,10 +13,10 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class LogInComponent {
     constructor(private authenticationService: AuthenticationService,
-        public activeModal: NgbActiveModal,
-        private modalService: NgbModal,
-        private _router: Router,
-        private translateService: TranslateService) {
+                public activeModal: NgbActiveModal,
+                private modalService: NgbModal,
+                private _router: Router,
+                private translateService: TranslateService) {
     }
 
     email = '';
@@ -34,18 +35,16 @@ export class LogInComponent {
             return;
         }
 
-        const subscription = this.authenticationService.loginUser(this.email, this.password)
+        this.authenticationService.loginUser(this.email, this.password).pipe(first())
             .subscribe(
                 n => {
                     location.reload();
                     this.loading = false;
-                    subscription.unsubscribe();
                 },
                 error => {
                     this.message = error.error ? error.error.message : this.translateService.instant('authorization.login.error');
                     console.log(error);
                     this.loading = false;
-                    subscription.unsubscribe();
                 }
             );
         this.loading = true;
