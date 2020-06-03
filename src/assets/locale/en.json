@@ -86,7 +86,8 @@
     "login": "LOG IN",
     "signup": "SIGN UP",
     "logout": "LOG OUT",
-    "main":"DASHBOARD"
+    "main":"DASHBOARD",
+    "rename": "CHANGE NAME"
   },
   "toasterEditor": {
     "wentWrong": "Sorry, something went wrong :(",
@@ -232,7 +233,9 @@
     "gameStarted": "The game has already started or has not been created.",
     "urlCopied": "URL copied.",
     "refreshWarning": "If you refresh the page or go to another page, you will not be able to return.",
-    "accountError": "You cannot play on this account."
+    "accountError": "You cannot play on this account.",
+    "anonymTitle": "Enter your nickname",
+    "anonymName": "Your name"
   },
   "validationPage": {
     "title": "'s quiz validation list"

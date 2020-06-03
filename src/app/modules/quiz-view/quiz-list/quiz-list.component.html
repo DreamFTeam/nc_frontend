@@ -7,12 +7,12 @@
                            class="rounded-left form-control text-center"
                            [(ngModel)]="accessId"
                            [disabled]="accessCodeLoading"
-                           (keydown.enter)="join()"
+                           (keydown.enter)="checkJoin()"
                            placeholder="{{'quizList.accessCode'| translate}}"
                            aria-label="Enter access code"
                            aria-describedby="button-addon">
                     <div *ngIf="!admin" class="input-group-append">
-                        <button (click)="join()"
+                        <button (click)="checkJoin()"
                                 class="btn btn-light btn-outline-secondary"
                                 type="button"
                                 [disabled]="accessCodeLoading || !accessId"

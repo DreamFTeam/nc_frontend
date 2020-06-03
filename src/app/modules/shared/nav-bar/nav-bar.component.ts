@@ -1,15 +1,18 @@
 import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
-import { Router } from '@angular/router';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { LogInComponent } from '../../authorization/log-in/log-in.component';
-import { SignUpComponent } from '../../authorization/sign-up/sign-up.component';
-import { AuthenticationService } from '../../core/_services/authentication/authentication.service';
-import { Role } from '../../core/_models/role';
-import { NotificationsService } from '../../core/_services/user/notifications.service';
-import { SearchFilterQuizService } from '../../core/_services/quiz/search-filter-quiz.service';
-import { environment } from 'src/environments/environment';
-import { LocaleService } from '../../core/_services/utils/locale.service';
-import {Observable, Subscription} from 'rxjs';
+import {Router} from '@angular/router';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {LogInComponent} from '../../authorization/log-in/log-in.component';
+import {SignUpComponent} from '../../authorization/sign-up/sign-up.component';
+import {AuthenticationService} from '../../core/_services/authentication/authentication.service';
+import {Role} from '../../core/_models/role';
+import {NotificationsService} from '../../core/_services/user/notifications.service';
+import {SearchFilterQuizService} from '../../core/_services/quiz/search-filter-quiz.service';
+import {environment} from 'src/environments/environment';
+import {LocaleService} from '../../core/_services/utils/locale.service';
+import {Subscription} from 'rxjs';
+import {AnonymService} from '../../core/_services/game/anonym.service';
+import {AnonymInitComponent} from '../../game/anonym-init/anonym-init.component';
+import {first} from 'rxjs/operators';
 
 @Component({
     selector: 'app-nav-bar',
@@ -18,8 +21,8 @@ import {Observable, Subscription} from 'rxjs';
 })
 export class NavBarComponent implements OnInit, OnDestroy {
     readonly languages = [
-        { name: 'English', value: `${environment.locales[0]}` },
-        { name: 'Українська', value: `${environment.locales[1]}` }
+        {name: 'English', value: `${environment.locales[0]}`},
+        {name: 'Українська', value: `${environment.locales[1]}`}
     ];
     private readonly NEW_FILTER_SETTINGS = true;
     public isMenuCollapsed = true;
@@ -31,16 +34,19 @@ export class NavBarComponent implements OnInit, OnDestroy {
     language: string;
     notificationsAmount: number;
     private notificationSubscription: Subscription;
+    isAnonym: boolean;
 
     constructor(private modalService: NgbModal,
-        private authenticationService: AuthenticationService,
-        private searchFilterQuizService: SearchFilterQuizService,
-        private notificationsService: NotificationsService,
-        private localeService: LocaleService,
-        private router: Router) {
+                private authenticationService: AuthenticationService,
+                private searchFilterQuizService: SearchFilterQuizService,
+                private notificationsService: NotificationsService,
+                private localeService: LocaleService,
+                private router: Router,
+                private anonymService: AnonymService) {
     }
 
     ngOnInit(): void {
+        this.isAnonym = !!this.anonymService.currentAnonymValue;
         this.signedIn = (this.authenticationService.currentUserValue === undefined) ? false : true;
         this.privileged = (this.signedIn &&
             this.authenticationService.currentUserValue.role !== Role.User);
@@ -65,7 +71,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
 
     openReg() {
         this.isMenuCollapsed = true;
-        const modalRef = this.modalService.open(SignUpComponent, { size: 'lg' });
+        const modalRef = this.modalService.open(SignUpComponent, {size: 'lg'});
 
     }
 
@@ -106,5 +112,19 @@ export class NavBarComponent implements OnInit, OnDestroy {
     @HostListener('window:beforeunload', ['$event'])
     ngOnDestroy(): void {
         this.notificationSubscription.unsubscribe();
+    }
+
+    changeName() {
+        const modalRef = this.modalService.open(AnonymInitComponent);
+        modalRef.componentInstance.anonymName.pipe(first()).subscribe(n => {
+                if (n) {
+                    this.anonymService.anonymLogin(n).pipe(first()).subscribe();
+                }
+                else {
+                    this.isAnonym = false;
+                    this.anonymService.removeAnonym();
+                }
+            }
+        );
     }
 }

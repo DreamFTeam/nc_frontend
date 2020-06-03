@@ -15,7 +15,7 @@ import {AnonymService} from '../../core/_services/game/anonym.service';
     encapsulation: ViewEncapsulation.None
 })
 
-export class GameResultComponent implements OnInit, OnDestroy {
+export class GameResultComponent implements OnInit {
 
     results: GameResult[];
     gameId: string;
@@ -63,9 +63,4 @@ export class GameResultComponent implements OnInit, OnDestroy {
         modal.componentInstance.gameId = this.gameId;
     }
 
-    ngOnDestroy(): void {
-        if (this.anonymService.currentAnonymValue) {
-            this.anonymService.removeAnonym();
-        }
-    }
 }

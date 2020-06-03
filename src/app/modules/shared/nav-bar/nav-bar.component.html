@@ -48,6 +48,10 @@
         </a>
       </li>
 
+      <li *ngIf="isAnonym && !signedIn" class="nav-item clickable">
+          <a class="nav-link" (click)="changeName()">{{ 'navbar.rename' | translate }}</a>
+      </li>
+
       <li class="nav-item">
         <input class="form-control mr-sm-2 mt-1" type="text" name="search" [(ngModel)]="searchArea"
           (keydown.enter)="search()" placeholder="{{ 'utils.search' | translate }}">

@@ -1,17 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { GameSettingsService } from '../../core/_services/game/game-settings.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AuthenticationService } from '../../core/_services/authentication/authentication.service';
-import { Role } from '../../core/_models/role';
-import { SearchFilterQuizService } from '../../core/_services/quiz/search-filter-quiz.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { QuizFilterComponent } from '../quiz-filter/quiz-filter.component';
-import { LocaleService } from '../../core/_services/utils/locale.service';
-import { ToastsService } from '../../core/_services/utils/toasts.service';
-import { first } from 'rxjs/operators';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { AnonymInitComponent } from '../../game/anonym-init/anonym-init.component';
-import { AnonymService } from '../../core/_services/game/anonym.service';
+import {Component, OnInit} from '@angular/core';
+import {GameSettingsService} from '../../core/_services/game/game-settings.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {AuthenticationService} from '../../core/_services/authentication/authentication.service';
+import {Role} from '../../core/_models/role';
+import {SearchFilterQuizService} from '../../core/_services/quiz/search-filter-quiz.service';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {QuizFilterComponent} from '../quiz-filter/quiz-filter.component';
+import {LocaleService} from '../../core/_services/utils/locale.service';
+import {ToastsService} from '../../core/_services/utils/toasts.service';
+import {first} from 'rxjs/operators';
+import {faSpinner} from '@fortawesome/free-solid-svg-icons';
+import {AnonymInitComponent} from '../../game/anonym-init/anonym-init.component';
+import {AnonymService} from '../../core/_services/game/anonym.service';
 
 
 const PAGE_SIZE = 16;
@@ -36,14 +36,14 @@ export class QuizListComponent implements OnInit {
     faSpinner = faSpinner;
 
     constructor(private modalService: NgbModal,
-        private gameSettingsService: GameSettingsService,
-        private router: Router,
-        private activatedRoute: ActivatedRoute,
-        private authenticationService: AuthenticationService,
-        public searchFilterQuizService: SearchFilterQuizService,
-        private localeService: LocaleService,
-        private toastsService: ToastsService,
-        private anonymService: AnonymService) {
+                private gameSettingsService: GameSettingsService,
+                private router: Router,
+                private activatedRoute: ActivatedRoute,
+                private authenticationService: AuthenticationService,
+                public searchFilterQuizService: SearchFilterQuizService,
+                private localeService: LocaleService,
+                private toastsService: ToastsService,
+                private anonymService: AnonymService) {
         this.pageSize = PAGE_SIZE;
         this.page = 1;
         this.isLoading = true;
@@ -51,7 +51,8 @@ export class QuizListComponent implements OnInit {
 
 
     ngOnInit(): void {
-        this.checkGame();
+        this.accessId = this.activatedRoute.snapshot.paramMap.get('accessId');
+        this.checkJoin();
 
         if (!this.searchFilterQuizService.getSettings().quizLang) {
             this.searchFilterQuizService.initSettings();
@@ -66,18 +67,21 @@ export class QuizListComponent implements OnInit {
         this.admin = user && user.role !== Role.User;
     }
 
-    private checkGame() {
-        this.accessId = this.activatedRoute.snapshot.paramMap.get('accessId');
+    checkJoin() {
         if (this.accessId) {
             if (this.authenticationService.currentUserValue || this.anonymService.currentAnonymValue) {
                 this.join();
             } else {
                 const modalRef = this.modalService.open(AnonymInitComponent);
                 modalRef.componentInstance.anonymName.pipe(first()).subscribe(n => {
-                    this.anonymService.anonymLogin(n).pipe(first()).subscribe(() => {
-                        this.join();
-                    });
-                }
+                        if (n) {
+                            this.anonymService.anonymLogin(n).pipe(first()).subscribe(() => {
+                                this.join();
+                            });
+                        } else {
+                            this.toastsService.toastAddWarning(this.localeService.getValue('authorization.login.emptyName'));
+                        }
+                    }
                 );
             }
         }
@@ -99,7 +103,7 @@ export class QuizListComponent implements OnInit {
         }, 16);
     }
 
-    join() {
+    private join() {
         this.accessCodeLoading = true;
         this.gameSettingsService.join(this.accessId).pipe(first()).subscribe(
             n => {
@@ -122,6 +126,6 @@ export class QuizListComponent implements OnInit {
     }
 
     showFilter() {
-        const modal = this.modalService.open(QuizFilterComponent, { size: 'sm' });
+        const modal = this.modalService.open(QuizFilterComponent, {size: 'sm'});
     }
 }
