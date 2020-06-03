@@ -50,7 +50,7 @@ export class UserChangePasswordComponent implements OnInit {
                 this.isSent = true;
                 this.loading = false;
                 setInterval(function() {
-                    location.replace('');
+                    this.isSent = false;
                     clearInterval(this);
                 }, 5000);
                 console.log(n);
