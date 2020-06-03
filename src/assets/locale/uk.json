@@ -323,7 +323,9 @@
     },
     "changePassword": {
       "button": "Змінити",
-      "success": "Успішно змінено"
+      "success": "Успішно змінено",
+      "currentPass": "Поточний пароль",
+      "newPass": "Новий пароль"
     },
     "recoverPassword": {
       "title": "Відновити пароль",

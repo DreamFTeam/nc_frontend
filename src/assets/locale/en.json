@@ -327,7 +327,9 @@
     },
     "changePassword": {
       "button": "Change",
-      "success": "Successfully changed"
+      "success": "Successfully changed",
+      "currentPass": "Current password",
+      "newPass": "New password"
     },
     "recoverPassword": {
       "title": "Recover Password",

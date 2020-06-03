@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {AuthenticationService} from '../../core/_services/authentication/authentication.service';
+import {TranslateService} from '@ngx-translate/core';
+import {ToastsService} from '../../core/_services/utils/toasts.service';
 
 @Component({
     selector: 'app-user-change-password',
@@ -16,7 +18,9 @@ export class UserChangePasswordComponent implements OnInit {
     loading: boolean;
 
     constructor(private route: ActivatedRoute,
-                private authenticationService: AuthenticationService) {
+                private authenticationService: AuthenticationService,
+                private translate: TranslateService,
+                private toastsService: ToastsService) {
     }
 
     ngOnInit(): void {
@@ -26,20 +30,23 @@ export class UserChangePasswordComponent implements OnInit {
 
     changePassword() {
         if (this.password.length < 6) {
-            alert('Password must be at least 6 symbols long!');
+            this.toastsService.removeAll();
+            this.toastsService.toastAddWarning(this.translate.instant('authorization.signUp.shortPassword'));
             return;
         }
         if (!this.password.match(/([a-zA-Z]+[0-9]+)|([0-9]+[a-zA-Z]+)/)) {
-            alert('Your password must contain 1 number and 1 letter!');
+            this.toastsService.removeAll();
+            this.toastsService.toastAddWarning(this.translate.instant('authorization.signUp.matchPasswordRegExp'));
             return;
         }
         if (this.password !== this.confirmPassword) {
-            alert('Your passwords don\'t match!');
+            this.toastsService.removeAll();
+            this.toastsService.toastAddWarning(this.translate.instant('authorization.signUp.matchPasswords'));
             return;
         }
 
         this.authenticationService.changeUserPassword(this.currentPassword, this.password).subscribe((n) => {
-                this.answer = 'Successfully changed';
+                this.answer = this.translate.instant('authorization.changePassword.success');
                 this.isSent = true;
                 this.loading = false;
                 setInterval(function() {
