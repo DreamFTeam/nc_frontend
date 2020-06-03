@@ -16,3 +16,10 @@
 .pointer:hover{
     cursor: pointer;
 }
+
+
+.no-outline:focus
+{
+    outline:    none !important;
+    box-shadow: none;
+}

@@ -1,20 +1,20 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Subscription } from 'rxjs';
-import { ExtendedQuiz } from '../../core/_models/extended-quiz';
-import { Role } from '../../core/_models/role';
-import { User } from '../../core/_models/user';
-import { AuthenticationService } from '../../core/_services/authentication/authentication.service';
-import { AnonymService } from '../../core/_services/game/anonym.service';
-import { QuizService } from '../../core/_services/quiz/quiz.service';
-import { DateService } from '../../core/_services/utils/date.service';
-import { LocaleService } from '../../core/_services/utils/locale.service';
-import { ModalService } from '../../core/_services/utils/modal.service';
-import { ToastsService } from '../../core/_services/utils/toasts.service';
-import { AnonymInitComponent } from '../../game/anonym-init/anonym-init.component';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Location} from '@angular/common';
+import {ActivatedRoute, Router} from '@angular/router';
+import {faSpinner} from '@fortawesome/free-solid-svg-icons';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {Subscription} from 'rxjs';
+import {ExtendedQuiz} from '../../core/_models/extended-quiz';
+import {Role} from '../../core/_models/role';
+import {User} from '../../core/_models/user';
+import {AuthenticationService} from '../../core/_services/authentication/authentication.service';
+import {AnonymService} from '../../core/_services/game/anonym.service';
+import {QuizService} from '../../core/_services/quiz/quiz.service';
+import {DateService} from '../../core/_services/utils/date.service';
+import {LocaleService} from '../../core/_services/utils/locale.service';
+import {ModalService} from '../../core/_services/utils/modal.service';
+import {ToastsService} from '../../core/_services/utils/toasts.service';
+import {AnonymInitComponent} from '../../game/anonym-init/anonym-init.component';
 
 @Component({
     selector: 'app-view-quiz',
@@ -37,12 +37,13 @@ export class ViewQuizComponent implements OnInit, OnDestroy {
                 private authenticationService: AuthenticationService,
                 private ngbService: NgbModal,
                 private localeService: LocaleService,
-                private anonymService: AnonymService, 
+                private anonymService: AnonymService,
                 public toastsService: ToastsService,
                 public dateService: DateService,
                 private modalService: ModalService,
                 private location: Location) {
     }
+
     ngOnDestroy(): void {
         this.subscriptions.unsubscribe();
     }
@@ -66,9 +67,10 @@ export class ViewQuizComponent implements OnInit, OnDestroy {
 
     markAsFavorite() {
         this.subscriptions.add(this.quizService.markAsFavorite(this.quiz.id).subscribe(
-            () => {},
+            () => {
+            },
             () => this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))
-            ));
+        ));
         this.quiz.favourite = !this.quiz.favourite;
     }
 
@@ -79,7 +81,7 @@ export class ViewQuizComponent implements OnInit, OnDestroy {
                     this.subscriptions.add(this.quizService.deactivate(this.quiz.id).subscribe(
                         () => this.quiz.activated = false,
                         () => this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))
-                        ));
+                    ));
                 }
             }));
 
@@ -100,7 +102,6 @@ export class ViewQuizComponent implements OnInit, OnDestroy {
     }
 
 
-
     isMyQuiz() {
         return this.user && this.quiz.creatorId === this.user.id;
     }
@@ -111,16 +112,20 @@ export class ViewQuizComponent implements OnInit, OnDestroy {
 
 
     newGame() {
-        if (this.authenticationService.currentUserValue) {
+        if (this.authenticationService.currentUserValue || this.anonymService.currentAnonymValue) {
             this.router.navigateByUrl(`quiz/${this.quiz.id}/newgame`);
-            return;
+        } else {
+            const modalRef = this.ngbService.open(AnonymInitComponent);
+            this.subscriptions.add(modalRef.componentInstance.anonymName.subscribe(n => {
+                if (n) {
+                    this.anonymService.anonymLogin(n).subscribe(() =>
+                        this.router.navigateByUrl(`quiz/${this.quiz.id}/newgame`)
+                    );
+                } else {
+                    this.toastsService.toastAddWarning(this.localeService.getValue('authorization.login.emptyName'));
+                }
+            }));
         }
-        const modalRef = this.ngbService.open(AnonymInitComponent);
-        this.subscriptions.add(modalRef.componentInstance.anonymName.subscribe(n => {
-            this.anonymService.anonymLogin(n).subscribe(() =>
-                this.router.navigateByUrl(`quiz/${this.quiz.id}/newgame`)
-            );
-        }));
 
     }
 }

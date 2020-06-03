@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {LogInComponent} from '../../authorization/log-in/log-in.component';
@@ -9,13 +9,17 @@ import {NotificationsService} from '../../core/_services/user/notifications.serv
 import {SearchFilterQuizService} from '../../core/_services/quiz/search-filter-quiz.service';
 import {environment} from 'src/environments/environment';
 import {LocaleService} from '../../core/_services/utils/locale.service';
+import {Subscription} from 'rxjs';
+import {AnonymService} from '../../core/_services/game/anonym.service';
+import {AnonymInitComponent} from '../../game/anonym-init/anonym-init.component';
+import {first} from 'rxjs/operators';
 
 @Component({
     selector: 'app-nav-bar',
     templateUrl: './nav-bar.component.html',
     styleUrls: ['./nav-bar.component.css']
 })
-export class NavBarComponent implements OnInit {
+export class NavBarComponent implements OnInit, OnDestroy {
     readonly languages = [
         {name: 'English', value: `${environment.locales[0]}`},
         {name: 'Українська', value: `${environment.locales[1]}`}
@@ -28,20 +32,26 @@ export class NavBarComponent implements OnInit {
     searchArea: string;
 
     language: string;
+    notificationsAmount: number;
+    private notificationSubscription: Subscription;
+    isAnonym: boolean;
 
     constructor(private modalService: NgbModal,
                 private authenticationService: AuthenticationService,
                 private searchFilterQuizService: SearchFilterQuizService,
                 private notificationsService: NotificationsService,
                 private localeService: LocaleService,
-                private router: Router) {
+                private router: Router,
+                private anonymService: AnonymService) {
     }
 
     ngOnInit(): void {
+        this.isAnonym = !!this.anonymService.currentAnonymValue;
         this.signedIn = (this.authenticationService.currentUserValue === undefined) ? false : true;
         this.privileged = (this.signedIn &&
             this.authenticationService.currentUserValue.role !== Role.User);
         if (this.signedIn) {
+            this.notification = true;
             this.subscribeNotifications();
         }
         this.language = this.localeService.getLanguage();
@@ -73,11 +83,12 @@ export class NavBarComponent implements OnInit {
     }
 
     subscribeNotifications() {
-        this.notificationsService.notifications
+        this.notificationSubscription = this.notificationsService.notifications
             .subscribe(n => {
                 this.notification = n && n.length > 0;
                 if (this.notification) {
                     this.playAudio();
+                    this.notificationsAmount = n.length;
                 }
             });
 
@@ -96,5 +107,24 @@ export class NavBarComponent implements OnInit {
             console.log(error);
         }).then(() => {
         });
+    }
+
+    @HostListener('window:beforeunload', ['$event'])
+    ngOnDestroy(): void {
+        this.notificationSubscription.unsubscribe();
+    }
+
+    changeName() {
+        const modalRef = this.modalService.open(AnonymInitComponent);
+        modalRef.componentInstance.anonymName.pipe(first()).subscribe(n => {
+                if (n) {
+                    this.anonymService.anonymLogin(n).pipe(first()).subscribe();
+                }
+                else {
+                    this.isAnonym = false;
+                    this.anonymService.removeAnonym();
+                }
+            }
+        );
     }
 }
