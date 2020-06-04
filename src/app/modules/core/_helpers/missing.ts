@@ -2,6 +2,6 @@ import {MissingTranslationHandler, MissingTranslationHandlerParams} from '@ngx-t
 
 export class MissingTranslationService implements MissingTranslationHandler {
     handle(params: MissingTranslationHandlerParams) {
-        return '';
+        return `'${params.key}'`;
     }
 }
