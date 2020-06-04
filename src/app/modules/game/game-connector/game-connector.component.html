@@ -36,39 +36,46 @@
               <p class="h3 text-center">
                 {{gameStatus}}
               </p>
-              <div *ngFor="let session of sessions"
-                   class="container mx-3 my-1 p-2"
-                   [ngClass]="{'alert-success': 0}">
-                <div class="row">
-                  <div class="col-1">
-                    <img class="rounded mr-2"
+              <div class="container">
+                <div *ngFor="let session of sessions" class="row mx-3 my-1 p-2">
+                  <div class="col-1"></div>
+                  <div class="col-1 embed-responsive embed-responsive-1by1">
+                    <img class="rounded embed-responsive-item pic"
                          width="35px"
                          [src]="session.image ? session.imageContent : mockImageUrl"
                          alt="{{session.username}}'s avatar"
                          [ngClass]="{'border border-success': session._creator}">
                   </div>
-                  <div class="col">
+                  <div class="col-6">
                     <a *ngIf="session.user_id && loggedIn; else anonym"
                        target="_blank"
                        href="{{location}}/profile/{{session.username}}"
-                       class="p-2 m-2">{{session.username}}
-	                    <span *ngIf="!usersSessionsReady.includes(session.game_session_id); else ready">
+                       class="p-2">{{session.username}}
+	                    <span *ngIf="!usersSessionsReady.includes(session.game_session_id); else userReady">
                           {{'game.connected'| translate}}
                         </span>
                     </a>
                   </div>
+                  <div class="col-1 m-0 p-0">
+                    <a *ngIf="creator || session.game_session_id == sessionId"
+                          (click)="remove(session.game_session_id)"
+                          class="removeButton m-0 p-0">
+                      &times;
+                    </a>
+                  </div>
+                  <div class="col"></div>
+
+                  <ng-template #anonym class="p-2 m-2">
+                    <a [style]="{margin: '.5rem', padding: '.5rem'}">
+                      {{session.username}}
+                        <span *ngIf="!usersSessionsReady.includes(session.game_session_id); else userReady">
+                        {{'game.connected'| translate}}
+                      </span>
+                    </a>
+                  </ng-template>
+
                 </div>
-
-                <ng-template #anonym class="p-2 m-2">
-                  <a [style]="{margin: '.5rem', padding: '.5rem'}">
-                    {{session.username}}
-	                  <span *ngIf="!usersSessionsReady.includes(session.game_session_id); else ready">
-                      {{'game.connected'| translate}}
-                    </span>
-                  </a>
-                </ng-template>
-
-                <ng-template #ready>
+                <ng-template #userReady>
                   <span class="font-weight-bold" style="color: #1C7430">
                     <svg class="bi bi-check-circle-fill"
                          width="1em"

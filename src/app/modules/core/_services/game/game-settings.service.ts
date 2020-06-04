@@ -10,13 +10,15 @@ import {HandleErrorsService} from '../utils/handle-errors.service';
 import {AnonymService} from './anonym.service';
 import {Router} from '@angular/router';
 import {DomSanitizer} from '@angular/platform-browser';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {MessageModalComponent} from '../../../authorization/message-modal/message-modal.component';
+import {LocaleService} from '../utils/locale.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class GameSettingsService {
     gameUrl = `${environment.apiUrl}games/`;
-    private sseConnectorUrl = `${environment.apiUrl}sse/stream/`;
 
     private sessionsSubject: BehaviorSubject<any[]>;
     public sessions: Observable<any[]>;
@@ -24,19 +26,21 @@ export class GameSettingsService {
     public readyList: Observable<string[]>;
 
     private eventSource: EventSource;
+
     httpOptions = {
         headers: new HttpHeaders({
             'Content-Type': 'application/json'
         })
     };
-    gameStart: boolean;
 
     constructor(private http: HttpClient,
                 private sseService: SseService,
                 private errorsService: HandleErrorsService,
                 private anonymService: AnonymService,
                 private router: Router,
-                private sanitizer: DomSanitizer) {
+                private sanitizer: DomSanitizer,
+                private modalService: NgbModal,
+                private localeService: LocaleService) {
         this.sessionsSubject = new BehaviorSubject<any[]>([]);
         this.sessions = this.sessionsSubject.asObservable();
         this.readySubject = new BehaviorSubject<string[]>([]);
@@ -44,16 +48,22 @@ export class GameSettingsService {
     }
 
     getSseForGame(gameId: string) {
-        this.eventSource = this.sseService.getEventSource(this.sseConnectorUrl + gameId);
-        this.eventSource.addEventListener('join', event => {
-            const ev: any = event;
-            // console.log('Join ' + ev.data);
+        this.eventSource = this.sseService.getEventSource(this.gameUrl + 'subscribe/' + gameId);
+        this.eventSource.addEventListener('join', () => {
             this.setSubjSessions(gameId);
+        });
+
+        this.eventSource.addEventListener('remove', event => {
+            const id: any = event;
+            if (id.data === localStorage.getItem('sessionid')) {
+                this.leftGame(this.localeService.getValue('game.kickBody'));
+            } else {
+                this.setSubjSessions(gameId);
+            }
         });
 
         this.eventSource.addEventListener('ready', event => {
             const ev: any = event;
-            // console.log('Ready ' + ev.data);
             if (!this.readySubject.value.includes(ev.data)) {
                 this.readySubject.value.push(ev.data);
                 this.readySubject.next(this.readySubject.value);
@@ -63,9 +73,11 @@ export class GameSettingsService {
         this.eventSource.addEventListener('start', () => {
             this.readySubject.next([]);
             this.sessionsSubject.next([]);
-            this.gameStart = true;
             this.router.navigateByUrl(`/play/${gameId}`);
         });
+
+        this.eventSource.addEventListener('left', () =>
+            this.leftGame(this.localeService.getValue('game.hostLeftBody')));
 
         this.eventSource.onerror = error => {
             console.error(error);
@@ -81,7 +93,6 @@ export class GameSettingsService {
         if (!settings.additionalPoints) {
             settings.additionalPoints = false;
         }
-        // console.log(settings);
         return this.http.post<Game>(this.gameUrl, JSON.stringify(settings), this.httpOptions);
     }
 
@@ -110,28 +121,26 @@ export class GameSettingsService {
     }
 
     setReady(gameId: string, sessionId: string) {
-        return this.http.post(this.gameUrl + `game/${gameId}/ready`, {},
+        return this.http.patch(this.gameUrl + `game/${gameId}/ready`, {},
             {headers: this.httpOptions.headers, params: {sessionId}})
             .pipe(catchError(this.errorsService.handleError('setReady')));
     }
 
     startGame(gameId: string): Observable<any> {
-        return this.http.post(this.gameUrl + `start`, null,
+        return this.http.patch(this.gameUrl + `start`, null,
             {headers: this.httpOptions.headers, params: {gameId}})
             .pipe(catchError(this.errorsService.handleError('startGame')));
     }
 
-    quitGame(sessionId: string) {
-        // console.log('quit ' + sessionId);
-        this.readySubject.next([]);
-        this.sessionsSubject.next([]);
-        return this.http.delete(this.gameUrl + `remove/${sessionId}`,
-            this.httpOptions)
-            .pipe(map(() => {
-                if (this.anonymService.currentAnonymValue) {
-                    this.anonymService.removeAnonym();
-                }
-            }), catchError(this.errorsService.handleError('quitGame')));
+    removeSession(sessionId: string) {
+        return this.http.delete(this.gameUrl + `remove/${sessionId}`, this.httpOptions)
+            .pipe(
+                catchError(this.errorsService.handleError('quitGame'))
+            );
+    }
+
+    getFinishSubs(gameId: string): Observable<any> {
+        return this.sseService.getServerSentEvent(this.gameUrl + 'subscribe/' + gameId, 'finished');
     }
 
     private imageDeser(image) {
@@ -140,5 +149,15 @@ export class GameSettingsService {
             image = this.sanitizer.bypassSecurityTrustUrl(objUrl);
         }
         return image;
+    }
+
+    private leftGame(modalBody: string) {
+        this.readySubject.next([]);
+        this.sessionsSubject.next([]);
+        this.router.navigateByUrl('/quiz-list');
+        const modalRef = this.modalService.open(MessageModalComponent);
+        modalRef.componentInstance.title = this.localeService.getValue('game.leftTitle');
+        modalRef.componentInstance.body = modalBody;
+
     }
 }

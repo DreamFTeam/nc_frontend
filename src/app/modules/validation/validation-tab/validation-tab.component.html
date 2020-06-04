@@ -1,24 +1,25 @@
-<div class="container pr-0">
+<div class="container px-0">
     <div *ngIf="(!isEmpty && !isLoading) ; else ((isLoading) ? loading : empty)">
-        <div *ngFor="let item of quizList$ | async" class="row border rounded-lg shadow-sm p-2 mb-4 w-100">
-            <div class="pic col-lg-3 col-md-4">
-                <img class="img-fluid"
-                     [src]="item.imageContent ? item.imageContent : this.mockImageUrl"
-                     alt="Quiz icon">
+        <div *ngFor="let item of quizList" class="row border rounded-lg shadow-sm p-2 pt-4 mb-2 mx-0 w-100">
+            <div class="col-lg-4 col-md-6 w-100 h-100 p-0 w-0">
+                <div class=" embed-responsive embed-responsive-4by3">
+                    <img class="mr-2 embed-responsive-item pic" [src]="item.imageContent ? item.imageContent : this.mockImageUrl" alt="Quiz icon">
+                </div>
             </div>
-            <div class="w-100 col-lg-9 col-md-8">
+            <div class="w-100 col-lg-8 col-md-6">
                 <a routerLink="/viewquiz/{{item.id}}">
                     <h4 class="wrap">{{item.title}}</h4>
                 </a>
                 <p *ngIf="!showButtons && !item.published && !item.activated"
                    class="badge badge-danger">{{'utils.rejected' | translate}}</p>
+                <p *ngIf="!showButtons && item.published && !item.activated"
+                    class="badge badge-warning">{{'utils.deactivated' | translate}}</p>
+                <p *ngIf="!showButtons && item.published && item.activated"
+                    class="badge badge-success">{{'utils.activated' | translate}}</p>
                 <p class="fnt-size wrap"><strong>{{'utils.description' | translate}}: </strong>{{item.description}}</p>
-                <p class="fnt-size wrap"><strong>{{'utils.author' | translate}}
-	                : </strong><a routerLink="/profile/{{item.username}}"><u>{{item.username}}</u></a></p>
-                <p class="fnt-size wrap"><strong>{{'utils.dateofcreation' | translate}}
-	                : </strong>{{item.creationDate | date:'d.MM.yyyy':'UTC'}}</p>
-                <p class="fnt-size wrap"><strong>{{'utils.language' | translate}}
-	                : </strong>{{((item.language) === 'ukr') ? ('utils.langUkr' | translate) : ('utils.langEng'|translate)}}</p>
+                <p class="fnt-size wrap"><strong>{{'utils.author' | translate}}: </strong><a routerLink="/profile/{{item.username}}"><u>{{item.username}}</u></a></p>
+                <p class="fnt-size wrap"><strong>{{'utils.dateofcreation' | translate}}: </strong>{{item.creationDate | date:dateService.datePattern:dateService.currentTimezone}}</p>
+                <p class="fnt-size wrap"><strong>{{'utils.language' | translate}}: </strong>{{((item.language) === 'ukr') ? ('utils.langUkr' | translate) : ('utils.langEng'|translate)}}</p>
                 <div *ngIf="showButtons" class="row mt-2 align-middle">
                     <div class="col col-sm-6">
                         <button class="btn btn-lg buttonsec float-sm-none float-md-left"
@@ -37,7 +38,7 @@
             <ngb-pagination class="d-flex justify-content-center"
                             size="lg"
                             [pageSize]="pageSize"
-                            [collectionSize]="totalSize$ | async"
+                            [collectionSize]="totalSize"
                             [(page)]="page"
                             [maxSize]="7"
                             [rotate]="true"

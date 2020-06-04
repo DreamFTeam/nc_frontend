@@ -8,6 +8,7 @@ import { ModalService } from '../../core/_services/utils/modal.service';
 import { ToastsService } from '../../core/_services/utils/toasts.service';
 import { Subscription } from 'rxjs';
 import { DateService } from '../../core/_services/utils/date.service';
+import { first } from 'rxjs/operators';
 
 
 @Component({
@@ -85,13 +86,14 @@ export class AnnouncementEditComponent implements OnInit, OnDestroy {
     delete(i) {
         this.subscriptions.add(this.modalService
             .openModal(this.localeService.getValue('modal.deleteAnnouncement'), 'danger')
+            .pipe(first())
             .subscribe((receivedEntry) => {
                 if (receivedEntry) {
-                    this.announcementService.deleteAnnouncement(this.announcements[i].announcementId)
+                    this.subscriptions.add(this.announcementService.deleteAnnouncement(this.announcements[i].announcementId)
                         .subscribe(
                             ans => ans,
                             () => this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))
-                        );
+                        ));
 
                     this.announcements.splice(i, 1);
                 }
@@ -103,6 +105,7 @@ export class AnnouncementEditComponent implements OnInit, OnDestroy {
         if (this.announcementService.validateAnnouncement(this.currentAnnouncement)) {
             this.subscriptions.add(this.modalService
                 .openModal(this.localeService.getValue('modal.saveAnnouncement'), 'warning')
+                .pipe(first())
                 .subscribe((receivedEntry) => {
                     if (receivedEntry) {
                         this.saveLoading = true;
@@ -146,6 +149,7 @@ export class AnnouncementEditComponent implements OnInit, OnDestroy {
         if (this.announcementService.validateAnnouncement(this.currentAnnouncement)) {
             this.subscriptions.add(this.modalService
                 .openModal(this.localeService.getValue('modal.saveAnnouncement'), 'warning')
+                .pipe(first())
                 .subscribe((receivedEntry) => {
                     if (receivedEntry) {
                         this.saveLoading = true;
@@ -181,7 +185,8 @@ export class AnnouncementEditComponent implements OnInit, OnDestroy {
             () => this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))
         ));
 
-        this.subscriptions.add(this.announcementService.getAnnouncements((this.page - 1) * 5, 5).subscribe(
+        this.subscriptions.add(this.announcementService.getAnnouncements((this.page - 1) * this.pageSize, this.pageSize)
+        .subscribe(
             ans => this.setAnnouncements(ans),
             () => this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))
         ));

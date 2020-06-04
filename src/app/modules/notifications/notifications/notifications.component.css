@@ -1,4 +1,14 @@
-.btn-link:hover
+.notification
 {
     cursor: pointer;
+}
+
+.notification:hover {
+    background-color: #EAEAEA
+    !important;
+
+}
+
+.notContent {
+    font-size: 1.15em;
 }

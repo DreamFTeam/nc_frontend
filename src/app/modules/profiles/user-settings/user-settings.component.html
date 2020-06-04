@@ -7,13 +7,13 @@
         <h1 class="title font-base">{{ 'utils.settings' | translate }}</h1>
         <div class="ml-4 mt-3">
             <div>
-                <label style="font-weight: 200;">{{language.title}}</label>
+                <label style="font-weight: 200;">{{ language.title | translate }}</label>
                 <select class="ml-2" [(ngModel)]="language.value">
                     <option *ngFor="let lang of languages" [value]="lang.value">
                         {{lang.name}}
                     </option>
                 </select> 
-                <span class="ml-2  question" placement="right" ngbTooltip="{{language.description}}">
+                <span class="ml-2  question" placement="right" ngbTooltip="{{language.description | translate}}">
                     <svg class="bi bi-question-circle" width="1.5em" height="1.5em" viewBox="0 0 16 16"
                          fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z"
@@ -28,9 +28,9 @@
             <div class="custom-control custom-switch custom-switch-md mt-2"
                  *ngFor="let setting of settings; let i = index">
                 <input type="checkbox" class="custom-control-input" id="{{setting.id}}" [(ngModel)]="setting.value">
-                <label class="custom-control-label" for="{{setting.id}}">{{setting.title}}</label>
-                <span class="ml-2  question" placement="right" ngbTooltip="{{setting.description}}">
-                    <svg class="bi bi-question-circle pt-2" width="2em" height="2em" viewBox="0 0 16 16"
+                <label class="custom-control-label" for="{{setting.id}}">{{setting.title | translate }}</label>
+                <span class="ml-2  question" placement="right" ngbTooltip="{{setting.description | translate }}">
+                    <svg class="bi bi-question-circle" width="1.5em" height="1.5em" viewBox="0 0 16 16"
                          fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z"
                               clip-rule="evenodd"/>

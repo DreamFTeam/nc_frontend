@@ -6,7 +6,6 @@ import {environment} from '../../../../../environments/environment';
     providedIn: 'root'
 })
 export class SseService {
-    private sseConnectorUrl = `${environment.apiUrl}sse/stream/`;
 
     constructor(private zone: NgZone) {
     }
@@ -15,9 +14,9 @@ export class SseService {
         return new EventSource(url);
     }
 
-    getServerSentEvent(key: string, type: string): Observable<any> {
+    getServerSentEvent(url: string, type: string): Observable<any> {
         return Observable.create(observer => {
-            const eventSource = this.getEventSource(this.sseConnectorUrl + key);
+            const eventSource = this.getEventSource(url);
 
             eventSource.addEventListener(type, event => {
                 this.zone.run(() => {

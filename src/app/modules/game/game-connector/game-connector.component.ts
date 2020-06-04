@@ -12,6 +12,7 @@ import {first} from 'rxjs/operators';
 import {Subscription} from 'rxjs';
 import {ToastsService} from '../../core/_services/utils/toasts.service';
 import {LocaleService} from '../../core/_services/utils/locale.service';
+import {ModalService} from '../../core/_services/utils/modal.service';
 
 
 @Component({
@@ -47,7 +48,8 @@ export class GameConnectorComponent implements OnInit, OnDestroy {
                 private messageModal: ModalMessageService,
                 private toastsService: ToastsService,
                 private anonymService: AnonymService,
-                private localeService: LocaleService) {
+                private localeService: LocaleService,
+                private modalService: ModalService) {
         this.loggedIn = !!this.authenticationService.currentUserValue;
         this.sessionId = localStorage.getItem('sessionid');
     }
@@ -56,7 +58,8 @@ export class GameConnectorComponent implements OnInit, OnDestroy {
         if (this.authenticationService.currentUserValue
             && this.authenticationService.currentUserValue.role !== Role.User
             || !this.sessionId) {
-            this.messageModal.show(this.localeService.getValue('game.accessDen'), this.localeService.getValue('game.permissions'));
+            this.messageModal.show(this.localeService.getValue('game.accessDen'),
+                this.localeService.getValue('game.permissions'));
             this.router.navigateByUrl('/');
         }
         const gameId = this.activateRoute.snapshot.paramMap.get('id');
@@ -66,7 +69,8 @@ export class GameConnectorComponent implements OnInit, OnDestroy {
             .pipe(first())
             .subscribe(game => {
                     if (!game.accessId) {
-                        this.messageModal.show(this.localeService.getValue('game.accessDen'), this.localeService.getValue('game.gameStarted'));
+                        this.messageModal.show(this.localeService.getValue('game.accessDen'),
+                            this.localeService.getValue('game.gameStarted'));
                         this.router.navigateByUrl('/');
                     }
                     this.game = game;
@@ -77,6 +81,7 @@ export class GameConnectorComponent implements OnInit, OnDestroy {
 
         this.sessionsSubscription = this.gameSettingsService.sessions
             .subscribe(ses => {
+                this.sessions = [];
                 Object.assign(this.sessions, ses);
                 for (const session of this.sessions) {
                     if (this.sessionId === session.game_session_id) {
@@ -89,7 +94,6 @@ export class GameConnectorComponent implements OnInit, OnDestroy {
             });
         this.readySubscription = this.gameSettingsService.readyList.subscribe(ready => {
             Object.assign(this.usersSessionsReady, ready);
-            console.log(ready);
             this.ready = this.usersSessionsReady.includes(this.sessionId);
         });
     }
@@ -120,13 +124,19 @@ export class GameConnectorComponent implements OnInit, OnDestroy {
         this.sessionsSubscription.unsubscribe();
         this.readySubscription.unsubscribe();
         this.gameSettingsService.stopSse();
-        // if (!this.gameSettingsService.gameStart) {
-        //     this.gameSettingsService.quitGame(this.sessionId).pipe(first()).subscribe();
-        //     localStorage.removeItem('sessionid');
-        //     if (this.anonymService.currentAnonymValue) {
-        //         this.anonymService.removeAnonym();
-        //     }
-        // }
     }
 
+    remove(sessionId: string) {
+        this.modalService.openModal(sessionId === this.sessionId ? this.localeService.getValue('game.askLeft') :
+            this.localeService.getValue('game.askLeftHost'), 'danger').pipe(first())
+            .subscribe(yes => {
+                if (yes) {
+                    this.gameSettingsService.removeSession(sessionId).pipe(first()).subscribe();
+                    if (sessionId === this.sessionId) {
+                        this.router.navigateByUrl('/quiz-list');
+                    }
+                }
+            });
+
+    }
 }

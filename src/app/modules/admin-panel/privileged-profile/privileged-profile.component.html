@@ -1,9 +1,9 @@
 <div class="row mx-2">
     <div class="col-sm-12 col-xl-6 col-md-12 col-lg-6 ">
         <div class="container m-2 bg-white rounded p-3">
-            <b> {{'adminDash.username'| translate}}</b> : {{profile.username}}
+            <b> {{'adminDash.username'| translate}}:</b> {{profile.username}}
 	        <img id="image">
-            <b>{{'adminDash.role'| translate}} </b>{{profile.role.substr(5).toLowerCase()}}
+            <b>{{'adminDash.role'| translate}}:</b> {{profile.role.substr(5).toLowerCase()}}
             <button class="btn mb-1 btncreate buttonsec" *ngIf="profile.role!=Role.Moderator" [routerLink]="'/editannouncements'">{{'managaAnn' | translate}}</button>
             <button class="btn mb-1 btncreate buttonpr" *ngIf="profile.role == Role.SuperAdmin" (click)="createAdmin()">{{'adminDash.crAdm'| translate}}</button>
             <button class="btn mb-4 btncreate buttonpr" *ngIf="profile.role!=Role.Moderator" (click)="createModerator()">{{'adminDash.crMod'| translate}}</button>
@@ -24,7 +24,7 @@
                             [gradient]="gradientPopQuiz"
                             [xAxis]="showXAxisPopQuiz"
                             [yAxis]="showYAxisPopQuiz"
-                            [showDataLabel]="true"
+                            [showDataLabel]="showDataLabelPopQuiz"
                             [showYAxisLabel]="showYAxisLabelPopQuiz">
                     </ngx-charts-bar-horizontal>
                 </div>
@@ -88,7 +88,7 @@
                 <div class="col px-2 pt-0 pb-3">
                    <ngx-charts-area-chart
                            [results]="dataGamesPerDay"
-                           [xAxis]="true">
+                           [xAxis]="xAxisGamesPerDay">
                     </ngx-charts-area-chart>
                 </div>
             </div>

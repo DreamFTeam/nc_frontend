@@ -202,7 +202,7 @@ export class GameQuestionComponent implements OnInit, OnDestroy {
             this.sendResults();
             clearInterval(this.interval);
             this.waitResult = true;
-            this.finishGame = this.sseService.getServerSentEvent(this.game.id, 'finished').subscribe(n => {
+            this.finishGame = this.gameSettingsService.getFinishSubs(this.game.id).subscribe(() => {
                     console.log('finished');
                     this.router.navigateByUrl(`game/result/${this.game.id}`);
                 }

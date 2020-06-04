@@ -92,7 +92,6 @@ export class SearchFilterQuizService {
                     return new ExtendedQuizPreview().deserialize(x, this.sanitizer);
                 });
                 this.currentQuizzesSubject.next(quizzes);
-                console.log(this.currentQuizzesSubject.value);
                 this.loadingSubject.next(false);
                 return quizzes;
             }
@@ -101,8 +100,8 @@ export class SearchFilterQuizService {
 
     private generateSettingsForRequest(settings: QuizFilterSettings) {
         return {
-            quizName: settings.quizName,
-            userName: settings.userName,
+            quizName: settings.quizName && settings.quizName.length > 0 ? settings.quizName : null,
+            userName: settings.userName && settings.userName.length > 0 ? settings.userName : null,
             moreThanRating: settings.moreThanRating,
             lessThanRating: settings.lessThanRating,
             orderByRating: settings.orderByRating,

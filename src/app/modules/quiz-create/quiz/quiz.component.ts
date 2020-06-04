@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { QuizService } from '../../core/_services/quiz/quiz.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuestionService } from '../../core/_services/quiz/question.service';
@@ -10,13 +10,15 @@ import { ModalService } from '../../core/_services/utils/modal.service';
 import { ToastsService } from '../../core/_services/utils/toasts.service';
 import { LocaleService } from '../../core/_services/utils/locale.service';
 import { AuthenticationService } from '../../core/_services/authentication/authentication.service';
+import { Subscription } from 'rxjs';
+import { first } from 'rxjs/operators';
 
 @Component({
     selector: 'app-quiz',
     templateUrl: './quiz.component.html',
     styleUrls: ['./quiz.component.css']
 })
-export class QuizComponent implements OnInit {
+export class QuizComponent implements OnInit, OnDestroy {
 
     tagLabel: string;
     categoryLabel: string;
@@ -34,6 +36,8 @@ export class QuizComponent implements OnInit {
     questionLoading: boolean;
     faSpinner = faSpinner;
 
+    subscriptions: Subscription = new Subscription();
+
 
     constructor(private quizService: QuizService, private questionService: QuestionService,
         private activateRoute: ActivatedRoute, private router: Router, private sanitizer: DomSanitizer,
@@ -44,6 +48,10 @@ export class QuizComponent implements OnInit {
         this.questions = [];
         this.tagLabel = 'Tags';
         this.categoryLabel = 'Categories';
+    }
+    
+    ngOnDestroy(): void {
+        this.subscriptions.unsubscribe();
     }
 
     ngOnInit(): void {
@@ -103,20 +111,20 @@ export class QuizComponent implements OnInit {
 
     getAllQuiz(data) {
         //Find questions
-        this.questionService.getAllQuestionsNew(data)
+        this.subscriptions.add(this.questionService.getAllQuestionsNew(data)
             .subscribe(
                 ans => this.mapGettedQuestions(ans),
                 () =>
                     this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))
-            );
+            ));
 
         //Find quiz
-        this.quizService.getQuiz(data)
+        this.subscriptions.add(this.quizService.getQuiz(data)
             .subscribe(
                 ans => this.setGettedQuiz(ans),
                 () =>
                     this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))
-            );
+            ));
 
     }
 
@@ -158,16 +166,16 @@ export class QuizComponent implements OnInit {
         if (validated.length == 0) {
             this.questionLoading = true;
             if (this.questionSelector.id === '') {
-                this.questionService.sendQuestion(this.questionSelector, true).subscribe(
+                this.subscriptions.add(this.questionService.sendQuestion(this.questionSelector, true).subscribe(
                     ans => this.setSavedQuestion(ans),
                     () => this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))
-                );
+                ));
 
             } else {
-                this.questionService.sendQuestion(this.questionSelector, false).subscribe(
+                this.subscriptions.add(this.questionService.sendQuestion(this.questionSelector, false).subscribe(
                     ans => this.setSavedQuestion(ans),
                     () => this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))
-                );
+                ));
             }
 
         } else {
@@ -209,18 +217,19 @@ export class QuizComponent implements OnInit {
     }
 
     createQuiz() {
-        this.quizService.createQuiz(this.quiz, this.file).subscribe(
+        this.subscriptions.add(this.quizService.createQuiz(this.quiz, this.file).subscribe(
             ans => {
                 this.toastsService.toastAddSuccess(this.localeService.getValue('toasterEditor.created'));
                 this.quizLoading = false;
                 this.router.navigate(['/quizedit/' + ans.id]);
             },
             () =>
-                this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong')));
+                this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong')))
+        );
     }
 
     editQuiz() {
-        this.quizService.saveQuiz(this.quiz, this.file).subscribe(
+        this.subscriptions.add(this.quizService.saveQuiz(this.quiz, this.file).subscribe(
             ans => {
                 this.toastsService.toastAddSuccess(this.localeService.getValue('toasterEditor.saved'));
                 this.quiz = ans;
@@ -231,23 +240,25 @@ export class QuizComponent implements OnInit {
 
             },
             () =>
-                this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong')));
+                this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong')))
+        );
     }
 
 
     publish() {
         this.modalService
             .openModal(this.localeService.getValue('modal.sure') + this.localeService.getValue('modal.publish'), 'warning')
+            .pipe(first())
             .subscribe((receivedEntry) => {
                 if (receivedEntry) {
-                    this.quizService.publishQuiz(this.quiz.id)
+                    this.subscriptions.add(this.quizService.publishQuiz(this.quiz.id)
                         .subscribe(
                             () => {
                                 this.toastsService.toastAddSuccess(this.localeService.getValue('toasterEditor.published'));
                                 this.quiz.published = true;
                             },
                             () =>
-                                this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong')));
+                                this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))));
                 }
             });
     }
@@ -256,17 +267,18 @@ export class QuizComponent implements OnInit {
     removeQuestionIndex(i, onCreatorDelete) {
         this.modalService
             .openModal(this.localeService.getValue('modal.sure') + this.localeService.getValue('modal.delete'), 'danger')
+            .pipe(first())
             .subscribe((receivedEntry) => {
                 if (receivedEntry) {
                     if (this.questions[i].id === '') {
                         this.removeQuestionFromList(i, onCreatorDelete);
                     } else {
-                        this.questionService.deleteQuestion(this.questions[i].id)
+                        this.subscriptions.add(this.questionService.deleteQuestion(this.questions[i].id)
                             .subscribe(
                                 () => this.removeQuestionFromList(i, onCreatorDelete),
                                 () =>
                                     this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))
-                            );
+                            ));
                     }
                 }
             });

@@ -17,6 +17,7 @@ export class JwtInterceptor implements HttpInterceptor {
         const currentUser = this.authenticationService.currentUserValue;
         const currentAnonym = this.anonymService.currentAnonymValue;
         const isApiUrl = request.url.startsWith(environment.apiUrl);
+
         if ((currentUser || currentAnonym) && isApiUrl) {
             request = request.clone({
                 setHeaders: {

@@ -1,6 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {AuthenticationService} from '../../core/_services/authentication/authentication.service';
+import {TranslateService} from '@ngx-translate/core';
+import {ToastsService} from '../../core/_services/utils/toasts.service';
+import {Subscription} from 'rxjs';
 
 @Component({
     selector: 'app-user-change-password',
@@ -8,52 +11,58 @@ import {AuthenticationService} from '../../core/_services/authentication/authent
     styleUrls: ['./user-change-password.component.css']
 })
 export class UserChangePasswordComponent implements OnInit {
-    isSent: boolean;
     currentPassword: string;
     password: string;
     confirmPassword: string;
     answer: string;
     loading: boolean;
+    passLoader: Subscription;
 
     constructor(private route: ActivatedRoute,
-                private authenticationService: AuthenticationService) {
+                private authenticationService: AuthenticationService,
+                private translate: TranslateService,
+                private toastsService: ToastsService) {
     }
 
     ngOnInit(): void {
-        this.isSent = false;
         this.loading = false;
     }
 
     changePassword() {
         if (this.password.length < 6) {
-            alert('Password must be at least 6 symbols long!');
+            this.toastsService.removeAll();
+            this.toastsService.toastAddWarning(this.translate.instant('authorization.signUp.shortPassword'));
             return;
         }
         if (!this.password.match(/([a-zA-Z]+[0-9]+)|([0-9]+[a-zA-Z]+)/)) {
-            alert('Your password must contain 1 number and 1 letter!');
+            this.toastsService.removeAll();
+            this.toastsService.toastAddWarning(this.translate.instant('authorization.signUp.matchPasswordRegExp'));
             return;
         }
         if (this.password !== this.confirmPassword) {
-            alert('Your passwords don\'t match!');
+            this.toastsService.removeAll();
+            this.toastsService.toastAddWarning(this.translate.instant('authorization.signUp.matchPasswords'));
             return;
         }
 
-        this.authenticationService.changeUserPassword(this.currentPassword, this.password).subscribe((n) => {
-                this.answer = 'Successfully changed';
-                this.isSent = true;
+        this.passLoader = this.authenticationService.changeUserPassword(this.currentPassword, this.password).subscribe((n) => {
+                this.toastsService.toastAddSuccess(this.translate.instant('authorization.changePassword.success'));
                 this.loading = false;
                 setInterval(function() {
-                    location.replace('');
+                    this.isSent = false;
+                    this.toastsService.removeAll();
+                    this.passLoader.unsubscribe();   
                     clearInterval(this);
                 }, 5000);
                 console.log(n);
             },
             err => {
                 this.loading = false;
-                console.error(err.error.message);
-                this.answer = 'An error occurred';
-                this.isSent = true;
-            });
+                this.toastsService.toastAddDanger('Some error occured!');
+                if (err.error) {
+                    this.toastsService.toastAddDanger(err.error.message);
+                }
+            }); 
         this.loading = true;
     }
 }

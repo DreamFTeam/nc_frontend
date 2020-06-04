@@ -3,6 +3,8 @@ import {ExtendedQuizRatingsPreview} from '../../core/_models/extended-quiz-ratin
 import {Observable, Subscription} from 'rxjs';
 import {UserQuizzesRatingsService} from '../../core/_services/user/user-quizzes-ratings.service';
 import {faSpinner} from '@fortawesome/free-solid-svg-icons';
+import { ToastsService } from '../../core/_services/utils/toasts.service';
+import { LocaleService } from '../../core/_services/utils/locale.service';
 
 @Component({
     selector: 'app-user-quizzes-ratings',
@@ -21,7 +23,9 @@ export class UserQuizzesRatingsComponent implements OnInit, OnDestroy {
     isLoading: boolean;
     faSpinner = faSpinner;
 
-    constructor(private userQuizzesRatingsService: UserQuizzesRatingsService) {
+    constructor(private userQuizzesRatingsService: UserQuizzesRatingsService,
+        private toastsService: ToastsService,
+        private localeService: LocaleService) {
         this.isEmpty = false;
         this.isLoading = true;
         this.quizList = null;
@@ -38,7 +42,9 @@ export class UserQuizzesRatingsComponent implements OnInit, OnDestroy {
                     this.isEmpty = true;
                 }
                 this.isLoading = false;
-            }
+            },
+            () =>
+            this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))
         )
         );
     }

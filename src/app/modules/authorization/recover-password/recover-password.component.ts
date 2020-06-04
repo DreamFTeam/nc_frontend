@@ -3,6 +3,8 @@ import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {AuthenticationService} from '../../core/_services/authentication/authentication.service';
 import {TranslateService} from '@ngx-translate/core';
 import {first} from 'rxjs/operators';
+import {ToastsService} from '../../core/_services/utils/toasts.service';
+import {LocaleService} from '../../core/_services/utils/locale.service';
 
 @Component({
     selector: 'app-recover-password',
@@ -19,7 +21,8 @@ export class RecoverPasswordComponent implements OnInit {
     constructor(
         private authenticationService: AuthenticationService,
         public activeModal: NgbActiveModal,
-        private translateService: TranslateService) {
+        private localeService: LocaleService,
+        private toastsService: ToastsService) {
     }
 
     ngOnInit(): void {
@@ -29,20 +32,22 @@ export class RecoverPasswordComponent implements OnInit {
 
     requestPasswordChange() {
         if (this.email == '' || this.email == null) {
-            this.message = this.translateService.instant('authorization.recoverPassword.empty');
+            this.message = this.localeService.getValue('authorization.recoverPassword.empty');
             return;
         }
         if (!this.email.match(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/)) {
-            this.message = this.translateService.instant('authorization.recoverPassword.incorrect');
+            this.message = this.localeService.getValue('authorization.recoverPassword.incorrect');
             return;
         }
         this.authenticationService.recoverPassword(this.email).pipe(first())
             .subscribe(n => {
                     this.isSent = true;
                     this.loading = false;
+                    this.activeModal.close();
+                    this.toastsService.toastAddSuccess(this.localeService.getValue('authorization.signUp.mailBody'));
                 },
                 error => {
-                    this.message = error.error ? error.error.message : this.translateService.instant('authorization.login.error');
+                    this.message = error.error ? error.error.message : this.localeService.getValue('authorization.login.error');
                     this.loading = false;
                 });
         this.loading = true;

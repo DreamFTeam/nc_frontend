@@ -47,7 +47,3 @@ input
 .embed-responsive .pic{
     object-fit: cover;
 }
-
-.embed-responsive{
-    object-fit: cover;
-}

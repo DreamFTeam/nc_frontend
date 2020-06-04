@@ -1,9 +1,8 @@
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
-import { NotificationsService } from '../../core/_services/user/notifications.service';
-import { environment } from '../../../../environments/environment';
-import { Notification } from '../../core/_models/notification';
-import { LocaleService } from '../../core/_services/utils/locale.service';
+import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
+import {NotificationsService} from '../../core/_services/user/notifications.service';
+import {environment} from '../../../../environments/environment';
 import {first} from 'rxjs/operators';
+import {DateService} from '../../core/_services/utils/date.service';
 
 @Component({
     selector: 'app-notifications',
@@ -11,21 +10,16 @@ import {first} from 'rxjs/operators';
     styleUrls: ['./notifications.component.css']
 })
 export class NotificationsComponent implements OnInit, OnDestroy {
-    notifications: Notification[];
-    newNotification: boolean;
     locales: string[];
 
-    constructor(private notificationsService: NotificationsService, private localeService: LocaleService) {
+    constructor(public notificationsService: NotificationsService,
+                public dateService: DateService
+    ) {
     }
 
     ngOnInit(): void {
 
         this.locales = environment.locales;
-        this.notificationsService.notifications
-            .subscribe(notifications => {
-                this.notifications = notifications;
-                this.newNotification = this.notifications && this.notifications.length > 0;
-            });
     }
 
     @HostListener('window:beforeunload', ['$event'])

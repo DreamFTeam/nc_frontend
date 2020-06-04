@@ -27,12 +27,11 @@ export class GameQuestionService {
     }
 
     savePlayerScore(sid: string, score: number, durTime: number) {
-        console.log('Saving score: ' + sid + ' ' + score + ' ' + durTime);
         const gameinfo = {
             sessionId: sid,
             score: score,
             durationTime: durTime
         };
-        return this.http.post(this.url + 'result', JSON.stringify(gameinfo), this.httpOptions);
+        return this.http.patch(this.url + 'result', JSON.stringify(gameinfo), this.httpOptions);
     }
 }

@@ -44,19 +44,15 @@ export class UserSettingsComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.subscriptions.add(this.settingsService.getSettings()
         .subscribe(ans => this.setSettings(ans),
-            err => this.errHandler(this.localeService.getValue('toasterEditor.wentWrong'), err)));
-
+            () => this.toastService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))));
     }
+
 
     setSettings(ans) {
         let temp: Setting[] = ans;
-        const index = temp.findIndex(el => el.id === 'e8449301-6d6f-4376-8247-b7d1f8df6416');
-        this.language = temp.splice(index, 1)[0];
+        this.language = temp.splice(temp.findIndex(el => el.id === 'e8449301-6d6f-4376-8247-b7d1f8df6416'),
+         1)[0];
         this.settings = temp;
-
-        temp.sort(function(a, b) {
-            return b.title.length - a.title.length;
-        });
 
         this.loading = false;
     }
@@ -69,16 +65,11 @@ export class UserSettingsComponent implements OnInit, OnDestroy {
                 this.toastService.toastAddSuccess(this.localeService.getValue('toasterEditor.saved'));
                 this.searchFilterQuizService.initSettings();
             },
-            err => this.errHandler(this.localeService.getValue('toasterEditor.wentWrong'), err),
+            () => this.toastService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong')),
             () => this.buttonLoading = false
         ));
     }
 
-
-    errHandler(text, err) {
-        console.log(err);
-        this.toastService.toastAddDanger(text);
-    }
 
 
 }

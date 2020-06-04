@@ -34,20 +34,20 @@ export class AnnouncementService {
                 return new Announcement().deserialize(x, this.sanitizer);
             }),
             catchError(this.handleErrorsService.handleError<Announcement[]>('getAnnouncements', []))
-        ));
+            )
+        );
     }
 
     //amount of announcements for pagination
     getAmount(): Observable<number> {
 
         return this.http.get<number>(this.url + '/getamount').pipe(
-            catchError(this.handleErrorsService.handleError<number>('addAnnouncement', 0))
+            catchError(this.handleErrorsService.handleError<number>('getAmount', 0))            
         );
     }
 
     //new announcement
     addAnnouncement(announcement: Announcement, img: File): Observable<Announcement> {
-        console.log('in add');
         let postAnnouncement = announcement;
         postAnnouncement.creatorId = this.user.id;
         const formData = new FormData();
@@ -60,14 +60,13 @@ export class AnnouncementService {
 
         return this.http.post<Announcement>(this.url + '/create', formData)
             .pipe(map(data => {
-                console.log(data);
                 return new Announcement().deserialize(data, this.sanitizer);
             }),
-            catchError(this.handleErrorsService.handleError<Announcement>('addAnnouncement', new Announcement())));
+            catchError(this.handleErrorsService.handleError<Announcement>('addAnnouncement', null))
+            );
     }
 
     editAnnouncement(announcement: Announcement, img: File): Observable<Announcement> {
-        console.log('in edit');
         let postAnnouncement = announcement;
         postAnnouncement.creatorId = this.user.id;
         const formData = new FormData();
@@ -83,19 +82,18 @@ export class AnnouncementService {
 
         return this.http.put<Announcement>(this.url + '/edit', formData)
             .pipe(map(data => {
-                console.log(data);
                 return new Announcement().deserialize(data, this.sanitizer);
             }),
-            catchError(this.handleErrorsService.handleError<Announcement>('editAnnouncement', new Announcement())));
+            catchError(this.handleErrorsService.handleError<Announcement>('editAnnouncement', null))
+            );
     }
 
 
     //delete announcement
     deleteAnnouncement(id: string): Observable<Announcement> {
-        console.log('in delete');
-
         return this.http.delete<Announcement>(this.url + '/delete/' + id).pipe(
-            catchError(this.handleErrorsService.handleError<any>('deleteAnnouncement'))
+            catchError(this.handleErrorsService.handleError<Announcement>('deleteAnnouncement', null))
+            
         );
     }
 

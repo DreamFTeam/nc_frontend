@@ -35,10 +35,7 @@ export class QuizValidationService {
     }
 
     validateQuiz(id: string, toValidate: boolean, admComment: string, authorId: string, quizTitle: string) {
-        console.log(authorId);
-        console.log(quizTitle);
-
-        return this.http.post(this.baseUrl + this.validateUrl, {
+        return this.http.patch(this.baseUrl + this.validateUrl, {
             quizId: id,
             validated: toValidate,
             adminCommentary: admComment,
@@ -48,7 +45,7 @@ export class QuizValidationService {
     }
 
     getQuizToValidate(id: string): Observable<ExtendedQuiz> {
-        return this.http.post<ExtendedQuiz>(this.baseUrl + this.setValidatorUrl, {quizId: id}, this.httpOptions)
+        return this.http.patch<ExtendedQuiz>(this.baseUrl + this.setValidatorUrl, {quizId: id}, this.httpOptions)
             .pipe(map(data => {
                     return new ExtendedQuiz().deserialize(data, this.sanitizer);
                 }),
@@ -64,7 +61,6 @@ export class QuizValidationService {
     }
 
     getTotalQuestionsListSize(quiz_id: string): Observable<number> {
-        //return of(12);
         return this.http.get<number>(this.baseUrl + quiz_id + this.questionsTotalSizeUrl, this.httpOptions)
             .pipe(catchError(this.handleErrorsService.handleError<number>('getTotalQuestionsListSize', 0)));
     }

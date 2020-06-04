@@ -34,7 +34,6 @@ export class AnonymService {
                     const tokenJSON: any = data;
                     localStorage.setItem('anonymData', tokenJSON.token);
                     const userDecode: User = jwt_decode(tokenJSON.token);
-                    // console.log(userDecode);
                     this.currentAnonymSubject.next(userDecode);
                     return userDecode;
                 }

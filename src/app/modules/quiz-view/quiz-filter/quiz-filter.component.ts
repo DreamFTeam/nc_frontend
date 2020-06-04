@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {merge, Observable, Subject} from 'rxjs';
-import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, first, map} from 'rxjs/operators';
 import {SearchFilterQuizService} from '../../core/_services/quiz/search-filter-quiz.service';
 import {Tag} from '../../core/_models/tag';
 import {Category} from '../../core/_models/category';
@@ -9,6 +9,7 @@ import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {TagCatg} from '../../core/_models/tagcateg';
 import {QuizService} from '../../core/_services/quiz/quiz.service';
 import {TranslateService} from '@ngx-translate/core';
+import {LocaleService} from '../../core/_services/utils/locale.service';
 
 
 @Component({
@@ -20,9 +21,9 @@ export class QuizFilterComponent implements OnInit {
 
     readonly RESULTS_SEARCH_AMOUNT = '5';
     readonly rating = ['0', '1', '2', '3', '4', '5'];
-    readonly languages = [this.translateService.instant('quizFilter.langAll'),
-        this.translateService.instant('utils.langEng'),
-        this.translateService.instant('utils.langUkr')
+    readonly languages = [this.localeService.getValue('quizFilter.langAll'),
+        this.localeService.getValue('utils.langEng'),
+        this.localeService.getValue('utils.langUkr')
     ];
     tags: Tag[] = [];
     categories: Category[] = [];
@@ -39,7 +40,7 @@ export class QuizFilterComponent implements OnInit {
     constructor(private searchFilterQuizService: SearchFilterQuizService,
                 private activeModal: NgbActiveModal,
                 private quizService: QuizService,
-                private translateService: TranslateService) {
+                private localeService: LocaleService) {
     }
 
     ngOnInit(): void {
@@ -99,7 +100,6 @@ export class QuizFilterComponent implements OnInit {
     filter() {
         this.activeModal.close();
         this.searchFilterQuizService.setSettings(this.settings);
-        this.searchFilterQuizService.filterQuiz().subscribe();
-        this.searchFilterQuizService.filterTotalSize().subscribe();
+        this.searchFilterQuizService.filterQuiz().pipe(first()).subscribe();
     }
 }

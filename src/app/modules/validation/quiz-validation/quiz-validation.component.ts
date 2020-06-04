@@ -1,12 +1,13 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {QuizValidationService} from '../../core/_services/quiz/quiz-validation.service';
-import {Observable} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {ExtendedQuiz} from '../../core/_models/extended-quiz';
 import {ExtendedQuestion} from '../../core/_models/question/extendedquestion';
 import {ModalService} from '../../core/_services/utils/modal.service';
 import {ToastsService} from '../../core/_services/utils/toasts.service';
 import {LocaleService} from '../../core/_services/utils/locale.service';
+import { DateService } from '../../core/_services/utils/date.service';
 
 const PAGE_SIZE: number = 3;
 
@@ -15,7 +16,9 @@ const PAGE_SIZE: number = 3;
     templateUrl: './quiz-validation.component.html',
     styleUrls: ['./quiz-validation.component.css']
 })
-export class QuizValidationComponent implements OnInit {
+export class QuizValidationComponent implements OnInit, OnDestroy {
+    suscriptions: Subscription = new Subscription();
+    
     currentQuizId: string;
     mockImageUrl = '../../assets/img/quiz.jpg';
     page: number;
@@ -32,7 +35,8 @@ export class QuizValidationComponent implements OnInit {
                 public modalService: ModalService,
                 private router: Router,
                 public toastsService: ToastsService,
-                private localeService: LocaleService
+                private localeService: LocaleService,
+                public dateService: DateService
     ) {
         this.pageSize = PAGE_SIZE;
         this.page = 1;
@@ -46,13 +50,19 @@ export class QuizValidationComponent implements OnInit {
         this.getQuizToValidate();
     }
 
+    ngOnDestroy(): void{
+        this.suscriptions.unsubscribe();
+    }
+
     getQuestionListByPage(p: number): void {
         this.questionList$ = this.quizValidationService.getQuestionListByPage(this.currentQuizId, p);
     }
 
     getQuizToValidate(): void {
-        this.quizValidationService.getQuizToValidate(this.currentQuizId)
-            .subscribe(quizData => this.quiz = quizData);
+        this.suscriptions.add(this.quizValidationService.getQuizToValidate(this.currentQuizId)
+            .subscribe(quizData => this.quiz = quizData,
+                () =>
+                this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))));
     }
 
     getTotalQuestionListSize(): void {
@@ -77,7 +87,7 @@ export class QuizValidationComponent implements OnInit {
 
 
     reject(id: string): void {
-        this.modalService.openModal(this.localeService.getValue('modal.reject'), 'danger')
+        this.suscriptions.add(this.modalService.openModal(this.localeService.getValue('modal.reject'), 'danger')
             .subscribe((receivedEntry) => {
                 if (receivedEntry) {
                     this.quizValidationService.validateQuiz(id, false, this.adminComment, null, null)
@@ -89,11 +99,11 @@ export class QuizValidationComponent implements OnInit {
                                 this.toastsService.toastAddWarning(this.localeService.getValue('toasterEditor.wentWrong'));
                             });
                 }
-            });
+            }));
     }
 
     accept(id: string): void {
-        this.modalService.openModal(this.localeService.getValue('modal.acceptQuiz'), 'success')
+        this.suscriptions.add(this.modalService.openModal(this.localeService.getValue('modal.acceptQuiz'), 'success')
             .subscribe((receivedEntry) => {
                 if (receivedEntry) {
                     this.quizValidationService.validateQuiz(id, true, this.adminComment, this.quiz.creatorId, this.quiz.title)
@@ -106,6 +116,6 @@ export class QuizValidationComponent implements OnInit {
                                 this.router.navigateByUrl('/validation');
                             });
                 }
-            });
+            }));
     }
 }
