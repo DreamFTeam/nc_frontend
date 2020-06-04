@@ -39,7 +39,9 @@
     "dateofcreation": "Date of creation",
     "langEng": "English",
     "langUkr": "Ukrainian",
-    "emptyList":"The list is empty"
+    "emptyList":"The list is empty",
+    "activated":"Activated",
+    "deactivated":"Deactivated"
   },
   "utilsOther": {
     "image": "image"
@@ -255,7 +257,11 @@
     "rightAnswers": "Right answers",
     "rightAnswer": "Rigth answer",
     "questionType": "Question type",
-    "admComment": "Administration commentary"
+    "admComment": "Administration commentary",
+    "True or false":"True or False",
+    "Options":"Options",
+    "Open answer":"Open answer",
+    "Sequence":"Choose sequence"
   },
   "lastAchievements": {
     "title": "Last gained achievements past week",

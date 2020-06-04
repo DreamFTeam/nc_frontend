@@ -21,6 +21,8 @@
 {
     padding-top:   1em;
     margin-bottom: 2em;
+    max-width: 70%;
+
 }
 
 .pagination-container
@@ -32,6 +34,7 @@
 .quest-title
 {
     padding-top: 0.5em;
+    font-size: 2.5em;
 }
 
 .quest-cont-title
@@ -51,27 +54,27 @@
 {
     margin-top:    1.5em;
     margin-bottom: 1.5em;
-    font-size:     1.75rem;
+    font-size:     1.3rem;
 }
 
 .fnt-size p
 {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
 }
 
 .q-fnt
 {
-    font-size: 2rem;
+    font-size: 1.4rem;
 }
 
 .q-info .q-info-head
 {
-    font-size: 2rem;
+    font-size: 1.4rem;
 }
 
 .q-info p
 {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
 }
 
 .ans-head
@@ -105,3 +108,23 @@
     margin-bottom: 0.5em;
     width:         100%;
 }
+
+.page-heading{
+    font-size: 2.5em;
+}
+
+/*less than 575px*/
+@media (max-width: 575px)
+{
+    .page-heading
+    {
+        font-size: 2em;
+        width:     100%;
+    }
+    
+    .content{
+        max-width: 100%;
+    }
+}
+
+

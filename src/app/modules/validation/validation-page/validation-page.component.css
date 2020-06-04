@@ -8,11 +8,12 @@
 {
     padding-top:   1em;
     margin-bottom: 2em;
+    max-width: 70%;
 }
 
 .tab-head
 {
-    font-size: x-large;
+    font-size: 1.4em;
 }
 
 .page-heading
@@ -23,7 +24,7 @@
 
 .page-heading-font-size
 {
-    font-size: 3em;
+    font-size: 2.5em;
 }
 
 /*less than 575px*/
@@ -31,13 +32,18 @@
 {
     .page-heading-font-size
     {
-        font-size: 2.5em;
+        font-size: 2em;
         width:     100%;
     }
 
     .tab-head
     {
-        font-size: larger;
+        font-size: 1.3em;
+    }
+
+    .content
+    {
+        max-width: 100%;
     }
 }
 

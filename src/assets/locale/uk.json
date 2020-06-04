@@ -39,7 +39,9 @@
     "dateofcreation": "Дата створення",
     "langEng": "Англійська",
     "langUkr": "Українська",
-    "emptyList":"Список пустий"
+    "emptyList":"Список пустий",
+    "activated":"Активовано",
+    "deactivated":"Деактивовано"
   },
   "utilsOther": {
     "image": "світлину"
@@ -251,7 +253,11 @@
     "rightAnswers": "Вірні відповіді",
     "rightAnswer": "Вірна відповідь",
     "questionType": "Тип питання",
-    "admComment": "Коментар адміністрації"
+    "admComment": "Коментар адміністрації",
+    "True or false":"Правда чи хиба",
+    "Options":"Варіанти відповіді",
+    "Open answer":"Відкрита відповідь",
+    "Sequence":"Послідовність"
   },
   "lastAchievements": {
     "title": "Ваші досягнення за останній тиждень",

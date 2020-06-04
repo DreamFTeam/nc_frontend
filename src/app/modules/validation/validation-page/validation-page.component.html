@@ -1,6 +1,6 @@
 <div class="content container" role="main">
     <div class="col mainstyle container">
-        <div class="row jumbotron">
+        <div class="row jumbotron p-4 mb-2">
             <p class="page-heading page-heading-font-size lead">{{currentUsername}}{{'validationPage.title' | translate}}</p>
         </div>
         <ul ngbNav #nav="ngbNav" [(activeId)]="active" (activeIdChange)="changeList($event)" class="nav-tabs">
