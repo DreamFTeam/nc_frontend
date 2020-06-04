@@ -11,7 +11,6 @@ import {Subscription} from 'rxjs';
     styleUrls: ['./user-change-password.component.css']
 })
 export class UserChangePasswordComponent implements OnInit {
-    isSent: boolean;
     currentPassword: string;
     password: string;
     confirmPassword: string;
@@ -26,7 +25,6 @@ export class UserChangePasswordComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.isSent = false;
         this.loading = false;
     }
 
@@ -49,7 +47,6 @@ export class UserChangePasswordComponent implements OnInit {
 
         this.passLoader = this.authenticationService.changeUserPassword(this.currentPassword, this.password).subscribe((n) => {
                 this.toastsService.toastAddSuccess(this.translate.instant('authorization.changePassword.success'));
-                this.isSent = true;
                 this.loading = false;
                 setInterval(function() {
                     this.isSent = false;
@@ -65,7 +62,6 @@ export class UserChangePasswordComponent implements OnInit {
                 if (err.error) {
                     this.toastsService.toastAddDanger(err.error.message);
                 }
-                this.isSent = false;
             }); 
         this.loading = true;
     }
