@@ -6,6 +6,7 @@ import {ExtendedQuizPreview} from '../../core/_models/extendedquiz-preview';
 import {ToastsService} from '../../core/_services/utils/toasts.service';
 import { Subscription } from 'rxjs';
 import {faSpinner} from '@fortawesome/free-solid-svg-icons';
+import { LocaleService } from '../../core/_services/utils/locale.service';
 
 
 @Component({
@@ -25,7 +26,8 @@ export class SuggestionsComponent implements OnInit, OnDestroy {
     isEmpty: boolean;
     constructor(private suggestionService: SuggestionService,
                 private authenticationService: AuthenticationService,
-                public toastsService: ToastsService) {
+                public toastsService: ToastsService,
+                private localeService: LocaleService) {
         this.suggestions = [];
         this.isLoading = true;
         this.isEmpty = false;
@@ -44,7 +46,7 @@ export class SuggestionsComponent implements OnInit, OnDestroy {
                     }
                     this.isLoading = false;
                 },
-                err => this.toastsService.toastAddDanger('Something went wrong while fetching suggestions.\nWe are sorry for that')));
+                () => this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))));;
         }
     }
 
