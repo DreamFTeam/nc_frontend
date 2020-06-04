@@ -1,5 +1,5 @@
 <div class="container-sm p-4 ">
-    <div *ngIf="activities.length > 0; else elseBlock">
+    <div *ngIf="!loading && activities.length > 0; else elseBlock">
         <div *ngFor="let act of activities; let i = index" >
             <div [routerLink]="act.link" class="pointer no-outline">
                 <hr class="my-4" *ngIf="i != 0">
@@ -23,10 +23,12 @@
                 <p class="mt-2">{{act.content}}</p>
             </div>
         </div>
+        <ngb-pagination [collectionSize]="collectionSize" [pageSize]="pageSize" [(page)]="page"
+                class="d-flex justify-content-center" (pageChange)="loadPage()"></ngb-pagination>
     </div>
 
     <ng-template #elseBlock>
-        <div *ngIf="!loading" style="text-align: center;">
+        <div *ngIf="activities.length === 0 && !loading" style="text-align: center;">
             {{ 'utils.notFound' | translate }}
         </div>
         <div [hidden]="!loading" style="text-align: center;">
