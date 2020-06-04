@@ -5,9 +5,9 @@
   </div>
   <div class="row">
     <div class="col"></div>
-    <div class="col">
+    <div class="col-xl-5 col-lg-5 col-md-8 col-sm-12 col-12">
       <div *ngFor="let not of (notificationsService.notifications | async)"
-           class="container bg-white rounded py-3 pl-3 pr-2 m-3 notification "
+           class="container bg-white rounded py-3 pl-3 pr-2 my-3 notification "
            routerLink="{{not.link}}">
         <div class="row">
           <div class="col-4" [ngSwitch]="not.typeId">
