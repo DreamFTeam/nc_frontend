@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { Announcement } from '../../core/_models/announcement';
@@ -23,7 +23,6 @@ export class AnnouncementEditComponent implements OnInit, OnDestroy {
     page: number = 1;
     collectionSize: number;
     
-
     announcements: Announcement[];
     currentAnnouncement: Announcement;
     isCollapsed: boolean[];
@@ -85,7 +84,7 @@ export class AnnouncementEditComponent implements OnInit, OnDestroy {
 
     //deleting announcement
     delete(i) {
-        this.modalService
+        this.subscriptions.add(this.modalService
             .openModal(this.localeService.getValue('modal.deleteAnnouncement'), 'danger')
             .pipe(first())
             .subscribe((receivedEntry) => {
@@ -98,13 +97,13 @@ export class AnnouncementEditComponent implements OnInit, OnDestroy {
 
                     this.announcements.splice(i, 1);
                 }
-            });
+            }));
     }
 
     //saving edited announcement
     saveEdit(i) {
         if (this.announcementService.validateAnnouncement(this.currentAnnouncement)) {
-            this.modalService
+            this.subscriptions.add(this.modalService
                 .openModal(this.localeService.getValue('modal.saveAnnouncement'), 'warning')
                 .pipe(first())
                 .subscribe((receivedEntry) => {
@@ -113,15 +112,16 @@ export class AnnouncementEditComponent implements OnInit, OnDestroy {
                         this.subscriptions.add(this.announcementService.editAnnouncement(this.currentAnnouncement, this.img)
                             .subscribe(
                                 () => {
-                                    this.announcements[i].creatorId = this.announcementService.getAdminName();
+                                    this.announcements[i] = Object.assign({}, this.currentAnnouncement);
+                                    this.announcements[i].creatorId = this.announcementService.getAdminName(); 
                                     this.cancel(i);
                                 },
                                 () => {
                                     this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))
                                 },
-                                () => this.saveLoading = false))
+                                () => this.saveLoading = false));
                     }
-                });
+                }));
         } else {
             this.toastsService.toastAddDanger(this.localeService.getValue('validator.noTitleOrDescription'));
         }
@@ -147,7 +147,7 @@ export class AnnouncementEditComponent implements OnInit, OnDestroy {
     //saving added announcement
     saveAdd() {
         if (this.announcementService.validateAnnouncement(this.currentAnnouncement)) {
-            this.modalService
+            this.subscriptions.add(this.modalService
                 .openModal(this.localeService.getValue('modal.saveAnnouncement'), 'warning')
                 .pipe(first())
                 .subscribe((receivedEntry) => {
@@ -166,12 +166,11 @@ export class AnnouncementEditComponent implements OnInit, OnDestroy {
                                     this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))
                                     this.saveLoading = false;
                                 },
-                                () => this.saveLoading = false)
-                        );
+                                () => this.saveLoading = false));
 
 
                     }
-                });
+                }));
         } else {
             this.toastsService.toastAddDanger(this.localeService.getValue('validator.noTitleOrDescription'));
         }
@@ -193,28 +192,29 @@ export class AnnouncementEditComponent implements OnInit, OnDestroy {
         ));
     }
 
+    
     //upload image click
     uploadImage(e) {
-        this.img = e.target.files[0];
-
-        let reader = new FileReader();
-        if (this.img !== null && this.img !== undefined) {
-            reader.readAsDataURL(this.img);
-            reader.onload = () => {
-                this.thumbnail = reader.result;
-            };
+        
+        if (e.target.files[0] !== null && e.target.files[0] !== undefined) {
+            this.img = e.target.files[0];
+            this.setImage();
         }
     }
 
+    setImage(){
+        let reader = new FileReader();
+        reader.readAsDataURL(this.img);
+        reader.onload = () => {
+            this.thumbnail = reader.result;
+        };
+    }
 
+
+    @ViewChild('imageInput') imageInput;
     removeImage() {
+        this.imageInput.nativeElement.value =
         this.thumbnail = null;
-
-        if (this.currentAnnouncement.announcementId === '') {
-            this.img = undefined;
-        } else {
-            this.img = null;
-        }
-
+        this.img = this.currentAnnouncement.announcementId === '' ?  undefined : null;
     }
 }

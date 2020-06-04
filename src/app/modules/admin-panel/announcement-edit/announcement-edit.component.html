@@ -1,3 +1,6 @@
+<input style="display: none" #imageInput type="file" accept="image/*"
+                                (change)="uploadImage($event)">
+
 <div role="main">
     <div class="container-sm my-2 p-4">
         <div *ngIf="!loading">
@@ -16,18 +19,31 @@
                 <textarea class="form-control" rows="5" [(ngModel)]="currentAnnouncement.textContent"
                     placeholder="{{ 'utils.content' | translate }}" maxlength="2048"  autocomplete="off"></textarea>
 
-                <button *ngIf="thumbnail !== null" class="btn buttondel mt-2" (click)="removeImage()">
-                    {{ 'utils.remove' | translate }} {{ 'quizCreation.image' | translate }}
-                </button>
-                <div class="mt-2">
-                    <img [src]='thumbnail' alt="Upload" class="img-thumbnail" (click)="imageInput.click()">
-                    <input style="display: none" #imageInput type="file" accept="image/*"
-                        (change)="uploadImage($event)">
+                <div class="row">
+                    <div class="col-12 col-sm-6 col-md-4">
+                        <button *ngIf="thumbnail !== null" class="btn buttondel mt-2" (click)="removeImage()">
+                            {{ 'utils.remove' | translate }} {{ 'quizCreation.image' | translate }}
+                        </button>
+                        <div class="mt-2">
+                            <div style="position: relative; background-color: white;">
+                                <img [src]="thumbnail ? thumbnail : '../assets/img/default-image.jpg'" 
+                                class="img-fluid mx-auto d-block bordr">
+                                <div class="caption p-2 bottom" (click)="imageInput.click()">
+                                    {{ 'quizCreation.upload' | translate }}
+                                </div>
+                            </div>
+                            
+                            
+                        </div>
+                    </div>
+                    
                 </div>
 
+                
+
                 <div class="mt-4">
-                    <button class="btn buttonsec" (click)="saveAdd()">{{ 'utils.save' | translate }}</button>
-                    <button class="btn buttonpr ml-2" (click)="cancel(-1)">{{ 'utils.cancel' | translate }}</button>
+                    <button class="btn buttonsec mb-2 mr-2" (click)="saveAdd()">{{ 'utils.save' | translate }}</button>
+                    <button class="btn buttonpr mb-2" (click)="cancel(-1)">{{ 'utils.cancel' | translate }}</button>
                 </div>
             </div>
             <div *ngIf="inEdit === 0 && saveLoading">
@@ -47,7 +63,9 @@
                             </div>
                             <div class="col">
                                 <div class="float-right">
-                                    <p style="margin: 0;">{{announcement.creationDate | date:dateService.datetimePattern:dateService.currentTimezone}}</p>
+                                    <p style="margin: 0;">
+                                        {{announcement.creationDate | date:dateService.datePattern:dateService.currentTimezone}}
+                                    </p>
                                     <a style="font-weight: bold; color: black;" routerLink="/profile/{{announcement.creatorId}}">
                                         {{announcement.creatorId}}
                                     </a>
@@ -59,8 +77,10 @@
     
     
                         <div class="mt-3">
-                            <img *ngIf="announcement.image !== null" [src]='announcement.image'
+                            <div class="col-12 col-sm-6 col-md-4">
+                                <img *ngIf="announcement.image" [src]='announcement.image' 
                                 class="img-thumbnail">
+                            </div>
                         </div>
     
                         <button class="btn mt-2" (click)="isCollapsed[i] = !isCollapsed[i]">
@@ -77,13 +97,17 @@
                             <p>{{announcement.textContent}}</p>
                         </div>
     
-    
-                        <div *ngIf="!inEdit" class="mt-4">
-                            <button class="btn buttonpr" (click)="edit(i)">{{ 'utils.edit' | translate }}</button>
-                            <button class="btn buttondel ml-2" (click)="delete(i)">
-                                {{ 'utils.delete' | translate }} {{ 'utils.announcement' | translate }}
-                            </button>
+                        <div class="row">
+                            <div class="col-12 col-sm-4 col-md-3">
+                                <div *ngIf="!inEdit" class="mt-4">
+                                    <button class="btn buttonpr mr-2 mb-2 btn-block" (click)="edit(i)">{{ 'utils.edit' | translate }}</button>
+                                    <button class="btn buttondel mb-2 btn-block" (click)="delete(i)">
+                                        {{ 'utils.delete' | translate }} {{ 'utils.announcement' | translate }}
+                                    </button>
+                                </div>
+                            </div>
                         </div>
+                        
                     </div>
                     
                 </div>
@@ -95,7 +119,7 @@
                     <hr class="my-4">
                     <div>
                         <label>{{ 'announcementsEdit.editing' | translate }} {{currentAnnouncement.creatorId}}</label>
-                        <p style="font-style: italic;">{{announcement.creationDate | date:dateService.datetimePattern:dateService.currentTimezone}}</p>
+                        <p style="font-style: italic;">{{announcement.creationDate | date:dateService.datePattern:dateService.currentTimezone}}</p>
                     </div>
                     <label>{{ 'utils.title' | translate }}:</label>
                     <input class="form-control" [(ngModel)]="currentAnnouncement.title"
@@ -104,19 +128,27 @@
                     <textarea class="form-control" rows="5" [(ngModel)]="currentAnnouncement.textContent"
                         placeholder="{{ 'utils.content' | translate }}" maxlength="2048"  autocomplete="off"></textarea>
 
-
-                    <button *ngIf="thumbnail !== null" class="btn buttondel mt-2" (click)="removeImage()">
-                        {{ 'utils.remove' | translate }} {{ 'utilsOther.image' | translate }}
-                    </button>
-                    <div class="mt-2">
-                        <img [src]='thumbnail' alt="Upload" class="img-thumbnail" (click)="imageInput.click()">
-                        <input style="display: none" #imageInput type="file" accept="image/*"
-                            (change)="uploadImage($event)">
+                    <div class="row">
+                        <div class="col-12 col-sm-6 col-md-4">
+                            <button *ngIf="thumbnail !== null" class="btn buttondel mt-2" (click)="removeImage()">
+                                {{ 'utils.remove' | translate }} {{ 'utilsOther.image' | translate }}
+                            </button>
+                            <div class="mt-2">
+                                <div style="position: relative; background-color: white;">
+                                    <img [src]="thumbnail ? thumbnail : '../assets/img/default-image.jpg'" 
+                                    class="img-fluid mx-auto d-block bordr">
+                                    <div class="caption p-2 bottom" (click)="imageInput.click()">
+                                        {{ 'quizCreation.upload' | translate }}
+                                    </div>
+                                </div>
+                            </div>
+        
+                        </div>
                     </div>
-
+                   
                     <div class="mt-4"><i class="fas fa-chevron-down"></i>
-                        <button class="btn buttonsec" (click)="saveEdit(i)">{{ 'utils.save' | translate }}</button>
-                        <button class="btn buttonpr ml-2" (click)="cancel(i)">{{ 'utils.cancel' | translate }}</button>
+                        <button class="btn buttonsec mr-2 mb-2" (click)="saveEdit(i)">{{ 'utils.save' | translate }}</button>
+                        <button class="btn buttonpr mb-2" (click)="cancel(i)">{{ 'utils.cancel' | translate }}</button>
                     </div>
                 </div>
                 <div *ngIf="inEdit === i+1 && saveLoading">
