@@ -1,8 +1,9 @@
 <div class="container">
-  <div *ngIf="!newNotification" class="h3 p-3 text-center bg-white rounded">
+  <div *ngIf="!(notificationsService.notifications | async) || (notificationsService.notifications | async).length === 0"
+       class="h3 p-3 text-center bg-white rounded">
     {{ 'notifications.empty' | translate }}
   </div>
-  <div *ngFor="let not of notifications" class="row m-1">
+  <div *ngFor="let not of (notificationsService.notifications | async)" class="row m-1">
     <div class="col"></div>
     <div class="col bg-white rounded">
       <p class="h5">{{not.date}}</p>

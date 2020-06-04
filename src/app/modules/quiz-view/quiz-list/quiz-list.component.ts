@@ -112,7 +112,8 @@ export class QuizListComponent implements OnInit {
                 this.router.navigateByUrl(`game/${n.gameId}/lobby`);
             },
             error => {
-                this.toastsService.toastAddDanger(error.error ? error.error.message : this.localeService.getValue('authorization.login.error'));
+                this.toastsService.toastAddDanger(error.error ? error.error.message :
+                    this.localeService.getValue('authorization.login.error'));
                 this.accessId = '';
                 this.accessCodeLoading = false;
                 this.router.navigateByUrl('quiz-list');
@@ -126,6 +127,6 @@ export class QuizListComponent implements OnInit {
     }
 
     showFilter() {
-        const modal = this.modalService.open(QuizFilterComponent, {size: 'sm'});
+        this.modalService.open(QuizFilterComponent, {size: 'sm'});
     }
 }

@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { User } from '../../_models/user';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { map } from 'rxjs/operators';
-import { environment } from '../../../../../environments/environment';
+import {Injectable} from '@angular/core';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {User} from '../../_models/user';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {map} from 'rxjs/operators';
+import {environment} from '../../../../../environments/environment';
 import * as jwt_decode from 'jwt-decode';
 import * as sha1 from 'js-sha1';
-import { SettingsService } from '../profile/settings.service';
-import { LocaleService } from '../utils/locale.service';
+import {SettingsService} from '../profile/settings.service';
+import {LocaleService} from '../utils/locale.service';
 
 
 @Injectable({
@@ -18,6 +18,7 @@ export class AuthenticationService {
     private currentUserSubject: BehaviorSubject<User>;
     public currentUser: Observable<User>;
     url = environment.apiUrl;
+
     httpOptions = {
         headers: new HttpHeaders({
             'Content-Type': 'application/json',
@@ -26,8 +27,8 @@ export class AuthenticationService {
     };
 
     constructor(private http: HttpClient,
-        private localeService: LocaleService,
-        private settingsService: SettingsService) {
+                private localeService: LocaleService,
+                private settingsService: SettingsService) {
         this.currentUserSubject = new BehaviorSubject<User>(
             localStorage.getItem('userData') ? jwt_decode(localStorage.getItem('userData')) : undefined);
         this.currentUser = this.currentUserSubject.asObservable();
@@ -76,13 +77,13 @@ export class AuthenticationService {
         return this.http.post<User>(this.url + 'recovery/send', JSON.stringify(userInfo), this.httpOptions);
     }
 
-    /* POST: change password */
+    /* PATCH: change password */
     changePassword(recoverUrl: string, password: string): Observable<any> {
         const userInfo = {
             recoverUrl,
             password: this.passwordHashing(password, this.PASSWORD_HASHING_ITERATIONS_AMOUNT)
         };
-        return this.http.post(this.url + 'recovery/changePassword', JSON.stringify(userInfo), this.httpOptions);
+        return this.http.patch(this.url + 'recovery/changePassword', JSON.stringify(userInfo), this.httpOptions);
     }
 
 
@@ -107,7 +108,7 @@ export class AuthenticationService {
         for (let i = 0; i < iterations; ++i) {
             crypt = sha1(crypt);
         }
-        console.log(crypt)
+        console.log(crypt);
         return crypt;
     }
 }

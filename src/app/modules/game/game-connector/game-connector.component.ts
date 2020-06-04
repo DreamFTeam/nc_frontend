@@ -58,7 +58,8 @@ export class GameConnectorComponent implements OnInit, OnDestroy {
         if (this.authenticationService.currentUserValue
             && this.authenticationService.currentUserValue.role !== Role.User
             || !this.sessionId) {
-            this.messageModal.show(this.localeService.getValue('game.accessDen'), this.localeService.getValue('game.permissions'));
+            this.messageModal.show(this.localeService.getValue('game.accessDen'),
+                this.localeService.getValue('game.permissions'));
             this.router.navigateByUrl('/');
         }
         const gameId = this.activateRoute.snapshot.paramMap.get('id');
@@ -68,7 +69,8 @@ export class GameConnectorComponent implements OnInit, OnDestroy {
             .pipe(first())
             .subscribe(game => {
                     if (!game.accessId) {
-                        this.messageModal.show(this.localeService.getValue('game.accessDen'), this.localeService.getValue('game.gameStarted'));
+                        this.messageModal.show(this.localeService.getValue('game.accessDen'),
+                            this.localeService.getValue('game.gameStarted'));
                         this.router.navigateByUrl('/');
                     }
                     this.game = game;
@@ -92,7 +94,6 @@ export class GameConnectorComponent implements OnInit, OnDestroy {
             });
         this.readySubscription = this.gameSettingsService.readyList.subscribe(ready => {
             Object.assign(this.usersSessionsReady, ready);
-            console.log(ready);
             this.ready = this.usersSessionsReady.includes(this.sessionId);
         });
     }
@@ -123,13 +124,6 @@ export class GameConnectorComponent implements OnInit, OnDestroy {
         this.sessionsSubscription.unsubscribe();
         this.readySubscription.unsubscribe();
         this.gameSettingsService.stopSse();
-        // if (!this.gameSettingsService.gameStart) {
-        //     this.gameSettingsService.quitGame(this.sessionId).pipe(first()).subscribe();
-        //     localStorage.removeItem('sessionid');
-        //     if (this.anonymService.currentAnonymValue) {
-        //         this.anonymService.removeAnonym();
-        //     }
-        // }
     }
 
     remove(sessionId: string) {

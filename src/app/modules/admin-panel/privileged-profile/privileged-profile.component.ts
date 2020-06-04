@@ -16,7 +16,6 @@ import {first} from 'rxjs/operators';
 })
 export class PrivilegedProfileComponent implements OnInit {
     ready: boolean;
-    privilege: string;
     profile: User;
     Role = Role;
 
@@ -27,14 +26,13 @@ export class PrivilegedProfileComponent implements OnInit {
     showYAxisLabelPopQuiz = true;
     quizPopAmount = 5;
     dataPopQuiz: any[];
+    showDataLabelPopQuiz = true;
 
     // Quizzes statuses chart
     dataQuizStatus: any[];
     labelQuizStatus = true;
     legendQuizStatus = true;
     legendTitleQuizStatus = '';
-
-
 
     // Quizzes valid/invalid chart
     legendValidQuiz = true;
@@ -44,8 +42,8 @@ export class PrivilegedProfileComponent implements OnInit {
 
 
     // Games per day chart
-    timeline = true;
     dataGamesPerDay: any[];
+    xAxisGamesPerDay = true;
 
 
     constructor(private router: Router, private modalService: NgbModal,
@@ -58,7 +56,7 @@ export class PrivilegedProfileComponent implements OnInit {
 
     ngOnInit(): void {
         if (this.profile == null ||
-            this.profile.role == 'ROLE_USER') {
+            this.profile.role === Role.User) {
             this.router.navigate(['/']);
         }
         this.ready = true;

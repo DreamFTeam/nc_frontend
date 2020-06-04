@@ -59,7 +59,6 @@ export class SearchFilterQuizService {
 
     filterTotalSize(): Observable<number> {
         const sett = this.generateSettingsForRequest(this.settings);
-        console.log(sett);
         return this.http.post<number>(this.filterUrlTotalSize, sett, this.httpOptions);
     }
 
@@ -93,7 +92,6 @@ export class SearchFilterQuizService {
                     return new ExtendedQuizPreview().deserialize(x, this.sanitizer);
                 });
                 this.currentQuizzesSubject.next(quizzes);
-                console.log(this.currentQuizzesSubject.value);
                 this.loadingSubject.next(false);
                 return quizzes;
             }
