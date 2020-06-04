@@ -10,6 +10,7 @@ import {Role} from '../../core/_models/role';
     styleUrls: ['./landing-page.component.css']
 })
 export class LandingPageComponent implements OnInit {
+    
     constructor(private activatedRoute: ActivatedRoute,
                 private toastsService: ToastsService,
                 private authenticationService: AuthenticationService,
@@ -19,7 +20,7 @@ export class LandingPageComponent implements OnInit {
     ngOnInit(): void {
         this.activatedRoute.queryParams.subscribe(params => {
             if (params.message) {
-                this.toastsService.toastAddWarning(params.message);
+                this.toastsService.toastAddSuccess(params.message);
                 this.router.navigateByUrl('');
             }
         });

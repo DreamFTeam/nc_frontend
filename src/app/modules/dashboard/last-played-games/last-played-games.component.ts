@@ -4,6 +4,8 @@ import {QuizLastPlayed} from '../../core/_models/quiz-last-played';
 import {Observable, Subscription} from 'rxjs';
 import { DateService } from '../../core/_services/utils/date.service';
 import {faSpinner} from '@fortawesome/free-solid-svg-icons';
+import { LocaleService } from '../../core/_services/utils/locale.service';
+import { ToastsService } from '../../core/_services/utils/toasts.service';
 
 @Component({
     selector: 'app-last-played-games',
@@ -20,7 +22,9 @@ export class LastPlayedGamesComponent implements OnInit, OnDestroy {
     isEmpty: boolean;
 
     constructor(private profileService: ProfileService,
-        public dateService: DateService) {
+        public dateService: DateService,
+        private localeService: LocaleService,
+        private toastsService: ToastsService) {
         this.isEmpty = false;
         this.isLoading = true;
     }
@@ -35,10 +39,8 @@ export class LastPlayedGamesComponent implements OnInit, OnDestroy {
                 this.isEmpty = true;
             }
             this.isLoading = false;
-        }, error => {
-            console.error(error);
-        }));
-
+        },  () =>
+            this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))));
     }
 
 }

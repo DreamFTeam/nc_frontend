@@ -186,7 +186,8 @@ export class AnnouncementEditComponent implements OnInit, OnDestroy {
             () => this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))
         ));
 
-        this.subscriptions.add(this.announcementService.getAnnouncements((this.page - 1) * 5, 5).subscribe(
+        this.subscriptions.add(this.announcementService.getAnnouncements((this.page - 1) * this.pageSize, this.pageSize)
+        .subscribe(
             ans => this.setAnnouncements(ans),
             () => this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))
         ));

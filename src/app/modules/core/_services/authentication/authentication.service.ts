@@ -106,7 +106,6 @@ export class AuthenticationService {
         for (let i = 0; i < iterations; ++i) {
             crypt = sha1(crypt);
         }
-        console.log(crypt);
         return crypt;
     }
 }

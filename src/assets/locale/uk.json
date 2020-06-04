@@ -69,7 +69,7 @@
   "viewQuiz": {
     "deactivated": "Деактивований",
     "rejected":"Відхилений",
-    "waitingForValidation":"Очкіує перевірки",
+    "waitingForValidation":"Очікує перевірки",
     "draft":"Чернетка",
     "deactivate": "Деактивувати",
     "danger": "Небезпечні дії",

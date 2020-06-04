@@ -4,6 +4,8 @@ import {Achievement} from '../../core/_models/achievement';
 import {Subscription} from 'rxjs';
 import {faSpinner} from '@fortawesome/free-solid-svg-icons';
 import { AuthenticationService } from '../../core/_services/authentication/authentication.service';
+import { ToastsService } from '../../core/_services/utils/toasts.service';
+import { LocaleService } from '../../core/_services/utils/locale.service';
 
 @Component({
     selector: 'app-last-achievements-list',
@@ -21,7 +23,9 @@ export class LastAchievementsListComponent implements OnInit, OnDestroy {
     currentUsername: string;
 
     constructor(private profileService: ProfileService,
-                private authenticationService: AuthenticationService) {
+                private authenticationService: AuthenticationService,
+                public toastsService: ToastsService,
+                private localeService: LocaleService) {
         this.isEmpty = false;
         this.isLoading = true;
         this.currentUsername = authenticationService.currentUserValue.username;
@@ -34,9 +38,10 @@ export class LastAchievementsListComponent implements OnInit, OnDestroy {
                 this.isEmpty = true;
             }
             this.isLoading = false;
-        }, error => {
-            console.error(error);
-        }));
+        },
+            () =>
+            this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))
+        ));
     }
 
     ngOnDestroy(): void{

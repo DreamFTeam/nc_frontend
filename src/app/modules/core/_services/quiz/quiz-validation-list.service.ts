@@ -20,7 +20,6 @@ export enum ListType {
 export class QuizValidationListService {
     private _listType: ListType;
     private baseUrl = `${environment.apiUrl}quizzes/`;
-    // private baseUrl = 'http://localhost:8081/api/quizzes/';
     private unvalSizeUrl = 'invalidquiztotalsize';
     private validSizeUrl = 'validquiztotalsize';
     private quizUnvalListUrl = 'quiz-list-invalid/page/';
