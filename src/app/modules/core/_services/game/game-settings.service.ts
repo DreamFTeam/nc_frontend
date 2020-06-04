@@ -26,6 +26,7 @@ export class GameSettingsService {
     public readyList: Observable<string[]>;
 
     private eventSource: EventSource;
+
     httpOptions = {
         headers: new HttpHeaders({
             'Content-Type': 'application/json'
@@ -84,16 +85,6 @@ export class GameSettingsService {
 
     }
 
-    private leftGame(modalBody: string) {
-        this.readySubject.next([]);
-        this.sessionsSubject.next([]);
-        this.router.navigateByUrl('/quiz-list');
-        const modalRef = this.modalService.open(MessageModalComponent);
-        modalRef.componentInstance.title = this.localeService.getValue('game.leftTitle');
-        modalRef.componentInstance.body = modalBody;
-
-    }
-
     stopSse() {
         this.eventSource.close();
     }
@@ -102,7 +93,6 @@ export class GameSettingsService {
         if (!settings.additionalPoints) {
             settings.additionalPoints = false;
         }
-        // console.log(settings);
         return this.http.post<Game>(this.gameUrl, JSON.stringify(settings), this.httpOptions);
     }
 
@@ -149,6 +139,10 @@ export class GameSettingsService {
             );
     }
 
+    getFinishSubs(gameId: string): Observable<any> {
+        return this.sseService.getServerSentEvent(this.gameUrl + 'subscribe/' + gameId, 'finished');
+    }
+
     private imageDeser(image) {
         if (image) {
             const objUrl = 'data:image/jpeg;base64,' + image;
@@ -157,7 +151,13 @@ export class GameSettingsService {
         return image;
     }
 
-    getFinishSubs(gameId: string): Observable<any> {
-        return this.sseService.getServerSentEvent(this.gameUrl + 'subscribe/' + gameId, 'finished');
+    private leftGame(modalBody: string) {
+        this.readySubject.next([]);
+        this.sessionsSubject.next([]);
+        this.router.navigateByUrl('/quiz-list');
+        const modalRef = this.modalService.open(MessageModalComponent);
+        modalRef.componentInstance.title = this.localeService.getValue('game.leftTitle');
+        modalRef.componentInstance.body = modalBody;
+
     }
 }

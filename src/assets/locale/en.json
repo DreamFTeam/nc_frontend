@@ -233,14 +233,15 @@
     "gameStarted": "The game has already started or has not been created.",
     "urlCopied": "URL copied.",
     "refreshWarning": "If you refresh the page or go to another page, you will not be able to return.",
-    "accountError": "You cannot play on this account.",
+    "accountError": "You need another account for this page.",
     "anonymTitle": "Enter your nickname",
     "anonymName": "Your name",
     "leftTitle": "It's some bad joke.",
     "hostLeftBody": "The host left the game.",
     "kickBody": "The host kick you from the game.",
     "askLeftHost": "Are you really want to kick a player?",
-    "askLeft": "Are you really want to go?"
+    "askLeft": "Are you really want to go?",
+    "gameCreateAccountError": "You cannot create game on this account"
   },
   "validationPage": {
     "title": "'s quiz validation list"
@@ -289,7 +290,7 @@
   },
   "adminDash": {
     "username": "Username",
-    "role": "Role:",
+    "role": "Role",
     "crAdm": "Create admin",
     "crMod": "Create moder",
     "popularTitle": "Most popular quizzes",

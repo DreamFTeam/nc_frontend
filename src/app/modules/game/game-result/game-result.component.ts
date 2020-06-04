@@ -26,9 +26,7 @@ export class GameResultComponent implements OnInit {
     constructor(private gameResultService: GameResultService,
                 private activatedRoute: ActivatedRoute,
                 private modalService: NgbModal,
-                private authenticationService: AuthenticationService,
-                private anonymService: AnonymService
-    ) {
+                private authenticationService: AuthenticationService) {
         this.gameId = this.activatedRoute.snapshot.paramMap.get('id');
     }
 
