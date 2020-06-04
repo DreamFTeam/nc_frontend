@@ -27,7 +27,9 @@ export class ChangePasswordComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.id = this.route.snapshot.paramMap.get('key');
+        this.route.queryParams.pipe(first()).subscribe(x => {
+            this.id = x.key;
+        });
         if (!this.id) {
             this.router.navigateByUrl('');
         }
@@ -59,7 +61,6 @@ export class ChangePasswordComponent implements OnInit {
                         location.replace('');
                         clearInterval(this);
                     }, 3000);
-                    console.log(n);
                 },
                 err => {
                     this.toastsService.toastAddDanger(this.translateService.instant('authorization.login.error'));
