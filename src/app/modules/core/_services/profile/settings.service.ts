@@ -48,7 +48,7 @@ export class SettingsService {
         saved.map(el => ['title', 'description'].map(x => delete el[x]));
         saved.map(el => el.value = el.value.toString());
 
-        return this.http.post(this.baseUrl, JSON.stringify(saved), this.httpOptions).pipe(
+        return this.http.put(this.baseUrl, JSON.stringify(saved), this.httpOptions).pipe(
             catchError(this.handleErrorsService.handleError<any>('saveSettings'))
         );
     }
