@@ -53,8 +53,8 @@ export class UserSettingsComponent implements OnInit, OnDestroy {
 
     setSettings(ans) {
         let temp: Setting[] = ans;
-        const index = temp.findIndex(el => el.id === 'e8449301-6d6f-4376-8247-b7d1f8df6416');
-        this.language = temp.splice(index, 1)[0];
+        this.language = temp.splice(temp.findIndex(el => el.id === 'e8449301-6d6f-4376-8247-b7d1f8df6416'),
+         1)[0];
         this.settings = temp;
 
         this.loading = false;
