@@ -57,10 +57,6 @@ export class UserSettingsComponent implements OnInit, OnDestroy {
         this.language = temp.splice(index, 1)[0];
         this.settings = temp;
 
-        temp.sort(function(a, b) {
-            return b.title.length - a.title.length;
-        });
-
         this.loading = false;
     }
 
