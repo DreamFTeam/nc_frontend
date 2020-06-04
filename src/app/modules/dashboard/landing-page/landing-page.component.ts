@@ -10,9 +10,6 @@ import {Role} from '../../core/_models/role';
     styleUrls: ['./landing-page.component.css']
 })
 export class LandingPageComponent implements OnInit {
-    isSignedIn: boolean;
-    isRoleUser: boolean;
-
     constructor(private activatedRoute: ActivatedRoute,
                 private toastsService: ToastsService,
                 private authenticationService: AuthenticationService,
@@ -26,8 +23,14 @@ export class LandingPageComponent implements OnInit {
                 this.router.navigateByUrl('');
             }
         });
-        this.isSignedIn = (this.authenticationService.currentUserValue === undefined) ? false : true;
-        this.isRoleUser = (this.isSignedIn &&
+    }
+
+    isSignedIn(){
+        return this.authenticationService.currentUserValue;
+    }
+
+    isRoleUser(){
+        return (this.isSignedIn() &&
             this.authenticationService.currentUserValue.role === Role.User);
     }
 

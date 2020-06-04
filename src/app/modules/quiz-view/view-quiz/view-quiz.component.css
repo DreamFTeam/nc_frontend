@@ -81,3 +81,7 @@ ngb-rating:focus
     outline:    none !important;
     box-shadow: none;
 }
+
+.minh{
+    min-height: 41px;
+}
