@@ -9,23 +9,31 @@
 {
     label
     {
-        font-weight: 200;
         font-size:   20px;
     }
 }
 
-@media screen and (min-width: 200px) and (max-width: 599px)
+@media screen and (min-width: 348px) and (max-width: 599px)
 {
     label
     {
-        font-weight: 200;
         font-size:   12px;
+    }
+}
+
+@media screen and (min-width: 200px) and (max-width: 347px)
+{
+    label
+    {
+       
+        font-size:   10px;
     }
 }
 
 
 label
 {
+    font-weight: 200;
     -moz-user-select:    none;
     -ms-user-select:     none;
     -o-user-select:      none;
