@@ -3,6 +3,8 @@ import {ShortQuizListService} from '../../core/_services/quiz/short-quiz-list.se
 import {Observable, Subscription} from 'rxjs';
 import {ExtendedQuizPreview} from '../../core/_models/extendedquiz-preview';
 import {faSpinner} from '@fortawesome/free-solid-svg-icons';
+import { ToastsService } from '../../core/_services/utils/toasts.service';
+import { LocaleService } from '../../core/_services/utils/locale.service';
 
 @Component({
     selector: 'app-short-quiz-list',
@@ -19,7 +21,9 @@ export class ShortQuizListComponent implements OnInit, OnDestroy {
     isEmpty: boolean;
     isLoading: boolean;
 
-    constructor(private shortQuizListService: ShortQuizListService) {
+    constructor(private shortQuizListService: ShortQuizListService,
+        private localeService: LocaleService,
+        private toastsService: ToastsService) {
         this.isEmpty = false;
         this.isLoading = true;
     }
@@ -36,13 +40,12 @@ export class ShortQuizListComponent implements OnInit, OnDestroy {
                     this.isEmpty = true;
                 }
                 this.isLoading = false;
-            }
+            },() =>
+            this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))
         ));
     }
 
     ngOnDestroy(): void{
         this.subscriptions.unsubscribe();        
     }
-
-
 }

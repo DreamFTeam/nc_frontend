@@ -28,7 +28,6 @@ export class ShortQuizListService {
     }
 
     getShortQuizList(): Observable<ExtendedQuizPreview[]> {
-        console.log(this.baseUrl + this.shortListUrl);
         return this.http.get<ExtendedQuizPreview[]>(this.baseUrl + this.shortListUrl, this.httpOptions)
             .pipe(map(data => data.map(x => {
                 return new ExtendedQuizPreview().deserialize(x, this.sanitizer);

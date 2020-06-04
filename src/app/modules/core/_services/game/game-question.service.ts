@@ -27,7 +27,6 @@ export class GameQuestionService {
     }
 
     savePlayerScore(sid: string, score: number, durTime: number) {
-        console.log('Saving score: ' + sid + ' ' + score + ' ' + durTime);
         const gameinfo = {
             sessionId: sid,
             score: score,
