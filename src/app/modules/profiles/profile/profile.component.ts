@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProfileService } from '../../core/_services/profile/profile.service';
 import { PrivilegedService } from '../../core/_services/admin/privileged.service';
@@ -14,6 +14,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { ExtendedQuiz } from '../../core/_models/extended-quiz';
 import { ChatsService } from '../../core/_services/chats/chats.service';
+import { Subscription } from 'rxjs';
+import { DateService } from '../../core/_services/utils/date.service';
 
 
 @Component({
@@ -22,11 +24,13 @@ import { ChatsService } from '../../core/_services/chats/chats.service';
   styleUrls: ['./profile.component.css']
 })
 
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription[] = [];
   activeTab: number;
   MAX_AMOUNT: number; // amount of friends per page
   role: string; // role of the current user
   username: string;
+  targetUsername: string;
   ready: boolean; // indicates the profile was loaded (doesn't include quizzes)
   owner: boolean; // indicates which rights the user has concerning this profile
   quizzes: ExtendedQuiz[];
@@ -55,13 +59,13 @@ export class ProfileComponent implements OnInit {
     private toastsService: ToastsService,
     private localeService: LocaleService,
     private modalService: NgbModal,
-    private chatsService: ChatsService
+    private chatsService: ChatsService,
+    public dateService: DateService
   ) {
     if (this.route.snapshot.paramMap.get('page')) {
       this.router.navigate(['/profile/' + this.route.snapshot.paramMap.get('username')],
         { state: { data: this.route.snapshot.paramMap.get('page').toString() } });
     }
-
     this.role = authenticationService.currentUserValue.role;
     this.username = authenticationService.currentUserValue.username;
     this.friendsPage = 1;
@@ -70,12 +74,19 @@ export class ProfileComponent implements OnInit {
 
   }
 
+
   ngOnInit(): void {
     if (this.authenticationService.currentUserValue == null) {
       this.router.navigate(['/']);
     }
+    this.subscriptions.push(
+      this.route.params
+        .subscribe(params => {
+          this.targetUsername = params.username || this.username;
+          this.getProfile();
 
-    this.getProfile();
+        }));
+
   }
 
   private getAllBadgesInfo() {
@@ -88,7 +99,7 @@ export class ProfileComponent implements OnInit {
   }
 
   getProfile() {
-    this.getProfileService.getProfile(this.getUsername()).subscribe(
+    this.subscriptions.push(this.getProfileService.getProfile(this.targetUsername).subscribe(
       result => {
         this.profile = result;
 
@@ -105,11 +116,7 @@ export class ProfileComponent implements OnInit {
         }
         this.ready = true;
       }
-      );
-  }
-
-  getUsername(): string {
-    return this.route.snapshot.paramMap.get('username') || this.authenticationService.currentUserValue.username;
+      ));
   }
 
   private setRights() {
@@ -135,7 +142,7 @@ export class ProfileComponent implements OnInit {
     this.modal(this.localeService.getValue('modal.changeRoleUser'), 'danger')
       .subscribe((receivedEntry) => {
         if (receivedEntry) {
-          this.privilegedService.edit(this.profile.id, 'role', isAnUpgrade).subscribe(result => {
+          this.subscriptions.push(this.privilegedService.edit(this.profile.id, 'role', isAnUpgrade).subscribe(result => {
             this.toastsService.toastAddSuccess('Privileges have been changed');
             window.location.reload();
 
@@ -143,7 +150,7 @@ export class ProfileComponent implements OnInit {
             (error) => {
               this.toastsService.toastAddWarning(this.localeService.getValue('toasterEditor.wentWrong'));
 
-            });
+            }));
         }
       });
 
@@ -153,14 +160,14 @@ export class ProfileComponent implements OnInit {
     this.modal(this.localeService.getValue('modal.deactivateUser'), 'danger')
       .subscribe((receivedEntry) => {
         if (receivedEntry) {
-          this.privilegedService.deactivate(this.profile.id, bool).subscribe(result => {
+          this.subscriptions.push(this.privilegedService.deactivate(this.profile.id, bool).subscribe(result => {
             this.toastsService.toastAddSuccess('User`s activation status changed');
             window.location.reload();
 
           },
             (error) => {
               this.toastsService.toastAddWarning(this.localeService.getValue('toasterEditor.wentWrong'));
-            });
+            }));
         }
       });
 
@@ -175,27 +182,27 @@ export class ProfileComponent implements OnInit {
   }
 
   private getInvitationsSize() {
-    this.friendService.getUsersInvitationsSize('outgoing').subscribe(
+    this.subscriptions.push(this.friendService.getUsersInvitationsSize('outgoing').subscribe(
       (result) => {
         this.outGoingAmount = result;
       },
       (error) => {
         this.toastsService.toastAddWarning(this.localeService.getValue('toasterEditor.wentWrong'));
 
-      });
+      }));
 
-    this.friendService.getUsersInvitationsSize('incoming').subscribe(
+    this.subscriptions.push(this.friendService.getUsersInvitationsSize('incoming').subscribe(
       (result) => {
         this.incomingAmount = result;
       },
       (error) => {
         this.toastsService.toastAddWarning(this.localeService.getValue('toasterEditor.wentWrong'));
 
-      });
+      }));
   }
 
   private getQuizzes() {
-    this.getProfileService.getProfileQuiz(this.profile.id).subscribe(
+    this.subscriptions.push(this.getProfileService.getProfileQuiz(this.profile.id).subscribe(
       result => {
         this.quizzes = result;
         this.tabReady = true;
@@ -203,47 +210,47 @@ export class ProfileComponent implements OnInit {
       (error) => {
         this.toastsService.toastAddWarning(this.localeService.getValue('toasterEditor.wentWrong'));
 
-      });
+      }));
   }
 
 
   private getAchievementsAmount() {
 
-    this.getProfileService.getProfileAchievementAmount(this.profile.id).subscribe(
+    this.subscriptions.push(this.getProfileService.getProfileAchievementAmount(this.profile.id).subscribe(
       (result) => {
         this.achievementsSize = result;
       },
       (error) => {
         this.toastsService.toastAddWarning(this.localeService.getValue('toasterEditor.wentWrong'));
 
-      });
+      }));
 
   }
 
   private getAllQuizzesAmount() {
 
-    this.getProfileService.getProfileQuizAmount(this.profile.id).subscribe(
+    this.subscriptions.push(this.getProfileService.getProfileQuizAmount(this.profile.id).subscribe(
       result => {
         this.quizAmount = result;
       },
       (error) => {
         this.toastsService.toastAddWarning(this.localeService.getValue('toasterEditor.wentWrong'));
 
-      });
+      }));
 
-    this.getProfileService.getProfileFavQuizAmount().subscribe(
+    this.subscriptions.push(this.getProfileService.getProfileFavQuizAmount().subscribe(
       result => {
         this.favQuizAmount = result;
       },
       (error) => {
         this.toastsService.toastAddWarning(this.localeService.getValue('toasterEditor.wentWrong'));
 
-      });
+      }));
   }
 
   private getFavQuizzes() {
 
-    this.getProfileService.getProfileFavQuiz().subscribe(
+    this.subscriptions.push(this.getProfileService.getProfileFavQuiz().subscribe(
       result => {
         this.quizzes = result;
         this.tabReady = true;
@@ -251,7 +258,7 @@ export class ProfileComponent implements OnInit {
       (error) => {
         this.toastsService.toastAddWarning(this.localeService.getValue('toasterEditor.wentWrong'));
 
-      });
+      }));
   }
 
 
@@ -277,7 +284,7 @@ export class ProfileComponent implements OnInit {
 
   private markQuiz(quiz: any) {
     quiz.favourite = !quiz.favourite;
-    this.quizService.markAsFavorite(quiz.id).subscribe();
+    this.subscriptions.push(this.quizService.markAsFavorite(quiz.id).subscribe());
     this.favQuizAmount += (quiz.favourite) ? 1 : -1;
 
     if (this.activeTab === 2) {
@@ -291,12 +298,12 @@ export class ProfileComponent implements OnInit {
       .subscribe((receivedEntry) => {
         if (receivedEntry) {
 
-          this.friendService.sendFriendRequest(this.profile.id, value.toString()).subscribe(
+          this.subscriptions.push(this.friendService.sendFriendRequest(this.profile.id, value.toString()).subscribe(
             () => this.profile.outgoingRequest = value,
             (error) => {
               this.toastsService.toastAddWarning(this.localeService.getValue('toasterEditor.wentWrong'));
             }
-          );
+          ));
         }
       });
   }
@@ -306,7 +313,7 @@ export class ProfileComponent implements OnInit {
       .subscribe((receivedEntry) => {
         if (receivedEntry) {
 
-          this.friendService.processFriendRequest(this.profile.id, value.toString()).subscribe(
+          this.subscriptions.push(this.friendService.processFriendRequest(this.profile.id, value.toString()).subscribe(
             () => {
               this.profile.friend = value;
               this.profile.incomingRequest = false;
@@ -315,7 +322,7 @@ export class ProfileComponent implements OnInit {
               this.toastsService.toastAddWarning(this.localeService.getValue('toasterEditor.wentWrong'));
 
             }
-          );
+          ));
         }
       });
   }
@@ -326,7 +333,7 @@ export class ProfileComponent implements OnInit {
       .subscribe((receivedEntry) => {
         if (receivedEntry) {
 
-          this.friendService.removeFriend(this.profile.id).subscribe(
+          this.subscriptions.push(this.friendService.removeFriend(this.profile.id).subscribe(
             () => {
               this.profile.friend = false;
               this.profile.incomingRequest = true;
@@ -337,7 +344,7 @@ export class ProfileComponent implements OnInit {
               this.toastsService.toastAddWarning(this.localeService.getValue('toasterEditor.wentWrong'));
 
             }
-          );
+          ));
         }
       });
 
@@ -346,7 +353,7 @@ export class ProfileComponent implements OnInit {
 
   getFriends(page: number): void {
 
-    this.friendService.getUsersFriends(this.profile.id, page.toString()).subscribe(
+    this.subscriptions.push(this.friendService.getUsersFriends(this.profile.id, page.toString()).subscribe(
       (friends) => {
         this.friends = friends;
         this.tabReady = true;
@@ -355,14 +362,14 @@ export class ProfileComponent implements OnInit {
         this.toastsService.toastAddWarning(this.localeService.getValue('toasterEditor.wentWrong'));
 
       }
-    );
+    ));
 
 
   }
 
   private getFriendsSize(): void {
 
-    this.friendService.getUsersFriendsSize(this.profile.id).subscribe(
+    this.subscriptions.push(this.friendService.getUsersFriendsSize(this.profile.id).subscribe(
       (size) => {
         this.friendsSize = size;
       },
@@ -370,14 +377,14 @@ export class ProfileComponent implements OnInit {
         this.toastsService.toastAddWarning(this.localeService.getValue('toasterEditor.wentWrong'));
 
       }
-    );
+    ));
 
   }
 
 
   private getAchievements(): void {
 
-    this.getProfileService.getProfileAchievement(this.profile.id).subscribe(
+    this.subscriptions.push(this.getProfileService.getProfileAchievement(this.profile.id).subscribe(
       (result) => {
         this.achievements = result;
         this.tabReady = true;
@@ -386,7 +393,7 @@ export class ProfileComponent implements OnInit {
         this.toastsService.toastAddWarning(this.localeService.getValue('toasterEditor.wentWrong'));
 
       }
-    );
+    ));
   }
 
 
@@ -427,4 +434,8 @@ export class ProfileComponent implements OnInit {
       }
     );
   }
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
 }

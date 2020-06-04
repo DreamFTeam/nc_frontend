@@ -7,7 +7,11 @@ import {AuthenticationService} from '../../core/_services/authentication/authent
 import {Role} from '../../core/_models/role';
 import {ModalMessageService} from '../../core/_services/utils/modal-message.service';
 import {AnonymService} from '../../core/_services/game/anonym.service';
-import {DomSanitizer} from '@angular/platform-browser';
+import {faSpinner} from '@fortawesome/free-solid-svg-icons';
+import {first} from 'rxjs/operators';
+import {Subscription} from 'rxjs';
+import {ToastsService} from '../../core/_services/utils/toasts.service';
+import {LocaleService} from '../../core/_services/utils/locale.service';
 
 
 @Component({
@@ -30,6 +34,10 @@ export class GameConnectorComponent implements OnInit, OnDestroy {
     loggedIn: boolean;
 
     started: boolean;
+    faSpinner = faSpinner;
+    private sessionsSubscription: Subscription;
+    private readySubscription: Subscription;
+    gameStatus: string;
 
     constructor(private activateRoute: ActivatedRoute,
                 private gameSettingsService: GameSettingsService,
@@ -37,82 +45,88 @@ export class GameConnectorComponent implements OnInit, OnDestroy {
                 private sseService: SseService,
                 private authenticationService: AuthenticationService,
                 private messageModal: ModalMessageService,
+                private toastsService: ToastsService,
                 private anonymService: AnonymService,
-                private sanitizer: DomSanitizer) {
+                private localeService: LocaleService) {
+        this.loggedIn = !!this.authenticationService.currentUserValue;
+        this.sessionId = localStorage.getItem('sessionid');
     }
 
     ngOnInit(): void {
-        this.loggedIn = !!this.authenticationService.currentUserValue;
-        this.sessionId = localStorage.getItem('sessionid');
         if (this.authenticationService.currentUserValue
             && this.authenticationService.currentUserValue.role !== Role.User
             || !this.sessionId) {
-            this.messageModal.show('Access denied', 'You don\'t have permissions.');
+            this.messageModal.show(this.localeService.getValue('game.accessDen'), this.localeService.getValue('game.permissions'));
             this.router.navigateByUrl('/');
         }
         const gameId = this.activateRoute.snapshot.paramMap.get('id');
         this.gameSettingsService.getSseForGame(gameId);
         this.gameSettingsService
             .getGame(gameId)
+            .pipe(first())
             .subscribe(game => {
                     if (!game.accessId) {
-                        this.messageModal.show('Access denied', 'The game has already started or has not been created.');
+                        this.messageModal.show(this.localeService.getValue('game.accessDen'), this.localeService.getValue('game.gameStarted'));
                         this.router.navigateByUrl('/');
                     }
-                    console.log(game);
                     this.game = game;
+                    this.gameStatus = this.localeService.getValue('game.waitingpl');
                 }
             );
         this.gameSettingsService.setSubjSessions(gameId);
-        this.gameSettingsService.sessions.subscribe(ses => {
-            Object.assign(this.sessions, ses);
-            console.log(ses);
-            for (const session of this.sessions) {
-                if (this.sessionId === session.game_session_id) {
-                    this.creator = session._creator;
+
+        this.sessionsSubscription = this.gameSettingsService.sessions
+            .subscribe(ses => {
+                Object.assign(this.sessions, ses);
+                for (const session of this.sessions) {
+                    if (this.sessionId === session.game_session_id) {
+                        this.creator = session._creator;
+                    }
                 }
-                session.imageContent = this.imageDeser(session.image);
-            }
-        });
-        this.gameSettingsService.readyList.subscribe(ls => {
-            Object.assign(this.usersSessionsReady, ls);
+                if (this.game && ses.length === this.game.maxUsersCount) {
+                    this.gameStatus = this.localeService.getValue('game.hostStart');
+                }
+            });
+        this.readySubscription = this.gameSettingsService.readyList.subscribe(ready => {
+            Object.assign(this.usersSessionsReady, ready);
+            console.log(ready);
             this.ready = this.usersSessionsReady.includes(this.sessionId);
         });
     }
 
     setReady() {
         this.ready = true;
-        console.log(this.sessionId);
-        this.gameSettingsService.setReady(this.game.id, this.sessionId).subscribe();
+        this.gameSettingsService.setReady(this.game.id, this.sessionId).pipe(first()).subscribe();
     }
 
     startGame() {
         this.started = true;
-        this.gameSettingsService.startGame(this.game.id).subscribe(next => {
-            console.log(next);
-        });
+        this.gameSettingsService.startGame(this.game.id).pipe(first()).subscribe();
     }
 
-    private imageDeser(image) {
-        if (image) {
-            const objUrl = 'data:image/jpeg;base64,' + image;
-            image = this.sanitizer.bypassSecurityTrustUrl(objUrl);
-        }
-        return image;
+    copyInputMessage(inputElement) {
+        inputElement.value = this.connectUrl + inputElement.value;
+        inputElement.select();
+        document.execCommand('copy');
+        inputElement.value = this.game.accessId;
+        this.toastsService.removeAll();
+        this.toastsService.toastAddSuccess(this.localeService.getValue('game.urlCopied'));
     }
 
 
     @HostListener('window:beforeunload', ['$event'])
     ngOnDestroy(): void {
         console.log('destroy');
+        this.sessionsSubscription.unsubscribe();
+        this.readySubscription.unsubscribe();
         this.gameSettingsService.stopSse();
-        if (!this.gameSettingsService.gameStart) {
-            this.gameSettingsService.quitGame(this.sessionId).subscribe();
-            localStorage.removeItem('sessionid');
-            if (this.anonymService.currentAnonymValue) {
-                this.anonymService.removeAnonym();
-            }
-        }
+        // if (!this.gameSettingsService.gameStart) {
+        //     this.gameSettingsService.quitGame(this.sessionId).pipe(first()).subscribe();
+        //     localStorage.removeItem('sessionid');
+        //     if (this.anonymService.currentAnonymValue) {
+        //         this.anonymService.removeAnonym();
+        //     }
+        // }
     }
 
 }

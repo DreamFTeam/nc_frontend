@@ -26,10 +26,8 @@ label
 
 .title
 {
-    position:    relative;
     color:       rgba(0, 0, 0, 0.63);
     font-size:   20px;
-    line-height: 24px;
 }
 
 .btn
@@ -93,6 +91,7 @@ button.removeb:focus
     max-height:    250px;
     overflow-y:    scroll;
     overflow-wrap: break-word;
+    direction: rtl;
 }
 
 .selected
@@ -101,3 +100,32 @@ button.removeb:focus
 }
 
 
+.caption {
+    opacity: 1; 
+    background-color: black;
+    color: white;
+    position: absolute;
+    margin: 0;
+    bottom: 0;
+    margin-right: -50%;
+    width: 100%;
+
+}
+
+.caption:hover {
+    opacity: .7; 
+    cursor: pointer;
+}
+
+.bottom{
+    border-bottom-right-radius: .25rem;
+    border-bottom-left-radius:  .25rem;
+}
+
+.bordr{
+    border-radius:  .25rem;
+}
+
+.btn-sized{
+    width: 140px;
+}

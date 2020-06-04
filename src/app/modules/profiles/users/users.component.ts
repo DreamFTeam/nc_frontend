@@ -1,18 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ProfileService } from '../../core/_services/profile/profile.service';
 import { Profile } from '../../core/_models/profile';
 import { AuthenticationService } from '../../core/_services/authentication/authentication.service';
 import { ToastsService } from '../../core/_services/utils/toasts.service';
 import { LocaleService } from '../../core/_services/utils/locale.service';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { Subscription } from 'rxjs';
+import { DateService } from '../../core/_services/utils/date.service';
 
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.css']
 })
-export class UsersComponent implements OnInit {
-
+export class UsersComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription[] = [];
   searchResults: Profile[];
   username: string;
   currentUsername: string;
@@ -25,7 +27,8 @@ export class UsersComponent implements OnInit {
   constructor(private getProfileService: ProfileService,
               private authenticationService: AuthenticationService,
               private toastsService: ToastsService,
-              private localeService: LocaleService
+              private localeService: LocaleService,
+              public dateService: DateService
 
   ) {
     this.searchResults = null;
@@ -48,7 +51,7 @@ export class UsersComponent implements OnInit {
     this.ready = false;
     this.init = false;
 
-    this.getProfileService.getProfilebyUserName(this.username === undefined ? '' : this.username).subscribe(
+    this.subscriptions.push(this.getProfileService.getProfilebyUserName(this.username === undefined ? '' : this.username).subscribe(
       data => {
         this.searchResults = data;
         this.ready = true;
@@ -57,13 +60,13 @@ export class UsersComponent implements OnInit {
       (error) => {
         this.toastsService.toastAddWarning(this.localeService.getValue('toasterEditor.wentWrong'));
 
-      });
+      }));
   }
 
   getPopularCreators() {
     this.ready = false;
 
-    this.getProfileService.getPopularCreators().subscribe(
+    this.subscriptions.push(this.getProfileService.getPopularCreators().subscribe(
       data => {
         this.searchResults = data;
         this.ready = true;
@@ -72,13 +75,13 @@ export class UsersComponent implements OnInit {
       (error) => {
         this.toastsService.toastAddWarning(this.localeService.getValue('toasterEditor.wentWrong'));
 
-      });
+      }));
   }
 
   getPrivilegedUsers() {
     this.ready = false;
 
-    this.getProfileService.getPrivilegedUsers().subscribe(
+    this.subscriptions.push(this.getProfileService.getPrivilegedUsers().subscribe(
       data => {
         this.searchResults = data;
         this.ready = true;
@@ -87,7 +90,11 @@ export class UsersComponent implements OnInit {
       (error) => {
         this.toastsService.toastAddWarning(this.localeService.getValue('toasterEditor.wentWrong'));
 
-      });
+      }));
   }
 
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
 }

@@ -8,11 +8,6 @@
     max-width: 25%;
 }
 
-.card-header
-{
-    font-size: medium;
-}
-
 .media :hover
 {
     cursor: pointer;
@@ -20,19 +15,24 @@
 
 .media
 {
-    margin-bottom: 0.7em;
+    margin-bottom: 0.5em;
 }
 
-.card-body
+.card
 {
-    max-height: 30vh;
+    height: 40vh;
 }
 
 .quiztitle
 {
-    font-size:     small;
+    font-size:     1.2em;
     padding:       0;
     margin-bottom: 0.1em;
+    
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 @media (min-width: 768px)
@@ -40,11 +40,19 @@
     .embed-responsive
     {
         min-width: 15% !important;
-        max-width: 35% !important;
+        max-width: 25% !important;
     }
+}
 
-    .card-header
-    {
-        font-size: 1em;
-    }
+.bg :hover {
+    background-color: #ebe8e8;
+}
+
+li{
+    outline:    none !important;
+    box-shadow: none;   
+}
+
+.loading{
+    padding-top: 3.5em;
 }

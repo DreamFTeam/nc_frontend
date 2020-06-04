@@ -33,7 +33,7 @@ import { ChatSettingsComponent } from './modules/chats/chat-settings/chat-settin
 
 const routes: Routes = [
     { path: '', component: LandingPageComponent },
-    { path: 'recovery/:id', component: ChangePasswordComponent },
+    { path: 'recovery/confirm', component: ChangePasswordComponent },
     {
         path: 'quizedit/:id', component: QuizComponent,
         canActivate: [AuthGuard],

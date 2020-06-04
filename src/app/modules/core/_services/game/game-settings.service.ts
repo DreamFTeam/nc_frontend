@@ -9,6 +9,7 @@ import {catchError, map} from 'rxjs/operators';
 import {HandleErrorsService} from '../utils/handle-errors.service';
 import {AnonymService} from './anonym.service';
 import {Router} from '@angular/router';
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Injectable({
     providedIn: 'root'
@@ -34,7 +35,8 @@ export class GameSettingsService {
                 private sseService: SseService,
                 private errorsService: HandleErrorsService,
                 private anonymService: AnonymService,
-                private router: Router) {
+                private router: Router,
+                private sanitizer: DomSanitizer) {
         this.sessionsSubject = new BehaviorSubject<any[]>([]);
         this.sessions = this.sessionsSubject.asObservable();
         this.readySubject = new BehaviorSubject<string[]>([]);
@@ -45,13 +47,13 @@ export class GameSettingsService {
         this.eventSource = this.sseService.getEventSource(this.sseConnectorUrl + gameId);
         this.eventSource.addEventListener('join', event => {
             const ev: any = event;
-            console.log('Join ' + ev.data);
+            // console.log('Join ' + ev.data);
             this.setSubjSessions(gameId);
         });
 
         this.eventSource.addEventListener('ready', event => {
             const ev: any = event;
-            console.log('Ready ' + ev.data);
+            // console.log('Ready ' + ev.data);
             if (!this.readySubject.value.includes(ev.data)) {
                 this.readySubject.value.push(ev.data);
                 this.readySubject.next(this.readySubject.value);
@@ -79,7 +81,7 @@ export class GameSettingsService {
         if (!settings.additionalPoints) {
             settings.additionalPoints = false;
         }
-        console.log(settings);
+        // console.log(settings);
         return this.http.post<Game>(this.gameUrl, JSON.stringify(settings), this.httpOptions);
     }
 
@@ -92,9 +94,15 @@ export class GameSettingsService {
             this.httpOptions);
     }
 
-    // TODO Set images
     getSessions(gameId: string): Observable<any> {
-        return this.http.get<any>(this.gameUrl + `sessions/${gameId}`, this.httpOptions);
+        return this.http.get<any>(this.gameUrl + `sessions/${gameId}`, this.httpOptions).pipe(
+            map(sessions => {
+                sessions.forEach(x => {
+                    x.imageContent = this.imageDeser(x.image);
+                });
+                return sessions;
+            })
+        );
     }
 
     setSubjSessions(gameId: string) {
@@ -114,7 +122,7 @@ export class GameSettingsService {
     }
 
     quitGame(sessionId: string) {
-        console.log('quit ' + sessionId);
+        // console.log('quit ' + sessionId);
         this.readySubject.next([]);
         this.sessionsSubject.next([]);
         return this.http.delete(this.gameUrl + `remove/${sessionId}`,
@@ -124,5 +132,13 @@ export class GameSettingsService {
                     this.anonymService.removeAnonym();
                 }
             }), catchError(this.errorsService.handleError('quitGame')));
+    }
+
+    private imageDeser(image) {
+        if (image) {
+            const objUrl = 'data:image/jpeg;base64,' + image;
+            image = this.sanitizer.bypassSecurityTrustUrl(objUrl);
+        }
+        return image;
     }
 }

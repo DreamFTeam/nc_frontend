@@ -1,5 +1,6 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {AnonymService} from '../../core/_services/game/anonym.service';
 
 @Component({
     selector: 'app-anonim-init',
@@ -12,36 +13,16 @@ export class AnonymInitComponent implements OnInit {
     nameStr: string;
     loading: boolean;
 
-    constructor(public activeModal: NgbActiveModal) {
+    constructor(public activeModal: NgbActiveModal,
+                private anonymService: AnonymService) {
     }
 
     ngOnInit(): void {
+        if (this.anonymService.currentAnonymValue) {
+            this.nameStr = this.anonymService.currentAnonymValue.username;
+        }
     }
 
-
-    // joinGame() {
-    //
-    //     if (this.anonymName) {
-    //         this.loading = true;
-    //         console.log(this.anonymName);
-    //         this.anonymService.anonymLogin(this.anonymName).subscribe(anon => {
-    //             console.log(anon);
-    //             this.gameSettingsService.join(this.activeRouter.snapshot.paramMap.get('accessId'))
-    //                 .subscribe(session => {
-    //                         console.log(session);
-    //                         localStorage.setItem('sessionid', session.id);
-    //                         this.router.navigateByUrl(`game/${session.gameId}/lobby`);
-    //                     },
-    //                     error => {
-    //                         // this.modal.show('An error occurred', 'An error occurred.');
-    //                         // this.router.navigateByUrl('/');
-    //                         console.error(error);
-    //                         return false;
-    //                     }
-    //                 );
-    //         });
-    //     }
-    // }
     initAnon() {
         this.activeModal.close('Close click');
         this.anonymName.emit(this.nameStr);

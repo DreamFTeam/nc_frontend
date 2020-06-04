@@ -2,6 +2,9 @@ import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {GameResultService} from '../../core/_services/game/game-result.service';
 import {GameQuestionService} from '../../core/_services/game/game-question.service';
+import {LocaleService} from '../../core/_services/utils/locale.service';
+import {first} from 'rxjs/operators';
+import {ToastsService} from '../../core/_services/utils/toasts.service';
 
 @Component({
     selector: 'app-rating-quiz-modal',
@@ -11,18 +14,20 @@ import {GameQuestionService} from '../../core/_services/game/game-question.servi
 export class RatingQuizModalComponent implements OnInit, OnDestroy {
     currentRate: number;
     message: string;
-    readonly alreadyRateMes = 'You have already rated this quiz before. You can change your mind now.';
-    readonly notRatedYetMes = 'Rate quiz please';
+    readonly alreadyRateMes = this.localeService.getValue('rating.alreadyRateMes');
+    readonly notRatedYetMes = this.localeService.getValue('rating.notRatedYetMes');
     @Input() gameId: string;
     private quizId: string;
 
     constructor(public activeModal: NgbActiveModal,
                 private gameResultService: GameResultService,
-                private gameQuestionService: GameQuestionService) {
+                private gameQuestionService: GameQuestionService,
+                private localeService: LocaleService,
+                private toastsService: ToastsService) {
     }
 
     ngOnInit(): void {
-        console.log(this.gameId);
+        // console.log(this.gameId);
         this.gameQuestionService.getGameData(this.gameId).subscribe(x => {
             this.quizId = x.quizId;
             this.gameResultService.getRating(this.quizId).subscribe(rating => {
@@ -33,7 +38,8 @@ export class RatingQuizModalComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.gameResultService.sendRating(this.gameId, this.currentRate).subscribe();
+        this.gameResultService.sendRating(this.gameId, this.currentRate).pipe(first())
+            .subscribe(() => this.toastsService.toastAddSuccess(this.localeService.getValue('rating.acceptRating')));
     }
 
 }

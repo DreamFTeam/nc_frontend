@@ -27,6 +27,7 @@ import {SharedModule} from './modules/shared/shared.module';
 import {ValidationModule} from './modules/validation/validation.module';
 import {AnonymInitComponent} from './modules/game/anonym-init/anonym-init.component';
 import { ChatsModule } from './modules/chats/chats.module';
+import { LanguageInterceptor } from './modules/core/_helpers/language.interceptor';
 
 const appRoutes: Routes = [];
 
@@ -72,7 +73,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
     entryComponents: [LogInComponent, SignUpComponent, RecoverPasswordComponent, AnonymInitComponent],
     providers: [
         {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
-        {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
+        {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
+        {provide: HTTP_INTERCEPTORS, useClass: LanguageInterceptor, multi: true}
     ],
     bootstrap: [AppComponent]
 })

@@ -1,19 +1,20 @@
 <div class="card mb-2">
-    <div class="card-header lead">
+    <div class="card-header lead cardblock-title">
         {{'lastAchievements.title' | translate}}
     </div>
-    <div class="card-body p-1 overflow-auto" *ngIf="!isEmpty ; else empty">
+    <div class="card-body p-1 overflow-auto" *ngIf="(!isEmpty && !isLoading) ; else (isLoading ? loading : empty)">
         <ul class="list-unstyled mb-0">
-            <li class="media" *ngFor="let item of achievements$ | async" routerLink='/profile'>
-                <div class="embed-responsive embed-responsive-1by1" placement="right" ngbTooltip="{{item.description}}">
-                    <img class="mr-2 embed-responsive-item align-self-center pic"
-                         [src]="item.imageContent ? item.imageContent : this.mockImgUrl"
-                         alt="Achievement icon">
-                </div>
-                <div class="media-body">
-                    <p class="bold p-2">{{item.title}}</p>
-                </div>
-            </li>
+            <div class="bg w-100" *ngFor="let item of achievements" routerLink='/profile/{{currentUsername}}/3'>
+                <li class="media">
+                    <div class="embed-responsive embed-responsive-1by1" placement="right" 
+                        ngbTooltip="{{item.description}}">
+                        <img class="mr-2 embed-responsive-item align-self-center pic" [src]="item.imageContent ? item.imageContent : this.mockImgUrl" alt="Achievement icon">
+                    </div>
+                    <div class="media-body">
+                        <p class="bold p-2">{{item.title}}</p>
+                    </div>
+                </li>
+            </div>
         </ul>
     </div>
 </div>
@@ -21,4 +22,11 @@
 <!-- Showing this when the list is empty -->
 <ng-template #empty>
     <p *ngIf="isEmpty" class="lead emptylabel">{{'lastAchievements.empty' | translate}}.</p>
+</ng-template>
+
+
+<ng-template #loading>
+    <div class="card-body text-center">
+        <fa-icon [icon]="faSpinner" [spin]="true" size="6x"></fa-icon>
+    </div>
 </ng-template>

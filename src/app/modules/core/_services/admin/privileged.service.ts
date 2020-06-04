@@ -29,7 +29,7 @@ export class PrivilegedService {
         const userInfo = {
             username,
             email,
-            password,
+            password: this.authenticationService.passwordHashing(password, this.authenticationService.PASSWORD_HASHING_ITERATIONS_AMOUNT),
             role: userrole,
         };
         return this.http.post<User>(this.url, JSON.stringify(userInfo), this.httpOptions).pipe(
@@ -58,7 +58,7 @@ export class PrivilegedService {
         };
         userInfo[field] = (field !== 'role') ? value : value === true ? 'ROLE_ADMIN' : 'ROLE_MODERATOR';
 
-        return this.http.post<User>(this.url + '/edit/' + field, JSON.stringify(userInfo), this.httpOptions).pipe(
+        return this.http.patch<User>(this.url + '/edit/' + field, JSON.stringify(userInfo), this.httpOptions).pipe(
             catchError(err => {
                 return throwError(err);
             }));
@@ -66,7 +66,7 @@ export class PrivilegedService {
 
 
     public uploadPicture(value: FormData) {
-        return this.http.post<any>(this.url + '/edit/image', value).pipe();
+        return this.http.patch<any>(this.url + '/edit/image', value).pipe();
     }
 
 }

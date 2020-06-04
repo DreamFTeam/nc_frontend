@@ -63,14 +63,14 @@ export class ProfileService {
   }
 
   public editProfile(field: string, value: string): Observable<Profile> {
-    return this.http.post<Profile>(this.profilesUrl + 'edit/' + field,
+    return this.http.patch<Profile>(this.profilesUrl + 'edit/' + field,
       null, { params: { key: value } }
     ).pipe(catchError(this.errorHandler.handleError<any>('EditProfile')));
 
   }
 
   public uploadPicture(value: FormData) {
-    return this.http.post<Profile>(this.profilesUrl + 'edit/image', value)
+    return this.http.patch<Profile>(this.profilesUrl + 'edit/image', value)
       .pipe(catchError(this.errorHandler.handleError<any>('uploadPicture')));
   }
 
@@ -86,6 +86,7 @@ export class ProfileService {
                 ('data:image\/(png|jpg|jpeg);base64,'
                   + input.imageContent);
           }
+          input.rating = Number(input.rating.toFixed(2));
           return input;
         }
         ))
@@ -110,6 +111,7 @@ export class ProfileService {
                 ('data:image\/(png|jpg|jpeg);base64,'
                   + input.imageContent);
           }
+          input.rating = Number(input.rating.toFixed(2));
           return input;
         }
         ))

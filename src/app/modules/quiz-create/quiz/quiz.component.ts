@@ -9,6 +9,7 @@ import { ExtendedQuestion } from '../../core/_models/question/extendedquestion';
 import { ModalService } from '../../core/_services/utils/modal.service';
 import { ToastsService } from '../../core/_services/utils/toasts.service';
 import { LocaleService } from '../../core/_services/utils/locale.service';
+import { AuthenticationService } from '../../core/_services/authentication/authentication.service';
 
 @Component({
     selector: 'app-quiz',
@@ -37,7 +38,7 @@ export class QuizComponent implements OnInit {
     constructor(private quizService: QuizService, private questionService: QuestionService,
         private activateRoute: ActivatedRoute, private router: Router, private sanitizer: DomSanitizer,
         private modalService: ModalService, public toastsService: ToastsService,
-        private localeService: LocaleService) {
+        private localeService: LocaleService, private authenticationService: AuthenticationService) {
         this.quizLoading = true;
         this.questionLoading = false;
         this.questions = [];
@@ -121,6 +122,10 @@ export class QuizComponent implements OnInit {
 
     //Gettig quiz by id in url
     setGettedQuiz(answer) {
+        if(answer.creatorId !== this.authenticationService.currentUserValue.id){
+            this.router.navigate(['/']);
+        }
+
         this.quiz = answer;
         this.file = this.quiz.unsanitizedImage;
         this.thumbnail = this.quiz.imageContent;

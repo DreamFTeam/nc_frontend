@@ -1,227 +1,290 @@
 <div role="main" class="container" *ngIf="ready;" style="word-wrap: break-word;">
-    <div class="container-sm mb-2 h-100">
-        <div class="row">
-            <div class="col-xs-2 col-sm-4 col-md-4 col-lg-3 p-2">
-                <img class="col p-3" [src]="profile.image ? profile.image : '../../assets/img/nopicture.jpg'" style="background-color:rgba(243, 202, 165, 0.863);">
-                <a *ngIf="owner && profile.activated" (click)="edit()" class="btn btn-outline-secondary mt-2 w-100">{{ 'utils.edit'| translate}} {{'profile.profile' | translate }} </a>
-                <a *ngIf="this.profile.username == username" class="btn btn-outline-secondary mt-2 w-100" style="color: black;" [routerLink]="'/settings'"> {{ 'utils.settings' | translate }} </a>
-                <button *ngIf="!owner && this.role=='ROLE_USER' && !profile.friend && !profile.outgoingRequest && !profile.incomingRequest" class="btn btn-outline-secondary mt-2 w-100" (click)="sendFriendRequest(true)"> {{'profile.Add' | translate }} {{'profile.friend_whom' | translate }}  </button>
-                <button *ngIf="!owner && this.role=='ROLE_USER' && !profile.friend && profile.outgoingRequest " class="btn btn-outline-danger mt-2 w-100" (click)="sendFriendRequest(false)">{{'utils.cancel'| translate}}  {{'profile.friendrequest' | translate }}</button>
-                <button *ngIf="!owner && this.role=='ROLE_USER' && !profile.friend && profile.incomingRequest " class="btn btn-outline-success mt-2 w-100" (click)="processFriendRequest(true)">  {{'profile.Accept' | translate }} {{'profile.friendrequest' | translate }}</button>
-                <button *ngIf="!owner && this.role=='ROLE_USER' && !profile.friend && profile.incomingRequest " class="btn btn-outline-danger mt-2 w-100" (click)="processFriendRequest(false)"> {{'profile.Reject' | translate }}  {{'profile.friendrequest' | translate }}</button>
-                <a *ngIf="!owner && this.role=='ROLE_USER' && profile.friend" class="btn btn-outline-secondary mt-2 w-100" (click)="goToPersonalChat()">  {{'profile.Message' | translate }} </a>
-                <button *ngIf="!owner && this.role=='ROLE_USER' && profile.friend" class="btn btn-outline-danger mt-2 w-100" (click)="removeFriend()"> {{'profile.Unfriend' | translate }} </button>
-            </div>
-            <div class="col p-3">
-                <b>{{profile.username}}</b>
-                <span *ngIf="profile.role!='ROLE_USER'" class="blue"> {{profile.role.substr(5).toLowerCase()}}</span>
-                <h5 *ngIf="!profile.activated" style="color: red;"> {{'profile.deactivated' | translate }} </h5>
-                <h5 *ngIf="profile.online; else lastseen" class="blue"> {{'profile.online' | translate }} </h5>
-                <ng-template #lastseen>
-                    <h5 class="blue"> {{'profile.lastSeenOn' | translate }} {{profile.lastTimeOnline | date:'medium'}} </h5>
-                </ng-template>
-                <h5>{{profile.aboutMe}}</h5>
-            </div>
-            <div *ngIf="this.role=='ROLE_USER'" class="col-xs-2 col-sm-3 col-md-3 col-lg-3 p-2 ">
-                <a *ngIf="owner" (click)="seeeRequests('incoming')" class="btn btn-outline-info mt-2 w-100"> {{'profile.Incoming' | translate }} {{'profile.friendRequests' | translate }}<span *ngIf="incomingAmount !== undefined"class="badge badge-info"> {{incomingAmount}}</span></a>
-                <a *ngIf="owner" (click)="seeeRequests('outgoing')" class="btn btn-outline-info mt-2 w-100"> {{'profile.Outgoing' | translate }} {{'profile.friendRequests' | translate }}<span *ngIf="outGoingAmount !== undefined" class="badge badge-info"> {{outGoingAmount}}</span> </a>
-            </div>
-            <div *ngIf="this.role!='ROLE_USER' && owner && profile.activated" class="col-3 ">
-                <button class="btn btn-outline-secondary mt-2" (click)="deactivate(false)">  {{'profile.deactivate' | translate }} </button>
-                <div class="w-100"></div>
-                <button class="btn btn-outline-secondary mt-2" *ngIf="role=='ROLE_SUPERADMIN' && this.profile.role=='ROLE_ADMIN'" (click)="editAdmin(false)"> {{'profile.downgrade' | translate }} </button>
-                <button *ngIf="role=='ROLE_SUPERADMIN' && this.profile.role=='ROLE_MODERATOR'" class="btn btn-outline-secondary mt-2" (click)="editAdmin(true)"> {{'profile.upgrade' | translate }} </button>
-            </div>
+  <div class="container-sm row ml-1 h-100 p-3">
+     <div class="col-xs-2 col-sm-4 col-md-4 col-lg-3 ">
+        <div class="embed-responsive embed-responsive-1by1">
+         <img class="embed-responsive-item pic border"
+          [src]="profile.image ? profile.image : '../../assets/img/nopicture.jpg'">
+         </div>
+         <div>
+        <a *ngIf="owner && profile.activated"
+        (click)="edit()"
+        class="btn btn-outline-secondary mt-2 w-100">{{ 'utils.edit'| translate}} {{'profile.profile' | translate }} </a>
+        <a *ngIf="this.profile.username == username"
+        class="btn btn-outline-secondary mt-2 w-100"
+        style="color: black;"
+        [routerLink]="'/settings'"> {{ 'utils.settings' | translate }} </a>
+        <button *ngIf="!owner && this.role=='ROLE_USER' && !profile.friend && !profile.outgoingRequest && !profile.incomingRequest"
+        class="btn btn-outline-secondary mt-2 w-100"
+        (click)="sendFriendRequest(true)"> {{'profile.Add' | translate }} {{'profile.friend_whom' | translate }}  </button>
+        <button *ngIf="!owner && this.role=='ROLE_USER' && !profile.friend && profile.outgoingRequest "
+        class="btn btn-outline-danger mt-2 w-100"
+        (click)="sendFriendRequest(false)">{{'utils.cancel'| translate}}  {{'profile.friendrequest' | translate }}</button>
+        <button *ngIf="!owner && this.role=='ROLE_USER' && !profile.friend && profile.incomingRequest "
+        class="btn btn-outline-success mt-2 w-100"
+        (click)="processFriendRequest(true)">  {{'profile.Accept' | translate }} {{'profile.friendrequest' | translate }}</button>
+        <button *ngIf="!owner && this.role=='ROLE_USER' && !profile.friend && profile.incomingRequest "
+        class="btn btn-outline-danger mt-2 w-100"
+        (click)="processFriendRequest(false)"> {{'profile.Reject' | translate }}  {{'profile.friendrequest' | translate }}</button>
+        <!--a *ngIf="!owner && this.role=='ROLE_USER' && profile.friend"
+          class="btn btn-outline-secondary mt-2 w-100">  {{'profile.Message' | translate }} </a-->
+        <button *ngIf="!owner && this.role=='ROLE_USER' && profile.friend"
+        class="btn btn-outline-danger mt-2 w-100"
+        (click)="removeFriend()"> {{'profile.Unfriend' | translate }} </button>
+      </div>
+     </div>
+      <div class="col">
+        <b>{{profile.username}}</b>
+        <span *ngIf="profile.role!='ROLE_USER'" class="blue"> {{profile.role.substr(5).toLowerCase()}}</span>
+        <h5 *ngIf="!profile.activated" style="color: red;"> {{'profile.deactivated' | translate }}  </h5>
+        <h5 *ngIf="profile.online; else lastseen" class="blue"> {{'profile.online' | translate }} </h5>
+        <ng-template #lastseen>
+          <h5 class="blue"> {{'profile.lastSeenOn' | translate }} {{profile.lastTimeOnline  |   date:dateService.datetimePattern:dateService.currentTimezone}} </h5>
+        </ng-template>
+        <h5>{{profile.aboutMe}}</h5>
+      </div>
+      <div *ngIf= "this.role=='ROLE_USER'" class="col-xs-2 col-sm-3 col-md-3 col-lg-3 p-2 ">
+        <a *ngIf="owner" (click)="seeeRequests('incoming')" class="btn btn-outline-info mt-2 w-100"> {{'profile.Incoming' | translate }} {{'profile.friendRequests' | translate }}<span *ngIf="incomingAmount !== undefined"class="badge badge-info ml-2"> {{incomingAmount}}</span></a>
+        <a *ngIf="owner" (click)="seeeRequests('outgoing')" class="btn btn-outline-info mt-2 w-100"> {{'profile.Outgoing' | translate }} {{'profile.friendRequests' | translate }}<span *ngIf="outGoingAmount !== undefined" class="badge badge-info ml-2"> {{outGoingAmount}}</span> </a>
+      </div>
+      <div *ngIf="this.role!='ROLE_USER' && owner && profile.activated" class="col-3 ">
+        <button class="btn btn-outline-secondary mt-2"
+          (click)="deactivate(false)">  {{'profile.deactivate' | translate }} </button>
+        <div class="w-100"></div>
+        <button class="btn btn-outline-secondary mt-2"
+        *ngIf="role=='ROLE_SUPERADMIN' && this.profile.role=='ROLE_ADMIN'"
+        (click)="editAdmin(false)"> {{'profile.downgrade' | translate }} </button>
+        <button *ngIf="role=='ROLE_SUPERADMIN' && this.profile.role=='ROLE_MODERATOR'"
+        class="btn btn-outline-secondary mt-2"
+        (click)="editAdmin(true)"> {{'profile.upgrade' | translate }} </button>
+      </div>
+   </div>
+  <div class="container-sm mt-2 mb-2 ml-1 p-3" *ngIf="profile.role=='ROLE_USER'">    
+    <ul ngbNav
+    #nav="ngbNav"
+    [(activeId)]="activeTab"
+    (navChange)="changeTab($event)"
+    class="nav-tabs w-100 m-2 p-2 border">
+   <li [ngbNavItem]="1">
+     <a ngbNavLink class="blue p-2 mr-2">
+      {{'profile.quizzes' | translate }}  
+          <h5 *ngIf="quizAmount !== undefined" class="badge badge-secondary"> {{quizAmount}}</h5>
+      </a>
+      <ng-template ngbNavContent>
+        <p *ngIf="tabReady && !quizzes.length && !owner" style="font-style: large; font-weight: bold;" class="ml-5 mt-3 ">
+          {{'profile.noquizzes' | translate }}
+        </p>
+        <div *ngIf="owner">
+          <a class="row btn btn-outline-secondary m-2 w-100 justify-content-center p-3"
+            [routerLink]="'/quizcreate/'">
+          {{'profile.newquiz' | translate }} 
+          </a>
         </div>
-    </div>
-    <div class="container-sm mt-2 p-4" *ngIf="profile.role=='ROLE_USER'">
-        <ul ngbNav #nav="ngbNav" [(activeId)]="activeTab" (navChange)="changeTab($event)" class="nav-tabs w-100 m-2 p-2 border">
-            <li [ngbNavItem]="1">
-                <a ngbNavLink class="blue p-2 mr-2">
-                    <div *ngIf="owner">
-                        {{'profile.your' | translate }} {{'profile.quizzes' | translate }}
-                        <div *ngIf="quizAmount !== undefined" class="badge badge-secondary"> {{quizAmount}}</div>
+        <div *ngIf="tabReady">
+          <div *ngFor="let quiz of quizzes">
+            <div
+           class="row container-fluid m-2 border p-2"
+              style="word-wrap: break-word; ">
+             <img class="border p-1 col-xs-5 col-sm-5 col-md-4 col-lg-3"
+              [src]="quiz.imageContent ? quiz.imageContent : '../../assets/img/quiz.jpg'"
+              (click)="goToQuiz(quiz.id)">
+              <div class="col-xs-5 col-sm-7 col-md-8 col-lg-9 p-1 ">
+                <div class="ml-2">
+                  <a (click)="goToQuiz(quiz.id)" class="blue" style="user-select: none; font-size: larger;">
+                  {{quiz.title}}
+                  <br/>
+                  </a> 
+                  <b>{{'profile.descrip' | translate }} :</b> {{quiz.description}}  <br/>
+                  <b>{{'profile.timeModif' | translate }}: </b> {{quiz.creationDate | date:dateService.datePattern:dateService.currentTimezone}} <br/>
+                  <div *ngIf="owner">
+                    <b>{{'profile.status' | translate }}
+                    :</b> {{((quiz.published && quiz.activated && quiz.validated) ? 'profile.published' : !quiz.validated && !quiz.activated ? 'profile.notvalidated' : (!quiz.activated && quiz.published && quiz.validated) ? 'profile.deactivated': 'profile.rejected') | translate }}
+                    <br/>
+                    <div *ngIf="owner && quiz.adminComment"> <b>{{'profile.adminsComment' | translate }}
+                      :</b> {{quiz.adminComment}} 
                     </div>
-                    <div *ngIf="!owner">
-                        {{profile.username}}{{'profile.whose' | translate }} {{'profile.quizzes' | translate }}
-                        <div *ngIf="quizAmount !== undefined" class="badge badge-secondary"> {{quizAmount}}</div>
-                    </div>
-                </a>
-                <ng-template ngbNavContent>
-                    <p *ngIf="tabReady && !quizzes.length" style="font-style: large; font-weight: bold;" class="ml-5 mt-3 ">
-                        {{'profile.noquizzes' | translate }}
-                    </p>
-                    <div *ngIf="owner">
-                        <a class="row btn btn-outline-secondary m-2 w-100 justify-content-center p-3" [routerLink]="'/quizcreate/'">
-           {{'profile.newquiz' | translate }} 
-           </a>
-                    </div>
-                    <div *ngIf="tabReady">
-                        <div *ngFor="let quiz of quizzes">
-                            <div *ngIf="owner || quiz.published" class="row container-fluid m-2 border p-2" style="word-wrap: break-word;">
-                                <img class="col-xs-5 col-sm-5 col-md-4 col-lg-3 p-2" style="background-color:rgba(243, 202, 165, 0.863);" [src]="quiz.imageContent ? quiz.imageContent : '../../assets/img/quiz.jpg'" (click)="goToQuiz(quiz.id)">
-                                <div class="col-xs-5 col-sm-7 col-md-8 col-lg-9 p-1 ">
-                                    <div class="ml-2">
-                                        <a (click)="goToQuiz(quiz.id)" class="blue" style="user-select: none; font-size: larger;">
-                   {{quiz.title}}
-                   <br/>
-                   </a>
-                                        <b>{{'profile.descrip' | translate }} :</b> {{quiz.description}} <br/>
-                                        <b>{{'profile.timeModif' | translate }}: </b> {{quiz.creationDate}} <br/>
-                                        <div *ngIf="owner">
-                                            <b>{{'profile.status' | translate }}
-                     :</b> {{((quiz.published && quiz.activated) ? 'profile.published' : !quiz.validated ? 'profile.notvalidated' : 'profile.deactivated') | translate }}
-                                            <br/>
-                                            <div *ngIf="owner && quiz.adminComment"> <b>{{'profile.adminsComment' | translate }}
-                       :</b> {{quiz.adminComment}}
-                                            </div>
-                                        </div>
-                                        <b>{{'profile.rating' | translate }}:</b> {{quiz.rating}} <br/>
-                                        <div class="col-xs-2 col-sm-3 col-md-2 col-lg-1 p-2 float-right" (click)="markQuizFavourite(quiz)">
-                                            <svg *ngIf="quiz.favourite" class="bi bi-star-fill" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                       <path
-                         d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
-                     </svg>
-                                            <svg *ngIf="!quiz.favourite" class="bi bi-star" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                       <path fill-rule="evenodd"
-                         d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.523-3.356c.329-.314.158-.888-.283-.95l-4.898-.696L8.465.792a.513.513 0 00-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767l-3.686 1.894.694-3.957a.565.565 0 00-.163-.505L1.71 6.745l4.052-.576a.525.525 0 00.393-.288l1.847-3.658 1.846 3.658a.525.525 0 00.393.288l4.052.575-2.906 2.77a.564.564 0 00-.163.506l.694 3.957-3.686-1.894a.503.503 0 00-.461 0z"
-                         clip-rule="evenodd"/>
-                     </svg>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div *ngIf="!tabReady" style="text-align: center;">
-                        <fa-icon [icon]="faSpinner" [spin]="true" size="6x"></fa-icon>
-                    </div>
-                </ng-template>
-            </li>
-            <li [ngbNavItem]="2" *ngIf="owner">
-                <a ngbNavLink class="blue p-2 mr-2">
-       {{'profile.your' | translate }} {{'profile.favourite' | translate }} {{'profile.quizzes' | translate }}
-       <h5 *ngIf="favQuizAmount !== undefined" class="badge badge-secondary"> {{favQuizAmount}}</h5>
-     </a>
-                <ng-template ngbNavContent class="blue">
-                    <p *ngIf="tabReady && !quizzes.length" style="font-style: large; font-weight: bold;" class="ml-5 mt-3">
-                        {{'profile.nofavourites' | translate }}
-                        <a [routerLink]="'/quiz-list/'" class="blue">
-         ,{{'profile.explore' | translate }}
-         </a>
-                    </p>
-                    <div *ngIf="tabReady">
-                        <div *ngFor="let quiz of quizzes">
-                            <div *ngIf="owner || quiz.published" class="row container-fluid m-2 border p-2" style="word-wrap: break-word;">
-                                <img class="col-xs-5 col-sm-5 col-md-4 col-lg-3 p-2" style="background-color:rgba(243, 202, 165, 0.863);" [src]="quiz.imageContent ? quiz.imageContent : '../../assets/img/quiz.jpg'" (click)="goToQuiz(quiz.id)">
-                                <div class="col-xs-5 col-sm-7 col-md-8 col-lg-9 p-1 ">
-                                    <div class="ml-2">
-                                        <a (click)="goToQuiz(quiz.id)" class="blue" style="user-select: none; font-size: larger;">
-                 {{quiz.title}}
-                 <br/>
-                 </a>
-                                        <b>{{'profile.descrip' | translate }} :</b> {{quiz.description}} <br/>
-                                        <b>{{'profile.timeModif' | translate }}:</b> {{quiz.creationDate}} <br/>
-                                        <b>{{'profile.rating' | translate }}:</b> {{quiz.rating}} <br/>
-                                        <div class="col-xs-2 col-sm-3 col-md-2 col-lg-1 p-2 float-right" (click)="markQuizFavourite(quiz)">
-                                            <svg *ngIf="quiz.favourite" class="bi bi-star-fill" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                     <path
-                       d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
-                   </svg>
-                                            <svg *ngIf="!quiz.favourite" class="bi bi-star" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                     <path fill-rule="evenodd"
-                       d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.523-3.356c.329-.314.158-.888-.283-.95l-4.898-.696L8.465.792a.513.513 0 00-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767l-3.686 1.894.694-3.957a.565.565 0 00-.163-.505L1.71 6.745l4.052-.576a.525.525 0 00.393-.288l1.847-3.658 1.846 3.658a.525.525 0 00.393.288l4.052.575-2.906 2.77a.564.564 0 00-.163.506l.694 3.957-3.686-1.894a.503.503 0 00-.461 0z"
-                       clip-rule="evenodd"/>
-                   </svg>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div *ngIf="!tabReady" style="text-align: center;">
-                        <fa-icon [icon]="faSpinner" [spin]="true" size="6x"></fa-icon>
-                    </div>
-                </ng-template>
-            </li>
-            <li [ngbNavItem]="3">
-                <a ngbNavLink class="blue p-2 mr-2">
-                    <div *ngIf="owner">
-                        {{'profile.your' | translate }} {{'profile.achievements' | translate }}
-                        <h5 *ngIf="achievementsSize !== undefined" class="badge badge-secondary"> {{achievementsSize}}</h5>
-                    </div>
-                    <div *ngIf="!owner">
-                        {{profile.username}}{{'profile.whose' | translate }} {{'profile.achievements' | translate }}
-                        <h5 *ngIf="achievementsSize !== undefined" class="badge badge-secondary"> {{achievementsSize}}</h5>
-                    </div>
-                </a>
-                <ng-template ngbNavContent class="blue">
-                    <p *ngIf="tabReady && !achievements?.length" style="font-style: large; font-weight: bold;" class="ml-5 mt-3 ">
-                        {{'profile.noachievements' | translate }}
-                        <a *ngIf="owner" [routerLink]="'/quiz-list/'" class="blue">
-           , {{'profile.playquizzes' | translate }}
-           </a>
-                    </p>
-                    <div class="m-4 row" *ngIf="achievements?.length">
-                        <div *ngFor="let achieve of this.achievements" style='font-size: larger;' class="col-xs-5 col-sm-5 col-md-4 col-lg-3 card text-center cards mt-1 mb-1 p-2">
-                            <img class=" img-fluid card-img-top thumbn" [src]="achieve.imageContent ? achieve.imageContent : '../../assets/img/achievement.png'" [ngbTooltip]="achieve.description">
-                            <div class="blue"> {{achieve.title }} x{{achieve.timesGained}} </div>
-                        </div>
-                    </div>
-                    <div *ngIf="!tabReady" style="text-align: center;">
-                        <fa-icon [icon]="faSpinner" [spin]="true" size="6x"></fa-icon>
-                    </div>
-                </ng-template>
-            </li>
-            <li [ngbNavItem]="4">
-                <a ngbNavLink class="blue p-2 mr-2">
-                    <div *ngIf="owner">
-                        {{'profile.your' | translate }} {{ 'profile.friends' | translate }}
-                        <div *ngIf="friendsSize !== undefined" class="badge badge-secondary"> {{friendsSize}}</div>
-                    </div>
-                    <div *ngIf="!owner">
-                        {{profile.username}}{{'profile.whose' | translate }} {{ 'profile.friends' | translate }}
-                        <div *ngIf="friendsSize !== undefined" class="badge badge-secondary"> {{friendsSize}}</div>
-                    </div>
-                </a>
-                <ng-template ngbNavContent class="blue">
-                    <p *ngIf="tabReady && !friends?.length" style="font-style: large; font-weight: bold;" class="ml-5 mt-3 ">
-                        {{'profile.nofriends' | translate }}
-                        <a *ngIf="owner" [routerLink]="'/users/'" class="blue">
-           , {{'profile.findfriends' | translate }}
-           </a>
-                    </p>
-                    <div *ngIf="friends?.length">
-                        <ngb-pagination *ngIf="friendsSize > 8" class="d-flex justify-content-center" [collectionSize]="friendsSize" [(page)]="friendsPage" [pageSize]="MAX_AMOUNT" [rotate]="true" (pageChange)="load($event)"></ngb-pagination>
-                        <div *ngFor="let profile of this.friends" style='font-size: larger;'>
-                            <div class="row p-2 m-2 border">
-                                <img routerLink="/profile/{{profile.username}}" class="img-thumbnail col-xs-5 col-sm-5 col-md-4 col-lg-3  float-left" [src]="profile.image ? profile.image : '../../assets/img/nopicture.jpg'" style="background-color:rgba(243, 202, 165, 0.863);">
-                                <div class="col-xs-5 col-sm-7 col-md-8 col-lg-9 p-2 p-2">
-                                    <a routerLink="/profile/{{profile.username}}" style="font-weight: bolder;">{{profile.username}}</a>
-                                    <h2 *ngIf="profile.online; else lastseen" class="blue" style="font-weight: lighter;">
-                                        {{'profile.online' | translate }}
-                                    </h2>
-                                    <ng-template #lastseen>
-                                        <h2 class="blue">
-                                            {{'profile.lastSeenOn' | translate }} {{profile.lastTimeOnline | date:'medium'}}
-                                        </h2>
-                                    </ng-template>
-                                </div>
-                            </div>
-                        </div>
-                        <ngb-pagination *ngIf="friendsSize > 8" class="d-flex justify-content-center" [collectionSize]="friendsSize" [(page)]="friendsPage" [pageSize]="MAX_AMOUNT" [rotate]="true" (pageChange)="load($event)"></ngb-pagination>
-                    </div>
-                    <div *ngIf="!tabReady" style="text-align: center;">
-                        <fa-icon [icon]="faSpinner" [spin]="true" size="6x"></fa-icon>
-                    </div>
-                </ng-template>
-            </li>
-        </ul>
-        <div [ngbNavOutlet]="nav" class="mt-2"></div>
-    </div>
-</div>
-<div role="main" class="container container-sm" *ngIf="!ready;" style="word-wrap: break-word;">
-    <div style="text-align: center;">
+                  </div>
+                  <b>{{'profile.rating' | translate }}:</b> {{quiz.rating}}  <br/>
+                  <div class="col-xs-2 col-sm-3 col-md-2 col-lg-1 p-2 float-right"
+                    (click)="markQuizFavourite(quiz)">
+                    <svg *ngIf="quiz.favourite"
+                      class="bi bi-star-fill"
+                      width="1.5em"
+                      height="1.5em"
+                      viewBox="0 0 16 16"
+                      fill="currentColor"
+                      xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                    </svg>
+                    <svg *ngIf="!quiz.favourite"
+                      class="bi bi-star"
+                      width="1.5em"
+                      height="1.5em"
+                      viewBox="0 0 16 16"
+                      fill="currentColor"
+                      xmlns="http://www.w3.org/2000/svg">
+                      <path fill-rule="evenodd"
+                        d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.523-3.356c.329-.314.158-.888-.283-.95l-4.898-.696L8.465.792a.513.513 0 00-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767l-3.686 1.894.694-3.957a.565.565 0 00-.163-.505L1.71 6.745l4.052-.576a.525.525 0 00.393-.288l1.847-3.658 1.846 3.658a.525.525 0 00.393.288l4.052.575-2.906 2.77a.564.564 0 00-.163.506l.694 3.957-3.686-1.894a.503.503 0 00-.461 0z"
+                        clip-rule="evenodd"/>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+       <div *ngIf ="!tabReady" style="text-align: center;">
+         <fa-icon [icon]="faSpinner" [spin]="true" size="6x"></fa-icon>
+        </div>
+      </ng-template>
+    </li>
+   <li [ngbNavItem]="2" *ngIf="owner">
+   <a ngbNavLink class="blue p-2 mr-2">
+     {{'profile.favourite' | translate }} {{'profile.quizzes' | translate }}
+      <h5 *ngIf="favQuizAmount !== undefined" class="badge badge-secondary"> {{favQuizAmount}}</h5>
+    </a>
+    <ng-template ngbNavContent class="blue">
+     <p *ngIf="tabReady && !quizzes.length" style="font-style: large; font-weight: bold;" class="ml-5 mt-3">
+        {{'profile.nofavourites' | translate }}
+        <a [routerLink]="'/quiz-list/'" class="blue">
+        ,{{'profile.explore' | translate }}
+        </a>
+      </p>
+      <div *ngIf="tabReady">
+       <div *ngFor="let quiz of quizzes"
+           class="row container-fluid m-2 border p-2"
+            style="word-wrap: break-word;">
+            <img class="border p-1 thumbnail col-xs-5 col-sm-5 col-md-4 col-lg-3"
+            [src]="quiz.imageContent ? quiz.imageContent : '../../assets/img/quiz.jpg'"
+            (click)="goToQuiz(quiz.id)">
+            <div class="col-xs-5 col-sm-7 col-md-8 col-lg-9 p-1 ">
+              <div class="ml-2">
+                <a (click)="goToQuiz(quiz.id)" class="blue" style="user-select: none; font-size: larger;">
+                {{quiz.title}}
+                <br/>
+                </a> 
+                <b>{{'profile.descrip' | translate }} :</b> {{quiz.description}}  <br/>
+                <b>{{'profile.timeModif' | translate }}:</b> {{quiz.creationDate | date:dateService.datePattern:dateService.currentTimezone}}<br/>
+                <b>{{'profile.rating' | translate }}:</b> {{quiz.rating}}  <br/>
+                <div class="col-xs-2 col-sm-3 col-md-2 col-lg-1 p-2 float-right"
+                  (click)="markQuizFavourite(quiz)">
+                  <svg *ngIf="quiz.favourite"
+                    class="bi bi-star-fill"
+                    width="1.5em"
+                    height="1.5em"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                  </svg>
+                  <svg *ngIf="!quiz.favourite"
+                    class="bi bi-star"
+                    width="1.5em"
+                    height="1.5em"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd"
+                      d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.523-3.356c.329-.314.158-.888-.283-.95l-4.898-.696L8.465.792a.513.513 0 00-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767l-3.686 1.894.694-3.957a.565.565 0 00-.163-.505L1.71 6.745l4.052-.576a.525.525 0 00.393-.288l1.847-3.658 1.846 3.658a.525.525 0 00.393.288l4.052.575-2.906 2.77a.564.564 0 00-.163.506l.694 3.957-3.686-1.894a.503.503 0 00-.461 0z"
+                      clip-rule="evenodd"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+     <div *ngIf ="!tabReady" style="text-align: center;">
         <fa-icon [icon]="faSpinner" [spin]="true" size="6x"></fa-icon>
-    </div>
+     </div>
+    </ng-template>
+    </li>
+    <li [ngbNavItem]="3"> 
+     <a ngbNavLink class="blue p-2 mr-2" >
+      {{'profile.achievements' | translate }}
+          <h5 *ngIf="achievementsSize !== undefined" class="badge badge-secondary"> {{achievementsSize}}</h5>
+      </a>
+      <ng-template ngbNavContent class="blue">
+      <p *ngIf="tabReady && !achievements?.length"
+         style="font-style: large; font-weight: bold;"
+          class="ml-5 mt-3 ">
+          {{'profile.noachievements' | translate }}
+          <a *ngIf="owner" [routerLink]="'/quiz-list/'" class="blue">
+          , {{'profile.playquizzes' | translate }}
+          </a>
+        </p>
+        <div class="m-4 row" *ngIf="achievements?.length">
+          <div *ngFor="let achieve of this.achievements"
+            style='font-size: larger;'
+            class="col-xs-5 col-sm-5 col-md-4 col-lg-3 card text-center cards mt-1 mb-1 p-2">
+            <div class="embed-responsive embed-responsive-1by1">
+             <img class="embed-responsive-item pic"
+            [src]="achieve.imageContent ? achieve.imageContent : '../../assets/img/achievement.png'"
+            [ngbTooltip]="achieve.description">
+            </div>
+            <div class="blue"> {{achieve.title }} x{{achieve.timesGained}} </div>
+          </div>
+        </div>
+      <div *ngIf ="!tabReady" style="text-align: center;">
+          <fa-icon [icon]="faSpinner" [spin]="true" size="6x"></fa-icon>
+        </div>
+      </ng-template>
+    </li>
+   <li [ngbNavItem]="4">
+     <a ngbNavLink class="blue p-2 mr-2">
+      
+        {{ 'profile.friends' | translate }}
+          <h5 *ngIf="friendsSize !== undefined" class="badge badge-secondary"> {{friendsSize}}</h5>
+      </a>
+      <ng-template ngbNavContent class="blue">
+       <p *ngIf="tabReady && !friends?.length" style="font-style: large; font-weight: bold;" class="ml-5 mt-3 ">
+         {{'profile.nofriends' | translate }}
+         <a *ngIf="owner" [routerLink]="'/users/'" class="blue">
+          , {{'profile.findfriends' | translate }}
+          </a>
+        </p>
+        <div *ngIf="tabReady && friends?.length">
+         <ngb-pagination  *ngIf="friendsSize > 8" class="d-flex justify-content-center"  [collectionSize]="friendsSize" [(page)]="friendsPage"  [pageSize]="MAX_AMOUNT" [rotate]="true" (pageChange)="load($event)"></ngb-pagination>
+          <div *ngFor="let profile of this.friends"
+             class="row container-fluid m-2 border p-2">
+             <div class="col-xs-2 col-sm-4 col-md-4 col-lg-3 p-2 embed-responsive embed-responsive-1by1">
+               <img class="embed-responsive-item pic border"
+               routerLink="/profile/{{profile.username}}"
+                [src]="profile.image ? profile.image : '../../assets/img/nopicture.jpg'" style="cursor:pointer;">
+               </div>
+                <div class="col">
+                <a routerLink="/profile/{{profile.username}}"
+                  style="font-weight: bolder; ">{{profile.username}}</a>
+                <h2 *ngIf="profile.online; else lastseen" class="blue" style="font-weight: lighter;">
+                  {{'profile.online' | translate }} 
+                </h2>
+                <ng-template #lastseen>
+                  <h2 class="blue">
+                    {{'profile.lastSeenOn' | translate }} {{profile.lastTimeOnline | date:dateService.datetimePattern:dateService.currentTimezone}} 
+                  </h2>
+                </ng-template>
+              </div>
+          </div>
+          <ngb-pagination *ngIf="friendsSize > 8"
+          class="d-flex justify-content-center"
+          [collectionSize]="friendsSize"
+          [(page)]="friendsPage"
+          [pageSize]="MAX_AMOUNT"
+          [rotate]="true"
+          (pageChange)="load($event)"></ngb-pagination>
+        </div>
+       <div *ngIf ="!tabReady" style="text-align: center;">
+         <fa-icon [icon]="faSpinner" [spin]="true" size="6x"></fa-icon>
+       </div>
+      </ng-template>
+    </li>
+
+    </ul>
+  <div [ngbNavOutlet]="nav" class="mt-2"></div>
+  </div>
+</div>
+<div role="main" class="container container-sm" *ngIf="!ready;" style="word-wrap: break-word;" >
+  <div style="text-align: center;">
+    <fa-icon [icon]="faSpinner" [spin]="true" size="6x"></fa-icon>
+  </div>
 </div>

@@ -34,3 +34,17 @@ img
 {
     border-radius: 8px;
 }
+
+.square
+{
+    border-radius: 2px;
+}
+
+
+.embed-responsive .pic{
+    object-fit: cover;
+}
+
+.embed-responsive{
+    object-fit: cover;
+}

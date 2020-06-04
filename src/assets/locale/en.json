@@ -38,7 +38,8 @@
     "validated": "Validated",
     "dateofcreation": "Date of creation",
     "langEng": "English",
-    "langUkr": "Ukrainian"
+    "langUkr": "Ukrainian",
+    "emptyList":"The list is empty"
   },
   "utilsOther": {
     "image": "image"
@@ -58,10 +59,19 @@
     "rightAnswers": "Right answers",
     "otherAnswers": "Other answers",
     "answer": "answer",
-    "add": "Add"
+    "add": "Add",
+    "rightSequence":"Right sequence",
+    "publishHelp":"To publish your quiz you need to have 4 saved questions (marked with dark blue color)",
+    "questionHelp":"Select question for edit by clicking on it`s title and delete it by clicking on cross",
+    "emptyList":"Quiz doesn`t have questions yet",
+    "startTyping":"Start typing something",
+    "upload":"Upload image"
   },
   "viewQuiz": {
     "deactivated": "Deactivated",
+    "rejected":"Rejected",
+    "waitingForValidation":"Waiting for validation",
+    "draft":"Draft",
     "deactivate": "Deactivate",
     "danger": "Danger zone",
     "asFavorite": "Favorite",
@@ -74,8 +84,10 @@
     "users": "USERS",
     "quizzes": "QUIZZES",
     "login": "LOG IN",
-    "signup": "SIGN IN",
-    "logout": "LOG OUT"
+    "signup": "SIGN UP",
+    "logout": "LOG OUT",
+    "main":"DASHBOARD",
+    "rename": "CHANGE NAME"
   },
   "toasterEditor": {
     "wentWrong": "Sorry, something went wrong :(",
@@ -96,15 +108,15 @@
     "reject": "Are you sure you want to reject this quiz? This action can't be undone.",
     "acceptQuiz": "Are you sure you want to accept and activate this quiz?",
     "leavePage": "Are you sure you want to leave this page? You have unstaged changes.",
-    "saveChanges": "Are you sure you want to save your changes? This action cannot be undone.",
+    "saveChanges": "Are you sure you want to save your changes?",
     "acceptRequest": "Are your sure you want to accept this friend request?",
-    "rejectRequest": "Are your sure you want to reject this friend request? This action cannot be undone",
-    "removeFriend": "Are you sure you want to remove this user from friends? This action cannot be undone",
+    "rejectRequest": "Are your sure you want to reject this friend request?",
+    "removeFriend": "Are you sure you want to remove this user from friends?",
     "cancelRequest": "Are you sure you want to cancel this friend request?",
     "sendRequest": "Are you sure you want to send a friend request to this user?",
-    "removeQuizFromFav": "Are you sure you want to remove this quiz from your favourites? This action cannot be undone",
+    "removeQuizFromFav": "Are you sure you want to remove this quiz from your favourites? ",
     "changeRoleUser": "Are you sure you want to change user's role?",
-    "deactivateUser": "Are you sure you want to deactivate this user? This action cannot be undone.",
+    "deactivateUser": "Are you sure you want to deactivate this user? ",
     "deleteAnnouncement": "Are you sure you want to delete announcement? Once you delete an announcement, there is no going back.",
     "saveAnnouncement": "Are you sure you want to save this announcement?"
   },
@@ -121,6 +133,7 @@
   },
   "managaAnn": "Manage announcements",
   "profile": {
+    "rejected":"rejected",
     "profile": "profile",
     "friend": "friend",
     "friends": "friends",
@@ -133,14 +146,13 @@
     "Message": "Mesage",
     "Unfriend": "Unfriend",
     "deactivated": "deactivated",
-    "lastSeenOn": "Last seen on",
+    "lastSeenOn": "Last seen at",
     "Incoming": "Incoming ",
     "Outgoing": "Outgoing",
     "friendRequests": "Friend Requests",
     "deactivate": "Deactivate",
     "downgrade": "Downgrade to Moderator",
     "upgrade": "Upgrade to Admin",
-    "whose": "'s",
     "quizzes": "quizzes",
     "noquizzes": " No quizzes yet",
     "newquiz": " NEW QUIZ ",
@@ -168,7 +180,7 @@
     "requests": "requests",
     "requests_whom": "requests",
     "request": "request",
-    "requestSent": "Request sent on",
+    "requestSent": "Request sent at",
     "administration": "Administration",
     "popularCreators": "Popular creators"
   },
@@ -201,7 +213,29 @@
     "startg": "Start game",
     "loading": "Loading...",
     "players": "Players",
-    "points": "Points"
+    "points": "Points",
+    "qtimeDesc": "The time that player will have to answer one question.",
+    "qamountDesc1": "The number of questions the player will have. There should be more than ",
+    "qamountDesc2": " questions. The questions will be chosen at randomly from all the questions of the selected quiz.",
+    "uamountDesc1": "The maximum number of players in the game. Maximum - ",
+    "uamountDesc2": " players. The game can be started even if the number of players is less than the maximum",
+    "btimeDesc": "The time the player will have to take a break between questions.",
+    "epointsDesc": "Doubles the given points per question if the player answers during the first half period of the given time.",
+    "minQuesError": "There should be more than 4 questions.",
+    "minUserError": "Incorrect number of players.",
+    "questAmountError": "Too many questions. There are only ",
+    "maxUserError": "Too many users. Must be less than ",
+    "accessCodeHint": "This is the game access code. You can show it to your friends. It should be entered at the top of quizzes page. Click to copy join url.",
+    "hostStart": "The host should start the game!",
+    "waitPlayers": "Waiting for other players ...",
+    "accessDen": "Access denied",
+    "permissions": "You don't have permissions.",
+    "gameStarted": "The game has already started or has not been created.",
+    "urlCopied": "URL copied.",
+    "refreshWarning": "If you refresh the page or go to another page, you will not be able to return.",
+    "accountError": "You cannot play on this account.",
+    "anonymTitle": "Enter your nickname",
+    "anonymName": "Your name"
   },
   "validationPage": {
     "title": "'s quiz validation list"
@@ -234,7 +268,7 @@
     "empty": "You haven't played anything for a week"
   },
   "shortList": {
-    "title": "Users' choice"
+    "title": "Most rated"
   },
   "userQuizzesRating": {
     "title": "Your quizzes' ratings",
@@ -260,11 +294,11 @@
     "admins": "Admins",
     "moderators": "Moderators",
     "games": "Games",
-    "total": "total",
-    "published": "published",
-    "rejected": "rejected",
-    "activated": "activated",
-    "unvalidated": "unvalidated"
+    "total": "Total",
+    "published": "Published",
+    "rejected": "Rejected",
+    "activated": "Activated",
+    "unvalidated": "Unvalidated"
   },
   "authorization": {
     "login": {
@@ -293,7 +327,9 @@
     },
     "changePassword": {
       "button": "Change",
-      "success": "Successfully changed"
+      "success": "Successfully changed",
+      "currentPass": "Current password",
+      "newPass": "New password"
     },
     "recoverPassword": {
       "title": "Recover Password",
@@ -303,13 +339,14 @@
     }
   },
   "quizList": {
-    "accessCode": "Enter access code",
+    "accessCode": "Game access code",
     "search": "Search",
     "filter": "Filter",
-    "createQuiz": "Create quiz"
+    "createQuiz": "Create quiz",
+    "join": "Join"
   },
   "quizFilter": {
-    "creator": "Creator username",
+    "creator": "Creator",
     "add": "Add",
     "rateFrom": "Rating from",
     "rateTo": "Rating to",
@@ -317,5 +354,11 @@
   },
   "notifications": {
     "empty": "No new notifications"
+  },
+  "rating": {
+    "title": "Rating",
+    "alreadyRateMes": "You have already rated this quiz before. You can change your mind now.",
+    "notRatedYetMes": "Rate quiz please",
+    "acceptRating": "Successfully evaluated"
   }
 }

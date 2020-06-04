@@ -1,38 +1,27 @@
 <link href="https://fonts.googleapis.com/css?family=Balsamiq+Sans&display=swap" rel="stylesheet">
 <div class="p-4 container bg-white rounded">
-  <h1>
+  <h1 class="results-title">
     {{'game.totalres'| translate}}
   </h1>
 
   <div class="head-wrap">
-    <h3>{{'game.champ'| translate}} {{winner}}</h3>
+    <h3 class="winner-name">{{'game.champ'| translate}} {{winner}}</h3>
     <div class="champ-img"><img src="assets/img/champ.jpg" class="img-fluid" alt="Responsive image"></div>
   </div>
 
   <div style="display: flex; align-items: center; justify-content: center; flex-direction: column">
-    <ngx-charts-bar-vertical
-		    [barPadding]="4"
-		    [view]=view
-		    [showDataLabel]=true
-		    [results]="resultsForGraphic"
-		    [xAxis]=true
-		    [yAxis]=true
-		    [legend]=true
-		    [showXAxisLabel]=true
-		    [showYAxisLabel]=true
-		    legendTitle="{{'game.players'| translate}}"
-		    legendPosition="right"
-		    yAxisLabel="{{'game.points'| translate}}"
-		    (select)="onSelect($event)">
-    </ngx-charts-bar-vertical>
-
+    <div class="chart-wrapper">
+      <ngx-charts-bar-vertical [barPadding]="4" [showDataLabel]=true [results]="resultsForGraphic" [xAxis]=true
+        [yAxis]=true [legend]=true [showXAxisLabel]=true [showYAxisLabel]=true
+        legendTitle="{{'game.players'| translate}}" legendPosition="below" yAxisLabel="{{'game.points'| translate}}"
+        (select)="onSelect($event)">
+      </ngx-charts-bar-vertical>
+    </div>
     <div class="btn-group" role="group">
       <button type="button" class="btn btn-secondary" routerLink="/quiz-list">{{'game.other'| translate}}</button>
-      <button *ngIf="loggedIn"
-              class="btn btn-secondary btn-rate"
-              (click)="rateModal()">{{'game.rate'| translate}}</button>
+      <button *ngIf="loggedIn" class="btn btn-secondary btn-rate"
+        (click)="rateModal()">{{'game.rate'| translate}}</button>
       <button type="button" class="btn btn-secondary" routerLink="/">{{'game.quit'| translate}}</button>
     </div>
   </div>
 </div>
-

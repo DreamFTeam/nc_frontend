@@ -1,29 +1,28 @@
 <div role="main">
-    <div class="container-sm mt-2 p-4">
+    <div class="container-sm my-2 p-4">
         <div *ngIf="!loading">
-            <div *ngIf="!editorEnabled">
+            <div *ngIf="!inEdit">
                 <button class="btn addb" (click)="add()"><img src="../assets/img/plus.png"></button>
             </div>
 
-	        <!-- ANNOUNCEMENT ADD -->
+            <!-- ANNOUNCEMENT ADD -->
 
-            <div *ngIf="inEdit[0] && !saveLoading">
+            <div *ngIf="inEdit === 0 && !saveLoading">
                 <div><label>{{ 'announcementsEdit.adding' | translate }}</label></div>
                 <label class="mt-4">{{ 'utils.title' | translate }}:</label>
-                <input class="form-control"
-                       [(ngModel)]="currentAnnouncement.title"
-                       placeholder="{{ 'utils.title' | translate }}">
+                <input class="form-control" [(ngModel)]="currentAnnouncement.title"
+                    placeholder="{{ 'utils.title' | translate }}" maxlength="50"  autocomplete="off">
                 <label>{{ 'utils.content' | translate }}:</label>
                 <textarea class="form-control" rows="5" [(ngModel)]="currentAnnouncement.textContent"
-                          placeholder="{{ 'utils.content' | translate }}"></textarea>
+                    placeholder="{{ 'utils.content' | translate }}" maxlength="2048"  autocomplete="off"></textarea>
 
                 <button *ngIf="thumbnail !== null" class="btn buttondel mt-2" (click)="removeImage()">
-                    {{ 'quizCreation.remove' | translate }} {{ 'quizCreation.image' | translate }}
+                    {{ 'utils.remove' | translate }} {{ 'quizCreation.image' | translate }}
                 </button>
                 <div class="mt-2">
                     <img [src]='thumbnail' alt="Upload" class="img-thumbnail" (click)="imageInput.click()">
                     <input style="display: none" #imageInput type="file" accept="image/*"
-                           (change)="uploadImage($event)">
+                        (change)="uploadImage($event)">
                 </div>
 
                 <div class="mt-4">
@@ -31,68 +30,79 @@
                     <button class="btn buttonpr ml-2" (click)="cancel(-1)">{{ 'utils.cancel' | translate }}</button>
                 </div>
             </div>
-            <div *ngIf="inEdit[0] && saveLoading">
+            <div *ngIf="inEdit === 0 && saveLoading">
                 <fa-icon [icon]="faSpinner" [spin]="true" size="6x"></fa-icon>
             </div>
 
 
-	        <!-- ANNOUNCEMENTS LIST -->
+            <!-- ANNOUNCEMENTS LIST -->
 
             <div class="mb-4" *ngFor="let announcement of announcements; let i = index">
-                <div *ngIf="!inEdit[i+1]">
+                <div *ngIf="inEdit !== i + 1">
                     <hr class="my-4">
-                    <div class="row">
-                        <div class="col-sm-8">
-                            <label>{{announcement.title}}</label>
-
-                            <div>
-                                <img *ngIf="announcement.image !== null" [src]='announcement.image'
-                                     class="img-thumbnail">
+                    <div class="p-3">
+                        <div class="row ">
+                            <div class="col">
+                                <label>{{announcement.title}}</label>
                             </div>
-
-                            <button class="btn" (click)="isCollapsed[i] = !isCollapsed[i]">
-                                <a>{{ 'utils.content' | translate }}</a>
-                                <span
-		                                *ngIf="!isCollapsed[i]">
-                                    ↑</span><span *ngIf="isCollapsed[i]"> ↓</span>
-                            </button>
-                            <div [ngbCollapse]="isCollapsed[i]">
-                                <p>{{announcement.textContent}}</p>
+                            <div class="col">
+                                <div class="float-right">
+                                    <p style="margin: 0;">{{announcement.creationDate | date:dateService.datetimePattern:dateService.currentTimezone}}</p>
+                                    <a style="font-weight: bold; color: black;" routerLink="/profile/{{announcement.creatorId}}">
+                                        {{announcement.creatorId}}
+                                    </a>
+                                </div>
+    
                             </div>
                         </div>
-                        <div class="col-sm-3 float-right">
-                            <p style="font-style: italic;">{{announcement.creationDate | date}}</p>
-                            <p style="font-weight: bold;">{{announcement.creatorId}}</p>
+    
+    
+    
+                        <div class="mt-3">
+                            <img *ngIf="announcement.image !== null" [src]='announcement.image'
+                                class="img-thumbnail">
                         </div>
-                    </div>
-
-
-                    <div class="mt-4"><i class="fas fa-chevron-down"></i>
-                        <button *ngIf="!editorEnabled"
-                                class="btn buttonpr"
-                                (click)="edit(i)">{{ 'utils.edit' | translate }}</button>
-                        <button class="btn buttondel ml-2" (click)="delete(i)">
-                            {{ 'utils.delete' | translate }} {{ 'utils.announcement' | translate }}
+    
+                        <button class="btn mt-2" (click)="isCollapsed[i] = !isCollapsed[i]">
+                            <a style="font-size: 20px;">{{ 'utils.content' | translate }}</a>
+                            <ng-template [ngIf]="!isCollapsed[i]" [ngIfElse]="otherArrow">
+                                <span>↑</span>
+                            </ng-template>
+                            <ng-template #otherArrow>
+                                <span>↓</span>
+                            </ng-template>
+                            
                         </button>
+                        <div [ngbCollapse]="isCollapsed[i]">
+                            <p>{{announcement.textContent}}</p>
+                        </div>
+    
+    
+                        <div *ngIf="!inEdit" class="mt-4">
+                            <button class="btn buttonpr" (click)="edit(i)">{{ 'utils.edit' | translate }}</button>
+                            <button class="btn buttondel ml-2" (click)="delete(i)">
+                                {{ 'utils.delete' | translate }} {{ 'utils.announcement' | translate }}
+                            </button>
+                        </div>
                     </div>
+                    
                 </div>
 
 
-	            <!-- ANNOUNCEMENT EDITOR -->
+                <!-- ANNOUNCEMENT EDITOR -->
 
-                <div *ngIf="inEdit[i+1] && !saveLoading">
+                <div *ngIf="inEdit === i+1 && !saveLoading">
                     <hr class="my-4">
                     <div>
                         <label>{{ 'announcementsEdit.editing' | translate }} {{currentAnnouncement.creatorId}}</label>
-                        <p style="font-style: italic;">{{announcement.creationDate | date}}</p>
+                        <p style="font-style: italic;">{{announcement.creationDate | date:dateService.datetimePattern:dateService.currentTimezone}}</p>
                     </div>
                     <label>{{ 'utils.title' | translate }}:</label>
-                    <input class="form-control"
-                           [(ngModel)]="currentAnnouncement.title"
-                           placeholder="{{ 'utils.title' | translate }}">
+                    <input class="form-control" [(ngModel)]="currentAnnouncement.title"
+                        placeholder="{{ 'utils.title' | translate }}" maxlength="50"  autocomplete="off">
                     <label>{{ 'utils.content' | translate }}:</label>
                     <textarea class="form-control" rows="5" [(ngModel)]="currentAnnouncement.textContent"
-                              placeholder="{{ 'utils.content' | translate }}"></textarea>
+                        placeholder="{{ 'utils.content' | translate }}" maxlength="2048"  autocomplete="off"></textarea>
 
 
                     <button *ngIf="thumbnail !== null" class="btn buttondel mt-2" (click)="removeImage()">
@@ -101,7 +111,7 @@
                     <div class="mt-2">
                         <img [src]='thumbnail' alt="Upload" class="img-thumbnail" (click)="imageInput.click()">
                         <input style="display: none" #imageInput type="file" accept="image/*"
-                               (change)="uploadImage($event)">
+                            (change)="uploadImage($event)">
                     </div>
 
                     <div class="mt-4"><i class="fas fa-chevron-down"></i>
@@ -109,17 +119,17 @@
                         <button class="btn buttonpr ml-2" (click)="cancel(i)">{{ 'utils.cancel' | translate }}</button>
                     </div>
                 </div>
-                <div *ngIf="inEdit[i+1] && saveLoading">
+                <div *ngIf="inEdit === i+1 && saveLoading">
                     <fa-icon [icon]="faSpinner" [spin]="true" size="6x"></fa-icon>
                 </div>
 
             </div>
 
 
-	        <!-- PAGINATION -->
+            <!-- PAGINATION -->
 
             <ngb-pagination [collectionSize]="collectionSize" [pageSize]="pageSize" [(page)]="page"
-                            class="d-flex justify-content-center" (pageChange)="loadPage()"></ngb-pagination>
+                class="d-flex justify-content-center" (pageChange)="loadPage()"></ngb-pagination>
         </div>
         <div style="text-align: center;" *ngIf="loading">
             <fa-icon [icon]="faSpinner" [spin]="true" size="6x"></fa-icon>

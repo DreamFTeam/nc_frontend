@@ -24,8 +24,19 @@ a
     cursor: pointer;
 }
 
-.bi-bell-fill
-{
-    color: orangered;
-}
 
+
+.notif {
+    position: relative;
+    display: block;
+}
+.num {
+    padding-left: .33rem;
+    padding-right: .33rem;
+    position: absolute;
+    right:    -8px;
+    top:      -2px;
+    color:    white;
+    background-color: orangered;
+    font-size: 12px;
+}
