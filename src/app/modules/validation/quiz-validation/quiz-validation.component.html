@@ -50,7 +50,7 @@
         <div class="row quest" *ngFor="let question of (questionList$ | async); let i = index">
             <div class="col quest-cont-title">
                 <hr>
-                <h3 class="lead q-fnt">{{'utils.question' | translate}} {{i + 1}}. {{question.title}}</h3>
+                <h3 class="lead q-fnt">{{'utils.question' | translate}} {{((page-1) * pageSize) + i + 1}}. {{question.title}}</h3>
                 <hr>
             </div>
             <div class="container">
