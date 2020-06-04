@@ -235,7 +235,12 @@
     "refreshWarning": "If you refresh the page or go to another page, you will not be able to return.",
     "accountError": "You cannot play on this account.",
     "anonymTitle": "Enter your nickname",
-    "anonymName": "Your name"
+    "anonymName": "Your name",
+    "leftTitle": "It's some bad joke.",
+    "hostLeftBody": "The host left the game.",
+    "kickBody": "The host kick you from the game.",
+    "askLeftHost": "Are you really want to kick a player?",
+    "askLeft": "Are you really want to go?"
   },
   "validationPage": {
     "title": "'s quiz validation list"

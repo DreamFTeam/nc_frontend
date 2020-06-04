@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ToastsService} from '../../core/_services/utils/toasts.service';
 import {AuthenticationService} from '../../core/_services/authentication/authentication.service';
 import {Role} from '../../core/_models/role';
@@ -15,13 +15,15 @@ export class LandingPageComponent implements OnInit {
 
     constructor(private activatedRoute: ActivatedRoute,
                 private toastsService: ToastsService,
-                private authenticationService: AuthenticationService) {
+                private authenticationService: AuthenticationService,
+                private router: Router) {
     }
 
     ngOnInit(): void {
         this.activatedRoute.queryParams.subscribe(params => {
             if (params.message) {
                 this.toastsService.toastAddWarning(params.message);
+                this.router.navigateByUrl('');
             }
         });
         this.isSignedIn = (this.authenticationService.currentUserValue === undefined) ? false : true;

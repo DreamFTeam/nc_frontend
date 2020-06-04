@@ -29,8 +29,9 @@ export class NotificationsService {
         this.notificationsSubject = new BehaviorSubject<Notification[]>([]);
         this.notifications = this.notificationsSubject.asObservable();
         if (authenticationService.currentUserValue) {
-            this.sseService.getServerSentEvent(this.authenticationService.currentUserValue.id, 'sent')
-                .subscribe(next => {
+            this.sseService.getServerSentEvent(this.notificationsUrl + 'subscribe/' + this.authenticationService.currentUserValue.id,
+                'sent')
+                .subscribe(() => {
                     this.getUnseen().subscribe();
                 });
         }
