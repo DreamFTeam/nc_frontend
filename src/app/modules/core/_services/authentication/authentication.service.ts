@@ -42,10 +42,8 @@ export class AuthenticationService {
     loginUser(username: string, password: string): Observable<User> {
         const userInfo = {
             username,
-            email: username,
             password: this.passwordHashing(password, this.PASSWORD_HASHING_ITERATIONS_AMOUNT)
         };
-
         return this.http.post<User>(this.url + 'log-in', JSON.stringify(userInfo), this.httpOptions).pipe(
             map(data => {
                 const tokenJSON: any = data;
