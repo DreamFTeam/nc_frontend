@@ -1,6 +1,6 @@
 <div class="container px-0">
     <div *ngIf="(!isEmpty && !isLoading) ; else ((isLoading) ? loading : empty)">
-        <div *ngFor="let item of quizList$ | async" class="row border rounded-lg shadow-sm p-2 pt-4 mb-2 mx-0 w-100">
+        <div *ngFor="let item of quizList" class="row border rounded-lg shadow-sm p-2 pt-4 mb-2 mx-0 w-100">
             <div class="col-lg-4 col-md-6 w-100 h-100 p-0 w-0">
                 <div class=" embed-responsive embed-responsive-4by3">
                     <img class="mr-2 embed-responsive-item pic" [src]="item.imageContent ? item.imageContent : this.mockImageUrl" alt="Quiz icon">
@@ -38,7 +38,7 @@
             <ngb-pagination class="d-flex justify-content-center"
                             size="lg"
                             [pageSize]="pageSize"
-                            [collectionSize]="totalSize$ | async"
+                            [collectionSize]="totalSize"
                             [(page)]="page"
                             [maxSize]="7"
                             [rotate]="true"

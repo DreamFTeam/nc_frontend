@@ -24,8 +24,8 @@ export class ValidationTabComponent implements OnInit, OnDestroy {
     //src of mock image
     mockImageUrl: string = '../../assets/img/quiz.jpg';
     //Async - total size of quiz list. Used for pagination.
-    totalSize$: Observable<number>;
-    quizList$: Observable<QuizValidationPreview[]>;
+    totalSize: number;
+    quizList: QuizValidationPreview[];
     page: number;
     @Input() showButtons: boolean;
     faSpinner = faSpinner;
@@ -59,22 +59,22 @@ export class ValidationTabComponent implements OnInit, OnDestroy {
     }
 
     getTotalSize(): void {
-        this.totalSize$ = this.quizValidationListService.getTotalSize();
-        this.subscriptions.add(this.totalSize$.subscribe(val => {
+        this.subscriptions.add(this.quizValidationListService.getTotalSize().subscribe(val => {
+                this.totalSize = val;
                 this.isLoading = false;
             },
-            error => {
+            () => {
                 this.toastsService.toastAddDanger('Couldn\'t fetch list size.');
             }));
     }
 
     getQuizList(page): void {
-        this.quizList$ = this.quizValidationListService.getQuizListByPage(page);
-        this.subscriptions.add(this.quizList$.subscribe(val => {
+        this.subscriptions.add(this.quizValidationListService.getQuizListByPage(page).subscribe(val => {
+            this.quizList = val;
             if (val.length == 0) {
                 this.isEmpty = true;
             }
-        }, error => {
+        }, () => {
             this.toastsService.toastAddDanger('An error occured while fetching the list of quizzes.');
         }));
     }
@@ -98,7 +98,7 @@ export class ValidationTabComponent implements OnInit, OnDestroy {
                                 this.getTotalSize();
                                 this.getQuizList(this.page);
                             },
-                            error => {
+                            () => {
                                 this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'));
                             });
                 }
