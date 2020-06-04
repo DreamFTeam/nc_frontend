@@ -59,6 +59,7 @@ export class SearchFilterQuizService {
 
     filterTotalSize(): Observable<number> {
         const sett = this.generateSettingsForRequest(this.settings);
+        console.log(sett);
         return this.http.post<number>(this.filterUrlTotalSize, sett, this.httpOptions);
     }
 
@@ -101,8 +102,8 @@ export class SearchFilterQuizService {
 
     private generateSettingsForRequest(settings: QuizFilterSettings) {
         return {
-            quizName: settings.quizName,
-            userName: settings.userName,
+            quizName: settings.quizName && settings.quizName.length > 0 ? settings.quizName : null,
+            userName: settings.userName && settings.userName.length > 0 ? settings.userName : null,
             moreThanRating: settings.moreThanRating,
             lessThanRating: settings.lessThanRating,
             orderByRating: settings.orderByRating,

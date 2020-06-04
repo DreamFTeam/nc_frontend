@@ -12,6 +12,7 @@ import {first} from 'rxjs/operators';
 import {Subscription} from 'rxjs';
 import {ToastsService} from '../../core/_services/utils/toasts.service';
 import {LocaleService} from '../../core/_services/utils/locale.service';
+import {ModalService} from '../../core/_services/utils/modal.service';
 
 
 @Component({
@@ -47,7 +48,8 @@ export class GameConnectorComponent implements OnInit, OnDestroy {
                 private messageModal: ModalMessageService,
                 private toastsService: ToastsService,
                 private anonymService: AnonymService,
-                private localeService: LocaleService) {
+                private localeService: LocaleService,
+                private modalService: ModalService) {
         this.loggedIn = !!this.authenticationService.currentUserValue;
         this.sessionId = localStorage.getItem('sessionid');
     }
@@ -77,6 +79,7 @@ export class GameConnectorComponent implements OnInit, OnDestroy {
 
         this.sessionsSubscription = this.gameSettingsService.sessions
             .subscribe(ses => {
+                this.sessions = [];
                 Object.assign(this.sessions, ses);
                 for (const session of this.sessions) {
                     if (this.sessionId === session.game_session_id) {
@@ -129,4 +132,17 @@ export class GameConnectorComponent implements OnInit, OnDestroy {
         // }
     }
 
+    remove(sessionId: string) {
+        this.modalService.openModal(sessionId === this.sessionId ? this.localeService.getValue('game.askLeft') :
+            this.localeService.getValue('game.askLeftHost'), 'danger').pipe(first())
+            .subscribe(yes => {
+                if (yes) {
+                    this.gameSettingsService.removeSession(sessionId).pipe(first()).subscribe();
+                    if (sessionId === this.sessionId) {
+                        this.router.navigateByUrl('/quiz-list');
+                    }
+                }
+            });
+
+    }
 }

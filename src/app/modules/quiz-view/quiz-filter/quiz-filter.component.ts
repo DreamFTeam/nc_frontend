@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {merge, Observable, Subject} from 'rxjs';
-import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, first, map} from 'rxjs/operators';
 import {SearchFilterQuizService} from '../../core/_services/quiz/search-filter-quiz.service';
 import {Tag} from '../../core/_models/tag';
 import {Category} from '../../core/_models/category';
@@ -99,7 +99,6 @@ export class QuizFilterComponent implements OnInit {
     filter() {
         this.activeModal.close();
         this.searchFilterQuizService.setSettings(this.settings);
-        this.searchFilterQuizService.filterQuiz().subscribe();
-        this.searchFilterQuizService.filterTotalSize().subscribe();
+        this.searchFilterQuizService.filterQuiz().pipe(first()).subscribe();
     }
 }

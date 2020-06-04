@@ -33,6 +33,6 @@ export class GameQuestionService {
             score: score,
             durationTime: durTime
         };
-        return this.http.post(this.url + 'result', JSON.stringify(gameinfo), this.httpOptions);
+        return this.http.patch(this.url + 'result', JSON.stringify(gameinfo), this.httpOptions);
     }
 }

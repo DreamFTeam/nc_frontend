@@ -35,7 +35,7 @@ export class GameResultService {
     }
 
     sendRating(gameId: string, ratePoints: number) {
-        return this.http.post(this.ratingSetUrl, {},
+        return this.http.patch(this.ratingSetUrl, {},
             {headers: this.httpOptions.headers, params: {sessionId: gameId, ratingPoints: ratePoints.toString()}});
     }
 }

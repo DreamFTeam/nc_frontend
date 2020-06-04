@@ -48,8 +48,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
         this.signedIn = (this.authenticationService.currentUserValue === undefined) ? false : true;
         this.privileged = (this.signedIn &&
             this.authenticationService.currentUserValue.role !== Role.User);
-        if (this.signedIn) {
-            this.notification = true;
+        if (this.signedIn && !this.privileged) {
             this.subscribeNotifications();
         }
         this.language = this.localeService.getLanguage();

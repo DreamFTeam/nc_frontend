@@ -1,3 +1,17 @@
 .btn-link {
     cursor: pointer;
 }
+
+.removeButton {
+    cursor: pointer;
+    color: #b21f2d;
+    font-size: 1.5em;
+}
+
+.removeButton:hover{
+    color: #580F16;
+}
+
+.embed-responsive .pic{
+    object-fit: cover;
+}
