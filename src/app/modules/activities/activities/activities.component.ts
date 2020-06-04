@@ -4,6 +4,8 @@ import { Activity } from '../../core/_models/activity';
 import { ActivityService } from '../../core/_services/user/activity.service';
 import { DateService } from '../../core/_services/utils/date.service';
 import { Subscription } from 'rxjs';
+import { ToastsService } from '../../core/_services/utils/toasts.service';
+import { LocaleService } from '../../core/_services/utils/locale.service';
 
 @Component({
     selector: 'app-activities',
@@ -12,7 +14,11 @@ import { Subscription } from 'rxjs';
 })
 export class ActivitiesComponent implements OnInit, OnDestroy {
 
-    activities: Activity[];
+    readonly pageSize: number = 5;
+    page: number = 1;
+    collectionSize: number;
+
+    activities: Activity[] = [];
 
     loading: boolean;
 
@@ -21,18 +27,32 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     subscriptions: Subscription = new Subscription();
 
     constructor(private activityService: ActivityService,
-        public dateService: DateService) {
-        this.activities = [];
-        this.loading = true;
+        public dateService: DateService,
+        public toastsService: ToastsService,
+        private localeService: LocaleService) {
     }
     ngOnDestroy(): void {
         this.subscriptions.unsubscribe();
     }
 
     ngOnInit(): void {
-        this.subscriptions.add(this.activityService.getActivityList().subscribe(
-            ans => this.activities = ans,
-        () => {}, () => this.loading = false));
+        this.loadPage();
+    }
+
+    loadPage(){
+        this.loading = true;
+        this.subscriptions.add(this.activityService.getActivitySize()
+        .subscribe(
+            ans => {
+                this.collectionSize = ans
+                this.subscriptions.add(this.activityService.getActivityList(((this.page -1) * this.pageSize) +1, this.pageSize)
+                    .subscribe(
+                        ans => this.activities = ans,
+                        () => this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong')), 
+                        () => this.loading = false));
+            },
+        () => this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))
+        ));
     }
 
 }
