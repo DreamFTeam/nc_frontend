@@ -6,7 +6,7 @@ import { ToastsService } from '../../core/_services/utils/toasts.service';
 import { LocaleService } from '../../core/_services/utils/locale.service';
 import { Chat } from '../../core/_models/chat';
 import { ChatsService } from '../../core/_services/chats/chats.service';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import {faSpinner} from '@fortawesome/free-solid-svg-icons';
 import { AuthenticationService } from '../../core/_services/authentication/authentication.service';
 import * as Stomp from '@stomp/stompjs';
@@ -15,6 +15,7 @@ import { ReceivedEvent } from '../../core/_models/receivedevent';
 import { environment } from 'src/environments/environment';
 import { EventType } from '../../core/_models/eventtype';
 import { DateService } from '../../core/_services/utils/date.service';
+import { StompSubscription } from '@stomp/stompjs';
 
 
 const MESSAGES_PAGE_SIZE = 6;
@@ -41,7 +42,7 @@ export class ChatComponent implements OnDestroy, OnInit{
 
   //for sockets
   stompClient: any;
-  socket: any;
+  socketSub: StompSubscription;
   stomp: any;
   receivedEvent: ReceivedEvent;
 
@@ -65,33 +66,33 @@ export class ChatComponent implements OnDestroy, OnInit{
     this.currentUsername = this.authenticationService.currentUserValue.username;
     this.currentChatId = this.route.snapshot.paramMap.get('id');
     this.getChatInfo();
-    this.loadMessages(0);
   }
-  ngOnInit(): void {
- 
+
+  ngOnInit(){
+    this.loadMessages(0);
   }
 
   ngOnDestroy(): void {
-    this.socket.unsubscribe();
+    this.socketSub.unsubscribe();
     this.stompClient.disconnect();
   }
 
   openWebSocket(){
-    let ws = new SockJS(`${environment.socketUrl}/ws`);
+    let ws = new SockJS(environment.socketUrl);
     let stompClient = Stomp.Stomp.over(ws);
     this.stompClient = stompClient;
     
-    let that = this;
+    //let that = this;
 
     stompClient.connect({}, function(){
-      const url = '/topic/messages/' + that.currentChatId;
-      that.socket = stompClient.subscribe(url, (message) => {
+      const url = '/topic/messages/' + this.currentChatId;
+      const callback = (message) => {
         if(message.body){
-          let receivedEvent = JSON.parse(message.body);
-          console.log(receivedEvent);
-          that.messages.push(receivedEvent);
+          let receivedMessage = JSON.parse(message.body);
+          this.messages.push(receivedMessage);
         }
-      });
+      };
+      this.socketSub = stompClient.subscribe(url, callback);
     }, this);
   }
 
@@ -129,7 +130,7 @@ export class ChatComponent implements OnDestroy, OnInit{
   saveScrollTop(prevHeight: number){
       setTimeout(() => {
         this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight - prevHeight;
-      }, 0.1);
+      }, 0);
   }
 
   loadMessages(previousScrollHeight: number){
@@ -153,6 +154,7 @@ export class ChatComponent implements OnDestroy, OnInit{
         }
       },
       error => {
+        this.toastsService.toastAddDanger("An error occured while fetching messages.\nWe are sorry for that");
         //show toast
       });
     }  
@@ -172,8 +174,9 @@ export class ChatComponent implements OnDestroy, OnInit{
   scrollToBottom(): void {
      try {
          setTimeout(()=>{
-            this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight; 
-          },1);
+            this.myScrollContainer.nativeElement.scrollTop 
+            = this.myScrollContainer.nativeElement.scrollHeight; 
+          },0);
         } catch(err) { }                 
    }
 }
