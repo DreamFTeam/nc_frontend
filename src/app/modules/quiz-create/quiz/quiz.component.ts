@@ -11,6 +11,7 @@ import { ToastsService } from '../../core/_services/utils/toasts.service';
 import { LocaleService } from '../../core/_services/utils/locale.service';
 import { AuthenticationService } from '../../core/_services/authentication/authentication.service';
 import { Subscription } from 'rxjs';
+import { first } from 'rxjs/operators';
 
 @Component({
     selector: 'app-quiz',
@@ -245,8 +246,9 @@ export class QuizComponent implements OnInit, OnDestroy {
 
 
     publish() {
-        this.subscriptions.add(this.modalService
+        this.modalService
             .openModal(this.localeService.getValue('modal.sure') + this.localeService.getValue('modal.publish'), 'warning')
+            .pipe(first())
             .subscribe((receivedEntry) => {
                 if (receivedEntry) {
                     this.subscriptions.add(this.quizService.publishQuiz(this.quiz.id)
@@ -258,13 +260,14 @@ export class QuizComponent implements OnInit, OnDestroy {
                             () =>
                                 this.toastsService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))));
                 }
-            }));
+            });
     }
 
 
     removeQuestionIndex(i, onCreatorDelete) {
-        this.subscriptions.add(this.modalService
+        this.modalService
             .openModal(this.localeService.getValue('modal.sure') + this.localeService.getValue('modal.delete'), 'danger')
+            .pipe(first())
             .subscribe((receivedEntry) => {
                 if (receivedEntry) {
                     if (this.questions[i].id === '') {
@@ -278,7 +281,7 @@ export class QuizComponent implements OnInit, OnDestroy {
                             ));
                     }
                 }
-            }));
+            });
     }
 
     removeQuestion() {
