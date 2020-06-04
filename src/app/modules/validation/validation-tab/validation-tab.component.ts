@@ -8,6 +8,7 @@ import {faSpinner} from '@fortawesome/free-solid-svg-icons';
 import {ToastsService} from 'src/app/modules/core/_services/utils/toasts.service';
 import {ModalService} from 'src/app/modules/core/_services/utils/modal.service';
 import {LocaleService} from 'src/app/modules/core/_services/utils/locale.service';
+import { DateService } from '../../core/_services/utils/date.service';
 
 
 @Component({
@@ -39,7 +40,8 @@ export class ValidationTabComponent implements OnInit {
                 private router: Router,
                 private modalService: ModalService,
                 public toastsService: ToastsService,
-                private localeService: LocaleService) {
+                private localeService: LocaleService,
+                public dateService: DateService) {
         this.isLoading = true;
         this.isEmpty = false;
         this.toasts = [];

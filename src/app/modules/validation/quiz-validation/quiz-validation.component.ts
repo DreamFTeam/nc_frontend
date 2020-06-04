@@ -7,6 +7,7 @@ import {ExtendedQuestion} from '../../core/_models/question/extendedquestion';
 import {ModalService} from '../../core/_services/utils/modal.service';
 import {ToastsService} from '../../core/_services/utils/toasts.service';
 import {LocaleService} from '../../core/_services/utils/locale.service';
+import { DateService } from '../../core/_services/utils/date.service';
 
 const PAGE_SIZE: number = 3;
 
@@ -32,7 +33,8 @@ export class QuizValidationComponent implements OnInit {
                 public modalService: ModalService,
                 private router: Router,
                 public toastsService: ToastsService,
-                private localeService: LocaleService
+                private localeService: LocaleService,
+                public dateService: DateService
     ) {
         this.pageSize = PAGE_SIZE;
         this.page = 1;
