@@ -1,5 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {merge, Observable, Subject} from 'rxjs';
+import {Component, Input, OnInit, OnDestroy} from '@angular/core';
+import {merge, Observable, Subject, Subscription} from 'rxjs';
 import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
 import {QuizService} from '../../core/_services/quiz/quiz.service';
 import {TagCatg} from '../../core/_models/tagcateg';
@@ -11,7 +11,7 @@ import {Category} from '../../core/_models/category';
     templateUrl: './badge-editor.component.html',
     styleUrls: ['./badge-editor.component.css']
 })
-export class BadgeEditorComponent implements OnInit {
+export class BadgeEditorComponent implements OnInit, OnDestroy {
 
     @Input()
     label: string;
@@ -26,8 +26,13 @@ export class BadgeEditorComponent implements OnInit {
 
     allObjects: TagCatg[];
 
+    subscriptions: Subscription = new Subscription();
 
     constructor(private quizService: QuizService) {
+    }
+
+    ngOnDestroy(): void {
+        this.subscriptions.unsubscribe();
     }
 
     ngOnInit(): void {
@@ -39,11 +44,11 @@ export class BadgeEditorComponent implements OnInit {
         }
     }
 
-    mapAllTagsOrCategs(ans: Observable<any>) {
-        ans.subscribe(
+    mapAllTagsOrCategs(result) {
+        this.subscriptions.add(result.subscribe(
             ans => ans.forEach((element) => {
                 this.allObjects.push(element);
-            }));
+            })));
     }
 
     remove(i) {
