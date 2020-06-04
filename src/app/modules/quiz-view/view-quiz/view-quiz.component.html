@@ -102,13 +102,13 @@
                 <div class="col">
                     <div class="mt-3" >
                         <div *ngIf="!isPrivileged() && quiz.activated && quiz.published && quiz.validated" 
-                        class="btn buttonpr ml-1" (click)="newGame()">
+                        class="btn buttonpr ml-1 mt-1 minh" (click)="newGame()">
                             {{ 'utils.play' | translate }}
                         </div>
-                        <div *ngIf="isMyQuiz()" class="btn buttonsec ml-1" routerLink="/quizedit/{{quiz.id}}">
+                        <div *ngIf="isMyQuiz()" class="btn buttonsec ml-1 mt-1 minh" routerLink="/quizedit/{{quiz.id}}">
                             {{ 'utils.edit' | translate }}
                         </div>
-                        <div *ngIf="user && !isPrivileged()" class="btn buttonsuc ml-1"
+                        <div *ngIf="user && !isPrivileged()" class="btn buttonsuc ml-1 mt-1 minh"
                             (click)="markAsFavorite()">
                             <svg *ngIf="quiz.favourite" class="bi bi-star-fill" width="1.5em" height="1.5em"
                                 viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -125,11 +125,11 @@
                             <span class="ml-1 cursor">{{ 'viewQuiz.asFavorite' | translate }}</span>
                         </div>
                     </div>
-                    <div *ngIf="isMyQuiz()" class="ml-1 mt-3 ">
-                        <button *ngIf="quiz.activated" class="btn buttondel mr-1" (click)="deactivate()">
+                    <div *ngIf="isMyQuiz() || isPrivileged()" class="ml-1 mt-3 ">
+                        <button *ngIf="quiz.activated" class="btn buttondel mr-1 mb-1" (click)="deactivate()">
                             {{ 'viewQuiz.deactivate' | translate }}
                         </button>
-                        <button class="btn buttondel" (click)="delete()">
+                        <button class="btn buttondel mb-1" (click)="delete()">
                             {{ 'utils.delete' | translate }}
                         </button>
                     </div>

@@ -74,10 +74,13 @@ export class NavBarComponent implements OnInit, OnDestroy {
 
     logout() {
         this.isMenuCollapsed = true;
-        this.router.navigate(['/']);
-        this.authenticationService.signoutUser();
-        window.location.reload();
+        this.router.navigate(['/']).then(
+            () => {
+            this.authenticationService.signoutUser();
+            location.reload()}
+        );
     }
+
 
     subscribeNotifications() {
         this.notificationSubscription = this.notificationsService.notifications
