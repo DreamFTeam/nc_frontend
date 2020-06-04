@@ -1,6 +1,6 @@
-<div class="container pr-0">
+<div class="container px-0">
     <div *ngIf="(!isEmpty && !isLoading) ; else ((isLoading) ? loading : empty)">
-        <div *ngFor="let item of quizList$ | async" class="row border rounded-lg shadow-sm p-2 mb-2 w-100">
+        <div *ngFor="let item of quizList$ | async" class="row border rounded-lg shadow-sm p-2 pt-4 mb-2 mx-0 w-100">
             <div class="col-lg-4 col-md-6 w-100 h-100 p-0 w-0">
                 <div class=" embed-responsive embed-responsive-4by3">
                     <img class="mr-2 embed-responsive-item pic" [src]="item.imageContent ? item.imageContent : this.mockImageUrl" alt="Quiz icon">
