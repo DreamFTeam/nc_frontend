@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, AfterViewChecked, ElementRef, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, HostListener, AfterViewChecked, ElementRef, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { Message } from '../../core/_models/message';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalService } from '../../core/_services/utils/modal.service';
@@ -14,6 +14,7 @@ import * as SockJS from 'sockjs-client';
 import { ReceivedEvent } from '../../core/_models/receivedevent';
 import { environment } from 'src/environments/environment';
 import { EventType } from '../../core/_models/eventtype';
+import { DateService } from '../../core/_services/utils/date.service';
 
 
 const MESSAGES_PAGE_SIZE = 6;
@@ -23,8 +24,8 @@ const MESSAGES_PAGE_SIZE = 6;
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css']
 })
-export class ChatComponent implements OnDestroy{
-  //@ViewChild('scrollMe') private myScrollContainer: ElementRef;
+export class ChatComponent implements OnDestroy, OnInit{
+  @ViewChild('scrollMe') private myScrollContainer: ElementRef;
 
   currentChatId: string;
   currentUserId: string;
@@ -51,7 +52,8 @@ export class ChatComponent implements OnDestroy{
       private router: Router,
       public toastsService: ToastsService,
       private localeService: LocaleService,
-      private chatsService: ChatsService) {
+      private chatsService: ChatsService,
+      public dateService: DateService) {
 
     this.isLoading = true;
     this.isLoadingMessages = false;
@@ -63,8 +65,12 @@ export class ChatComponent implements OnDestroy{
     this.currentUsername = this.authenticationService.currentUserValue.username;
     this.currentChatId = this.route.snapshot.paramMap.get('id');
     this.getChatInfo();
-    this.loadMessages();
+    this.loadMessages(0);
   }
+  ngOnInit(): void {
+ 
+  }
+
   ngOnDestroy(): void {
     this.socket.unsubscribe();
     this.stompClient.disconnect();
@@ -96,7 +102,7 @@ export class ChatComponent implements OnDestroy{
         let messageToSend = new Message(this.currentUserId, this.currentUsername, this.message);
         this.stompClient.send('/app/chat/' + this.currentChatId, {}, JSON.stringify(messageToSend));
         this.message= '';
-        // this.scrollToBottom();
+        this.scrollToBottom();
       }
     }
 
@@ -115,12 +121,18 @@ export class ChatComponent implements OnDestroy{
   onScroll(event){
     if (event.target.scrollHeight - event.target.scrollTop > event.target.scrollHeight - 10 ) {
       if (!this.isEndOfMessagesList && !this.isLoadingMessages){
-        this.loadMessages();
+        this.loadMessages(event.target.scrollHeight);
       }
     }
   }
 
-  loadMessages(){
+  saveScrollTop(prevHeight: number){
+      setTimeout(() => {
+        this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight - prevHeight;
+      }, 0.1);
+  }
+
+  loadMessages(previousScrollHeight: number){
     if(!this.isLoadingMessages){
       this.isLoadingMessages = true;
       
@@ -130,13 +142,14 @@ export class ChatComponent implements OnDestroy{
       .subscribe(data => {
         if(data.length < MESSAGES_PAGE_SIZE){
           this.isEndOfMessagesList = true;
-          console.log("END");
         }
         this.messages = data.concat(this.messages);
         this.isLoadingMessages = false;
         if(this.isFirstLoading){
-          //this.scrollToBottom();
+          this.scrollToBottom();
           this.isFirstLoading = false;
+        }else{
+          this.saveScrollTop(previousScrollHeight);
         }
       },
       error => {
@@ -156,11 +169,11 @@ export class ChatComponent implements OnDestroy{
     return 'd-flex justify-content-start w-100';
   }
 
-  
-
-  // scrollToBottom(): void {
-  //   try {
-  //       this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
-  //   } catch(err) { }                 
-  // }
+  scrollToBottom(): void {
+     try {
+         setTimeout(()=>{
+            this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight; 
+          },1);
+        } catch(err) { }                 
+   }
 }

@@ -10,13 +10,13 @@
             </button>
         </div>
     </div>
-    <!--#scrollMe-->
-    <div class="row flex-grow show overflow-auto" (scroll)="onScroll($event)">
+    
+    <div #scrollMe class="row flex-grow show overflow-auto" (scroll)="onScroll($event)">
         <div *ngFor="let item of messages" [ngClass]="getMessageClass(item.authorId)">
             <div class="border msg-container">
                 <p><strong>{{item.authorUsername}}</strong></p>
                 <p>{{item.content}}</p>
-                <p>{{item.sentDate}}</p>
+                <p>{{item.sentDate | date:dateService.datetimePattern:dateService.currentTimezone}}</p>
             </div>
         </div>
     </div>
