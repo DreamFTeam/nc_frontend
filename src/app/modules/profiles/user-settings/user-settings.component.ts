@@ -42,14 +42,11 @@ export class UserSettingsComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.getSettings();
-    }
-
-    getSettings(){
         this.subscriptions.add(this.settingsService.getSettings()
         .subscribe(ans => this.setSettings(ans),
             () => this.toastService.toastAddDanger(this.localeService.getValue('toasterEditor.wentWrong'))));
     }
+
 
     setSettings(ans) {
         let temp: Setting[] = ans;
@@ -65,7 +62,6 @@ export class UserSettingsComponent implements OnInit, OnDestroy {
         this.buttonLoading = true;
         this.subscriptions.add(this.settingsService.saveSettings(this.settings, this.language).subscribe(
             () => {
-                this.getSettings();
                 this.toastService.toastAddSuccess(this.localeService.getValue('toasterEditor.saved'));
                 this.searchFilterQuizService.initSettings();
             },
