@@ -4,6 +4,7 @@ import {AuthenticationService} from '../../core/_services/authentication/authent
 import {ToastsService} from '../../core/_services/utils/toasts.service';
 import {TranslateService} from '@ngx-translate/core';
 import {first} from 'rxjs/operators';
+import {LocaleService} from '../../core/_services/utils/locale.service';
 
 @Component({
     selector: 'app-change-password',
@@ -23,7 +24,7 @@ export class ChangePasswordComponent implements OnInit {
                 private router: Router,
                 private authenticationService: AuthenticationService,
                 private toastsService: ToastsService,
-                private translateService: TranslateService) {
+                private localeService: LocaleService) {
     }
 
     ngOnInit(): void {
@@ -40,30 +41,30 @@ export class ChangePasswordComponent implements OnInit {
     changePassword() {
         if (!this.password.length || this.password.length < 6) {
             this.toastsService.removeAll();
-            this.toastsService.toastAddWarning(this.translateService.instant('authorization.signUp.shortPassword'));
+            this.toastsService.toastAddWarning(this.localeService.getValue('authorization.signUp.shortPassword'));
             return;
         }
         if (!this.password.match(/([a-zA-Z]+[0-9]+)|([0-9]+[a-zA-Z]+)/)) {
             this.toastsService.removeAll();
-            this.toastsService.toastAddWarning(this.translateService.instant('authorization.signUp.matchPasswordRegExp'));
+            this.toastsService.toastAddWarning(this.localeService.getValue('authorization.signUp.matchPasswordRegExp'));
             return;
         }
         if (this.password !== this.confirmPassword) {
             this.toastsService.removeAll();
-            this.toastsService.toastAddWarning(this.translateService.instant('authorization.signUp.matchPasswords'));
+            this.toastsService.toastAddWarning(this.localeService.getValue('authorization.signUp.matchPasswords'));
             return;
         }
 
         this.authenticationService.changePassword(this.id, this.password).pipe(first())
             .subscribe((n) => {
-                    this.toastsService.toastAddSuccess(this.translateService.instant('authorization.changePassword.success'));
+                    this.toastsService.toastAddSuccess(this.localeService.getValue('authorization.changePassword.success'));
                     setInterval(function() {
                         location.replace('');
                         clearInterval(this);
                     }, 3000);
                 },
                 err => {
-                    this.toastsService.toastAddDanger(this.translateService.instant('authorization.login.error'));
+                    this.toastsService.toastAddDanger(this.localeService.getValue('authorization.login.error'));
                     if (err.error) {
                         this.toastsService.toastAddDanger(err.error.message);
                     }

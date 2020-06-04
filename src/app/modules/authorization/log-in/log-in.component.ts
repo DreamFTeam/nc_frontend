@@ -5,6 +5,7 @@ import {RecoverPasswordComponent} from '../recover-password/recover-password.com
 import {Router} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
 import {first} from 'rxjs/operators';
+import {LocaleService} from '../../core/_services/utils/locale.service';
 
 @Component({
     selector: 'app-log-in',
@@ -16,7 +17,7 @@ export class LogInComponent {
                 public activeModal: NgbActiveModal,
                 private modalService: NgbModal,
                 private _router: Router,
-                private translateService: TranslateService) {
+                private localeService: LocaleService) {
     }
 
     email = '';
@@ -27,11 +28,11 @@ export class LogInComponent {
 
     logIn() {
         if (this.email === '' || this.email == null) {
-            this.message = this.translateService.instant('authorization.login.emptyName');
+            this.message = this.localeService.getValue('authorization.login.emptyName');
             return;
         }
         if (this.password === '' || this.password == null) {
-            this.message = this.translateService.instant('authorization.login.emptyPassword');
+            this.message = this.localeService.getValue('authorization.login.emptyPassword');
             return;
         }
 
@@ -42,7 +43,7 @@ export class LogInComponent {
                     this.loading = false;
                 },
                 error => {
-                    this.message = error.error ? error.error.message : this.translateService.instant('authorization.login.error');
+                    this.message = error.error ? error.error.message : this.localeService.getValue('authorization.login.error');
                     console.log(error);
                     this.loading = false;
                 }

@@ -4,6 +4,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalMessageService } from '../../core/_services/utils/modal-message.service';
 import { TranslateService } from '@ngx-translate/core';
 import {first} from 'rxjs/operators';
+import {LocaleService} from '../../core/_services/utils/locale.service';
 
 @Component({
     selector: 'app-sign-up',
@@ -19,7 +20,7 @@ export class SignUpComponent implements OnInit {
     constructor(private authenticationService: AuthenticationService,
         public activeModal: NgbActiveModal,
         private modalMessageService: ModalMessageService,
-        private translateService: TranslateService) {
+        private localeService: LocaleService) {
     }
 
     username = '';
@@ -30,23 +31,23 @@ export class SignUpComponent implements OnInit {
 
     signUp() {
         if (!this.username) {
-            this.message = this.translateService.instant('authorization.login.emptyName');
+            this.message = this.localeService.getValue('authorization.login.emptyName');
             return;
         }
         if (!this.email || !this.email.match(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/)) {
-            this.message = this.translateService.instant('authorization.signUp.incEmail');
+            this.message = this.localeService.getValue('authorization.signUp.incEmail');
             return;
         }
         if (!this.password || this.password.length < 6) {
-            this.message = this.translateService.instant('authorization.signUp.shortPassword');
+            this.message = this.localeService.getValue('authorization.signUp.shortPassword');
             return;
         }
         if (!this.password.match(/([a-zA-Z]+[0-9]+)|([0-9]+[a-zA-Z]+)/)) {
-            this.message = this.translateService.instant('authorization.signUp.matchPasswordRegExp');
+            this.message = this.localeService.getValue('authorization.signUp.matchPasswordRegExp');
             return;
         }
         if (this.password !== this.confirmPassword) {
-            this.message = this.translateService.instant('authorization.signUp.matchPasswords');
+            this.message = this.localeService.getValue('authorization.signUp.matchPasswords');
             return;
         }
         this.authenticationService.signupUser(this.username, this.email, this.password).pipe(first())
@@ -54,12 +55,12 @@ export class SignUpComponent implements OnInit {
                 if (n) {
                     this.isSent = true;
                     this.activeModal.close();
-                    this.modalMessageService.show(this.translateService.instant('authorization.signUp.mailTitle'),
-                        this.translateService.instant('authorization.signUp.mailBody'));
+                    this.modalMessageService.show(this.localeService.getValue('authorization.signUp.mailTitle'),
+                        this.localeService.getValue('authorization.signUp.mailBody'));
                 }
             },
                 error => {
-                    this.message = error.error ? error.error.message : this.translateService.instant('authorization.login.error');
+                    this.message = error.error ? error.error.message : this.localeService.getValue('authorization.login.error');
                     console.log(error);
                     this.loading = false;
                 }
