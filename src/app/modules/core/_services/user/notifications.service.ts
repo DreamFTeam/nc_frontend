@@ -49,7 +49,7 @@ export class NotificationsService {
 
     setSeen() {
         this.notificationsSubject.next([]);
-        return this.http.post(this.notificationsUrl + 'seen', this.httpOptions);
+        return this.http.patch(this.notificationsUrl + 'seen', this.httpOptions);
     }
 
     sendNot() {

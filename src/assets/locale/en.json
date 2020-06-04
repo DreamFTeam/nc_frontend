@@ -372,5 +372,21 @@
     "alreadyRateMes": "You have already rated this quiz before. You can change your mind now.",
     "notRatedYetMes": "Rate quiz please",
     "acceptRating": "Successfully evaluated"
+  },
+  "settingTitles":{
+    "34c00e41-9eab-49f9-8a9a-4862f6379dd0":"Notifications",
+    "d40b586d-29b5-4798-bb21-09761999473c":"Gameplay realted activities",
+    "e8449301-6d6f-4376-8247-b7d1f8df6416":"Language",
+    "224d018c-c74b-4de5-9ce4-6361ba8ff591":"Friend related activities",
+    "71cdd92d-636d-43b0-81a6-e8ee432562b2":"Validation realted activities",
+    "cdc2a71a-a8e5-4f14-8ff1-9da9f21c30a4":"Achievements realted activities"
+  },
+  "settingDescriptions":{
+    "34c00e41-9eab-49f9-8a9a-4862f6379dd0":"Defines whether user sees notifications",
+    "d40b586d-29b5-4798-bb21-09761999473c":"Defines whether user sees gameplay related activities",
+    "e8449301-6d6f-4376-8247-b7d1f8df6416":"Defines what language user sees",
+    "224d018c-c74b-4de5-9ce4-6361ba8ff591":"Defines whether user sees friend related activities",
+    "71cdd92d-636d-43b0-81a6-e8ee432562b2":"Defines whether user sees validation related activities",
+    "cdc2a71a-a8e5-4f14-8ff1-9da9f21c30a4":"Defines whether user sees achievement related activities"
   }
 }
